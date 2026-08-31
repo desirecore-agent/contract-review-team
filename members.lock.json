@@ -2,6 +2,61 @@
   "$schema": "agentfs/v1/team-members-lock",
   "lockfileVersion": 1,
   "teamId": "contract-review-team",
-  "resolvedAt": "2026-08-31T11:14:21.261Z",
-  "agents": {}
+  "resolvedAt": "2026-08-31T18:44:03.860Z",
+  "agents": {
+    "contract-review-lead": {
+      "source": "git",
+      "role": "supervisor",
+      "url": "https://github.com/desirecore-agent/contract-review-lead.git",
+      "commit": "c2d0af38f400f220b37050e19dacd8d36f911691",
+      "syncedAt": "2026-08-31T18:44:05.312Z",
+      "version": "1.0.0",
+      "contentHash": "v3:8f9cac78c9a13b5ef09bfb57bf27612b3064c9c0182905aee54c65d536f45257"
+    },
+    "contract-intake": {
+      "source": "git",
+      "role": "member",
+      "url": "https://github.com/desirecore-agent/contract-intake.git",
+      "commit": "36e8915ac3c417f2bc7173667981324b1ca086ca",
+      "syncedAt": "2026-08-31T18:44:06.717Z",
+      "version": "1.0.0",
+      "contentHash": "v3:15a9cc5a26060f5b6d7017b1ea5e63333d4f1038a2f27c03fe1043d6340dc534"
+    },
+    "clause-extractor": {
+      "source": "git",
+      "role": "member",
+      "url": "https://github.com/desirecore-agent/clause-extractor.git",
+      "commit": "3924e35d6b9f312736c8e752a7b288c0563c9768",
+      "syncedAt": "2026-08-31T18:44:08.287Z",
+      "version": "1.0.0",
+      "contentHash": "v3:4ee85a3a4e13ebe709530089eef0f623bcb1551cfb29a26b98f4fd8df361f941"
+    },
+    "risk-scanner": {
+      "source": "git",
+      "role": "member",
+      "url": "https://github.com/desirecore-agent/risk-scanner.git",
+      "commit": "04639c484c1ea70fe69a81c524262f2b6951fdcd",
+      "syncedAt": "2026-08-31T18:44:09.862Z",
+      "version": "1.0.0",
+      "contentHash": "v3:0bbf00bac6331ca1f5c1eb5d2f98ab6d7f3900a0b76ac21b3c8be83d088bf779"
+    },
+    "jurisdiction-auditor": {
+      "source": "git",
+      "role": "member",
+      "url": "https://github.com/desirecore-agent/jurisdiction-auditor.git",
+      "commit": "051c49f37d7a458f5134705c0a29e2b97896c1ad",
+      "syncedAt": "2026-08-31T18:44:11.437Z",
+      "version": "1.0.0",
+      "contentHash": "v3:80a051156111c01759c4b6d7048bfd0b273d91dcef1321a88ed50f542ed8b5c4"
+    },
+    "review-reporter": {
+      "source": "git",
+      "role": "member",
+      "url": "https://github.com/desirecore-agent/review-reporter.git",
+      "commit": "fd8e26f61b77c2e12f96b5c72ba45742d6cb0895",
+      "syncedAt": "2026-08-31T18:44:13.004Z",
+      "version": "1.0.0",
+      "contentHash": "v3:f2816328c0687bfdba21bff54e2f07b328f7f0020c971d1a10f4757aa736ced1"
+    }
+  }
 }

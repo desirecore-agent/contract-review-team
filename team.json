@@ -17,6 +17,6 @@
   "createdBy": "user",
   "createdAt": "2026-08-31T11:14:21.260Z",
   "version": "0.1.0",
-  "distributable": false,
+  "distributable": true,
   "description": "多 Agent 合同审查团队：输入治理 → 条款结构化 → 风险识别/法域合规（并行）→ 复核出报告。流程可复盘、职责边界清晰、证据链完整。"
 }
