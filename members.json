@@ -27,7 +27,9 @@
       "role": "member"
     },
     "jurisdiction-auditor": {
-      "source": "local",
+      "source": "git",
+      "url": "https://github.com/desirecore-agent/jurisdiction-auditor.git",
+      "ref": "main",
       "role": "member"
     },
     "review-reporter": {
