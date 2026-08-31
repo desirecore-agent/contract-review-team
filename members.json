@@ -15,7 +15,9 @@
       "role": "member"
     },
     "clause-extractor": {
-      "source": "local",
+      "source": "git",
+      "url": "https://github.com/desirecore-agent/clause-extractor.git",
+      "ref": "main",
       "role": "member"
     },
     "risk-scanner": {
