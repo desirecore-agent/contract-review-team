@@ -21,7 +21,9 @@
       "role": "member"
     },
     "risk-scanner": {
-      "source": "local",
+      "source": "git",
+      "url": "https://github.com/desirecore-agent/risk-scanner.git",
+      "ref": "main",
       "role": "member"
     },
     "jurisdiction-auditor": {
