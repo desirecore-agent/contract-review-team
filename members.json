@@ -1,0 +1,30 @@
+{
+  "$schema": "agentfs/v1/team-members",
+  "lockfileVersion": 1,
+  "agents": {
+    "contract-review-lead": {
+      "source": "local",
+      "role": "supervisor"
+    },
+    "contract-intake": {
+      "source": "local",
+      "role": "member"
+    },
+    "clause-extractor": {
+      "source": "local",
+      "role": "member"
+    },
+    "risk-scanner": {
+      "source": "local",
+      "role": "member"
+    },
+    "jurisdiction-auditor": {
+      "source": "local",
+      "role": "member"
+    },
+    "review-reporter": {
+      "source": "local",
+      "role": "member"
+    }
+  }
+}

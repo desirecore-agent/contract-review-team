@@ -1,0 +1,9 @@
+# 由 initTeamRepo 自动生成
+# 团队工作目录:不入版本,跨设备各自维护
+workspace/
+
+# 日志与缓存
+*.log
+.cache/
+.DS_Store
+Thumbs.db
