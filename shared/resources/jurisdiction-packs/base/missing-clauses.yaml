@@ -1,0 +1,212 @@
+# ============================================================================
+# base/missing-clauses.yaml —— 关键缺失条款检查清单（蓝本第十节）
+# ----------------------------------------------------------------------------
+# 9 项统一 slug，任何 Agent 引用检查项必须用这里的 id，不得自造名称——
+# 名称不统一时，覆盖矩阵会出现两行说同一件事，而漏检项藏在两者之间。
+#
+# 【最重要的判定原则】判定标准是「存在且要素齐备」，不是「是否出现该类条款」。
+# 样本 TC-003（占位符条款判通过）与 TC-005（3 个月责任上限判通过）都是
+# 把「有条款」当成「有保障」的后果。因此每一项都定义了 required_elements：
+# 要素不齐 = 未通过，而不是「已约定但可优化」。
+# ============================================================================
+
+meta:
+  pack_id: base
+  pack_version: base-v1
+  knowledge_base_version: '2026-08-31'
+  updated_at: '2026-08-31'
+
+# ---------------------------------------------------------------------------
+# 分级定义（蓝本第十节：三档严重度 × 三类影响）
+# ---------------------------------------------------------------------------
+severity_levels:
+  severe: 严重——影响关键权益，命中后必须人工主导或阻断放行
+  important: 重要——影响执行秩序，须进入谈判项
+  advisory: 建议——影响效率，可作为优化项
+
+impact_categories:
+  key_rights: 关键权益——直接决定能拿回多少钱、能不能追责
+  execution_order: 执行秩序——决定履约过程中的争议如何处理、义务如何触发
+  efficiency: 效率——决定日常协作与退出的顺畅程度
+
+# ---------------------------------------------------------------------------
+# 判定三态（覆盖矩阵的输入）
+# ---------------------------------------------------------------------------
+verdicts:
+  present_complete: 条款存在且 required_elements 齐备 → conclusion = pass
+  present_incomplete: 条款存在但要素不齐 → conclusion 取该项 severity（不是 pass）
+  absent: 未检索到该类条款 → conclusion 取该项 severity，且必须给出检索范围
+  not_checked: 因失败标记未能执行 → conclusion = blank，status = blocked，禁止计入通过率
+
+search_evidence_requirement:
+  # 判定 absent 的门槛：必须能证明「找过了」。
+  rule: 判定 absent 时必须给出已检索的页码区间与使用的检索关键词，否则该判定不成立
+  rationale: 「没找到」与「没找」在报告里长得一模一样，必须靠检索证据区分（见样本 TC-006）
+
+# ---------------------------------------------------------------------------
+# 9 项检查
+# ---------------------------------------------------------------------------
+checks:
+
+  - id: liability-cap
+    title: 限制责任与索赔上限
+    severity: severe
+    impact: key_rights
+    order: 1
+    description: 约定一方对另一方承担赔偿责任的上限，以及上限的计算基数与期间
+    why_it_matters: 无上限意味着单次事故的风险敞口不可估算，无法定价，也无法投保
+    required_elements:
+      - 上限金额或计算方式（如「前 12 个月已付费用」）
+      - 计算基数与期间的明确定义
+      - 是否双方对等（单方上限须单独提示）
+      - 例外事项（carve-out）清单：通常为保密违约、知识产权侵权、故意或重大过失、人身伤害
+    keywords_zh: [责任上限, 累计责任, 赔偿总额, 最高不超过, 责任限制]
+    keywords_en: [limitation of liability, aggregate liability, liability cap, shall not exceed]
+    benchmark_link: market-benchmarks.yaml#liability-cap-months
+    human_gate: HG-03
+    notes: 存在上限条款不等于通过——必须联动市场标尺做数值判定（样本 TC-005）
+
+  - id: breach-remedy
+    title: 违约责任与赔偿机制
+    severity: severe
+    impact: key_rights
+    order: 2
+    description: 违约的构成、救济方式、违约金或损害赔偿的计算
+    why_it_matters: 无救济条款时，即使对方明确违约也只能走一般损害赔偿举证，成本极高
+    required_elements:
+      - 违约情形的界定
+      - 救济方式（继续履行 / 解除 / 违约金 / 损害赔偿）
+      - 违约金比例或赔偿计算基数（含占位符即视为不齐，见样本 TC-003）
+      - 违约金上限或封顶（若约定）
+      - 与 liability-cap 的关系（违约金是否计入责任上限）
+    keywords_zh: [违约责任, 违约金, 赔偿损失, 逾期付款, 每逾期一日]
+    keywords_en: [breach, remedies, liquidated damages, indemnification for breach]
+    human_gate: HG-03
+
+  - id: grace-period
+    title: 宽限期与补救期
+    severity: important
+    impact: execution_order
+    order: 3
+    description: 违约方在被通知后有多长时间补救，补救完成后是否消除违约
+    why_it_matters: 无宽限期时，任何轻微逾期都可能构成解除事由，反过来也让己方失去自救窗口
+    required_elements:
+      - 通知义务与通知方式
+      - 补救期天数
+      - 补救完成的认定标准
+      - 不可补救违约的例外清单
+    keywords_zh: [宽限期, 补救期, 治愈期, 收到通知之日起, 日内改正]
+    keywords_en: [cure period, grace period, remedy period, notice and cure]
+
+  - id: termination-convenience
+    title: 终止便利性与过渡条款
+    severity: important
+    impact: execution_order
+    order: 4
+    description: 无过错终止（convenience termination）的权利、通知期，以及终止后的过渡安排
+    why_it_matters: 无便利终止权意味着被锁定在一段长期关系中，退出成本不可控
+    required_elements:
+      - 是否允许无过错终止，哪一方享有
+      - 通知期天数
+      - 终止费用或未摊销成本的处理
+      - 过渡期服务义务（transition assistance）与期限
+      - 终止后数据与资产返还安排
+    keywords_zh: [任意解除, 无理由终止, 提前通知, 过渡期, 终止后]
+    keywords_en: [termination for convenience, transition assistance, wind-down]
+    benchmark_link: market-benchmarks.yaml#renewal-notice-days
+
+  - id: subcontracting
+    title: 分包与变更控制
+    severity: important
+    impact: execution_order
+    order: 5
+    description: 是否允许分包、分包需否同意，以及合同变更的书面程序
+    why_it_matters: 未约定分包时实际履约方可能不是签约方，责任链条断裂；未约定变更程序时口头变更会被主张有效
+    required_elements:
+      - 分包是否需事先书面同意
+      - 分包方行为的责任归属（签约方是否承担全部责任）
+      - 变更的书面形式要求
+      - 变更的批准层级或流程
+    keywords_zh: [分包, 转委托, 变更, 补充协议, 书面形式]
+    keywords_en: [subcontract, subcontractor, change control, amendment in writing]
+
+  - id: audit-right
+    title: 审计权与数据操作流程
+    severity: important
+    impact: execution_order
+    order: 6
+    description: 一方核查另一方履约、计费与数据处理的权利及行使条件
+    why_it_matters: 无审计权时，计费准确性与合规承诺无法验证，只能依赖对方自述
+    required_elements:
+      - 审计范围（履约 / 计费 / 安全与合规）
+      - 触发条件与频次
+      - 提前通知期
+      - 费用承担规则
+      - 发现问题后的处理（补款、整改期限）
+    keywords_zh: [审计, 稽核, 查验, 账簿, 记录保存]
+    keywords_en: [audit right, inspection, records retention, right to audit]
+    notes: 常见陷阱是审计权存在但被通知期、频次与费用条款架空，须逐要素判定（样本 TC-006）
+
+  - id: dispute-resolution
+    title: 争议解决（管辖 / 仲裁）
+    severity: severe
+    impact: key_rights
+    order: 7
+    description: 争议提交何处解决，采用诉讼还是仲裁，适用何种程序规则
+    why_it_matters: 争议解决条款决定未来所有救济的成本与可行性，且一旦生效难以更改
+    required_elements:
+      - 明确的解决方式（仲裁或诉讼，二者择一）
+      - 具体机构或法院（仲裁须指明具体机构名称）
+      - 地点与语言
+      - 与准据法条款的一致性
+    keywords_zh: [争议解决, 仲裁, 管辖, 诉讼, 仲裁委员会]
+    keywords_en: [dispute resolution, arbitration, jurisdiction, venue, governing law]
+    human_gate: HG-02
+    notes: 「或裁或审」（既可仲裁也可诉讼）是常见无效表述，须由 jurisdiction 层规则判定
+
+  - id: force-majeure
+    title: 不可抗力
+    severity: important
+    impact: execution_order
+    order: 8
+    description: 不可抗力的界定、通知义务与后果安排
+    why_it_matters: 无不可抗力条款时只能依赖法定规则，范围与后果均不可预期
+    required_elements:
+      - 不可抗力事件的界定（列举或概括加列举）
+      - 通知义务与期限
+      - 后果安排（履行中止、期限顺延、长期持续时的解除权）
+      - 已到期付款义务是否豁免的明确约定
+    keywords_zh: [不可抗力, 自然灾害, 政府行为, 疫情, 免责]
+    keywords_en: [force majeure, act of God, beyond reasonable control]
+    false_positive_guard: |
+      不可抗力范围是否「过宽」缺乏客观基准，**不得**作为风险结论输出（样本 TC-008）。
+      只判定要素齐备性；若认为范围异常，写成需人工确认并给出对比依据。
+    human_gate: HG-03
+
+  - id: data-export
+    title: 数据导出与删除
+    severity: severe
+    impact: key_rights
+    order: 9
+    description: 终止或到期后，数据能否导出、以何种格式、多长时间内，以及删除承诺
+    why_it_matters: 无导出条款时数据事实上被锁定，切换供应商的成本变成无限大
+    required_elements:
+      - 导出权利与触发情形
+      - 导出格式（是否为通用/标准格式）
+      - 可导出的时间窗口
+      - 导出协助的费用承担
+      - 删除承诺与删除证明
+    keywords_zh: [数据导出, 数据返还, 数据删除, 迁移协助, 标准格式]
+    keywords_en: [data export, data portability, return of data, deletion certificate]
+    benchmark_link: market-benchmarks.yaml#data-export-window-days
+    human_gate: null
+
+# ---------------------------------------------------------------------------
+# 输出要求
+# ---------------------------------------------------------------------------
+output_requirements:
+  - 9 项必须全部出现在覆盖矩阵中，一项都不能省略——省略即等于用「没提到」冒充「通过」
+  - 每项结论必须携带完整四元组（条款编号 + 页码证据 + 结论等级 + 对应动作）
+  - present_incomplete 时必须逐项列出缺失的 required_elements，不得笼统写「要素不全」
+  - absent 时必须给出检索范围（页码区间 + 关键词），否则判定不成立
+  - not_checked 时必须写明原因（对应的 failure_mark id）

@@ -1,0 +1,382 @@
+# ============================================================================
+# relations.yaml —— 合同业务本体：对象间关系
+# ----------------------------------------------------------------------------
+# 作用：contract.yaml 定义「对象是什么」，本文件定义「对象之间怎么连」。
+#      团队最关键的两类检测能力完全建立在这里：
+#        1. 「正文第 N 条引用了附件 M，但附件清单里没有 M」 → derived_checks.DC-001
+#        2. 「主合同文本一字未改，但附件被换了一版」        → derived_checks.DC-004
+#      蓝本第四节把第 1 类列为阻断项；第九节把第 2 类称为「最阴险的陷阱」。
+#
+# 建模原则：关系是**独立的边对象**，不是对象上的字段。
+#      理由：如果把「附件清单」写成主合同的一个数组字段，那么「引用了但没列」
+#      就退化成「数组里没有」——发现不了引用侧的存在。只有把「引用」和「归属」
+#      建成两类不同的边，两者的差集才能被算出来。
+# ============================================================================
+
+meta:
+  ontology_version: onto-v1        # 必须与 contract.yaml 的 meta.ontology_version 相同
+  knowledge_base_version: '2026-08-31'
+  updated_at: '2026-08-31'
+  maintainer: 合同审查智能体团队
+
+# ============================================================================
+# 一、边的通用结构
+# ============================================================================
+edge_schema:
+  description: 所有关系边共享的字段。任何一条边缺少 evidence 即视为「推测的边」，不得参与阻断判定
+  fields:
+    edge_id:
+      type: string
+      required: true
+      description: 边标识，形如 edge-ref-0007
+    type:
+      type: string
+      required: true
+      description: 关系类型，取值见下方 relations 章节的 key
+    from:
+      type: object_ref
+      required: true
+      description: 起点对象的三元组引用（object_id + version_label + content_digest）
+    to:
+      type: object_ref
+      required: true
+      description: 终点对象的三元组引用；终点尚未取得实体时见 to_unresolved
+    to_unresolved:
+      type: object
+      required: false
+      description: |
+        终点对象尚不存在时的占位描述。存在此字段即意味着「引用了一个我们手上没有的东西」，
+        这正是 DC-001 的输入。禁止因为拿不到实体就默默丢弃这条边。
+      fields:
+        raw_text:
+          type: string
+          description: 引用的原文，如「附件三 服务水平协议」
+          
+        normalized_key:
+          type: string
+          description: 归一化后的引用键，如 attachment-3，用于与清单侧比对
+    evidence:
+      type: evidence_ref
+      required: true
+      description: 这条边的原文出处（哪一条、哪一页、原文摘录）
+    established_by:
+      type: string
+      required: true
+      description: 建立此边的 Agent ID
+    confidence:
+      type: number
+      required: true
+      description: 置信度 0-1；低于 0.85 的边只能触发 failure_mark，不能直接触发阻断结论
+    direction_note:
+      type: string
+      required: false
+      description: 方向易混淆时的补充说明（如 amends 的方向恒为「修订件 → 被修订件」）
+
+# ============================================================================
+# 二、关系类型
+# ============================================================================
+relations:
+
+  has_attachment:
+    description: |
+      归属关系：主合同（或某份修订）在其**附件清单**中列明了某份附件。
+      注意语义：这条边表达「清单侧声明了它」，不表达「文件已取得」。
+      文件是否取得由终点对象的 kind 决定（attachment = 已取得，
+      exhibit_referenced_only = 未取得）。两者分离是 DC-002 能成立的前提。
+    from: contract_document(kind = main_contract | amendment)
+    to: contract_document(kind = attachment | exhibit_referenced_only | annex_of_annex)
+    cardinality: 0..N
+    required_fields: [evidence]
+    extra_fields:
+      listed_as:
+        type: string
+        description: 清单中的原文标号，如「附件三」「Exhibit B」
+      list_position:
+        type: integer
+        description: 在清单中的序号，用于检测清单跳号
+    notes: 附件的附件用本关系连接，from 为父附件；禁止把二级附件平铺挂到主合同上
+
+  references:
+    description: |
+      引用关系：某条款正文提到了另一份文档或另一条条款。
+      **这是「引用了但清单里没有」检测的左半边**（右半边是 has_attachment）。
+      引用可以指向条款（内部交叉引用），也可以指向附件（外部引用）。
+    from: clause
+    to: contract_document | clause
+    cardinality: 0..N
+    required_fields: [evidence]
+    extra_fields:
+      reference_text:
+        type: string
+        description: 引用的原文片段，如「详见附件三第 2.1 条」
+      normalized_key:
+        type: string
+        description: 归一化引用键；与 has_attachment.listed_as 归一化后同域，才能做差集
+      is_definitional:
+        type: boolean
+        description: 是否为定义性引用（如「本协议所称『服务』指附件一所列内容」）；true 时引用目标缺失的严重度升级为 severe
+    notes: 归一化必须双向可逆并记录映射表，否则「附件三」与「附件 3」会被算成两个目标
+
+  amends:
+    description: 修订关系：修订件修改了某份既有文档
+    from: contract_document(kind = amendment)
+    to: contract_document
+    cardinality: 1..N
+    required_fields: [evidence]
+    extra_fields:
+      amended_clause_nos:
+        type: array<string>
+        description: 被修订的条款号列表；写 unknown 表示修订件未指明（高风险）
+      amendment_effect:
+        type: string
+        enum: [replace, add, delete, suspend, clarify, unknown]
+        description: 修订效果
+    notes: 方向恒为「修订件 → 被修订件」；反向连接是常见建模错误，会让新旧判断颠倒
+
+  supersedes:
+    description: 版本取代关系：同一逻辑文档的新版本取代旧版本
+    from: contract_document
+    to: contract_document
+    cardinality: 0..1
+    required_fields: [evidence]
+    extra_fields:
+      supersession_basis:
+        type: string
+        enum: [explicit_clause, issue_date, version_label, party_confirmation, unknown]
+        description: 判断新旧的依据；unknown 时禁止输出「已被取代」结论，改记 failure_mark
+    notes: |
+      同一 object_id 不同 version_label 之间不用本边表达（那是同一对象的版本历史）。
+      本边用于「文件 A 取代文件 B」这种跨对象取代，例如新签的框架协议取代旧框架协议。
+
+  signed_by:
+    description: 签署关系：某份文档由某当事方签署
+    from: contract_document
+    to: party
+    cardinality: 0..N
+    required_fields: [evidence]
+    extra_fields:
+      signatory_name:
+        type: string
+        description: 签署人姓名原文
+      signatory_title:
+        type: string
+        description: 签署人职务原文
+      seal_present:
+        type: boolean
+        description: 是否有该方签章
+      signed_at:
+        type: string
+        description: 该方签署日期
+    notes: 附件的签署方与主合同不一致，是「谁在承担这份义务」发生偏移的信号，须单独提示
+
+  party_of:
+    description: 当事关系：某当事方是某份文档的当事方（可能未签署，如受益第三方）
+    from: party
+    to: contract_document
+    cardinality: 0..N
+    required_fields: [evidence]
+    extra_fields:
+      role:
+        type: string
+        description: 在该文档中的角色，取值见 contract.yaml enums.party_role
+
+  governed_by:
+    description: |
+      法域适用关系：某份文档（或某条款）声明受某法域/某数据合规制度约束。
+      多条 governed_by 边并存正是法域冲突检测的输入（见 DC-006）。
+    from: contract_document | clause
+    to: jurisdiction_pack_id | regime_name
+    cardinality: 0..N
+    required_fields: [evidence]
+    extra_fields:
+      declaration_type:
+        type: string
+        enum: [governing_law, dispute_forum, data_regime, carve_out, unknown]
+        description: 声明类型；carve_out 表示「仅就某事项适用」
+      scope_text:
+        type: string
+        description: 适用范围原文，如「就个人数据处理事宜适用 GDPR」
+
+  translation_of:
+    description: 译本关系：某文档是另一文档的译本
+    from: contract_document
+    to: contract_document
+    cardinality: 0..1
+    required_fields: [evidence]
+    extra_fields:
+      prevailing_language_clause:
+        type: string
+        description: 语言优先条款原文；unknown 表示未约定优先语言（须提示，双语不一致时无解释规则）
+
+  belongs_to_case:
+    description: 案件归属：任何文档对象归属于唯一一个 review_case
+    from: contract_document
+    to: review_case
+    cardinality: 1..1
+    required_fields: []
+    notes: 缺此边的孤立文档禁止参与任何结论——它不属于当前审查范围
+
+  covered_by_check:
+    description: |
+      覆盖关系：某检查项覆盖了某条款。它生成条款覆盖矩阵（蓝本第十五节的欠账表）。
+      没有此边的检查项在矩阵中留白（status = blank），不得按通过计。
+    from: check_id
+    to: clause
+    cardinality: 0..N
+    required_fields: [evidence]
+    extra_fields:
+      owner_agent:
+        type: string
+        description: 执行该检查的 Agent ID
+
+# ============================================================================
+# 三、派生检查（由边集合计算，全部是团队的核心检测能力）
+# ============================================================================
+derived_checks:
+
+  - id: DC-001
+    title: 正文引用了但清单里没有
+    description: |
+      计算方式：
+        引用集 R = { e.normalized_key | e ∈ references，且 e 指向附件类目标 }
+        清单集 L = { e.normalized_key(listed_as) | e ∈ has_attachment }
+        缺失集 = R − L
+      缺失集非空即阻断。
+      注意方向：只算 R − L，不算 L − R——后者是另一个检查（DC-002）。
+    inputs: [relations.references, relations.has_attachment]
+    severity: severe
+    on_violation: block
+    blueprint_ref: 第四节 缺失附件（正文引用但清单没有）
+    output_requirements:
+      - 逐条列出缺失的引用键、引用它的条款号与页码
+      - 若 references.is_definitional = true，在结论中标注「定义性引用缺失」并升级为最高优先处理
+    common_mistake: 归一化不彻底导致「附件三」与「附件 3」被算成两个键，差集虚高；必须先过归一化映射表
+
+  - id: DC-002
+    title: 清单列明了但文件未取得
+    description: |
+      计算方式：清单集 L 中，终点对象 kind = exhibit_referenced_only 的成员。
+      与 DC-001 是不同缺口：DC-001 是「清单漏列」，DC-002 是「文件没拿到」。
+      两者都阻断，但给用户的动作不同（前者要求补清单，后者要求补文件）。
+    inputs: [relations.has_attachment]
+    severity: severe
+    on_violation: block
+    blueprint_ref: 第四节 缺失附件
+
+  - id: DC-003
+    title: 附件清单跳号
+    description: has_attachment 边的 list_position 序列存在缺号或重号，说明清单本身不完整
+    inputs: [relations.has_attachment]
+    severity: important
+    on_violation: failure_mark
+    notes: 跳号不必然是错（清单可能本就非连续编号），但必须显式记为待确认项，不得沉默
+
+  - id: DC-004
+    title: 主文本零差异但附件版本漂移【版本对比陷阱】
+    description: |
+      计算方式：
+        主合同 content_digest(旧) == content_digest(新)
+        且 存在某份附件 a，使得 a.content_digest(旧) != a.content_digest(新)
+             或 a.version_label(旧) != a.version_label(新)
+             或 附件集合成员发生增删（按 object_id 比对）
+      命中即：
+        - 禁止输出「无差异」「版本一致」类结论
+        - risk_direction 必须重新评估，不得直接取 flat
+        - 报告中必须点名「主合同未变，但附件 X 由 vA 换为 vB」
+      这是蓝本第九节点名的最阴险场景：系统默认包含附件，主版本没变就当没变，
+      关键风险整体漏掉。
+    inputs: [relations.has_attachment, contract_document.content_digest, contract_document.version_label]
+    severity: severe
+    on_violation: escalate_risk_direction
+    blueprint_ref: 第九节 版本对比陷阱
+    output_requirements:
+      - 必须输出 risk_direction（up / down / flat / undetermined），禁止缺省
+      - 新增条款导致风险升级时，动作由「建议优化」升级为「先谈判」
+      - 若 freeze 四项未全部为 true，risk_direction 只能是 undetermined（见 contract.yaml INV-009）
+
+  - id: DC-005
+    title: 修订件孤儿
+    description: 存在 kind = amendment 的文档，但没有指向任何被修订文档的 amends 边，或指向的目标不在本案件内
+    inputs: [relations.amends, relations.belongs_to_case]
+    severity: severe
+    on_violation: block
+    notes: 孤儿修订件意味着我们不知道它改了什么，对主合同的任何结论都可能已被它推翻
+
+  - id: DC-006
+    title: 法域冲突
+    description: |
+      同一份文档上存在两条及以上 governed_by 边，且它们属于互斥或需协调的制度组合。
+      典型场景（测试语料 C05）：合同同时声明「适用中华人民共和国法律」与
+      「个人数据处理适用 GDPR」——两者并非天然互斥，但必须显式判定：
+        · 是 carve_out（就特定事项适用）→ 记为需确认，检查范围表述是否闭合
+        · 是全局并列适用           → 冲突，因为准据法只能有一个
+      具体的互斥判定表在各 jurisdiction pack 的 rules.yaml#conflicts 中定义，
+      本体只负责把「存在多条 governed_by 边」这一事实结构化出来。
+    inputs: [relations.governed_by]
+    severity: important
+    on_violation: flag_conflict
+    escalation: 若 jurisdiction_pack_version 未覆盖其中任一法域，升级为 block（contract.yaml INV-008）
+
+  - id: DC-007
+    title: 签署方与当事方不一致
+    description: 某文档的 signed_by 边集合与 party_of 边集合（应签方）不匹配，或附件签署方与主合同不同
+    inputs: [relations.signed_by, relations.party_of]
+    severity: severe
+    on_violation: block
+    blueprint_ref: 第四节 签署状态未确认 / 第十二节 生效要件
+    notes: 命中时同时触发 Human Gate HG-04（生效要件），不做默认通过
+
+  - id: DC-008
+    title: 引用成环
+    description: references 边构成有向环（A 的定义依赖 B，B 的定义又依赖 A）
+    inputs: [relations.references]
+    severity: important
+    on_violation: failure_mark
+    notes: 定义性引用成环时无法确定术语含义，相关条款的实质结论必须留白而非猜测
+
+  - id: DC-009
+    title: 双语文本无优先语言约定
+    description: 存在 translation_of 边但 prevailing_language_clause = unknown
+    inputs: [relations.translation_of]
+    severity: important
+    on_violation: flag
+    notes: 须同时检查两版本的关键数值（金额、期限、责任上限）是否一致，不一致时升级为 severe
+
+  - id: DC-010
+    title: 检查项未覆盖（欠账）
+    description: |
+      规则集中启用的 check_id 未出现在任何 covered_by_check 边上。
+      这些检查项在覆盖矩阵中 status = blank，必须在报告正文单列。
+      蓝本第十五节：没有覆盖的检查项必须显式留白，不能因为没提就当通过。
+    inputs: [relations.covered_by_check]
+    severity: important
+    on_violation: reject_report_if_merged_into_pass
+    blueprint_ref: 第十五节 响应矩阵
+
+# ============================================================================
+# 四、归一化映射（DC-001 正确性的前置条件）
+# ============================================================================
+normalization:
+  description: |
+    引用键归一化规则。DC-001 做差集之前，引用侧与清单侧必须先过同一套归一化，
+    否则差集结果毫无意义。归一化必须记录原文 → 键的映射表并随报告输出，
+    以便人工核对是否归错。
+  rules:
+    - 中文数字与阿拉伯数字统一为阿拉伯数字：附件三 / 附件 3 / 附件叁 → attachment-3
+    - 英文标号统一小写并去空格：Exhibit B / EXHIBIT  B → exhibit-b
+    - 附件与 Exhibit / Schedule / Annex / Appendix 分别保留前缀，不合并——它们在同一份合同里可能是不同序列
+    - 二级附件保留层级：附件三之一 → attachment-3.1
+    - 归一化失败（无法解析出稳定键）时不得丢弃，记为 normalized_key = unresolved 并进 failure_mark
+  mapping_table_required: true
+
+# ============================================================================
+# 五、消费方
+# ============================================================================
+consumers:
+  # contract-review-lead（组长）：只需知道哪些派生检查会阻断，用于判断该不该放行到下一步
+  contract-review-lead: [DC-001, DC-002, DC-004, DC-010]
+  contract-intake: [DC-001, DC-002, DC-003, DC-005, DC-007, normalization]
+  clause-extractor: [relations.references, relations.covered_by_check, normalization]
+  risk-scanner: [DC-008, DC-010]
+  jurisdiction-auditor: [relations.governed_by, DC-006, DC-009]
+  review-reporter: [DC-004, DC-010, edge_schema.evidence]

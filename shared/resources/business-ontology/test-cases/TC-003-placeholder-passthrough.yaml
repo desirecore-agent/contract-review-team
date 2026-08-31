@@ -1,0 +1,63 @@
+# ============================================================================
+# TC-003 —— 历史错误样本：占位符被当成真实条款评估
+# ============================================================================
+
+id: TC-003
+title: 违约金条款含占位符「____」，系统仍给出「违约责任已约定」的通过结论
+category: must_detect
+severity: severe
+recorded_at: '2026-08-31'
+blueprint_ref: 第四节 空字段占位符
+
+what_went_wrong:
+  summary: |
+    第 12.3 条原文为「乙方逾期交付的，每逾期一日按合同总价的 ____ 支付违约金，
+    违约金总额不超过合同总价的 ____」。抽取时占位符被当作「数值待填但条款结构完整」，
+    缺失条款检查项 breach-remedy 判定为 covered，评分给了满分。
+    合同签署后双方对违约金比例各执一词，条款实际不可执行。
+  observed_output: 违约责任与赔偿机制：已约定（第 12.3 条，p.19）｜结论：通过
+  actual_impact: 一条不可执行的条款被计入通过率，掩盖了「违约救济事实上缺失」这一严重缺口
+
+why_missed:
+  root_cause: 占位符检测只覆盖了金额字段，未覆盖百分比、期限与主体名称；且检测结果只做提示不做阻断
+  failure_chain:
+    - 占位符模式表只有 ['$X', 'TBD']，未包含下划线串与中文方括号
+    - 检出后写成 warning，工具链继续执行
+    - 条款抽取器看到条款号、标题、句式完整，判定 category = breach_remedy 且 confidence = 0.93
+    - 缺失条款检查的判据是「是否存在该类条款」，而不是「该条款是否可执行」
+    - 报告只统计 covered 数量，占位符信息在中间层被丢弃
+  deeper_reason: |
+    「条款存在」与「条款成立」是两件事。占位符表示当事人尚未就该事项达成合意，
+    对其做风险判断等于对空气评分——而且评出来的是好分数，比不评更有害。
+
+guarded_by:
+  - ref: contract.yaml#INV-004
+    how: 占位符模式表扩充为 ['$X','TBD','[金额]','____','【待定】','XXX','__','〖待补〗']，命中即 block，不是 warning
+  - ref: contract.yaml#types.evidence_ref
+    how: monetary_terms.is_placeholder = true 时禁止归一化数值，强制标记
+  - ref: contract.yaml#enums.failure_mark_type
+    how: placeholder_detected 是正式的失败标记类型，会进入覆盖矩阵而不是被丢弃
+  - ref: rules.md#R-020
+    how: 空字段占位符是五类输入缺陷之首，裁决为 reject
+  - ref: rules.md#R-011
+    how: 未知必须显式；占位符是「当事人尚未确定」这一未知的书面形式，不得静默通过
+  - ref: base/missing-clauses.yaml#breach-remedy
+    how: 判定标准从「是否存在该类条款」改为「条款要素是否齐备且可执行」，要素含比例/上限/计算基数/触发条件
+
+expected_behavior:
+  must_output:
+    - 逐个列出占位符出现的位置（条款号 + 页码 + 原文片段）
+    - breach-remedy 的覆盖状态为 blocked（不是 covered，也不是 blank）
+    - intake_verdict = reject，理由指明占位符
+  must_not_output:
+    - 违约责任已约定 / 该项通过
+    - 把含占位符的条款计入通过率
+  scoring_expectation: 不进入评分阶段（intake reject）
+
+repro_input:
+  clause:
+    clause_no: '12.3'
+    page: 19
+    text: 乙方逾期交付的，每逾期一日按合同总价的 ____ 支付违约金，违约金总额不超过合同总价的 ____。
+    category: breach_remedy
+  placeholder_hits: ['____', '____']

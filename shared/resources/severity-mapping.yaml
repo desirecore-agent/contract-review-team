@@ -1,0 +1,76 @@
+# ============================================================================
+# 严重度词表映射（团队权威事实源）
+# ----------------------------------------------------------------------------
+# 为什么需要这个文件：
+#   设计蓝本第十节规定的是「严重 / 重要 / 建议」三档，知识包（jurisdiction-packs、
+#   business-ontology）与法域合规 Agent 忠于蓝本，产出 severe/important/advisory；
+#   而评分体系与外部验收判据用的是 critical/high/medium/low 四档。
+#   两套词表都不算错，但不建立映射就会把「正确的结论」按字面比对成「漏检」。
+#
+# 规范：
+#   1. 各 Agent 的**产出**一律用蓝本三档（severe / important / advisory），
+#      因为它是知识包里 rule 条目自带的取值，转述时不得改写。
+#   2. 只有 review-reporter 在**评分与最终报告**阶段做一次映射，
+#      映射后同时保留原值（severity_source），保证可追溯。
+#   3. 外部验收（ground-truth 比对）按本表换算，不得要求 Agent 直接输出四档。
+# ============================================================================
+
+version: sev-v1
+updated_at: '2026-08-31'
+
+# 蓝本三档 → 评分四档
+blueprint_to_scoring:
+  severe:
+    scoring: critical            # 影响「关键权益」，落最低档封顶规则
+    blueprint_zh: 严重
+    impact_zh: 关键权益
+    note: 触发 Human Gate 与动作升级判定的门槛
+  important:
+    scoring: high                # 影响「执行秩序」
+    blueprint_zh: 重要
+    impact_zh: 执行秩序
+  advisory:
+    scoring: medium              # 影响「效率」
+    blueprint_zh: 建议
+    impact_zh: 效率
+
+# 评分四档 → 蓝本三档（反向；low 在蓝本侧无独立档位）
+scoring_to_blueprint:
+  critical: severe
+  high: important
+  medium: advisory
+  low:
+    blueprint: advisory
+    note: |
+      蓝本只有三档，low 是评分侧为区分「值得提一句」与「明确建议修改」而细分的。
+      反向映射到 advisory 会丢失这层区分，因此**禁止**把 low 回写进知识包条目。
+      它只能出现在 review-reporter 的评分明细里。
+
+# 外部验收判据（.testdata/contracts/ground-truth.yaml）使用的词表
+ground_truth_vocabulary:
+  gate_reasons: [critical, major, minor]
+  risks_and_missing_clauses: [critical, high, medium]
+  mapping_note: |
+    gate_reasons 的 major/minor 与 risks 的 high/medium 是同一层级的不同叫法。
+    D1 验收比对时按：critical↔severe、major|high↔important、minor|medium↔advisory。
+
+# 已知的具体对齐点（A5 在 C05 上报告过的实例）
+known_alignment_cases:
+  - case: C05 governing-law-conflict
+    ground_truth_expects: critical
+    knowledge_pack_emits:
+      - rule_id: cn-conflict-dual-governing-law
+        severity: severe          # → critical，一致
+      - rule_id: cn-conflict-pipl-gdpr-parallel
+        severity: important       # → high，**不等于 critical**
+    resolution: |
+      C05 期望的 critical 由 cn-conflict-dual-governing-law（severe→critical）满足。
+      pipl-gdpr-parallel 是同一份合同上的第二条独立冲突，级别本就低一档，
+      不应被拔高到 critical 去凑 ground-truth。
+      验收时只要**存在**一条映射后为 critical 的 governing-law 冲突即算命中。
+
+# 禁止事项
+prohibitions:
+  - 不得为了对齐验收判据而修改知识包里 rule 条目自带的 severity
+  - 不得在 Agent 产出层直接写 critical/high/medium/low（那是评分层的词表）
+  - 映射后必须保留 severity_source 原值，报告中两者都要可见

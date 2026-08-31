@@ -1,0 +1,203 @@
+# ============================================================================
+# base/market-benchmarks.yaml —— 市场标尺对标（蓝本第十一节）
+# ----------------------------------------------------------------------------
+# 作用：把「这条款合不合理」从主观判断变成可比对的数值判定。
+#
+# 与 missing-clauses.yaml 的分工：
+#   missing-clauses  查缺口——该有的有没有
+#   market-benchmarks 查质量——有的那条数值落在哪个区间
+# 两者必须配对使用。只有前者时，一份把所有不利条款都写全的合同会得高分（样本 TC-005）；
+# 只有后者时，完全没约定的项会因为「没有数值可比」而被跳过。
+#
+# 【反误报约定】benchmark 是**参考区间**，不是法律要求。
+# 落在基准值或更优侧时判 aligned，禁止输出任何等级的风险结论（样本 TC-008）。
+# ============================================================================
+
+meta:
+  pack_id: base
+  pack_version: base-v1
+  knowledge_base_version: '2026-08-31'
+  updated_at: '2026-08-31'
+  scope_note: 数值来自常见商业合同惯例，适用于 B2B 服务与采购场景；不适用于消费者合同与受管制行业
+
+# ---------------------------------------------------------------------------
+# 判定协议（所有标尺共用）
+# ---------------------------------------------------------------------------
+evaluation_protocol:
+  step_1_extract: 从条款中抽取可归一化的数值（月数、天数、年数），抽不到时不得估算
+  step_2_normalize: 统一单位（月 → 月，天 → 天）；「个月」按自然月处理，跨单位换算须在结论中注明换算方式
+  step_3_compare: 与 benchmark 比对，落入 deviation_signals 的哪一档
+  step_4_conclude: 按该档的 risk_level 输出结论四元组
+  unmeasurable_policy: |
+    数值无法抽取或无基准可比时，输出 conclusion = unknown 并说明原因，
+    **不得**按风险计，也不得按通过计。词库命中只是候选，未经比对不得升格为结论。
+    这是控制误报数量的核心机制（蓝本第十六节把误报与漏检并列为衡量标准）。
+  symmetry_check: |
+    比对前先判定条款是否双方对等。单方适用的限制，其风险等级比双方对等的同一数值高一档；
+    双方对等且落在基准值的条款一律判 aligned（样本 TC-008 的第 8.1 条与第 3.2 条）。
+
+risk_levels:
+  aligned: 符合或优于市场惯例——判 pass，禁止输出风险结论
+  low: 轻微偏离——advisory，可作为优化项
+  medium: 明显偏离——important，进入谈判项
+  high: 严重偏离——severe，触发对应 Human Gate，动作至少为「先谈判」
+
+# ---------------------------------------------------------------------------
+# 四条标尺
+# ---------------------------------------------------------------------------
+benchmarks:
+
+  - id: liability-cap-months
+    title: 责任上限
+    unit: 月（以已付/应付费用的月数计）
+    benchmark: 12
+    benchmark_statement: 以 12 个月费用为参考的责任上限属常见水平
+    linked_check: missing-clauses.yaml#liability-cap
+    human_gate: HG-03
+    measurement:
+      target_field: clause.temporal_terms[kind = liability_cap_period]
+      normalize_to: 月数
+      alt_forms:
+        - 固定金额上限：换算为「相当于几个月费用」需已知年费；年费未知时判 unknown，不得估算
+        - 按事件计上限：与累计上限并存时以累计上限为准，并单列事件上限
+    deviation_signals:
+      - condition: months >= 12
+        risk_level: aligned
+        conclusion: pass
+        note: 等于基准值即为 aligned，禁止因「存在责任上限」而输出风险（样本 TC-008 ①）
+      - condition: 6 <= months < 12
+        risk_level: medium
+        conclusion: important
+        action: 进入谈判项，提出提升至 12 个月
+      - condition: months < 6
+        risk_level: high
+        conclusion: severe
+        action: 先谈判；触发 HG-03，不自动放行
+        blueprint_ref: 第十一节「低于 6 个月为高风险」
+      - condition: 无上限约定
+        risk_level: high
+        conclusion: severe
+        action: 先谈判；风险敞口不可估算
+        note: 无上限对己方是收款方时可能有利，须先判定己方角色再定方向
+      - condition: 单方上限（仅限制一方）
+        risk_level: 按数值档位升一档
+        conclusion: 按升档后等级
+        action: 先谈判，要求对等
+    carve_out_note: 保密违约、知识产权侵权、故意或重大过失、人身伤害通常被排除在上限之外；缺少排除项时提示但不单独计为高风险
+
+  - id: renewal-notice-days
+    title: 续约通知期
+    unit: 天
+    benchmark: 90
+    benchmark_statement: 续约/不续约的通知期以 90 天以上为常见水平
+    linked_check: missing-clauses.yaml#termination-convenience
+    human_gate: null
+    measurement:
+      target_field: clause.temporal_terms[kind = renewal_notice]
+      normalize_to: 天数
+      note: 「三个月」按 90 天处理并在结论中注明换算
+    deviation_signals:
+      - condition: days >= 90
+        risk_level: aligned
+        conclusion: pass
+      - condition: 60 <= days < 90
+        risk_level: medium
+        conclusion: important
+        action: 进入谈判项
+        blueprint_ref: 第十一节「60-89 天风险偏高」
+      - condition: days < 60
+        risk_level: high
+        conclusion: severe
+        action: 先谈判；通知窗口过短，实际操作中极易错过
+      - condition: 自动续约且无通知期约定
+        risk_level: high
+        conclusion: severe
+        action: 先谈判；自动续约叠加无通知期等于无限期锁定
+      - condition: 未约定续约机制（到期即终止）
+        risk_level: aligned
+        conclusion: pass
+        note: 到期终止是清晰安排，不构成风险；只在业务需要连续性时提示为 advisory
+
+  - id: non-compete-years
+    title: 竞业期限
+    unit: 年
+    benchmark_range: [1, 2]
+    benchmark_statement: 竞业限制期限以 1-2 年为常见区间
+    linked_check: null
+    human_gate: null
+    measurement:
+      target_field: clause.temporal_terms[kind = non_compete_period]
+      normalize_to: 年数
+    deviation_signals:
+      - condition: 1 <= years <= 2
+        risk_level: aligned
+        conclusion: pass
+      - condition: years < 1
+        risk_level: aligned
+        conclusion: pass
+        note: 短于常见区间对受限方有利，不构成风险；若己方是受保护方则提示为 advisory
+      - condition: 2 < years < 5
+        risk_level: medium
+        conclusion: important
+        action: 进入谈判项
+      - condition: years >= 5
+        risk_level: high
+        conclusion: severe
+        action: 先谈判
+        blueprint_ref: 第十一节「5 年以上放大阻力」
+      - condition: 无期限约定（永久或未明确）
+        risk_level: high
+        conclusion: severe
+        action: 先谈判
+    jurisdiction_override_warning: |
+      竞业限制受强制性法律规定约束，且各法域差异极大（中国法上限 2 年且须支付经济补偿；
+      美国加州原则上禁止）。本标尺是**市场惯例**，一旦加载 jurisdiction 包，
+      法域层的 mandatory 规则优先于本标尺（见 pack.yaml#merge_semantics.mandatory_floor）。
+
+  - id: data-export-window-days
+    title: 数据导出窗口
+    unit: 天
+    benchmark: 90
+    benchmark_statement: 终止后支持 90 天内导出且提供标准格式属常见水平
+    linked_check: missing-clauses.yaml#data-export
+    human_gate: null
+    measurement:
+      target_field: clause.temporal_terms[kind = data_export_window]
+      normalize_to: 天数
+      secondary_field: 导出格式是否为通用/标准格式（CSV、JSON、行业标准格式等）
+    deviation_signals:
+      - condition: days >= 90 且格式为标准格式
+        risk_level: aligned
+        conclusion: pass
+      - condition: days >= 90 但格式为专有格式或未约定格式
+        risk_level: medium
+        conclusion: important
+        action: 进入谈判项，要求约定通用格式
+        note: 只给时间不给格式等于给了一堆无法使用的文件
+      - condition: 30 <= days < 90
+        risk_level: medium
+        conclusion: important
+        action: 进入谈判项
+      - condition: days < 30
+        risk_level: high
+        conclusion: severe
+        action: 先谈判
+      - condition: 完全禁止导出，或终止即删除且无导出窗口
+        risk_level: high
+        conclusion: severe
+        action: 先谈判
+        blueprint_ref: 第十一节「完全禁止为短板」
+      - condition: 未约定导出
+        risk_level: high
+        conclusion: severe
+        action: 先谈判；数据事实上被锁定
+    deletion_note: 导出窗口与删除承诺须配对判定——只有删除没有导出是最不利组合，只有导出没有删除承诺则存在数据残留风险（advisory）
+
+# ---------------------------------------------------------------------------
+# 输出要求
+# ---------------------------------------------------------------------------
+output_requirements:
+  - 偏差信号必须写出实际值、基准值与差距三者，禁止只写「偏低」「偏高」（样本 TC-005）
+  - aligned 的项也要出现在覆盖矩阵中并写明实际值，让「已核对且符合」可被验证
+  - risk_level 与 conclusion 的映射固定，不得由 Agent 自行调整
+  - 涉及 HG-03 的项，即使判定为 aligned 仍须列入 Human Gate 的确认清单（确认对象是事实，不是结论）

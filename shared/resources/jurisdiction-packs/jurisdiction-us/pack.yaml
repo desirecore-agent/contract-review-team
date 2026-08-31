@@ -1,0 +1,78 @@
+# ============================================================================
+# jurisdiction-us/pack.yaml —— 美国法知识包元数据
+# ----------------------------------------------------------------------------
+# 【本包最重要的前提】美国不是单一法域。
+# 合同法主要是**州法**，50 个州加哥伦比亚特区各不相同；UCC 是统一示范法，
+# 由各州分别采纳且存在州级修改。因此：
+#   · 未确定具体州法时，本包只能输出「跨州通行的惯例与常见问题」，
+#     不能输出「按美国法该条款有效/无效」——这类结论必须落到具体州。
+#   · 州法差异显著的领域（竞业限制、陪审团弃权、赔偿条款、自动续约）
+#     一律标注 needs_state_determination，报告中写「需确定适用州法后人工确认」。
+#
+# 本包服务于测试语料 C07/C08 的英文 MSA/NDA 场景。
+# ============================================================================
+
+meta:
+  pack_id: jurisdiction-us
+  pack_version: us-v1                # 对应 version_matrix.jurisdiction_pack_version
+  knowledge_base_version: '2026-08-31'
+  precedence: 20                     # 与 jurisdiction-cn 同层
+  compatible_ontology: [onto-v1]
+  requires_pack: [base]
+  updated_at: '2026-08-31'
+  maintainer: 合同审查智能体团队
+  language: zh-CN                    # 规则说明用中文，条款关键词与术语保留英文原文
+
+jurisdiction:
+  code: US
+  name: 美利坚合众国（联邦法 + 州法双层结构）
+  legal_system: 普通法系 / 判例法为主，商事交易部分由各州采纳的 UCC 调整
+  detection_clues:
+    governing_law_texts:
+      - laws of the State of
+      - governed by the laws of
+      - Delaware
+      - New York
+      - California
+      - without regard to its conflict of laws principles
+    forum_texts: [AAA, JAMS, American Arbitration Association, federal court, state court, Southern District of New York]
+    data_regimes: [CCPA, CPRA, HIPAA, GLBA, COPPA]
+    document_type_hints: [MSA, Master Services Agreement, NDA, Mutual Non-Disclosure Agreement, SOW, Statement of Work]
+  # 州法确定性：本包所有规则都带 state_sensitivity 字段
+  state_sensitivity_levels:
+    low: 跨州基本一致，可直接适用
+    medium: 多数州一致但有例外州，须提示例外
+    high: 州际差异显著，必须先确定适用州法，否则只能输出需人工确认
+
+applies_to:
+  contract_types: [Master Services Agreement, SaaS/订阅协议, NDA, 采购与供应, Statement of Work, Data Processing Addendum]
+  not_applicable_to:
+    - 消费者合同（受州消费者保护法与 FTC 规则约束，规则体系不同）
+    - 雇佣合同的州法细则（本包仅覆盖竞业限制的跨州图景）
+    - 受管制行业（证券、保险、银行、医疗服务提供）的行业规则
+    - 建设工程（多州有 anti-indemnity statutes，需专门知识包）
+    - 政府采购（FAR/DFARS 体系完全不同）
+  coverage_gap_disclosure: |
+    本包 us-v1 覆盖 B2B 商事合同中最常见的责任、赔偿、保密、争议解决与数据条款问题，
+    **不是**美国法的完整检查表，也不替代具体州法检索。
+    未覆盖领域必须在覆盖矩阵中留白，写明「本包未覆盖」。
+
+files:
+  rules.yaml:
+    description: 美国法规则条目与法域冲突判定
+    consumed_by: [jurisdiction-auditor, risk-scanner, review-reporter]
+
+confidence_levels:
+  high: 规则内容与出处均有把握，可直接引用
+  content_high_article_uncertain: 内容有把握，条文/判例出处需人工确认
+  needs_state_determination: 须先确定适用州法才能给出结论
+  needs_human_confirmation: 规则方向可作提示，具体标准须人工确认
+citation_discipline:
+  - 禁止编造判例名称、卷号与页码；不确定的判例只描述规则，写「判例出处需人工确认」
+  - UCC 条文可按统一编号引用，但必须注明「以适用州采纳的版本为准」
+  - 监管动态活跃的领域（FTC 竞业规则、州隐私法）默认按 needs_human_confirmation 处理
+
+changelog:
+  - version: us-v1
+    date: '2026-08-31'
+    changes: 初始建立：责任与救济、保密、竞业、争议解决、数据合规、合同形式六类规则 + 冲突判定

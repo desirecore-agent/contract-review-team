@@ -1,0 +1,65 @@
+# ============================================================================
+# TC-006 —— 历史错误样本：未覆盖的检查项被并入通过率
+# ============================================================================
+
+id: TC-006
+title: 审计权检查因抽取失败未执行，报告显示「9/9 项通过」
+category: must_detect
+severity: severe
+recorded_at: '2026-08-31'
+blueprint_ref: 第十五节 响应矩阵（欠账表）
+
+what_went_wrong:
+  summary: |
+    第 15 章「审计与记录」所在的 p.22-p.23 是扫描件，OCR 置信度 0.52，
+    条款抽取失败。audit-right 检查项因此没有任何输入，实际状态是「未检查」。
+    报告的关键条款检查小节显示「9 项全部通过」，因为统计逻辑是
+    「未标记为缺失的即为通过」。
+    交付后客户按报告结论签署，三个月后发现合同实际约定
+    「审计需提前 60 日书面通知，每 24 个月不超过一次，费用由审计方承担」，
+    这一约定使审计权在实践中几乎无法行使。
+  observed_output: 关键条款检查：9/9 项通过。
+  actual_impact: 一个完全未执行的检查项在报告中呈现为通过，是最严重的一类失真
+
+why_missed:
+  root_cause: 覆盖状态只有二值（缺失/不缺失），没有第三态表达「没查」
+  failure_chain:
+    - OCR 低置信度页被跳过，未生成 failure_mark
+    - audit-right 检查项没有产生 coverage_matrix_row，在矩阵中根本不存在这一行
+    - 统计逻辑用「9 减去缺失项数」计算通过数，不存在的行被算成通过
+    - 报告摘要只呈现通过率，未列出任何留白
+  deeper_reason: |
+    欠账表的意义就在显式留白。一旦允许「没提到 = 通过」，报告的通过率就成了
+    对检查完整性的度量，而不是对合同质量的度量——两者恰好相反：检查越不完整，
+    通过率越高。
+
+guarded_by:
+  - ref: contract.yaml#entities.coverage_matrix_row
+    how: status 四态 covered/blank/blocked/deferred；conclusion 含 blank 等级
+  - ref: contract.yaml#INV-012
+    how: blank 与 blocked 不得计入通过率，必须在报告正文单列
+  - ref: relations.yaml#DC-010
+    how: 规则集中启用但无 covered_by_check 边的检查项自动生成 blank 行，不会「不存在」
+  - ref: rules.md#R-014
+    how: 留白不得并入通过，违反时拒收报告
+  - ref: actions.yaml#compute_score
+    how: 前置条件包含「覆盖矩阵每一行 status 非空」与「blank/blocked 已单列且未计入通过率」
+  - ref: contract.yaml#enums.failure_mark_type
+    how: low_ocr_confidence 是正式失败标记，低置信度页不再被静默跳过
+
+expected_behavior:
+  must_output:
+    - audit-right 行存在，status = blocked，conclusion = blank
+    - 报告正文单列「未覆盖检查项」小节，写明 audit-right 因 p.22-p.23 OCR 置信度 0.52 低于阈值 0.85 未能执行
+    - 通过率写成 8 项已检查中 8 项通过，1 项未检查——分母不含未检查项，且未检查项必须显示
+    - 生成 failure_mark（low_ocr_confidence），并给出补救建议（提供可检索文本版或人工录入）
+  must_not_output:
+    - 9/9 项通过
+    - 任何把未检查项计入分子或分母的通过率表述
+  scoring_expectation: 合规稽核与风险评估维度按实际覆盖比例计分，不得按满分计
+
+repro_input:
+  page_range: {source_file: contract.pdf, start_page: 22, end_page: 23}
+  ocr_confidence: 0.52
+  threshold: 0.85
+  affected_check: audit-right

@@ -1,0 +1,71 @@
+# ============================================================================
+# TC-004 —— 历史错误样本：中国法与 GDPR 并列声明，冲突未被识别
+# ============================================================================
+
+id: TC-004
+title: 合同同时声明适用中国法与 GDPR，系统用 base 包审出「合规无异常」
+category: must_detect
+severity: severe
+recorded_at: '2026-08-31'
+blueprint_ref: 第六节 三层知识结构 / 第八节 版本矩阵
+
+what_went_wrong:
+  summary: |
+    第 18.1 条约定「本协议适用中华人民共和国法律」，第 9.4 条又约定
+    「双方就个人数据处理事宜遵守《通用数据保护条例》（GDPR）项下义务」，
+    但未界定 GDPR 的适用范围、未说明数据主体属地、未约定跨境传输机制。
+    审查时没有加载任何 jurisdiction pack，只跑了 base 层通用规则，
+    输出「合规稽核未发现异常」。
+    真实缺口：一方面 GDPR 的适用前提（数据主体位于欧盟）未被核实；另一方面
+    若确有欧盟数据主体，中国法项下的数据出境合规路径完全未约定。
+  observed_output: 合规稽核：未发现异常。适用法律条款完整（第 18.1 条，p.26）。
+  actual_impact: 两套数据合规制度的义务边界未界定，任一侧的合规路径都没有落地条款
+
+why_missed:
+  root_cause: 法域线索被识别为「一条准据法条款」，多制度并存的事实没有被结构化成多条边
+  failure_chain:
+    - governing_law 与 data_regime 被混为一类，第 9.4 条的 GDPR 提及未生成独立的 governed_by 边
+    - jurisdiction_pack_version 字段为空，未做与法域线索的一致性校验
+    - base 层通用规则里没有「多制度并存需界定范围」这条检查
+    - 「未发现异常」被当成结论输出，而实际状态是「没有检查」
+
+  deeper_reason: |
+    没有加载正确知识包时，系统输出的不是「错误结论」，而是「格式完整的空结论」。
+    这种失败最难被发现，因为报告看上去和正常的一模一样。
+
+guarded_by:
+  - ref: relations.yaml#governed_by
+    how: governing_law / dispute_forum / data_regime / carve_out 是四种 declaration_type，各自成边，多制度并存成为可计算的事实
+  - ref: relations.yaml#DC-006
+    how: 同一文档存在两条及以上 governed_by 边时触发法域冲突检测，判定是 carve_out 还是全局并列
+  - ref: contract.yaml#INV-008
+    how: jurisdiction_pack_version 必须覆盖 jurisdiction_clues 中出现的全部法域线索，否则阻断
+  - ref: rules.md#R-021
+    how: 法域包与法域线索不一致时阻断；未明示准据法时可按注册地推定但必须标注并触发人工确认
+  - ref: actions.yaml#detect_jurisdiction_conflict
+    how: 无法判定时输出 unknown 并进 HG-02，禁止择一默认
+  - ref: rules.md#R-061
+    how: 不确定的法条写「需人工确认」，禁止编造条文编号来填充结论
+
+expected_behavior:
+  must_output:
+    - 列出两条声明各自的条款号与页码，指出并列适用关系
+    - 判定冲突性质：准据法只能有一个（第 18.1 条），GDPR 的提及需界定为 carve_out 才成立
+    - 指出范围不闭合的三点：数据主体属地未界定、跨境传输机制未约定、两制度义务优先级未约定
+    - 触发 HG-02（争议解决机制），阻断放行
+    - 若未加载 jurisdiction-cn 包，直接阻断并输出数据对齐建议
+  must_not_output:
+    - 合规稽核未发现异常
+    - 在未加载对应法域包的情况下给出任何合规结论
+  scoring_expectation: 合规稽核维度（20%）不得计分为满分，未检查项在覆盖矩阵中留白
+
+repro_input:
+  clauses:
+    - {clause_no: '18.1', page: 26, text: 本协议的订立、效力、解释、履行及争议解决均适用中华人民共和国法律。}
+    - {clause_no: '9.4', page: 13, text: 双方就个人数据处理事宜遵守《通用数据保护条例》（GDPR）项下的相应义务。}
+  jurisdiction_clues:
+    governing_law_declared: 中华人民共和国法律
+    data_regimes_referenced: [GDPR]
+    party_domiciles: [北京市, 深圳市]
+  loaded_packs: [base]
+  note: 未加载 jurisdiction-cn，也未识别 GDPR 需要的处理路径——这是本样本的关键构造

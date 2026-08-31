@@ -1,0 +1,730 @@
+# ============================================================================
+# jurisdiction-us/rules.yaml —— 美国法规则集
+# ----------------------------------------------------------------------------
+# 每条规则带两个纪律字段：
+#   confidence         —— 内容与出处的把握程度
+#   state_sensitivity  —— 州际差异程度；high 时未确定州法不得下结论
+# Agent 引用时必须把两者一并转述，禁止把「跨州通行的惯例」说成「美国法规定」。
+# ============================================================================
+
+meta:
+  pack_id: jurisdiction-us
+  pack_version: us-v1
+  knowledge_base_version: '2026-08-31'
+  updated_at: '2026-08-31'
+
+rules:
+
+# ---------------------------------------------------------------------------
+# 一、责任限制与救济
+# ---------------------------------------------------------------------------
+
+  - id: us-liability-cap-convention
+    title: 责任上限惯例与标准例外
+    category: liability
+    mandatory: false
+    confidence: high
+    state_sensitivity: low
+    statement: |
+      B2B 服务合同中，双方对等的累计责任上限以「索赔前 12 个月已付费用」为最常见基准。
+      上限之外通常保留一组例外（carve-outs）：保密义务违反、知识产权侵权赔偿、
+      故意不当行为与重大过失、人身伤害与财产损害、以及付款义务本身。
+      上限与例外的组合决定了条款的实际保护范围——只看上限数字会得出错误结论。
+    legal_basis:
+      instrument: 商业惯例（非法律强制），受各州合同法一般原则约束
+      article: 不适用
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [liability]
+      keywords_en: [limitation of liability, aggregate liability, shall not exceed, in no event]
+    verdict_rules:
+      - condition: 上限 >= 12 个月费用且双方对等
+        conclusion: pass
+        note: 等于基准即 aligned，禁止仅因存在上限条款而报风险（样本 TC-008）
+      - condition: 上限 < 6 个月费用
+        conclusion: severe
+        action: 先谈判
+        benchmark_link: base/market-benchmarks.yaml#liability-cap-months
+      - condition: 上限单方适用（仅限制供应商或仅限制客户）
+        conclusion: important
+        action: 进入谈判项，要求对等
+      - condition: 无 carve-outs，保密与知识产权侵权也受上限约束
+        conclusion: important
+        action: 进入谈判项；此时上限实质上覆盖了最高风险的赔偿场景
+      - condition: 上限条款未以显著方式呈现（非大写/非加粗/埋在正文中段）
+        conclusion: advisory
+        action: 建议提升显著性
+        linked_rule: us-conspicuousness
+    human_gate: HG-03
+
+  - id: us-consequential-damages-exclusion
+    title: 间接与后果性损失排除
+    category: liability
+    mandatory: false
+    confidence: high
+    state_sensitivity: medium
+    statement: |
+      合同可以约定排除间接损失、后果性损失、利润损失、数据损失等（consequential damages）。
+      UCC 项下，后果性损失的限制或排除通常有效，除非该限制显失公平（unconscionable）；
+      对消费品人身伤害的后果性损失限制被推定为显失公平。
+      实务要点：排除条款应当双方对等，且应与「唯一救济」条款配合审查——
+      当约定的唯一救济未能实现其根本目的（failure of essential purpose）时，
+      当事人可能仍可主张 UCC 提供的其他救济。
+    legal_basis:
+      instrument: Uniform Commercial Code（以适用州采纳的版本为准）
+      article: UCC § 2-719(2)、§ 2-719(3)
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [liability]
+      keywords_en: [consequential, incidental, indirect, punitive, lost profits, special damages, sole and exclusive remedy]
+    verdict_rules:
+      - condition: 排除条款单方适用
+        conclusion: important
+        action: 进入谈判项，要求对等
+      - condition: 存在「唯一且排他救济」条款但无 failure of essential purpose 的兜底安排
+        conclusion: important
+        action: 进入谈判项
+      - condition: 排除范围包含己方最主要的预期损失类型（如 SaaS 客户的数据损失）
+        conclusion: severe
+        action: 先谈判
+      - condition: 双方对等且保留标准例外
+        conclusion: pass
+    human_gate: HG-03
+    notes: UCC 主要调整货物买卖；纯服务合同是否适用 UCC 由各州普通法判断，混合合同按主要目的（predominant purpose）测试——具体适用需人工确认
+
+  - id: us-warranty-disclaimer-conspicuous
+    title: 默示担保排除须显著
+    category: warranty
+    mandatory: true
+    confidence: high
+    state_sensitivity: low
+    statement: |
+      排除适销性（merchantability）默示担保的，书面排除必须显著（conspicuous），
+      且须提及 merchantability 一词；排除适用于特定目的的适用性担保（fitness for a
+      particular purpose）的，须以书面且显著方式作出。
+      实务中「AS IS」「WITH ALL FAULTS」等表述通常被认为足以排除默示担保。
+      这是「显著性」在美国合同中被大写呈现的直接原因——大写不是排版风格，是效力要件。
+    legal_basis:
+      instrument: Uniform Commercial Code（以适用州采纳的版本为准）
+      article: UCC § 2-316
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [warranty]
+      keywords_en: [AS IS, disclaimer of warranties, merchantability, fitness for a particular purpose, WITH ALL FAULTS]
+    verdict_rules:
+      - condition: 排除默示担保但未提及 merchantability
+        conclusion: important
+        action: 需人工确认排除是否有效
+      - condition: 排除条款未以显著方式呈现
+        conclusion: important
+        action: 进入谈判项；显著性缺陷可能导致排除无效
+      - condition: 显著呈现且措辞完备
+        conclusion: pass
+    human_gate: null
+
+  - id: us-conspicuousness
+    title: 显著性要求（跨条款通用）
+    category: misc
+    mandatory: false
+    confidence: content_high_article_uncertain
+    state_sensitivity: medium
+    statement: |
+      对相对方不利的关键条款（责任限制、担保排除、赔偿义务、争议解决弃权）
+      通常需要以显著方式呈现——大写、加粗、独立段落、单独签字栏均为常见做法。
+      显著性不足在争议中会成为对方主张条款不可执行的抓手。
+    legal_basis:
+      instrument: UCC § 1-201(b)(10) 关于 conspicuous 的定义及各州判例
+      article: 条文出处需人工确认
+      article_confidence: content_high_article_uncertain
+      content_confidence: high
+    detection:
+      clause_categories: [liability, warranty, indemnity, dispute_resolution]
+      keywords_en: [ALL CAPS 段落, bold, initial here]
+    verdict_rules:
+      - condition: 关键不利条款以普通正文呈现且无任何强调
+        conclusion: advisory
+        action: 建议提升显著性
+    human_gate: null
+
+  - id: us-liquidated-damages-penalty
+    title: 约定损害赔偿不得构成罚则
+    category: breach_remedy
+    mandatory: true
+    confidence: high
+    state_sensitivity: medium
+    statement: |
+      约定损害赔偿（liquidated damages）有效的前提通常是：订立时实际损害难以估算，
+      且约定金额是对可能损失的合理预估。金额显著超出合理预估、带有惩罚性质的，
+      通常被认定为罚则（penalty）而不予执行。
+      与中国法的差异要点：中国法下过高违约金可被「适当减少」，条款仍部分有效；
+      美国多数州的做法是罚则条款整体不予执行，当事人回到实际损害赔偿。
+    legal_basis:
+      instrument: 各州合同法一般原则 / Restatement (Second) of Contracts
+      article: 具体条款与判例出处需人工确认
+      article_confidence: needs_human_confirmation
+      content_confidence: high
+    detection:
+      clause_categories: [breach_remedy]
+      keywords_en: [liquidated damages, penalty, per day, agreed damages]
+    verdict_rules:
+      - condition: 约定金额明显超出合理预估或表述为「惩罚」
+        conclusion: important
+        action: 进入谈判项；条款可能整体不被执行
+      - condition: 合同同时使用 penalty 一词描述该金额
+        conclusion: important
+        action: 进入谈判项；用词本身增加被认定为罚则的风险
+      - condition: 金额与预期损失相称且有计算依据
+        conclusion: pass
+    human_gate: HG-03
+
+  - id: us-indemnification-scope
+    title: 赔偿（indemnification）条款的范围与触发
+    category: indemnity
+    mandatory: false
+    confidence: content_high_article_uncertain
+    state_sensitivity: high
+    statement: |
+      赔偿条款须明确：触发情形（第三方索赔 vs 直接损失）、覆盖范围
+      （损失、责任、费用、合理律师费）、抗辩控制权、和解同意权、通知义务与配合义务。
+      要点一：赔偿己方过失（indemnification for one's own negligence）在多州需要
+      明确且显著的措辞才可能有效，部分州（尤其建设工程领域）有 anti-indemnity 制定法禁止。
+      要点二：「defend」与「indemnify」是两项不同义务，抗辩义务通常更宽且更早触发；
+      只写 indemnify 不写 defend 会显著改变实际负担。
+    legal_basis:
+      instrument: 各州合同法与制定法（anti-indemnity statutes）
+      article: 因州而异，需人工确认
+      article_confidence: needs_state_determination
+      content_confidence: high
+    detection:
+      clause_categories: [indemnity]
+      keywords_en: [indemnify, defend, hold harmless, third party claim, attorneys fees]
+    verdict_rules:
+      - condition: 赔偿义务单方且范围覆盖直接损失（非仅第三方索赔）
+        conclusion: severe
+        action: 先谈判；单方无限赔偿是最常见的重大失衡点
+      - condition: 赔偿义务未受责任上限约束且无金额封顶
+        conclusion: severe
+        action: 先谈判
+      - condition: 未区分 defend 与 indemnify，或未约定抗辩控制与和解同意
+        conclusion: important
+        action: 进入谈判项
+      - condition: 约定赔偿对方自身过失导致的损失
+        conclusion: important
+        action: 需确定适用州法后人工确认；部分州禁止或要求特别措辞
+      - condition: 双方对等、限于第三方索赔、含通知与抗辩安排
+        conclusion: pass
+    human_gate: HG-03
+
+  - id: us-attorneys-fees
+    title: 律师费承担（American Rule）
+    category: breach_remedy
+    mandatory: false
+    confidence: high
+    state_sensitivity: low
+    statement: |
+      美国的一般规则（American Rule）是各方自担律师费，除非制定法规定或合同明确约定。
+      因此合同若未约定败诉方承担律师费，胜诉方通常无法获得该项赔偿。
+    legal_basis:
+      instrument: 联邦与各州判例确立的一般规则
+      article: 不适用
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [breach_remedy, dispute_resolution]
+      keywords_en: [attorneys fees, prevailing party, costs of enforcement]
+    verdict_rules:
+      - condition: 未约定律师费承担
+        conclusion: advisory
+        action: 建议约定 prevailing party 条款（是否有利取决于己方角色）
+      - condition: 律师费条款单方适用（仅一方可主张）
+        conclusion: important
+        action: 进入谈判项，要求对等
+
+# ---------------------------------------------------------------------------
+# 二、保密与竞业
+# ---------------------------------------------------------------------------
+
+  - id: us-perpetual-confidentiality
+    title: 永久保密义务的可执行性
+    category: confidentiality
+    mandatory: false
+    confidence: needs_human_confirmation
+    state_sensitivity: high
+    statement: |
+      商业秘密（trade secrets）在其保持秘密性期间可受持续保护，因此针对商业秘密的
+      无固定期限保密义务通常可以接受。
+      但对**非商业秘密的一般保密信息**约定永久保密义务，在部分州的司法实践中
+      可能因期限不合理而受到限制或不被完全执行。
+      常见的稳妥做法是分层：一般保密信息 3-5 年，商业秘密至其不再构成商业秘密时为止。
+    legal_basis:
+      instrument: 各州商业秘密法（多数州采纳 UTSA）与联邦 Defend Trade Secrets Act
+      article: 具体判例与州际差异需人工确认
+      article_confidence: needs_human_confirmation
+      content_confidence: content_high_article_uncertain
+    detection:
+      clause_categories: [confidentiality]
+      keywords_en: [in perpetuity, perpetual, survive indefinitely, shall remain confidential forever]
+    verdict_rules:
+      - condition: 对全部保密信息约定永久义务且未区分商业秘密
+        conclusion: important
+        action: 进入谈判项，建议分层；同时标注「可执行性需确定适用州法后人工确认」
+      - condition: 分层约定（一般信息有期限 + 商业秘密至公开为止）
+        conclusion: pass
+      - condition: 一般保密信息约定 3-5 年
+        conclusion: pass
+    human_gate: null
+    notes: 己方为接收方时永久义务是负担，为披露方时是保护——结论方向取决于己方角色，须先确定角色
+
+  - id: us-non-compete-landscape
+    title: 竞业限制的州际差异与监管动态
+    category: non_compete
+    mandatory: true
+    confidence: needs_human_confirmation
+    state_sensitivity: high
+    statement: |
+      竞业限制在美国由州法调整且差异极大：
+        · 加利福尼亚州通过制定法原则上禁止雇佣类竞业限制（有企业出售等法定例外），
+          并有条文进一步扩大禁止范围与通知要求；
+        · 多数州采「合理性」标准审查期限、地域与业务范围，并要求保护合法商业利益；
+        · 部分州对低薪员工设有禁止或限制。
+      联邦层面曾出台全面禁止竞业限制的行政规则，其效力在联邦法院诉讼中受到否定，
+      后续进展变动频繁——**任何关于联邦规则现行效力的陈述都必须人工确认**。
+    legal_basis:
+      instrument: 各州制定法与判例；加州 Business and Professions Code § 16600 及相关条文
+      article: 州条文与联邦规则现状需人工确认
+      article_confidence: needs_human_confirmation
+      content_confidence: content_high_article_uncertain
+    detection:
+      clause_categories: [non_compete]
+      keywords_en: [non-compete, restrictive covenant, shall not engage in any business, non-solicitation]
+    verdict_rules:
+      - condition: 合同含竞业限制且准据法或员工工作地为加利福尼亚
+        conclusion: severe
+        action: 关键修改后继续；须人工确认该州现行规则
+      - condition: 合同含竞业限制但未确定适用州法
+        conclusion: important
+        action: 需确定适用州法后人工确认，禁止输出「有效」或「无效」结论
+      - condition: 期限、地域、业务范围三要素中任一缺失或过宽
+        conclusion: important
+        action: 进入谈判项
+      - condition: 仅有客户/员工非招揽条款（non-solicitation）而无竞业限制
+        conclusion: advisory
+        action: 提示 non-solicitation 在部分州同样受限，需人工确认
+    human_gate: null
+    overrides: [base/market-benchmarks.yaml#non-compete-years]
+    override_reason: 美国竞业限制的有效性由州法决定，市场标尺的 1-2 年区间在禁止州完全不适用
+
+# ---------------------------------------------------------------------------
+# 三、争议解决与准据法
+# ---------------------------------------------------------------------------
+
+  - id: us-arbitration-clause
+    title: 仲裁条款与联邦仲裁法
+    category: dispute_resolution
+    mandatory: false
+    confidence: high
+    state_sensitivity: low
+    statement: |
+      联邦仲裁法（Federal Arbitration Act, 9 U.S.C. §§ 1 et seq.）确立了支持仲裁协议
+      可执行性的联邦政策，涉及州际商业的合同中的仲裁协议通常可被强制执行。
+      有效的商事仲裁条款通常应明确：仲裁机构与规则（如 AAA 或 JAMS）、仲裁地、
+      仲裁员人数与选任、语言、裁决终局性、以及是否允许临时救济与禁令救济的法院管辖例外。
+    legal_basis:
+      instrument: Federal Arbitration Act
+      article: 9 U.S.C. §§ 1-16
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [dispute_resolution]
+      keywords_en: [arbitration, AAA, JAMS, binding arbitration, arbitral tribunal, seat of arbitration]
+    verdict_rules:
+      - condition: 约定仲裁但未指明机构或规则
+        conclusion: important
+        action: 进入谈判项
+      - condition: 未约定仲裁地或仲裁语言
+        conclusion: important
+        action: 进入谈判项
+      - condition: 未保留申请临时救济/禁令救济的法院管辖例外
+        conclusion: advisory
+        action: 建议补充；知识产权与保密违约常需即时禁令
+      - condition: 机构、规则、地点、语言、终局性齐备
+        conclusion: pass
+    human_gate: HG-02
+
+  - id: us-jury-trial-waiver
+    title: 陪审团审理弃权
+    category: dispute_resolution
+    mandatory: true
+    confidence: content_high_article_uncertain
+    state_sensitivity: high
+    statement: |
+      合同中的争议前陪审团弃权条款在多数州可执行，通常要求措辞明确且显著。
+      但部分州（加利福尼亚为典型）的判例认为争议前的陪审团弃权不可执行，
+      当事人在该州只能通过仲裁或事后合意达到类似效果。
+    legal_basis:
+      instrument: 各州判例与宪法性规定
+      article: 判例出处需人工确认
+      article_confidence: needs_human_confirmation
+      content_confidence: content_high_article_uncertain
+    detection:
+      clause_categories: [dispute_resolution]
+      keywords_en: [waive trial by jury, JURY TRIAL WAIVER, waiver of jury]
+    verdict_rules:
+      - condition: 含陪审团弃权且准据法或诉讼地为存在限制的州
+        conclusion: important
+        action: 需确定适用州法后人工确认；若不可执行，应考虑改用仲裁条款
+      - condition: 含陪审团弃权但未以显著方式呈现
+        conclusion: important
+        action: 进入谈判项
+      - condition: 无陪审团弃权且争议解决为诉讼
+        conclusion: advisory
+        action: 提示陪审团审理的成本与不确定性
+    human_gate: HG-02
+
+  - id: us-choice-of-law-and-forum
+    title: 准据法与管辖法院的选择
+    category: governing_law
+    mandatory: false
+    confidence: content_high_article_uncertain
+    state_sensitivity: medium
+    statement: |
+      当事人选择的准据法通常被尊重，常见的限制是：所选法域与交易须有实质联系，
+      或选择不得违反与争议有更大利益关系的州的根本公共政策。
+      部分州（纽约为典型）有制定法允许一定规模以上的商事合同选择该州法律
+      而不要求实质联系，并允许协议选择该州法院管辖；适用门槛（交易金额）
+      与条件须人工确认。
+      实务要点：准据法条款与管辖/仲裁条款必须一致——选了甲州法却约定在乙州仲裁，
+      虽非无效，但会带来程序法与实体法割裂的成本。
+    legal_basis:
+      instrument: Restatement (Second) of Conflict of Laws § 187 与各州制定法（如纽约 General Obligations Law 相关条文）
+      article: 条文序号与金额门槛需人工确认
+      article_confidence: needs_human_confirmation
+      content_confidence: content_high_article_uncertain
+    detection:
+      clause_categories: [governing_law, dispute_resolution]
+      keywords_en: [governed by the laws of, without regard to conflict of laws, exclusive jurisdiction, venue]
+    verdict_rules:
+      - condition: 准据法州与约定管辖地/仲裁地不一致
+        conclusion: important
+        action: 进入谈判项；须确认是否为有意安排
+      - condition: 未排除冲突法规则（缺 without regard to its conflict of laws principles）
+        conclusion: advisory
+        action: 建议补充，避免反致
+      - condition: 所选州与交易无明显联系且不属于允许自由选择的情形
+        conclusion: important
+        action: 需人工确认
+      - condition: 准据法与管辖一致且措辞完整
+        conclusion: pass
+    human_gate: HG-02
+
+  - id: us-limitation-of-actions
+    title: 起诉期限的合同约定
+    category: misc
+    mandatory: true
+    confidence: high
+    state_sensitivity: medium
+    statement: |
+      货物买卖合同项下的违约之诉，UCC 规定的时效为四年；当事人可以在原始协议中
+      将该期间缩短至不少于一年，但不得延长。
+      非货物买卖合同的时效由各州制定法规定，合同能否缩短因州而异。
+    legal_basis:
+      instrument: Uniform Commercial Code（以适用州采纳的版本为准）
+      article: UCC § 2-725
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [misc, breach_remedy]
+      keywords_en: [must be brought within, limitation of actions, time bar]
+    verdict_rules:
+      - condition: 约定起诉期限短于一年（货物买卖）
+        conclusion: important
+        action: 进入谈判项；该约定可能无效
+      - condition: 约定延长时效期间
+        conclusion: important
+        action: 需人工确认；UCC 项下不得延长
+      - condition: 约定期限在一年以上或未作约定
+        conclusion: pass
+    human_gate: null
+
+# ---------------------------------------------------------------------------
+# 四、数据合规
+# ---------------------------------------------------------------------------
+
+  - id: us-ccpa-service-provider-terms
+    title: 加州隐私法项下服务提供者合同条款
+    category: data_protection
+    mandatory: true
+    confidence: content_high_article_uncertain
+    state_sensitivity: high
+    statement: |
+      加州隐私法（CCPA 经 CPRA 修订）要求，企业向服务提供者/承包方披露个人信息时，
+      合同须包含特定条款，通常包括：限定处理目的、禁止出售或共享个人信息、
+      禁止在约定业务目的之外保留使用或披露、承诺遵守法律并提供同等保护、
+      以及允许企业采取合理措施监督合规。缺少这些条款可能导致该转移被认定为「出售」。
+      其他州（弗吉尼亚、科罗拉多、康涅狄格等）已有各自的综合隐私法，条款要求相近但不完全相同。
+    legal_basis:
+      instrument: California Consumer Privacy Act（经 CPRA 修订）及其实施条例
+      article: 具体条文编号需人工确认
+      article_confidence: needs_human_confirmation
+      content_confidence: content_high_article_uncertain
+    detection:
+      clause_categories: [data_protection]
+      keywords_en: [service provider, business purpose, sale of personal information, CCPA, CPRA, do not sell]
+    verdict_rules:
+      - condition: 涉及加州居民个人信息但无服务提供者条款
+        conclusion: severe
+        action: 关键修改后继续
+      - condition: 有条款但缺少「禁止出售/共享」或「限定业务目的」任一要素
+        conclusion: important
+        action: 进入谈判项，逐项列出缺失要素
+      - condition: 涉及多州居民数据但只按单一州法约定
+        conclusion: important
+        action: 需人工确认适用的州隐私法清单
+    human_gate: null
+    needs_human_confirmation:
+      - 各州综合隐私法的适用门槛（营收、数据量）与条款细节变动频繁，须人工确认现行要求
+
+  - id: us-sectoral-data-rules
+    title: 行业性数据规则触发检查
+    category: data_protection
+    mandatory: true
+    confidence: content_high_article_uncertain
+    state_sensitivity: low
+    statement: |
+      涉及受保护健康信息（PHI）时，通常需要签署业务伙伴协议（Business Associate
+      Agreement, BAA）；涉及金融机构客户非公开个人信息时受 GLBA 相关规则约束；
+      涉及 13 岁以下儿童数据时受 COPPA 约束。
+      本包只做**触发识别**：命中即提示需要专门文件或条款，不给出具体条款内容。
+    legal_basis:
+      instrument: HIPAA / GLBA / COPPA 及其实施规则
+      article: 具体条文需人工确认
+      article_confidence: needs_human_confirmation
+      content_confidence: high
+    detection:
+      clause_categories: [data_protection]
+      keywords_en: [PHI, protected health information, HIPAA, business associate, GLBA, nonpublic personal information, children under 13, COPPA]
+    verdict_rules:
+      - condition: 命中 PHI 相关关键词但合同未提及 BAA
+        conclusion: severe
+        action: 关键修改后继续；需人工确认是否构成 business associate 关系
+      - condition: 命中其他行业性关键词
+        conclusion: important
+        action: 需人工确认适用的行业规则
+    human_gate: null
+
+  - id: us-export-control-sanctions
+    title: 出口管制与制裁合规条款
+    category: misc
+    mandatory: true
+    confidence: content_high_article_uncertain
+    state_sensitivity: low
+    statement: |
+      跨境技术、软件与数据交付可能受美国出口管制与经济制裁规则约束。
+      合同中常见的做法是加入出口合规承诺、最终用户与最终用途限制、以及制裁名单筛查义务。
+      本包只做触发识别与条款缺失提示，不判断具体管制分类。
+    legal_basis:
+      instrument: 出口管理条例与经济制裁规则
+      article: 具体条文需人工确认
+      article_confidence: needs_human_confirmation
+      content_confidence: content_high_article_uncertain
+    detection:
+      clause_categories: [misc]
+      keywords_en: [export control, EAR, OFAC, sanctions, restricted party, end user]
+    verdict_rules:
+      - condition: 存在跨境交付但无出口合规条款
+        conclusion: important
+        action: 进入谈判项；需人工确认是否触发管制
+      - condition: 有条款且含最终用户与筛查义务
+        conclusion: pass
+
+# ---------------------------------------------------------------------------
+# 五、合同形式、转让与续约
+# ---------------------------------------------------------------------------
+
+  - id: us-statute-of-frauds
+    title: 书面形式要求（Statute of Frauds）
+    category: misc
+    mandatory: true
+    confidence: high
+    state_sensitivity: medium
+    statement: |
+      特定类型的合同须有书面并经被追究方签署才可强制执行，典型包括：
+      不能在一年内履行完毕的合同、担保他人债务的合同、以及一定金额以上的货物买卖
+      （UCC 项下的门槛金额以适用州采纳的版本为准）。
+    legal_basis:
+      instrument: 各州 Statute of Frauds 与 UCC § 2-201
+      article: UCC § 2-201（门槛金额以适用州版本为准）
+      article_confidence: content_high_article_uncertain
+      content_confidence: high
+    detection:
+      clause_categories: [misc]
+      keywords_en: [entire agreement, signed by both parties, guaranty]
+    verdict_rules:
+      - condition: 存在口头变更条款或允许非书面变更
+        conclusion: important
+        action: 进入谈判项；书面变更条款（no oral modification）应予保留
+      - condition: 含担保安排但担保方未签署
+        conclusion: severe
+        action: 阻断；触发 HG-04
+
+  - id: us-assignment-and-change-of-control
+    title: 转让限制与控制权变更
+    category: assignment
+    mandatory: false
+    confidence: content_high_article_uncertain
+    state_sensitivity: medium
+    statement: |
+      「未经对方书面同意不得转让」是标准条款，本身不构成风险（样本 TC-008）。
+      需要关注的是三点：
+        ① 是否将控制权变更（change of control）视为转让——这会影响并购退出；
+        ② 是否为关联方转让与整体业务出售保留例外；
+        ③ 应收账款的转让限制在部分情形下可能不产生对抗第三人的效力，具体需人工确认。
+    legal_basis:
+      instrument: 各州合同法与 UCC 第九编相关条文
+      article: 条文与适用范围需人工确认
+      article_confidence: needs_human_confirmation
+      content_confidence: content_high_article_uncertain
+    detection:
+      clause_categories: [assignment]
+      keywords_en: [assignment, change of control, merger, successor, without consent]
+    verdict_rules:
+      - condition: 双方对等的一般反转让条款
+        conclusion: pass
+        note: 禁止仅因存在转让限制而报风险
+      - condition: 控制权变更被视为转让且无例外
+        conclusion: important
+        action: 进入谈判项；影响并购与重组灵活性
+      - condition: 转让限制单方适用
+        conclusion: important
+        action: 进入谈判项，要求对等
+
+  - id: us-auto-renewal
+    title: 自动续约条款
+    category: term_duration
+    mandatory: false
+    confidence: needs_human_confirmation
+    state_sensitivity: high
+    statement: |
+      自动续约（evergreen）条款在 B2B 合同中普遍有效，但多个州有自动续约制定法，
+      对通知义务与取消便利性作出要求；这些制定法的适用范围（是否覆盖 B2B）
+      因州而异，须人工确认。
+      商业风险要点：自动续约叠加过短的取消通知期，等于变相长期锁定。
+    legal_basis:
+      instrument: 各州自动续约制定法
+      article: 适用范围与条文需人工确认
+      article_confidence: needs_human_confirmation
+      content_confidence: content_high_article_uncertain
+    detection:
+      clause_categories: [term_duration]
+      keywords_en: [automatically renew, evergreen, successive terms, unless either party provides notice]
+    verdict_rules:
+      - condition: 自动续约且取消通知期 < 60 天
+        conclusion: severe
+        action: 先谈判
+        benchmark_link: base/market-benchmarks.yaml#renewal-notice-days
+      - condition: 自动续约且取消通知期 60-89 天
+        conclusion: important
+        action: 进入谈判项
+      - condition: 自动续约且通知期 >= 90 天
+        conclusion: pass
+      - condition: 自动续约同时约定续约时可单方涨价且无上限
+        conclusion: severe
+        action: 先谈判
+    human_gate: HG-01
+
+  - id: us-efforts-standards
+    title: 努力标准的措辞
+    category: misc
+    mandatory: false
+    confidence: needs_human_confirmation
+    state_sensitivity: high
+    statement: |
+      best efforts、commercially reasonable efforts、reasonable efforts 等措辞
+      在各州并无统一的层级定义，部分州判例认为差别不大，部分州区分明显。
+      稳妥做法是在合同中对所用标准给出可判定的定义或行为清单。
+    legal_basis:
+      instrument: 各州判例
+      article: 判例出处需人工确认
+      article_confidence: needs_human_confirmation
+      content_confidence: content_high_article_uncertain
+    detection:
+      clause_categories: [misc]
+      keywords_en: [best efforts, commercially reasonable efforts, reasonable efforts]
+    verdict_rules:
+      - condition: 关键义务使用努力标准措辞但无定义
+        conclusion: advisory
+        action: 建议补充可判定的定义或行为清单
+
+# ---------------------------------------------------------------------------
+# 六、法域冲突判定（relations.yaml#DC-006 的判定表）
+# ---------------------------------------------------------------------------
+conflicts:
+
+  - id: us-conflict-law-forum-mismatch
+    title: 准据法州与管辖地不一致
+    trigger: governing_law 指向甲州，dispute_forum 指向乙州法院或乙州仲裁地
+    nature: 需协调
+    severity: important
+    verdict: 非无效，但会导致程序法与实体法割裂，增加成本；须确认是否为有意安排
+    action: 进入谈判项；触发 HG-02
+
+  - id: us-conflict-arbitration-and-jury-waiver
+    title: 仲裁条款与陪审团弃权并存
+    trigger: 同时存在有效仲裁条款与陪审团弃权条款
+    nature: 冗余但通常不冲突
+    severity: advisory
+    verdict: 仲裁本无陪审团，弃权条款通常作为仲裁条款不可执行时的备位安排；须确认两者的适用顺序表述清晰
+    action: 建议明确备位关系
+
+  - id: us-conflict-noncompete-vs-state-ban
+    title: 竞业限制与禁止州法冲突
+    trigger: 合同含竞业限制且准据法州或员工工作地属于禁止或严格限制竞业限制的州
+    nature: 互斥
+    severity: severe
+    verdict: 该条款在禁止州可能整体不可执行，且部分州对试图执行的行为另有不利后果
+    action: 关键修改后继续；需确定适用州法后人工确认
+
+  - id: us-conflict-us-law-with-gdpr
+    title: 美国法与 GDPR 并列
+    trigger: governing_law 指向美国某州，同时存在 data_regime = GDPR 的 governed_by 边
+    nature: 需协调
+    severity: important
+    verdict: |
+      须判定三点：① GDPR 适用范围是否闭合界定；② 是否存在欧盟数据主体；
+      ③ 跨境传输机制（标准合同条款或其他有效机制）是否落地为合同条款。
+      三点中任一为否或无法判定，输出 unknown 并进 HG-02。
+    action: 进入谈判项；触发 HG-02
+    note: 跨境传输机制的现行有效形式变动频繁，需人工确认
+
+  - id: us-conflict-multi-state-privacy
+    title: 多州隐私法并存
+    trigger: 数据涉及多个州居民，但合同只按单一州隐私法约定条款
+    nature: 需协调
+    severity: important
+    verdict: 各州综合隐私法要求相近但不完全相同，单一州条款可能不足以覆盖
+    action: 需人工确认适用的州隐私法清单
+
+  - id: us-conflict-ucc-vs-common-law
+    title: 混合合同的规则体系归属
+    trigger: 合同同时包含货物供应与服务提供，且未明确主要目的
+    nature: 需协调
+    severity: important
+    verdict: UCC 与普通法在担保、时效、救济等方面规则不同；归属不明会导致多条结论不确定
+    action: 需人工确认；在归属确定前，相关检查项在覆盖矩阵中标注 unknown 而非通过
+
+# ---------------------------------------------------------------------------
+# 七、本包已知覆盖缺口
+# ---------------------------------------------------------------------------
+known_gaps:
+  - 具体州法检索（本包只给跨州图景与差异提示，不替代州法检索）
+  - 消费者合同与 FTC 规则
+  - 建设工程 anti-indemnity statutes
+  - 政府采购 FAR/DFARS
+  - 证券、保险、银行等受管制行业规则
+  - 知识产权权属、职务发明与开源许可合规
+  - 税务条款（sales tax nexus、withholding）
+  - 破产法项下的合同条款效力（ipso facto 条款等）
+gap_policy: 命中已知缺口领域时，相关检查项留白（status = blank）并写明「本包未覆盖」，禁止按通过计

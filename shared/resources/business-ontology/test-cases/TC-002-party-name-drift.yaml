@@ -1,0 +1,60 @@
+# ============================================================================
+# TC-002 —— 历史错误样本：当事方名称漂移，责任指向错误主体
+# ============================================================================
+
+id: TC-002
+title: 主合同与附件的乙方名称不一致，赔偿责任被归给了错误主体
+category: must_detect
+severity: severe
+recorded_at: '2026-08-31'
+blueprint_ref: 第四节 角色身份不明 / 第十四节 核心质量指标
+
+what_went_wrong:
+  summary: |
+    主合同乙方为「某某科技（北京）有限公司」，附件二《数据处理协议》的签署方却是
+    「北京某某科技有限公司」。两者是同一集团下的**两家不同法人**（统一社会信用代码不同）。
+    报告把附件二的数据泄露赔偿责任写成了主合同乙方的义务，并据此判定
+    「数据保护责任已由乙方承担，风险可控」。
+    真实后果是：主合同乙方对数据泄露不承担任何合同责任，追偿对象是一家注册资本
+    100 万元的关联公司。
+  observed_output: 乙方已在附件二中承担数据泄露赔偿责任（上限 500 万元），数据保护风险可控。
+  actual_impact: 赔偿主体与履约主体分离，500 万元赔偿承诺落在一家注册资本 100 万元的实体上
+
+why_missed:
+  root_cause: 当事方被当作字符串处理，名称的每次出现没有挂到同一个 party 对象上
+  failure_chain:
+    - 抽取时把「乙方」在各文档中的名称各自作为独立字符串记录
+    - 名称高度相似，人工与模型都默认「是同一家，只是写法不同」
+    - 无人核对统一社会信用代码——它在附件二第 1 页页脚，未被抽取
+    - 责任归属结论直接使用「乙方」这一角色词，掩盖了主体差异
+  deeper_reason: |
+    中文公司名的「地名前置 / 地名括号内置」是极常见的两家不同法人的命名方式。
+    把名称当字符串比对，相似度高反而更危险——越像越不会被质疑。
+
+guarded_by:
+  - ref: contract.yaml#entities.party
+    how: party 是独立实体，name_variants 记录每次出现的原文、页码与所在文档，identifier 记录统一社会信用代码
+  - ref: contract.yaml#INV-007
+    how: name_variants 中存在语义不同的名称时，必须先归并或判定为不同主体，不得留待后续；未处理即阻断
+  - ref: relations.yaml#DC-007
+    how: 附件签署方与主合同不一致时命中，触发 HG-04
+  - ref: rules.md#R-020
+    how: 角色身份不明是五类输入缺陷之一，裁决为 reject
+  - ref: rules.md#R-012
+    how: 责任归属结论必须挂载 evidence_ref，其中 object_ref 会暴露该结论来自哪一份文档
+
+expected_behavior:
+  must_output:
+    - 明确列出两个名称、各自出现的页码与文档，并指出统一社会信用代码不同（或未能核实）
+    - 判定为「两个不同主体」或「无法判定，需人工确认」，两者都必须阻断而非继续
+    - 若 identifier 为 unknown，输出 unknown 及 unknown_reason，不得推定为同一主体
+  must_not_output:
+    - 以「乙方」角色词表述责任归属而不指明具体法人
+    - 数据保护风险可控 之类未区分主体的结论
+  scoring_expectation: intake_verdict = reject，后续 Agent 不启动
+
+repro_input:
+  documents:
+    - {object_id: doc-main-001, party_b_text: 某某科技（北京）有限公司, page: 1}
+    - {object_id: doc-att-002, party_b_text: 北京某某科技有限公司, page: 1}
+  identifiers: {doc-main-001: 91110108MA01XXXXXA, doc-att-002: 91110105MA01YYYYYB}

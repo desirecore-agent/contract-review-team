@@ -1,0 +1,62 @@
+# ============================================================================
+# TC-005 —— 历史错误样本：责任上限「存在即通过」，未对标市场标尺
+# ============================================================================
+
+id: TC-005
+title: 责任上限仅为 3 个月费用，因「已约定」被判通过
+category: must_detect
+severity: severe
+recorded_at: '2026-08-31'
+blueprint_ref: 第十节 关键缺失条款 / 第十一节 市场标尺对标
+
+what_went_wrong:
+  summary: |
+    第 8.2 条约定「任何一方的累计赔偿责任不超过违约方在索赔事件发生前三个月内
+    实际收取的服务费」。缺失条款检查项 liability-cap 判定为 covered，
+    风险评估维度给了高分，报告输出「限制责任条款已约定，条款完整」。
+    实际上市场惯例参考值是 12 个月费用，低于 6 个月即为高风险；
+    3 个月上限意味着一次重大事故的可追偿金额可能不足实际损失的四分之一。
+  observed_output: 限制责任与索赔上限：已约定（第 8.2 条，p.14）｜结论：通过
+  actual_impact: 责任上限严重低于市场惯例，但在报告中呈现为正面项，谈判筹码被主动放弃
+
+why_missed:
+  root_cause: 缺失条款检查回答的是「有没有」，没有人回答「合不合理」
+  failure_chain:
+    - 9 项关键缺失条款检查的判据是条款存在性
+    - 市场标尺文件当时不存在，风险识别 Agent 无对标依据
+    - 条款抽取虽然拿到了「三个月」，但未归一化为天数/月数，无法参与数值比较
+    - 报告把 covered 直接映射为正面结论，未区分「已约定且合理」与「已约定但偏离」
+  deeper_reason: |
+    「有条款」是最容易被误当作「有保障」的信号。缺失清单必须与市场标尺配对使用：
+    前者查缺口，后者查质量。只有前者时，一份把所有不利条款都写全的合同会得高分。
+
+guarded_by:
+  - ref: base/missing-clauses.yaml#liability-cap
+    how: 判定标准改为「存在且要素齐备」，并强制要求联动 market-benchmarks 的数值判定，covered 不等于 pass
+  - ref: base/market-benchmarks.yaml#liability-cap-months
+    how: 责任上限基准 12 个月；< 6 个月为 high（严重），6-11 个月为 medium（重要）
+  - ref: contract.yaml#entities.clause.temporal_terms
+    how: 期限要素强制归一化为 normalized_days，使数值比较成为可能
+  - ref: actions.yaml#benchmark_against_market
+    how: 偏差信号必须给出实际值、基准值与差距，禁止只写「偏低」；本动作挂 HG-03
+  - ref: rules.md#R-030
+    how: 责任违约分配属法务四类不可替代动作，必须过 HG-03，不自动放行
+
+expected_behavior:
+  must_output:
+    - 结论四元组：第 8.2 条（p.14）｜severe｜动作：先谈判
+    - 明确写出实际值 3 个月、基准值 12 个月、高风险阈值 6 个月
+    - 覆盖矩阵中 liability-cap 的 conclusion 为 severe，而非 pass
+    - 触发 HG-03
+  must_not_output:
+    - 限制责任条款已约定 / 条款完整 / 通过
+    - 只写「责任上限偏低」而不给出实际值与基准值
+  scoring_expectation: 风险评估维度（25%）扣分；存在未解决 severe 结论时动作下调
+
+repro_input:
+  clause:
+    clause_no: '8.2'
+    page: 14
+    text: 任何一方因本协议产生的累计赔偿责任，不超过违约方在索赔事件发生前三个月内实际收取的服务费。
+    category: liability
+    temporal_terms: [{kind: liability_cap_period, duration_text: 三个月, normalized_days: 90}]

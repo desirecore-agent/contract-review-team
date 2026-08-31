@@ -1,0 +1,649 @@
+# ============================================================================
+# jurisdiction-cn/rules.yaml —— 中国法规则集
+# ----------------------------------------------------------------------------
+# 每条规则的 confidence 字段是本文件最重要的字段，取值见 pack.yaml#confidence_levels。
+# Agent 在报告中引用规则时，必须把 confidence 一并转述：
+#   high                            → 可直接引用条文
+#   content_high_article_uncertain  → 写内容，条文序号注明「需人工确认」
+#   needs_human_confirmation        → 原样写出「需人工确认」，禁止补编号凑完整
+# ============================================================================
+
+meta:
+  pack_id: jurisdiction-cn
+  pack_version: cn-v1
+  knowledge_base_version: '2026-08-31'
+  updated_at: '2026-08-31'
+
+# ---------------------------------------------------------------------------
+# 一、劳动与人事
+# ---------------------------------------------------------------------------
+rules:
+
+  - id: cn-labor-probation-cap
+    title: 试用期法定上限
+    category: labor
+    mandatory: true
+    confidence: high
+    statement: |
+      劳动合同期限三个月以上不满一年的，试用期不得超过一个月；
+      一年以上不满三年的，试用期不得超过二个月；
+      三年以上固定期限和无固定期限的劳动合同，试用期不得超过六个月。
+      以完成一定工作任务为期限的劳动合同或者劳动合同期限不满三个月的，不得约定试用期。
+      同一用人单位与同一劳动者只能约定一次试用期。
+    legal_basis:
+      instrument: 《中华人民共和国劳动合同法》
+      article: 第十九条
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [term_duration]
+      keywords: [试用期, 试用, 转正]
+    verdict_rules:
+      - condition: 试用期超过对应合同期限的法定上限
+        conclusion: severe
+        action: 关键修改后继续；超出部分的约定不具有法律效力，且可能产生赔偿责任
+      - condition: 合同期限不满三个月或以完成一定工作任务为期限，却约定了试用期
+        conclusion: severe
+        action: 关键修改后继续
+      - condition: 同一劳动者被二次约定试用期
+        conclusion: severe
+        action: 关键修改后继续
+      - condition: 试用期在法定上限内
+        conclusion: pass
+    human_gate: null
+    notes: 试用期工资标准另有法定下限（不低于本单位同岗位最低档工资或劳动合同约定工资的百分之八十，且不低于当地最低工资），标准细节按 needs_human_confirmation 处理
+
+  - id: cn-labor-non-compete
+    title: 竞业限制的期限、人员范围与经济补偿
+    category: labor
+    mandatory: true
+    confidence: high
+    statement: |
+      竞业限制的人员限于用人单位的高级管理人员、高级技术人员和其他负有保密义务的人员。
+      竞业限制期限，在解除或者终止劳动合同后，不得超过二年。
+      用人单位应当在竞业限制期限内按月给予劳动者经济补偿。
+    legal_basis:
+      instrument: 《中华人民共和国劳动合同法》
+      article: 第二十三条、第二十四条
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [non_compete, confidentiality]
+      keywords: [竞业限制, 竞业禁止, 离职后不得]
+    verdict_rules:
+      - condition: 竞业限制期限超过二年
+        conclusion: severe
+        action: 关键修改后继续；超过二年的部分不受保护
+      - condition: 约定竞业限制但未约定按月支付经济补偿
+        conclusion: severe
+        action: 关键修改后继续；未约定补偿会显著削弱条款的可执行性
+      - condition: 竞业限制适用于全体员工而未限定人员范围
+        conclusion: important
+        action: 进入谈判项，要求限定为负有保密义务的人员
+      - condition: 期限不超过二年且约定按月补偿且限定了人员范围
+        conclusion: pass
+    human_gate: null
+    overrides: [base/market-benchmarks.yaml#non-compete-years]
+    override_reason: 中国法对竞业期限设有二年强制上限，严于市场标尺的 1-2 年参考区间；数值判定以本规则为准
+    needs_human_confirmation:
+      - 经济补偿的具体标准（月平均工资的一定比例、与最低工资的关系）由司法解释与地方规定确定，具体数值需人工确认
+      - 违反竞业限制的违约金数额是否过高，需结合个案判断
+
+  - id: cn-labor-employee-penalty-restriction
+    title: 劳动者违约金的限制
+    category: labor
+    mandatory: true
+    confidence: high
+    statement: |
+      除专项培训费用与服务期约定（第二十二条）、竞业限制约定（第二十三条）两种情形外，
+      用人单位不得与劳动者约定由劳动者承担违约金。
+    legal_basis:
+      instrument: 《中华人民共和国劳动合同法》
+      article: 第二十五条
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [breach_remedy]
+      keywords: [违约金, 赔偿金, 提前离职, 服务期]
+    verdict_rules:
+      - condition: 约定劳动者在服务期与竞业限制之外的情形承担违约金
+        conclusion: severe
+        action: 关键修改后继续；该约定不具有法律效力
+      - condition: 仅在服务期或竞业限制情形约定违约金
+        conclusion: pass
+    human_gate: null
+
+# ---------------------------------------------------------------------------
+# 二、违约金、定金与损害赔偿
+# ---------------------------------------------------------------------------
+
+  - id: cn-liquidated-damages-adjustment
+    title: 违约金过高可请求调减
+    category: breach_remedy
+    mandatory: false
+    confidence: high
+    statement: |
+      当事人可以约定违约金及损失赔偿额的计算方法。约定的违约金低于造成的损失的，
+      当事人可以请求人民法院或者仲裁机构予以增加；约定的违约金过分高于造成的损失的，
+      当事人可以请求人民法院或者仲裁机构予以适当减少。
+    legal_basis:
+      instrument: 《中华人民共和国民法典》
+      article: 第五百八十五条
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [breach_remedy, liability]
+      keywords: [违约金, 每日万分之, 逾期一日, 赔偿损失]
+    verdict_rules:
+      - condition: 约定了违约金且比例明显偏高
+        conclusion: important
+        action: 进入谈判项；提示对方可能主张调减，条款的实际威慑力低于字面
+      - condition: 违约金条款含占位符或未约定计算基数
+        conclusion: severe
+        action: 阻断（contract.yaml#INV-004 / 样本 TC-003）
+      - condition: 违约金要素齐备且比例常规
+        conclusion: pass
+    human_gate: HG-03
+    needs_human_confirmation:
+      - 「过分高于损失」的具体判断标准（司法实践中的比例参考）需人工确认，本包不给出数值阈值
+      - 商事合同逾期付款违约金是否参照特定利率上限，需人工确认；民间借贷的利率规则不当然适用于商事合同
+
+  - id: cn-deposit-cap
+    title: 定金数额上限
+    category: payment
+    mandatory: true
+    confidence: high
+    statement: |
+      定金的数额由当事人约定，但不得超过主合同标的额的百分之二十，超过部分不产生定金的效力。
+      当事人既约定违约金又约定定金的，一方违约时，对方可以选择适用违约金或者定金条款，不能并用。
+    legal_basis:
+      instrument: 《中华人民共和国民法典》
+      article: 第五百八十六条至第五百八十八条
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [payment]
+      keywords: [定金, 订金, 保证金, 双倍返还]
+    verdict_rules:
+      - condition: 定金超过主合同标的额百分之二十
+        conclusion: important
+        action: 进入谈判项；超过部分不产生定金效力
+      - condition: 同时约定违约金与定金且表述为可并用
+        conclusion: important
+        action: 进入谈判项，明确择一适用
+      - condition: 使用「订金」「保证金」等表述但意图为定金
+        conclusion: important
+        action: 进入谈判项，明确使用「定金」并约定罚则，否则可能不被认定为定金
+      - condition: 定金比例合规且择一适用表述清晰
+        conclusion: pass
+    human_gate: HG-01
+
+# ---------------------------------------------------------------------------
+# 三、格式条款与合同订立
+# ---------------------------------------------------------------------------
+
+  - id: cn-standard-terms-duty
+    title: 格式条款的提示说明义务与不利解释
+    category: misc
+    mandatory: true
+    confidence: content_high_article_uncertain
+    statement: |
+      采用格式条款订立合同的，提供格式条款的一方应当遵循公平原则确定当事人之间的权利义务，
+      并采取合理的方式提示对方注意免除或者减轻其责任等与对方有重大利害关系的条款，
+      按照对方的要求对该条款予以说明。未履行提示或说明义务，致使对方没有注意或理解
+      与其有重大利害关系的条款的，对方可以主张该条款不成为合同的内容。
+      对格式条款的理解发生争议的，应当作出不利于提供格式条款一方的解释。
+    legal_basis:
+      instrument: 《中华人民共和国民法典》
+      article: 第四百九十六条至第四百九十八条
+      article_confidence: content_high_article_uncertain
+      content_confidence: high
+    detection:
+      clause_categories: [liability, warranty, misc]
+      keywords: [本协议为格式合同, 用户协议, 服务条款, 概不负责, 免除责任]
+    verdict_rules:
+      - condition: 属格式条款且含免除/减轻提供方责任的内容，但无提示说明安排
+        conclusion: important
+        action: 进入谈判项；该条款可能不成为合同内容
+      - condition: 己方为格式条款提供方且存在解释歧义
+        conclusion: important
+        action: 进入谈判项；歧义将作不利于己方的解释
+      - condition: 非格式条款（经双方磋商）
+        conclusion: pass
+    human_gate: null
+    notes: 判定是否属格式条款需看是否为一方预先拟定且重复使用、订立时未与对方协商；无法判定时输出 unknown
+
+  - id: cn-contract-effectiveness
+    title: 合同生效与批准登记要件
+    category: misc
+    mandatory: true
+    confidence: high
+    statement: |
+      依法成立的合同，自成立时生效，但是法律另有规定或者当事人另有约定的除外。
+      依照法律、行政法规的规定，合同应当办理批准等手续的，依照其规定。
+    legal_basis:
+      instrument: 《中华人民共和国民法典》
+      article: 第五百零二条
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [misc]
+      keywords: [自签署之日起生效, 经批准后生效, 备案, 登记, 生效条件]
+    verdict_rules:
+      - condition: 约定了生效条件但未明确条件成就的认定方式
+        conclusion: important
+        action: 进入谈判项
+      - condition: 交易类型可能需要批准/登记/备案但合同未作安排
+        conclusion: important
+        action: 需人工确认该交易是否属于须办理手续的类型
+      - condition: 生效条款清晰且无需额外手续
+        conclusion: pass
+    human_gate: HG-04
+
+  - id: cn-authority-and-seal
+    title: 签署权限与印章效力
+    category: misc
+    mandatory: false
+    confidence: content_high_article_uncertain
+    statement: |
+      法定代表人或者负责人超越权限订立的合同，除相对人知道或者应当知道其超越权限外，
+      该代表行为有效。司法实践中，判断盖章行为的效力重在盖章之人是否有代表权或代理权，
+      而非印章本身的真伪。
+    legal_basis:
+      instrument: 《中华人民共和国民法典》
+      article: 第五百零四条
+      article_confidence: content_high_article_uncertain
+      content_confidence: high
+    detection:
+      clause_categories: [misc]
+      keywords: [法定代表人, 授权代表, 公章, 合同专用章, 授权委托书]
+    verdict_rules:
+      - condition: 签署人非法定代表人且无授权文件
+        conclusion: severe
+        action: 阻断；触发 HG-04（生效要件）
+      - condition: 仅有个人签字无印章，或仅有印章无签署人姓名
+        conclusion: important
+        action: 需人工确认签署人代表权
+      - condition: 法定代表人签署或附有授权委托书
+        conclusion: pass
+    human_gate: HG-04
+    needs_human_confirmation:
+      - 「看人不看章」的司法裁判口径出自最高人民法院会议纪要，具体文号与现行适用范围需人工确认
+
+# ---------------------------------------------------------------------------
+# 四、争议解决
+# ---------------------------------------------------------------------------
+
+  - id: cn-arbitration-agreement-validity
+    title: 仲裁协议的有效要件
+    category: dispute_resolution
+    mandatory: true
+    confidence: content_high_article_uncertain
+    statement: |
+      仲裁协议应当具有请求仲裁的意思表示、仲裁事项、选定的仲裁委员会三项内容。
+      仲裁协议对仲裁事项或者仲裁委员会没有约定或者约定不明确的，当事人可以补充协议；
+      达不成补充协议的，仲裁协议无效。
+    legal_basis:
+      instrument: 《中华人民共和国仲裁法》
+      article: 第十六条、第十八条
+      article_confidence: content_high_article_uncertain
+      content_confidence: high
+    detection:
+      clause_categories: [dispute_resolution]
+      keywords: [仲裁, 仲裁委员会, 仲裁规则, 裁决为终局]
+    verdict_rules:
+      - condition: 约定仲裁但未指明具体仲裁机构名称（如仅写「提交有管辖权的仲裁机构」）
+        conclusion: severe
+        action: 关键修改后继续；仲裁协议可能无效，届时只能诉讼
+        blueprint_ref: 第十二节 争议解决机制属不可替代动作
+      - condition: 仲裁机构名称不准确或已不存在
+        conclusion: severe
+        action: 关键修改后继续
+      - condition: 仲裁机构、仲裁事项、意思表示三要素齐备
+        conclusion: pass
+    human_gate: HG-02
+    needs_human_confirmation:
+      - 仲裁法处于修订活跃期，条文序号与部分规则可能已变化，引用时需人工确认现行文本
+
+  - id: cn-arbitration-or-litigation-conflict
+    title: 「或裁或审」条款
+    category: dispute_resolution
+    mandatory: true
+    confidence: needs_human_confirmation
+    statement: |
+      当事人约定争议既可以申请仲裁也可以向人民法院起诉的（俗称「或裁或审」），
+      按司法解释规则该仲裁协议原则上无效，但一方申请仲裁而另一方在规定期限内未提出异议的除外。
+    legal_basis:
+      instrument: 最高人民法院关于适用《中华人民共和国仲裁法》若干问题的解释
+      article: 需人工确认
+      article_confidence: needs_human_confirmation
+      content_confidence: content_high_article_uncertain
+    detection:
+      clause_categories: [dispute_resolution]
+      keywords: [可以向, 也可以, 仲裁或者诉讼, 任一方可选择]
+    verdict_rules:
+      - condition: 同时约定仲裁与诉讼两种途径且可由当事人选择
+        conclusion: severe
+        action: 关键修改后继续；须二者择一
+      - condition: 约定分层争议解决（协商→调解→仲裁）且最终途径唯一
+        conclusion: pass
+    human_gate: HG-02
+    notes: 本条 confidence 为 needs_human_confirmation，报告中须写明「具体司法解释条文需人工确认」，只陈述规则方向
+
+  - id: cn-forum-selection
+    title: 协议管辖的限制
+    category: dispute_resolution
+    mandatory: true
+    confidence: content_high_article_uncertain
+    statement: |
+      当事人可以书面协议选择与争议有实际联系的地点的人民法院管辖，
+      但不得违反级别管辖和专属管辖的规定。
+    legal_basis:
+      instrument: 《中华人民共和国民事诉讼法》
+      article: 协议管辖条款（条文序号因修订可能变化，需人工确认）
+      article_confidence: needs_human_confirmation
+      content_confidence: high
+    detection:
+      clause_categories: [dispute_resolution]
+      keywords: [管辖, 人民法院, 诉讼, 原告所在地, 被告所在地, 合同签订地]
+    verdict_rules:
+      - condition: 约定的管辖法院与争议无实际联系地点
+        conclusion: important
+        action: 需人工确认该约定是否有效
+      - condition: 约定「原告所在地法院管辖」而原告不确定
+        conclusion: important
+        action: 进入谈判项；约定不明可能导致管辖争议
+      - condition: 涉及专属管辖事项（如不动产纠纷）却另行约定管辖
+        conclusion: severe
+        action: 关键修改后继续
+      - condition: 管辖约定具体且与争议有实际联系
+        conclusion: pass
+    human_gate: HG-02
+
+# ---------------------------------------------------------------------------
+# 五、履行、解除与时效
+# ---------------------------------------------------------------------------
+
+  - id: cn-force-majeure
+    title: 不可抗力的法定含义与通知义务
+    category: force_majeure
+    mandatory: false
+    confidence: high
+    statement: |
+      不可抗力是不能预见、不能避免且不能克服的客观情况。因不可抗力不能履行合同的，
+      根据不可抗力的影响，部分或者全部免除责任，但是法律另有规定的除外。
+      当事人一方因不可抗力不能履行合同的，应当及时通知对方以减轻可能给对方造成的损失，
+      并应当在合理期限内提供证明。当事人迟延履行后发生不可抗力的，不免除其违约责任。
+    legal_basis:
+      instrument: 《中华人民共和国民法典》
+      article: 第一百八十条、第五百九十条
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [force_majeure]
+      keywords: [不可抗力, 不能预见, 政府行为, 自然灾害]
+    verdict_rules:
+      - condition: 未约定通知义务与证明期限
+        conclusion: important
+        action: 进入谈判项
+      - condition: 约定不可抗力可免除已到期付款义务
+        conclusion: important
+        action: 进入谈判项；此约定对收款方不利，且迟延履行后发生不可抗力不免责
+      - condition: 要素齐备（界定 + 通知 + 后果）
+        conclusion: pass
+    human_gate: HG-03
+    false_positive_guard: 不可抗力事件列举范围宽窄不构成风险结论（见 base/missing-clauses.yaml#force-majeure 与样本 TC-008）
+
+  - id: cn-change-of-circumstances
+    title: 情势变更
+    category: misc
+    mandatory: false
+    confidence: high
+    statement: |
+      合同成立后，合同的基础条件发生了当事人在订立合同时无法预见的、不属于商业风险的重大变化，
+      继续履行合同对于当事人一方明显不公平的，受不利影响的当事人可以与对方重新协商；
+      在合理期限内协商不成的，当事人可以请求人民法院或者仲裁机构变更或者解除合同。
+    legal_basis:
+      instrument: 《中华人民共和国民法典》
+      article: 第五百三十三条
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [misc, force_majeure]
+      keywords: [情势变更, 重新协商, 显失公平]
+    verdict_rules:
+      - condition: 合同明确排除情势变更规则的适用
+        conclusion: important
+        action: 需人工确认该排除约定的效力
+      - condition: 未提及
+        conclusion: advisory
+        action: 长期合同建议约定重新协商机制
+    human_gate: null
+
+  - id: cn-limitation-period
+    title: 诉讼时效
+    category: misc
+    mandatory: true
+    confidence: high
+    statement: |
+      向人民法院请求保护民事权利的诉讼时效期间为三年，法律另有规定的依照其规定。
+      诉讼时效期间自权利人知道或者应当知道权利受到损害以及义务人之日起计算。
+    legal_basis:
+      instrument: 《中华人民共和国民法典》
+      article: 第一百八十八条
+      article_confidence: high
+      content_confidence: high
+    detection:
+      clause_categories: [misc, breach_remedy]
+      keywords: [时效, 索赔期限, 应在...日内提出]
+    verdict_rules:
+      - condition: 约定的索赔期限显著短于三年
+        conclusion: important
+        action: 进入谈判项；注意约定索赔期与法定诉讼时效的关系需人工确认
+      - condition: 约定延长诉讼时效期间
+        conclusion: important
+        action: 需人工确认；诉讼时效属法定，当事人约定延长的效力存在争议
+    human_gate: null
+    needs_human_confirmation:
+      - 合同约定的索赔通知期与法定诉讼时效的相互关系，需人工确认
+
+# ---------------------------------------------------------------------------
+# 六、数据合规与保密
+# ---------------------------------------------------------------------------
+
+  - id: cn-personal-info-cross-border
+    title: 个人信息出境的合规路径
+    category: data_protection
+    mandatory: true
+    confidence: content_high_article_uncertain
+    statement: |
+      个人信息处理者因业务等需要确需向中华人民共和国境外提供个人信息的，
+      应当具备下列条件之一：通过国家网信部门组织的安全评估；
+      按照国家网信部门的规定经专业机构进行个人信息保护认证；
+      按照国家网信部门制定的标准合同与境外接收方订立合同约定双方的权利和义务。
+      关键信息基础设施运营者和处理个人信息达到国家网信部门规定数量的处理者，
+      应当将在境内收集和产生的个人信息在境内存储，确需向境外提供的应当通过安全评估。
+    legal_basis:
+      instrument: 《中华人民共和国个人信息保护法》
+      article: 第三十八条、第四十条
+      article_confidence: content_high_article_uncertain
+      content_confidence: high
+    detection:
+      clause_categories: [data_protection]
+      keywords: [个人信息, 数据出境, 跨境传输, 境外接收方, 标准合同, 安全评估]
+    verdict_rules:
+      - condition: 合同涉及个人信息出境但未约定任何合规路径
+        conclusion: severe
+        action: 关键修改后继续
+      - condition: 约定了标准合同但未附标准合同文本或未约定备案安排
+        conclusion: important
+        action: 进入谈判项
+      - condition: 服务涉及境外服务器/境外关联方访问但合同未识别为数据出境
+        conclusion: severe
+        action: 关键修改后继续；出境的识别以是否可被境外主体访问为准，不以数据是否物理传输为准
+      - condition: 明确约定了合规路径与责任分配
+        conclusion: pass
+    human_gate: null
+    needs_human_confirmation:
+      - 触发安全评估的数量门槛、豁免情形与最新监管口径变动频繁，具体阈值需人工确认
+      - 「重要数据」的识别标准依赖行业目录，需人工确认
+
+  - id: cn-data-processing-agreement
+    title: 委托处理个人信息的约定要求
+    category: data_protection
+    mandatory: true
+    confidence: content_high_article_uncertain
+    statement: |
+      个人信息处理者委托处理个人信息的，应当与受托人约定委托处理的目的、期限、处理方式、
+      个人信息的种类、保护措施以及双方的权利和义务等，并对受托人的个人信息处理活动进行监督。
+      受托人应当按照约定处理个人信息，不得超出约定的处理目的、处理方式等处理个人信息；
+      委托合同不生效、无效、被撤销或者终止的，受托人应当返还个人信息或者予以删除，不得保留。
+    legal_basis:
+      instrument: 《中华人民共和国个人信息保护法》
+      article: 委托处理条款（条文序号需人工确认）
+      article_confidence: needs_human_confirmation
+      content_confidence: high
+    detection:
+      clause_categories: [data_protection]
+      keywords: [委托处理, 受托方, 数据处理协议, 处理目的, 删除或返还]
+    verdict_rules:
+      - condition: 存在委托处理但缺少目的/期限/方式/种类/保护措施任一要素
+        conclusion: severe
+        action: 关键修改后继续；逐项列出缺失要素
+      - condition: 未约定终止后返还或删除
+        conclusion: severe
+        action: 关键修改后继续
+        linked_check: base/missing-clauses.yaml#data-export
+      - condition: 要素齐备
+        conclusion: pass
+    human_gate: null
+
+  - id: cn-trade-secret-protection
+    title: 商业秘密的构成与保密条款
+    category: confidentiality
+    mandatory: false
+    confidence: content_high_article_uncertain
+    statement: |
+      商业秘密是指不为公众所知悉、具有商业价值并经权利人采取相应保密措施的
+      技术信息、经营信息等商业信息。保密条款的可执行性取决于信息是否满足上述三要件，
+      以及权利人是否实际采取了保密措施。
+    legal_basis:
+      instrument: 《中华人民共和国反不正当竞争法》
+      article: 商业秘密定义条款（条文序号需人工确认）
+      article_confidence: needs_human_confirmation
+      content_confidence: high
+    detection:
+      clause_categories: [confidentiality]
+      keywords: [保密信息, 商业秘密, 保密义务, 保密期限]
+    verdict_rules:
+      - condition: 保密信息定义过宽（如「本协议项下一切信息」）且无排除项
+        conclusion: important
+        action: 进入谈判项；过宽定义在争议中可能整体不被支持
+      - condition: 未约定保密义务期限
+        conclusion: important
+        action: 进入谈判项；须区分一般保密信息（有期限）与商业秘密（可约定至公开为止）
+      - condition: 定义清晰、含标准排除项、期限明确
+        conclusion: pass
+    human_gate: null
+
+  - id: cn-electronic-signature
+    title: 电子签名的效力与不适用情形
+    category: misc
+    mandatory: true
+    confidence: content_high_article_uncertain
+    statement: |
+      民事活动中的合同可以约定使用电子签名、数据电文；可靠的电子签名与手写签名或者盖章
+      具有同等的法律效力。但涉及婚姻、收养、继承等人身关系的文书，
+      涉及停止供水、供热、供气等公用事业服务的文书，以及法律、行政法规规定不适用电子文书的
+      其他情形，不适用电子签名。
+    legal_basis:
+      instrument: 《中华人民共和国电子签名法》
+      article: 第三条及可靠电子签名条款
+      article_confidence: content_high_article_uncertain
+      content_confidence: content_high_article_uncertain
+    detection:
+      clause_categories: [misc]
+      keywords: [电子签名, 电子合同, 数据电文, 在线签署, CA 证书]
+    verdict_rules:
+      - condition: 使用电子签名但未说明所用平台是否符合可靠电子签名要件
+        conclusion: important
+        action: 需人工确认；触发 HG-04
+      - condition: 合同类型可能属于电子签名不适用情形
+        conclusion: severe
+        action: 需人工确认
+      - condition: 使用可靠电子签名且合同类型无排除
+        conclusion: pass
+    human_gate: HG-04
+    needs_human_confirmation:
+      - 电子签名法排除情形的完整清单历经修正，具体项目需人工确认现行文本
+
+# ---------------------------------------------------------------------------
+# 七、法域冲突判定（relations.yaml#DC-006 的判定表）
+# ---------------------------------------------------------------------------
+conflicts:
+
+  - id: cn-conflict-dual-governing-law
+    title: 准据法双重声明
+    trigger: 存在两条及以上 declaration_type = governing_law 的 governed_by 边，且指向不同法域
+    nature: 互斥
+    severity: severe
+    verdict: 准据法只能有一个。两条并列的准据法条款构成实质冲突，必须在签署前统一
+    action: 关键修改后继续；触发 HG-02
+    output_requirements: [两条声明各自的条款号与页码, 各自指向的法域, 冲突性质说明]
+
+  - id: cn-conflict-pipl-gdpr-parallel
+    title: 中国法与 GDPR 并列适用
+    trigger: governing_law 指向中国法，同时存在 data_regime = GDPR 的 governed_by 边
+    nature: 需协调（非天然互斥）
+    severity: important
+    verdict: |
+      两者并非天然互斥——GDPR 可以作为特定事项的 carve_out 适用。但必须判定三点：
+        ① GDPR 的适用范围是否被明确界定为「就欧盟数据主体的个人数据处理」这类闭合表述
+        ② 是否存在欧盟数据主体（若不存在，GDPR 条款是无适用对象的空条款，应提示删除或说明保留原因）
+        ③ 是否同时满足中国法项下的数据出境要求（cn-personal-info-cross-border）
+      三点中任一为否或无法判定，输出 unknown 并进 HG-02，禁止择一默认。
+    action: 进入谈判项；触发 HG-02
+    blueprint_ref: 测试语料 C05 场景 / 样本 TC-004
+    output_requirements:
+      - 两条声明的条款号与页码
+      - 范围是否闭合的判定与依据
+      - 两制度义务优先级是否约定
+      - 中国法出境路径是否落地条款
+
+  - id: cn-conflict-arbitration-and-litigation
+    title: 仲裁与诉讼并存
+    trigger: 同一文档同时存在指向仲裁机构与人民法院的 dispute_forum 声明
+    nature: 互斥
+    severity: severe
+    verdict: 参见 cn-arbitration-or-litigation-conflict，须二者择一
+    action: 关键修改后继续；触发 HG-02
+
+  - id: cn-conflict-foreign-law-with-domestic-mandatory
+    title: 选择外国法但涉及中国强制性规定
+    trigger: governing_law 指向境外法域，同时合同涉及中国境内劳动关系、境内个人信息处理或其他强制性规定事项
+    nature: 需协调
+    severity: important
+    verdict: 中国法的强制性规定不因当事人选择外国法而当然被排除；须单独检查这些事项是否符合中国法
+    action: 需人工确认；同时加载本包做强制性规定检查，不得因准据法为外国法而跳过
+    note: 纯国内合同（无涉外因素）选择外国法的效力存在争议，需人工确认
+
+  - id: cn-conflict-bilingual-no-prevailing
+    title: 中英文双语无优先语言约定
+    trigger: relations.yaml#DC-009 命中
+    nature: 需协调
+    severity: important
+    verdict: 双语文本不一致时无解释规则；须约定优先语言，或逐项核对关键数值
+    action: 进入谈判项；同时输出两版本关键数值（金额、期限、责任上限）的比对结果
+
+# ---------------------------------------------------------------------------
+# 八、本包已知覆盖缺口（必须在报告中如实披露）
+# ---------------------------------------------------------------------------
+known_gaps:
+  - 行业专门监管（金融、医疗、教育培训、汽车、food 等）的特别规定未覆盖
+  - 反垄断相关条款（纵向价格限制、独家交易）未覆盖
+  - 出口管制、两用物项与制裁合规未覆盖
+  - 税务条款（增值税、代扣代缴）未覆盖
+  - 知识产权权属与职务成果的细化规则未覆盖
+  - 建设工程、不动产、并购交易文件未覆盖
+  - 香港、澳门、台湾地区法律未覆盖
+gap_policy: 命中已知缺口领域时，相关检查项在覆盖矩阵中留白（status = blank）并写明「本包未覆盖」，禁止按通过计

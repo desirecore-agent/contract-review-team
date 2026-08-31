@@ -1,0 +1,405 @@
+# ============================================================================
+# risk-lexicon/pack.yaml —— 风险触发词库元数据（蓝本第二节「按词库匹配、触发条件分析」）
+# ----------------------------------------------------------------------------
+# 这套词库补的是 A1 交付知识包时点名的最大缺口：
+#   base/missing-clauses.yaml 回答「该有的条款有没有」（9 项缺口检查）
+#   base/market-benchmarks.yaml 回答「有的那条数值落在哪个区间」（4 条标尺）
+#   本词库回答「写在里面的那句话本身是不是争议点」——触发条件分析
+# 三者并列，缺任何一份，风险识别都只剩另外两份的覆盖面。
+#
+# 【本词库最重要的一条】命中关键词**不是**结论，只是**候选**。
+# 样本 TC-008 记录的正是「按关键词命中即报」的后果：一份条款质量良好的协议被输出
+# 11 条高风险、其中 3 条是误报，法务反馈「逐条排除误报比自己读一遍合同还慢」。
+# 因此每个条目都必须走完 M1→M5 五步判定协议，且 counter_examples 是必填字段。
+# ============================================================================
+
+meta:
+  pack_id: risk-lexicon
+  pack_version: lexicon-v1
+  knowledge_base_version: '2026-08-31'
+  # 优先级与 base 同级：本词库是通用风控视角，不含任何国别法条。
+  precedence: 10
+  compatible_ontology: [onto-v1]
+  requires_pack: [base]
+  updated_at: '2026-08-31'
+  maintainer: 合同审查智能体团队
+  primary_consumer: risk-scanner
+  entries_total: 29
+
+# ---------------------------------------------------------------------------
+# 适用范围与边界
+# ---------------------------------------------------------------------------
+applies_to:
+  contract_types:
+    - 服务协议 / MSA
+    - 采购与供应合同
+    - 保密协议 / NDA
+    - 软件许可与订阅协议
+    - 数据处理协议 / DPA
+    - 框架协议与订单
+    - 劳动合同（仅 restraint_personnel 类目，且结论一律 defer_to_jurisdiction）
+  jurisdiction_neutral: true
+  not_a_compliance_conclusion: |
+    本词库与 base 层受同一条硬约束：**结论永远不能单独构成合规结论**。
+    「这条约定在某法域是否有效」属 jurisdiction-auditor 的职责（见样本 TC-004）。
+    词库只能输出「通用风控视角的观察」，不能写「合法」「有效」「不受保护」。
+
+# ---------------------------------------------------------------------------
+# 包内文件
+# ---------------------------------------------------------------------------
+files:
+  triggers-zh.yaml:
+    description: 29 个触发条目的中文匹配面与完整语义定义
+    consumed_by: [risk-scanner, review-reporter]
+  triggers-en.yaml:
+    description: 同 29 个 id 的英文匹配面与完整语义定义
+    consumed_by: [risk-scanner, review-reporter]
+  README.md:
+    description: 词库的使用方式、扩展方式与反误报设计说明
+    consumed_by: [人工维护者]
+
+# ---------------------------------------------------------------------------
+# 双语文件的一致性约定（改动时最容易出错的地方）
+# ---------------------------------------------------------------------------
+cross_language_consistency:
+  rule: |
+    同一个 id 在 triggers-zh.yaml 与 triggers-en.yaml 中各定义一次，两份文件各自自足，
+    可单独阅读。**语义字段必须逐字段相等**，语言面字段各自独立。
+  shared_fields_must_match:
+    - category
+    - severity
+    - resolution
+    - recommended_action
+    - human_gate
+    - benchmark_link
+    - missing_clause_link
+    - dedup_group
+    - requires_symmetry_check
+  language_local_fields:
+    - title
+    - why
+    - typical_position
+    - keywords
+    - patterns
+    - qualifiers
+    - counter_examples
+    - notes
+  on_change: 改任一 shared 字段必须同改两份文件并递增 pack_version；只改一份等于让中英文合同得到不同结论
+  on_language_gap: 某语言没有对应表述时，该语言文件仍须登记该 id，写 coverage.status = not_applicable 并说明原因，禁止整条省略
+
+# ---------------------------------------------------------------------------
+# 条目字段说明
+# ---------------------------------------------------------------------------
+field_reference:
+  id: 稳定 slug，前缀固定为 rt-（risk trigger）。产出发现时的 finding id 用 RISK-* 前缀，两者不是一回事
+  title: 人类可读名称，出现在覆盖矩阵与报告中
+  category: 所属类目，取值见下方 categories
+  severity: 命中且经判定成立后的结论等级（severe / important / advisory），与 conclusion_level 同域
+  resolution: 判定路径。决定这条命中能否单独下结论，见下方 resolutions
+  why: 为什么这是风险——一句话，须能让法务在不读条款的情况下判断要不要看
+  typical_position: 通常出现在哪类条款（自然语言）
+  clause_categories: 对应 contract.yaml#entities.clause.category 的取值，用于缩小扫描范围
+  keywords: 关键词列表。命中任一即进入候选，**不构成结论**
+  patterns: 正则列表（JavaScript 语法，不含分隔符与标志位；匹配时按不区分大小写处理）
+  qualifiers: 限定条件。require_any / require_all / exclude_if 三组，未满足时候选降级为 not_triggered
+  counter_examples: 【必填】什么情况下命中了也不算风险。为空的条目视为未完成，不得启用
+  benchmark_link: 关联的市场标尺条目；非 null 时 resolution 必须是 benchmark_compare
+  missing_clause_link: 关联的缺失条款检查项；两者命中同一条款时按 dedup_policy 合并
+  human_gate: 命中后触发的 Human Gate（HG-01..HG-04），null 表示不触发
+  dedup_group: 去重组。同组多个条目命中同一条款时合并为一条发现，取最高 severity
+  requires_symmetry_check: true 时必须先判定条款是否双方对等，对等与单方的结论不同
+  recommended_action: 对应动作，取值见下方 actions
+  evidence_requirement: 该条目产出发现时对证据的额外要求
+  status: enabled / disabled。disabled 的条目不参与判定，也不出现在覆盖矩阵
+
+# ---------------------------------------------------------------------------
+# 类目
+# ---------------------------------------------------------------------------
+categories:
+  lockin_exclusivity:
+    title: 锁定与排他
+    description: 限制己方选择权、把关系变成不可退出状态的约定
+    impact: key_rights
+  unilateral_power:
+    title: 单方权力与不对等
+    description: 一方可以单方面改变合同状态、或同一件事两方待遇不同
+    impact: key_rights
+  liability_exposure:
+    title: 责任敞口
+    description: 让赔偿责任不可估算、或把他人的违约传导为己方违约
+    impact: key_rights
+  term_renewal_exit:
+    title: 期限、续约与退出
+    description: 期限的自动延续与义务的无限期存续
+    impact: execution_order
+  ip_data_rights:
+    title: 知识产权与数据权利
+    description: 成果归属、数据所有权与使用授权范围
+    impact: key_rights
+  acceptance_performance:
+    title: 验收与履约
+    description: 交付物如何被认定为合格、服务水平如何承诺
+    impact: execution_order
+  restraint_personnel:
+    title: 人员限制
+    description: 竞业、挖角与雇佣相关限制
+    impact: key_rights
+  drafting_precision:
+    title: 措辞精度
+    description: 绝对化承诺与模糊时间表述带来的可执行性问题
+    impact: efficiency
+
+# ---------------------------------------------------------------------------
+# 判定路径（resolution）—— 反误报的主干
+# ---------------------------------------------------------------------------
+resolutions:
+  benchmark_compare:
+    description: 必须抽出可比数值并与 market-benchmarks.yaml 比对后才能下结论
+    may_conclude_alone: false
+    on_unmeasurable: 输出 conclusion = unknown 并说明原因，禁止按风险计（market-benchmarks.yaml#evaluation_protocol.unmeasurable_policy）
+  element_check:
+    description: 按该条目列出的要素逐项判定齐备性，缺哪一项写哪一项
+    may_conclude_alone: true
+    on_unmeasurable: 要素无法判定时该要素写 unknown，不得推定为缺失
+  symmetry_check:
+    description: 先判定条款是否双方对等；对等与单方是两个不同结论，不是同一结论的两档
+    may_conclude_alone: true
+    on_unmeasurable: 对等性无法判定时输出 unknown，不得默认按单方处理
+  defer_to_jurisdiction:
+    description: |
+      命中的是受强制性法律规定约束的事项。risk-scanner 只登记候选、锚定证据、
+      写明「须由法域合规判定」，**不得**给出等级与动作。
+    may_conclude_alone: false
+    handoff_field: deferred_to_jurisdiction
+    forbidden_output: 有效 / 无效 / 不受保护 / 超出法定上限 / 违反强制性规定
+  defer_to_version_comparison:
+    description: |
+      命中的是「与另一版本相比是否变差」的事项，单版本无法判定。
+      risk-scanner 抽出可比事实（comparable），方向判定属 review-reporter 的 compare_versions。
+    may_conclude_alone: false
+    handoff_field: comparables
+  direct:
+    description: 触发词加限定条件本身即构成结论，无需外部基准
+    may_conclude_alone: true
+    usage_note: 只用于「约定本身即不可执行或自相矛盾」的少数情形，滥用它就是回到 TC-008
+
+# ---------------------------------------------------------------------------
+# 动作（须与 actions.yaml 的语义一致，不得自造）
+# ---------------------------------------------------------------------------
+actions:
+  先谈判: 对应 actions.yaml#request_negotiation；severe 结论的最低动作
+  进入谈判项: 对应 actions.yaml#request_negotiation，列入谈判清单
+  建议优化: advisory 结论的动作；风险方向为上升时按 rules.md#R-041 升级为「先谈判」
+  需人工确认: 事实清楚但定性属人工职责时使用（rules.md#R-060）
+  转法域合规判定: resolution = defer_to_jurisdiction 时的唯一动作
+  转版本对比判定: resolution = defer_to_version_comparison 时的唯一动作
+
+# ---------------------------------------------------------------------------
+# 五步判定协议 M1→M5（顺序固定，不得跳步）
+# ---------------------------------------------------------------------------
+# 每一步都可能把候选打回，只有走完五步的候选才成为「发现」。
+# 跳过 M2 就是 TC-008 的复现路径：命中即报。
+# ---------------------------------------------------------------------------
+evaluation_protocol:
+
+  M1_match:
+    title: 匹配
+    input: clause[]（来自 clause-extractor 的结构化事实）
+    do: 按 keywords 与 patterns 在条款正文中匹配，命中即建立候选，记录命中的具体词与位置
+    out: candidate[]，每条带 {trigger_id, clause_no, evidence{part, page, quote}}
+    hard_rule: 只在上游已交付且已冻结的部件上匹配；未送达的部件写 not_covered，不得凭正文引用推测内容
+
+  M2_qualify:
+    title: 限定
+    do: 逐条检查 qualifiers.require_all / require_any / exclude_if 与 counter_examples
+    out: 未通过的候选记为 not_triggered，并写明被哪一条 counter_example 排除
+    hard_rule: |
+      **被 counter_example 排除的候选必须留痕**，写进 suppressed[] 段。
+      不留痕的抑制无法被复核，也无法证明「没报」是判断的结果而不是没看见。
+
+  M3_resolve:
+    title: 判定路径分流
+    do: 按 resolution 分流——benchmark_compare 去比标尺，element_check 逐要素判，
+      symmetry_check 先判对等性，defer_* 只登记不下结论
+    hard_rule: may_conclude_alone = false 的条目在本步产出的不是结论，是「待判定项」
+
+  M4_conclude:
+    title: 结论
+    do: 组装结论四元组——条款编号 + 证据位置（页码）+ 结论等级 + 对应动作
+    hard_rule: |
+      四元组缺任一项，该条发现不合格，不得计入（rules.md#R-012）。
+      结论等级只能取 severe / important / advisory / pass / unknown，
+      不得使用「较高」「偏大」「值得注意」这类无档位措辞。
+
+  M5_dedup:
+    title: 合并与留白
+    do: 按 dedup_policy 合并同组发现；把每个 enabled 条目的判定状态写进覆盖矩阵
+    hard_rule: |
+      29 个 enabled 条目**全部**要出现在覆盖矩阵里，包括判定为 pass 与 not_triggered 的。
+      省略即等于用「没提到」冒充「通过」（rules.md#R-014）。
+
+# ---------------------------------------------------------------------------
+# 去重策略
+# ---------------------------------------------------------------------------
+dedup_policy:
+  same_dedup_group_same_clause: 合并为一条发现，severity 取最高，evidence 取并集，trigger_ids 列全
+  lexicon_vs_missing_clause: |
+    词库条目与 missing-clauses.yaml 检查项命中同一条款时**不合并**——两者问的是不同问题
+    （「条款在不在」与「条款里那句话是不是争议点」）。但覆盖矩阵中必须交叉引用，
+    避免读者以为是同一件事被报了两次。
+  lexicon_vs_benchmark: |
+    benchmark_link 非 null 的条目，其结论**以标尺比对结果为准**，词库不另出一条。
+    词库在这里的作用是把标尺该看的那句话定位出来，不是重复给结论。
+  cross_version_duplicate: 版本对比模式下同一触发在两版都命中且内容未变的，只出一条，标注「两版均存在」
+
+# ---------------------------------------------------------------------------
+# 明令禁止的发现（历史误报的固化，全部来自 TC-008）
+# ---------------------------------------------------------------------------
+# 这些不是「谨慎输出」，是**不得输出**。它们没有客观基准，属主观判断补位。
+# ---------------------------------------------------------------------------
+forbidden_findings:
+  - id: FB-01
+    statement: 不得把「存在责任上限」本身报为风险
+    correct_behavior: 走 market-benchmarks.yaml#liability-cap-months 比对；等于或高于 12 个月判 aligned / pass
+    source: TC-008 ①
+
+  - id: FB-02
+    statement: 不得报「不可抗力范围过宽 / 可能被滥用」
+    correct_behavior: 只判 missing-clauses.yaml#force-majeure 的要素齐备性；范围宽窄无客观基准
+    source: TC-008 ② / missing-clauses.yaml#force-majeure.false_positive_guard
+
+  - id: FB-03
+    statement: 不得把双方对等的标准反转让条款报为风险
+    correct_behavior: 走 rt-asymmetric-assignment-restriction 的对等性判定；对等即 pass
+    source: TC-008 ③
+
+  - id: FB-04
+    statement: 不得在数值无法抽取时按风险计
+    correct_behavior: 输出 conclusion = unknown 并写明为什么抽不到
+    source: market-benchmarks.yaml#evaluation_protocol.unmeasurable_policy
+
+  - id: FB-05
+    statement: 不得因为条款「看起来对己方不利」而在无基准、无要素、无对等性依据时报风险
+    correct_behavior: 写成「需人工确认」并给出对比依据；无对比依据时不输出
+    source: rules.md#R-060 / R-012
+
+  - id: FB-06
+    statement: 不得把行业样板条款（通知条款、可分割性、完整协议、标题不影响解释、副本签署）报为风险
+    correct_behavior: 判 pass 并注明为惯常样板条款
+    source: TC-008 的失败模式外推
+
+  - id: FB-07
+    statement: 不得给出法律效力判断（有效 / 无效 / 不受保护 / 超出法定上限）
+    correct_behavior: resolution = defer_to_jurisdiction，登记候选并转交 jurisdiction-auditor
+    source: rules.md#R-060 / 蓝本第十七节
+
+# ---------------------------------------------------------------------------
+# 标尺定位线索（benchmark_locators）
+# ---------------------------------------------------------------------------
+# market-benchmarks.yaml 定义的是「数值落在哪个区间」，它不负责告诉你**去哪里找那个数值**。
+# missing-clauses.yaml 的 keywords 面向「这类条款在不在」，覆盖不到条款内部的实际表述——
+# 真实语料里责任上限的落点是「累计赔偿责任总额，不超过……费用总额」，
+# 而 missing-clauses.yaml#liability-cap 的 keywords_zh 中没有任何一项是它的连续子串。
+#
+# 因此本节补一份**定位用**的检索线索：它不产生任何结论，只保证 R4 的四条标尺
+# 在正文与附件里都能找到该看的那句话。找不到时判 unknown，不得按未约定处理。
+# ---------------------------------------------------------------------------
+benchmark_locators:
+
+  liability-cap-months:
+    headings_zh: [责任限制, 责任限额, 赔偿责任限制, 责任上限]
+    headings_en: [Limitation of Liability, Liability Cap, Limitations and Exclusions]
+    patterns_zh:
+      - '(累计)?(赔偿)?责任(总额|限额|上限)'
+      - '(不超过|最高不超过)[^。；]{0,30}(个月|月)[^。；]{0,20}(费用|服务费|价款)(总额)?'
+      - '不受[^。；]{0,20}(限额|上限)(的)?约束'
+    patterns_en:
+      - '\b(total\s+)?aggregate\s+liability'
+      - '\bshall\s+not\s+exceed\s+the\s+(total\s+)?(charges|fees|amounts)'
+    note: 责任上限常写在附件（SLA / Exhibit）而非主合同；主合同只作指向时必须追进附件
+
+  renewal-notice-days:
+    headings_zh: [合同期限, 协议期限, 订阅期, 期限与续约, 终止]
+    headings_en: [Term, Term and Termination, Renewal]
+    patterns_zh:
+      - '(届满|期满)前[^。；]{0,15}(\d+|[一二三四五六七八九十两]+)\s*(日|天|个月)[^。；]{0,20}(通知|告知)'
+      - '自动(续约|续期|展期)'
+    patterns_en:
+      - '\bnotice\s+of\s+non-?renewal[^.;]{0,40}(days?|months?)'
+      - '\bautomatically\s+renew'
+
+  non-compete-years:
+    headings_zh: [竞业限制, 竞业禁止, 离职后义务]
+    headings_en: [Restrictive Covenants, Non-Competition]
+    patterns_zh:
+      - '竞业(限制|禁止)[^。；]{0,25}(\d+|[一二三四五六七八九十两]+)\s*(年|个月)'
+      - '(离职|解除|终止)后[^。；]{0,12}(\d+|[一二三四五六七八九十两]+)\s*(年|个月)(内)?[^。；]{0,20}(不得|禁止)'
+      - '(不得)[^。；]{0,20}(自营|为他人经营|从事|任职)[^。；]{0,20}(竞争|同类)'
+    patterns_en:
+      - '\bnon-?compet\w*[^.;]{0,40}(years?|months?)'
+
+  data-export-window-days:
+    headings_zh: [数据导出, 数据返还, 数据处理, 终止后果, 数据本地化]
+    headings_en: [Data Return, Data Portability, Effects of Termination]
+    patterns_zh:
+      - '(导出|返还|迁移)[^。；]{0,25}(\d+|[一二三四五六七八九十两]+)\s*(日|天|个月)'
+      - '(不得|不提供|禁止|不支持)[^。；]{0,40}(导出|下载|返还|交付)[^。；]{0,20}(数据|副本|个人数据)?'
+      - '不提供任何形式的(数据)?(返还|导出)'
+    patterns_en:
+      - '\breturn\s+(client|customer)\s+data[^.;]{0,60}(days?)'
+      - '\b(shall|will)\s+not\s+(export|return)'
+
+  usage_rule: |
+    定位线索命中后**不产出任何结论**，只把条款交给 R4 的 evaluation_protocol 走
+    抽数值 → 归一化 → 对等性 → 比档位四步。命中零次时该标尺判 unknown 并写明
+    已检索的部件与页码区间，禁止直接判「未约定」——「没找到」与「没约定」是两件事。
+
+# ---------------------------------------------------------------------------
+# 条目索引（29 项。改动条目集合时必须同步这张表与 meta.entries_total）
+# ---------------------------------------------------------------------------
+entry_index:
+  lockin_exclusivity:
+    - rt-exclusivity-obligation
+    - rt-mfn-clause
+    - rt-exclusivity-without-minimum-commitment
+    - rt-change-of-control
+  unilateral_power:
+    - rt-unilateral-amendment
+    - rt-unilateral-price-adjustment
+    - rt-silence-deemed-consent
+    - rt-asymmetric-termination-right
+    - rt-asymmetric-assignment-restriction
+    - rt-sole-discretion-determination
+  liability_exposure:
+    - rt-uncapped-indemnity
+    - rt-joint-several-liability
+    - rt-cross-default
+    - rt-unlimited-guarantee
+    - rt-liquidated-damages-asymmetry
+  term_renewal_exit:
+    - rt-auto-renewal-silent
+    - rt-perpetual-obligation
+  ip_data_rights:
+    - rt-ip-ownership-inversion
+    - rt-broad-data-license
+    - rt-data-ownership-unclear
+    - rt-data-export-restricted
+  acceptance_performance:
+    - rt-deemed-acceptance
+    - rt-service-level-commitment
+  restraint_personnel:
+    - rt-non-compete-term
+    - rt-non-compete-without-compensation
+    - rt-non-solicit-broad
+    - rt-probation-period
+  drafting_precision:
+    - rt-absolute-warranty-wording
+    - rt-vague-time-terms
+
+# ---------------------------------------------------------------------------
+# 变更记录
+# ---------------------------------------------------------------------------
+changelog:
+  - version: lexicon-v1
+    date: '2026-08-31'
+    changes: 初始建立——8 个类目 29 个触发条目，五步判定协议，7 条明令禁止的发现

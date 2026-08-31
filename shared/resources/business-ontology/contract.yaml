@@ -1,0 +1,813 @@
+# ============================================================================
+# contract.yaml —— 合同业务本体：对象模型定义
+# ----------------------------------------------------------------------------
+# 作用：定义「合同审查团队全体 Agent 所指的同一个对象」到底是什么。
+#      蓝本第十四节：「几个 Agent 处理的是不是同一个对象」是最关键的质量指标。
+#      本文件是该指标的唯一事实源——任何 Agent 在交接、引用、结论中提到合同、
+#      附件、修订、当事方时，字段名与取值必须严格来自本文件。
+#
+# 读法：本文件不是被代码加载的运行时配置，而是给 Agent 阅读的**对象契约**。
+#      `entities` 描述对象有哪些字段；`enums` 描述取值域；
+#      `invariants` 描述哪些组合是非法的（违反即阻断，不是「提示后继续」）。
+#
+# 修改本文件 = 修改团队的事实基准，必须同时更新 relations.yaml 的引用与
+# README.md 的消费方表格，并在 test-cases/ 增加对应回归样本。
+# ============================================================================
+
+meta:
+  # 本体自身的版本号。任何字段增删或语义变化都必须递增，
+  # 因为回执里记录的 ontology_version 用于历史任务回放（蓝本第十四节）。
+  ontology_version: onto-v1
+  # 对齐蓝本第八节「版本矩阵」的 knowledge_base_version 维度。
+  # 与法域知识包的 knowledge_base_version 不一致时输出「数据对齐建议」，不自动放行。
+  knowledge_base_version: '2026-08-31'
+  # 本体适用的业务域，用于避免被误用到非合同场景。
+  domain: 商业合同审查
+  # 语言基准：字段名英文（稳定标识），取值与说明中文（人类审阅）。
+  naming_convention: 字段名使用 snake_case 英文；枚举值使用 snake_case 英文；说明文本使用中文
+  maintainer: 合同审查智能体团队
+  updated_at: '2026-08-31'
+
+# ============================================================================
+# 一、全局约定（所有 Agent 必须遵守，违反视为输出不合格）
+# ============================================================================
+conventions:
+
+  unknown_handling:
+    # 【最重要的一条】缺失信息必须显式表达为 unknown，禁止用空字符串、null、
+    # 省略字段、或「无」「暂无」等自然语言来表示。
+    # 原因：空值在下游会被误读为「已确认为空」，从而把「没查到签署日期」
+    #      悄悄变成「确认无需签署日期」——这是蓝本第四节要求阻断的场景。
+    rule: 任何未确认的字段必须写成 unknown，并在同级 *_unknown_reason 字段说明原因
+    forbidden_representations: ['', 'null', '无', '暂无', 'N/A', 'TBD', '待定']
+    example:
+      document_number: unknown
+      document_number_unknown_reason: 首页编号区被印章覆盖，OCR 置信度 0.41 低于阈值 0.85
+
+  evidence_anchor:
+    # 蓝本第七节「结论四元组」：条款编号 + 证据位置（页码）+ 结论等级 + 对应动作。
+    # 缺任何一项 = 该结论不合格，报告 Agent 必须拒收。
+    rule: 任何结论都必须挂载 evidence_ref（见 types.evidence_ref），不得输出无锚点结论
+    rejected_example: 综合来看该合同风险较高
+    accepted_example: 第 8.2 条（p.14）责任上限为 3 个月费用 → 结论等级：严重 → 动作：先谈判
+
+  object_identity:
+    # 「同一个对象」的判定规则。多 Agent 交接时必须传 object_ref 三元组，
+    # 只传 object_id 不够——主合同没变而附件被换的场景（蓝本第九节）
+    # 正是靠 content_digest 才能被发现。
+    rule: 判定两个 Agent 是否在处理同一对象，必须比对 object_id + version_label + content_digest 三者全等
+    partial_match_policy: 三者中任意一项不等即视为不同对象，禁止「按编号相同就当同一份」
+
+  scope_declaration:
+    # 蓝本第十四节「多 Agent 交接规范」：不传递整段对话历史。
+    rule: 交接载荷只允许包含 交接对象编号 / 已确认事项 / 待确认项 / 本次任务范围 四段，禁止附带前序推理过程
+    rationale: 复核 Agent 必须基于原文与结构化事实重新判断（蓝本第二节），读到前序推理即构成自我确认污染
+
+# ============================================================================
+# 二、可复用类型
+# ============================================================================
+types:
+
+  object_ref:
+    description: 跨 Agent 引用任何合同对象时的最小完整标识，三个字段缺一不可
+    fields:
+      object_id:
+        type: string
+        required: true
+        description: 对象稳定标识，形如 doc-main-001 / doc-att-003；在一个审查案件内唯一且永不复用
+      version_label:
+        type: string
+        required: true
+        description: 该对象自身的版本标签，如 v2.1、2026-07-18-rev3；附件有独立于主合同的版本标签
+      content_digest:
+        type: string
+        required: true
+        description: 该对象内容的 SHA-256（前 16 位十六进制即可）；判定「内容是否真的没变」的唯一依据
+
+  page_range:
+    description: 页码范围。页码是全部证据锚点的落点，页码不可靠则整份审查不可信
+    fields:
+      source_file:
+        type: string
+        required: true
+        description: 该范围所在的物理文件名（不含绝对路径，路径由运行时工作目录解析）
+      start_page:
+        type: integer
+        required: true
+        description: 起始页（从 1 开始，指归一化后的连续页码，不是文档内印刷页号）
+      end_page:
+        type: integer
+        required: true
+        description: 结束页（含）
+      printed_page_label:
+        type: string
+        required: false
+        description: 文档上印刷的页号标签，如「第 3 页 / 共 28 页」；与 start_page 不一致时须记录
+      total_pages:
+        type: integer
+        required: true
+        description: 该物理文件的总页数
+      is_continuous:
+        type: boolean
+        required: true
+        description: 页码是否连续无缺页；false 触发阻断（蓝本第四节「页数不完整、页码范围不连续」）
+
+  evidence_ref:
+    description: 结论四元组中的「证据位置」，任何结论必须携带
+    fields:
+      object_ref:
+        type: object_ref
+        required: true
+        description: 证据所在的对象（主合同 / 某份附件 / 某份修订）
+      clause_no:
+        type: string
+        required: true
+        description: 条款编号，如 8.2；无编号的段落写 unnumbered-p<段序号> 并说明
+      page:
+        type: integer
+        required: true
+        description: 归一化页码；缺失时不得输出结论，改为记入 failure_mark
+      quote:
+        type: string
+        required: true
+        description: 原文摘录（不超过 200 字），必须逐字，不得转述
+      extraction_confidence:
+        type: number
+        required: true
+        description: 抽取置信度 0-1；低于 pack 阈值（默认 0.85）须标记为失败标记而非结论
+
+  failure_mark:
+    description: 蓝本第四节的「失败标记」。它是欠账表的一行，不是通过
+    fields:
+      mark_type:
+        type: string
+        required: true
+        enum_ref: failure_mark_type
+        description: 失败类型
+      subject:
+        type: object_ref
+        required: true
+        description: 出问题的对象
+      detail:
+        type: string
+        required: true
+        description: 具体描述，须能让人工在 1 分钟内定位
+      blocks_conclusion:
+        type: boolean
+        required: true
+        description: 是否导致相关检查项无法给出结论；true 时该检查项在覆盖矩阵中留白，禁止按通过计
+
+  freeze_record:
+    description: 蓝本第四节「四大冻结」。未冻结时禁止输出一致性结论（蓝本第九节同源约束）
+    fields:
+      main_version_frozen:
+        type: boolean
+        required: true
+        description: 主版本是否已锁定
+      attachment_list_frozen:
+        type: boolean
+        required: true
+        description: 附件清单是否已锁定（清单本身是对象，不是主合同的一个字段）
+      page_range_frozen:
+        type: boolean
+        required: true
+        description: 页码范围是否已归一并锁定
+      signature_status_frozen:
+        type: boolean
+        required: true
+        description: 签章状态是否已确认并锁定
+      frozen_at:
+        type: string
+        required: false
+        description: 四项全 true 时的时间戳（ISO 8601）；任一项为 false 时必须为 unknown
+      frozen_by:
+        type: string
+        required: false
+        description: 执行冻结的 Agent ID 或人工确认人标识
+
+# ============================================================================
+# 三、枚举
+# ============================================================================
+enums:
+
+  document_kind:
+    description: 文档在案件中的角色。附件是一等对象，与主合同并列，不是主合同的属性
+    values:
+      main_contract: 主合同正文
+      attachment: 附件（清单内、已取得文件）
+      exhibit_referenced_only: 正文引用但未取得文件的附件——这是阻断项，不是缺省态
+      amendment: 补充协议 / 修订件
+      side_letter: 附函 / 承诺函
+      annex_of_annex: 附件的附件（层级 ≥ 2，必须显式建模，不得平铺）
+      unknown: 角色未确认
+
+  document_status:
+    description: 文档的流程状态。与 effectiveness 分离：签了不等于生效
+    values:
+      draft: 草稿
+      under_review: 审阅中
+      pending_signature: 待签署
+      executed: 已签署（双方签章齐备）
+      effective: 已生效
+      suspended: 中止
+      terminated: 已解除 / 已终止
+      expired: 已届满
+      superseded: 已被新版本取代
+      unknown: 状态未确认
+
+  effectiveness_state:
+    description: 生效状态。独立于签署状态，因为存在批准/登记/条件生效等要件
+    values:
+      effective: 已生效
+      not_yet_effective: 已签署但生效条件未成就
+      conditional: 附条件生效，条件待核
+      ineffective: 不生效 / 无效
+      unknown: 未确认
+
+  signature_state:
+    description: 签署状态。缺任一项均触发阻断（蓝本第四节）
+    values:
+      complete: 签章、日期、签署人三项齐备
+      missing_seal: 缺签章 / 缺骑缝章
+      missing_date: 缺签署日期
+      missing_signatory: 缺签署人或签署人无权限证明
+      electronic_unverified: 电子签名存在但可靠性未核验
+      unknown: 未确认
+
+  party_role:
+    description: 当事方角色。名称前后不一致时触发阻断（蓝本第四节「角色身份不明」）
+    values:
+      party_a: 甲方
+      party_b: 乙方
+      party_c: 丙方及以后
+      guarantor: 保证人
+      affiliate_beneficiary: 关联受益方
+      unknown: 角色未确认
+
+  risk_direction:
+    description: 蓝本第九节要求的「风险变化方向」。版本对比输出必须携带此字段
+    values:
+      up: 上升——动作从「建议优化」升级为「先谈判」
+      down: 下调
+      flat: 持平
+      undetermined: 无法判定（未冻结版本时的唯一合法取值）
+
+  failure_mark_type:
+    description: 蓝本第四节列举的失败标记类型
+    values:
+      clause_hit_without_page: 命中条款但页码缺失
+      duplicate_clause_no: 条款号重复
+      low_ocr_confidence: OCR 置信度低于阈值
+      attachment_version_uncovered: 附件版本未覆盖
+      party_name_drift: 当事方名称前后不一致
+      placeholder_detected: 检出空字段占位符
+      reference_target_missing: 引用目标不存在
+
+  conclusion_level:
+    description: 结论四元组中的「结论等级」，与 missing-clauses.yaml 的 severity 同域
+    values:
+      severe: 严重——影响关键权益，触发阻断或人工主导
+      important: 重要——影响执行秩序，须谈判或修改
+      advisory: 建议——影响效率，可作为优化项
+      pass: 通过——已核验且符合规则
+      blank: 留白——未覆盖，显式欠账，禁止按通过计
+
+# ============================================================================
+# 四、实体
+# ============================================================================
+entities:
+
+  review_case:
+    description: |
+      一次审查任务的顶层容器。它把一份主合同、它的全部附件与修订绑成一个整体。
+      设立它的原因：Agent 之间必须先对齐「我们在审的是哪一堆文件」，
+      否则会出现 A 用了 3 份附件、B 只用了 2 份，两边输出各自都说得通的经典失败样态。
+    fields:
+      case_id:
+        type: string
+        required: true
+        description: 案件唯一标识，形如 case-2026-0831-001
+      case_title:
+        type: string
+        required: true
+        description: 人类可读的案件名，用于报告标题
+      documents:
+        type: array<object_ref>
+        required: true
+        description: 案件包含的全部文档对象引用（主合同、附件、修订、附函），顺序不敏感
+        constraint: 必须且只能有 1 个 document_kind = main_contract 的成员
+      manifest_digest:
+        type: string
+        required: true
+        description: |
+          案件清单摘要 = 所有成员 object_ref 三元组按 object_id 排序后拼接的 SHA-256。
+          它是「几个 Agent 是否在处理同一堆对象」的一次性校验位：
+          交接载荷带上它，接收方比对不上就立即停止，不猜。
+      freeze:
+        type: freeze_record
+        required: true
+        description: 四大冻结记录；未全部为 true 时禁止进入工具链第 6 步版本对比
+      version_matrix:
+        type: object
+        required: true
+        description: 蓝本第八节版本矩阵，见下方 version_matrix 实体
+      intake_verdict:
+        type: string
+        required: true
+        enum: [pass, conditional_pass, reject, pending]
+        description: 输入治理 Agent 的裁决；reject 时后续 Agent 一律不得启动
+      intake_verdict_reasons:
+        type: array<string>
+        required: true
+        description: 裁决理由列表；conditional_pass 与 reject 必须非空
+
+  contract_document:
+    description: |
+      一份物理文档对象。主合同、每一份附件、每一份修订都是**独立的一等对象**，
+      各自拥有编号、版本、状态、页码范围。
+      为什么附件必须有自己的 version_label 与 content_digest：
+      蓝本第九节「版本对比陷阱」——主合同文本 diff 为零，但附件号被替换，
+      系统默认包含附件从而漏掉关键风险。只有附件自带版本与摘要，
+      「主版本没变」与「案件没变」才能被区分开。
+    fields:
+      object_id:
+        type: string
+        required: true
+        description: 对象稳定标识；同一案件内唯一
+      belongs_to_case:
+        type: string
+        required: true
+        description: 所属 review_case.case_id
+      kind:
+        type: string
+        required: true
+        enum_ref: document_kind
+        description: 文档角色
+      document_number:
+        type: string
+        required: true
+        description: 合同编号 / 附件编号（如「附件三」「Exhibit B」）；未确认写 unknown
+      title:
+        type: string
+        required: true
+        description: 文档标题原文
+      version_label:
+        type: string
+        required: true
+        description: 该文档自身的版本标签；附件与主合同各记各的，禁止继承主合同版本
+      version_ordinal:
+        type: integer
+        required: false
+        description: 版本序数，用于排序判断新旧；无法判定时省略并在 notes 说明
+      issued_at:
+        type: string
+        required: true
+        description: 该版本出具日期（ISO 8601）；未确认写 unknown
+      content_digest:
+        type: string
+        required: true
+        description: 文档内容 SHA-256 前 16 位；版本对比与身份判定的硬依据
+      status:
+        type: string
+        required: true
+        enum_ref: document_status
+        description: 流程状态
+      effectiveness:
+        type: object
+        required: true
+        description: 生效信息
+        fields:
+          state:
+            type: string
+            enum_ref: effectiveness_state
+            description: 生效状态
+          effective_from:
+            type: string
+            description: 生效日期；unknown 表示未确认
+          effective_until:
+            type: string
+            description: 失效日期；perpetual 表示无固定期限，unknown 表示未确认
+          conditions_precedent:
+            type: array<string>
+            description: 生效前置条件（批准、登记、备案、先决付款等），逐条列出
+      page_range:
+        type: page_range
+        required: true
+        description: 该文档在物理文件中的页码范围
+      parties:
+        type: array<string>
+        required: true
+        description: 该文档涉及的当事方 party_id 列表；附件当事方与主合同不一致是高风险信号
+      signature:
+        type: object
+        required: true
+        description: 签署信息
+        fields:
+          state:
+            type: string
+            enum_ref: signature_state
+            description: 签署状态
+          signed_at:
+            type: string
+            description: 签署日期
+          signatories:
+            type: array<string>
+            description: 签署人姓名与职务原文
+          seal_present:
+            type: boolean
+            description: 是否有签章 / 公司印章
+          authority_evidence:
+            type: string
+            description: 签署权限证据（授权书页码、法定代表人身份证明等）；unknown 触发生效要件 Human Gate
+      language:
+        type: string
+        required: true
+        description: 文档主语言，如 zh-CN / en-US；双语文本须记录并检查语言优先条款
+      jurisdiction_clues:
+        type: object
+        required: true
+        description: |
+          法域线索。它决定加载哪个 jurisdiction pack；
+          蓝本第八节：jurisdiction_pack_version 与法域线索不一致时**阻断**。
+        fields:
+          governing_law_declared:
+            type: string
+            description: 合同明示的准据法原文，如「中华人民共和国法律」；未约定写 unknown
+          dispute_forum_declared:
+            type: string
+            description: 明示的争议解决地/机构原文
+          data_regimes_referenced:
+            type: array<string>
+            description: 文中提及的数据合规制度，如 GDPR、个人信息保护法、CCPA；多制度并存是冲突检测输入
+          party_domiciles:
+            type: array<string>
+            description: 各方注册地/住所地，用于识别未明示准据法时的实际联系点
+      parser:
+        type: object
+        required: true
+        description: 解析元信息，用于蓝本第八节 parser_revision 维度
+        fields:
+          parser_revision:
+            type: string
+            description: 解析器版本；OCR 升级后不复用旧结论
+          extraction_mode:
+            type: string
+            enum: [native_text, ocr, mixed]
+            description: 抽取方式
+          ocr_confidence_min:
+            type: number
+            description: 全文最低 OCR 置信度；低于阈值页需逐页登记
+      failure_marks:
+        type: array<failure_mark>
+        required: true
+        description: 该文档上的失败标记；空数组表示已检查且无标记，禁止省略字段
+      notes:
+        type: string
+        required: false
+        description: 人类可读备注
+
+  party:
+    description: |
+      当事方对象。独立成实体而不是字符串，是因为蓝本第四节把
+      「甲乙方名称前后不一致」列为阻断项——只有把名称的每一次出现挂到同一个
+      party_id 上，才能发现「北京某某科技有限公司」与「某某科技（北京）有限公司」
+      是两个不同主体还是同一主体的笔误。
+    fields:
+      party_id:
+        type: string
+        required: true
+        description: 当事方稳定标识，如 party-a
+      role:
+        type: string
+        required: true
+        enum_ref: party_role
+        description: 角色
+      canonical_name:
+        type: string
+        required: true
+        description: 规范全称（以营业执照/注册文件为准；无法核实时以首次出现的完整名称为准并标注）
+      name_variants:
+        type: array<object>
+        required: true
+        description: 名称在文中的各次出现
+        fields:
+          text:
+            type: string
+            description: 出现的原文
+          page:
+            type: integer
+            description: 出现页码
+          object_id:
+            type: string
+            description: 出现在哪份文档
+          is_defined_term:
+            type: boolean
+            description: 是否为定义条款中定义的简称
+      identifier:
+        type: string
+        required: true
+        description: 统一社会信用代码 / EIN / 注册号；未确认写 unknown
+      domicile:
+        type: string
+        required: true
+        description: 注册地或主要营业地
+      signatory_authority:
+        type: string
+        required: true
+        description: 签署权限说明；unknown 时触发生效要件 Human Gate
+
+  clause:
+    description: |
+      条款对象。它是证据锚点的承载体，也是条款覆盖矩阵（蓝本第十五节）的行主键。
+    fields:
+      clause_id:
+        type: string
+        required: true
+        description: 条款对象标识，形如 doc-main-001#8.2
+      object_ref:
+        type: object_ref
+        required: true
+        description: 条款所属文档
+      clause_no:
+        type: string
+        required: true
+        description: 条款编号原文
+      heading:
+        type: string
+        required: true
+        description: 条款标题；无标题写 unknown
+      page:
+        type: integer
+        required: true
+        description: 起始页码；缺失时该条款只能进 failure_marks，不得产出结论
+      text:
+        type: string
+        required: true
+        description: 条款正文原文（逐字）
+      category:
+        type: string
+        required: true
+        enum: [definition, payment, term_duration, liability, indemnity, warranty,
+               confidentiality, ip, data_protection, termination, breach_remedy,
+               force_majeure, dispute_resolution, governing_law, assignment,
+               subcontracting, audit, non_compete, notice, misc, unknown]
+        description: 条款类别；决定被哪些规则集匹配
+      monetary_terms:
+        type: array<object>
+        required: false
+        description: 条款中的金额要素
+        fields:
+          amount_text:
+            type: string
+            description: 金额原文（保留大小写与币种写法）
+          currency:
+            type: string
+            description: 币种代码
+          normalized_amount:
+            type: number
+            description: 归一化数值；含占位符时不得归一化，改记 placeholder
+          is_placeholder:
+            type: boolean
+            description: 是否为空字段占位符；true 触发阻断
+      temporal_terms:
+        type: array<object>
+        required: false
+        description: 条款中的期限要素（付款期、通知期、宽限期、竞业期等）
+        fields:
+          kind:
+            type: string
+            description: 期限类型
+          duration_text:
+            type: string
+            description: 期限原文
+          normalized_days:
+            type: integer
+            description: 归一化天数；「个月」按 30 天折算并在 notes 注明折算方式
+      cross_references:
+        type: array<string>
+        required: true
+        description: 本条款引用的其他条款号或附件号原文；relations.yaml 的 references 边由此生成
+      extraction_confidence:
+        type: number
+        required: true
+        description: 抽取置信度 0-1
+
+  version_matrix:
+    description: |
+      蓝本第八节的版本矩阵。它必须随每一份报告与每一条回执落盘，
+      否则规则更新后无法做历史任务回放与差异对比（蓝本第十四节）。
+    fields:
+      skill_version:
+        type: string
+        required: true
+        description: 团队技能版本；不一致时重跑
+        on_mismatch: rerun
+      server_version:
+        type: string
+        required: true
+        description: 运行时服务版本；不一致时人工确认
+        on_mismatch: human_confirm
+      knowledge_base_version:
+        type: string
+        required: true
+        description: 知识库日期版本；不一致时重算历史样本
+        on_mismatch: recompute_history
+      jurisdiction_pack_version:
+        type: string
+        required: true
+        description: 生效的法域包版本，如 cn-v1 / us-v1；与法域线索不一致时阻断
+        on_mismatch: block
+      parser_revision:
+        type: string
+        required: true
+        description: 解析器版本；OCR 升级后不复用旧结论
+        on_mismatch: no_reuse_old_conclusions
+      ontology_version:
+        type: string
+        required: true
+        description: 本体版本（本文件 meta.ontology_version）
+        on_mismatch: human_confirm
+    policy:
+      # 蓝本第八节结句：不一致时输出「数据对齐建议」，而非自动放行。
+      on_any_mismatch: 输出数据对齐建议并暂停推进，禁止自动放行
+
+  receipt:
+    description: |
+      回执。蓝本第十四节「回执必须保留」的落地结构。
+      每个 Agent 每完成一次任务写一条，它是历史回放的唯一输入。
+    fields:
+      receipt_id:
+        type: string
+        required: true
+        description: 回执标识
+      case_id:
+        type: string
+        required: true
+        description: 案件标识
+      object_refs:
+        type: array<object_ref>
+        required: true
+        description: 本次处理涉及的对象版本（必须是三元组，不能只写编号）
+      rule_versions:
+        type: object
+        required: true
+        description: 本次使用的规则版本集合（base/jurisdiction/custom 各自的 pack version）
+      evidence_refs:
+        type: array<evidence_ref>
+        required: true
+        description: 本次产出结论所依据的证据位置
+      executed_by:
+        type: string
+        required: true
+        description: 执行 Agent 的 ID
+      human_confirmations:
+        type: array<object>
+        required: true
+        description: 人工确认点记录
+        fields:
+          gate_id:
+            type: string
+            description: Human Gate 标识（见 actions.yaml）
+          confirmed_by:
+            type: string
+            description: 确认人标识
+          confirmed_at:
+            type: string
+            description: 确认时间
+          decision:
+            type: string
+            enum: [approved, rejected, returned_for_rereview]
+            description: 决定
+      created_at:
+        type: string
+        required: true
+        description: 回执生成时间
+
+  coverage_matrix_row:
+    description: |
+      条款覆盖矩阵的一行（蓝本第十五节「响应矩阵」的合同对应物）。
+      它是欠账表：没有覆盖的检查项必须显式留白，不能因为没提就当通过。
+    fields:
+      check_id:
+        type: string
+        required: true
+        description: 检查项标识（引用 missing-clauses.yaml / rules.yaml / redlines.yaml 的条目 id）
+      check_title:
+        type: string
+        required: true
+        description: 检查项名称
+      source_location:
+        type: evidence_ref
+        required: false
+        description: 原文位置；status = blank 时允许缺省，其余状态必填
+      conclusion:
+        type: string
+        required: true
+        enum_ref: conclusion_level
+        description: 结论等级
+      action:
+        type: string
+        required: true
+        description: 对应动作（引用 actions.yaml 的 action id）
+      owner_agent:
+        type: string
+        required: true
+        description: 负责 Agent ID
+      status:
+        type: string
+        required: true
+        enum: [covered, blank, blocked, deferred]
+        description: 覆盖状态；blank 与 blocked 必须在报告中单列，禁止合并进「通过」
+
+# ============================================================================
+# 五、不变量（违反即阻断，不是「注意风险后继续」）
+# ============================================================================
+# 每条不变量都对应蓝本中的一处硬要求。输入治理 Agent 负责 INV-001..INV-008，
+# 版本对比与报告 Agent 负责 INV-009..INV-012。
+# ============================================================================
+invariants:
+
+  - id: INV-001
+    statement: review_case.documents 中有且仅有一个 kind = main_contract
+    rationale: 两份主合同或零份主合同意味着案件边界未定，后续所有「同一对象」判定失效
+    on_violation: block
+    blueprint_ref: 第十四节 核心质量指标
+
+  - id: INV-002
+    statement: 任何 kind = exhibit_referenced_only 的对象存在，即视为缺失附件
+    rationale: 蓝本第四节把「正文引用但清单没有」列为阻断项，不是缺省态
+    on_violation: block
+    blueprint_ref: 第四节 阻断项
+
+  - id: INV-003
+    statement: 每个 contract_document 的 version_label 与 content_digest 必须非 unknown
+    rationale: 附件缺自有版本号时，「主版本未变」会被错误推广为「案件未变」（版本对比陷阱）
+    on_violation: block
+    blueprint_ref: 第九节 版本对比陷阱
+
+  - id: INV-004
+    statement: 任何字段值命中占位符模式即阻断
+    patterns: ['$X', 'TBD', '[金额]', '____', '【待定】', 'XXX', '__', '〖待补〗']
+    rationale: 占位符表示条款尚未成立，对其做风险判断等于对空气评分
+    on_violation: block
+    blueprint_ref: 第四节 空字段占位符
+
+  - id: INV-005
+    statement: signature.state 不得为 unknown / missing_seal / missing_date / missing_signatory
+    rationale: 签署状态未确认时合同是否成立本身存疑
+    on_violation: block
+    blueprint_ref: 第四节 签署状态未确认
+
+  - id: INV-006
+    statement: page_range.is_continuous 必须为 true，且 end_page <= total_pages
+    rationale: 页码不连续时全部证据锚点不可信
+    on_violation: block
+    blueprint_ref: 第四节 页数不完整
+
+  - id: INV-007
+    statement: 每个 party 的 name_variants 若存在语义不同的名称，必须先归并或判定为不同主体，不得留待后续
+    rationale: 角色身份不明会让责任分配结论指向错误主体
+    on_violation: block
+    blueprint_ref: 第四节 角色身份不明
+
+  - id: INV-008
+    statement: version_matrix.jurisdiction_pack_version 声明的法域必须覆盖 jurisdiction_clues 中出现的全部法域线索
+    rationale: 用中国法包审一份约定纽约法的合同，输出看上去完整但整份无效
+    on_violation: block
+    blueprint_ref: 第八节 版本矩阵
+
+  - id: INV-009
+    statement: freeze 四项未全部为 true 时，risk_direction 只能取 undetermined，且禁止输出任何一致性结论
+    rationale: 蓝本第九节同源约束——差异数量为零不代表没有问题；未冻结时不应输出一致性结论
+    on_violation: block
+    blueprint_ref: 第九节 同源约束
+
+  - id: INV-010
+    statement: 版本对比输出必须包含 risk_direction 字段，且当新增条款导致风险升级时动作升级为「先谈判」
+    rationale: 「差异为 0」是最阴险的结论形态，必须被风险方向字段强制暴露
+    on_violation: reject_output
+    blueprint_ref: 第九节
+
+  - id: INV-011
+    statement: 任何 conclusion_level 非 blank 的结论必须携带完整 evidence_ref（clause_no + page + quote 均非 unknown）
+    rationale: 蓝本第七节结论四元组，缺任一项该结论不合格
+    on_violation: reject_output
+    blueprint_ref: 第七节
+
+  - id: INV-012
+    statement: 覆盖矩阵中 status = blank 或 blocked 的行不得计入通过率，且必须在报告正文单列
+    rationale: 欠账表的意义在于显式留白，合并进通过即丧失全部价值
+    on_violation: reject_output
+    blueprint_ref: 第十五节 响应矩阵
+
+# ============================================================================
+# 六、消费方（哪个 Agent 用本文件的哪一部分）
+# ============================================================================
+consumers:
+  # contract-review-lead（组长）：只用对象身份与交接约定做调度与拦截，不做实质判断
+  contract-review-lead: [conventions.object_identity, conventions.scope_declaration, entities.review_case.manifest_digest, entities.version_matrix]
+  contract-intake: [entities.review_case, entities.contract_document, entities.party, invariants.INV-001..INV-008, types.freeze_record]
+  clause-extractor: [entities.clause, types.evidence_ref, enums.conclusion_level, conventions.unknown_handling]
+  risk-scanner: [entities.clause, entities.coverage_matrix_row, types.evidence_ref]
+  jurisdiction-auditor: [entities.contract_document.jurisdiction_clues, entities.version_matrix, invariants.INV-008]
+  review-reporter: [entities.coverage_matrix_row, entities.receipt, entities.version_matrix, invariants.INV-009..INV-012]

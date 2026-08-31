@@ -1,0 +1,493 @@
+# ============================================================================
+# actions.yaml —— 合同业务本体：可执行动作与前置条件
+# ----------------------------------------------------------------------------
+# 作用：定义团队「能做什么动作」以及「做之前必须成立什么」。
+#      蓝本第十二节的四类法务不可替代动作在这里落成 HG-01..HG-04 四道 Human Gate：
+#      前置条件不满足 → 退回重审（returned_for_rereview），**不做默认通过**。
+#
+# 设计要点：前置条件是**可判定的断言**，不是提醒。每条 precondition 都能被
+#      回答「真/假/未知」，且「未知」一律按假处理（fail closed）。
+#      原因：合同审查里「不确定」和「没问题」被混同，是所有漏检的共同源头。
+# ============================================================================
+
+meta:
+  ontology_version: onto-v1
+  actions_version: actions-v1
+  knowledge_base_version: '2026-08-31'
+  updated_at: '2026-08-31'
+
+# ============================================================================
+# 一、全局策略
+# ============================================================================
+policy:
+
+  fail_closed:
+    # 三态求值中，unknown 归为「不满足」。这一条不可通过配置放宽。
+    rule: 前置条件求值为 unknown 时视为不满足
+    rationale: 允许 unknown 通过，等于允许「没查到」冒充「查过了没问题」
+
+  on_precondition_failure:
+    # 蓝本第十二节原话：不满足则退回重审，不做默认通过。
+    rule: returned_for_rereview
+    forbidden_alternatives:
+      - 提示风险后继续执行
+      - 超时后默认通过
+      - 降级为「建议」并放行
+      - 由 Agent 自行判断「本次影响不大」
+
+  human_gate_semantics:
+    rule: Human Gate 的通过只能由人给出，Agent 不得代为确认，也不得预填确认结果
+    evidence_required: 确认必须落入 receipt.human_confirmations（gate_id / confirmed_by / confirmed_at / decision）
+    timeout_behavior: 无超时自动通过；未确认即停在该动作，案件状态保持 pending
+
+  action_ordering:
+    rule: 动作的执行顺序受 rules.md#R-001 的 7 步工具链约束，本文件的 stage 字段标明动作归属哪一步
+    forbidden: 由模型自行编排动作顺序
+
+# ============================================================================
+# 二、条件表达式约定
+# ============================================================================
+condition_syntax:
+  description: |
+    前置条件写成「主语 + 断言」的自然语言，但必须能机械求值。
+    引用其他文件的判定时使用 <文件>#<id> 形式，例如：
+      contract.yaml#INV-004      —— 本体不变量
+      relations.yaml#DC-001      —— 派生检查
+      rules.md#R-020             —— 流程规则
+      base/missing-clauses.yaml#liability-cap —— 规则集条目
+  eval_result: [satisfied, violated, unknown]
+  unknown_policy: 按 violated 处理（见 policy.fail_closed）
+
+# ============================================================================
+# 三、Human Gate 定义（蓝本第十二节四类法务不可替代动作）
+# ============================================================================
+human_gates:
+
+  - gate_id: HG-01
+    title: 付款触发与回款
+    scope: 金额、逾期利息/违约金、结算周期、付款触发条件、发票与回款流程的任何认定或变更
+    why_irreplaceable: 付款条件直接决定现金流风险，且触发条件的解释权在商业谈判中，不在文本分析中
+    approver_role: 法务 / 授权商务负责人
+    triggers:
+      - 抽取到 clause.category = payment 且含 monetary_terms 或 temporal_terms
+      - 版本对比发现付款相关条款变化（risk_direction 任意值）
+      - custom 层付款红线被命中
+    blocks_action: [release_to_legal, emit_final_report]
+    blueprint_ref: 第十二节 1
+
+  - gate_id: HG-02
+    title: 争议解决机制
+    scope: 管辖权、仲裁与诉讼的选择、仲裁机构与地点、适用法律、语言、送达
+    why_irreplaceable: 争议解决条款一旦生效，决定了未来所有救济的成本与可行性，属终局性商业与法律选择
+    approver_role: 法务
+    triggers:
+      - 抽取到 clause.category ∈ [dispute_resolution, governing_law]
+      - relations.yaml#DC-006 命中法域冲突
+      - base/missing-clauses.yaml#dispute-resolution 判定为缺失
+    blocks_action: [release_to_legal, emit_final_report]
+    blueprint_ref: 第十二节 2
+
+  - gate_id: HG-03
+    title: 责任与违约分配
+    scope: 责任上限、间接损失/后果性损失排除、赔偿（indemnity）、保证与免责、不可抗力范围
+    why_irreplaceable: 责任分配是风险定价，属商业条件拍板范畴
+    approver_role: 法务 + 业务负责人
+    triggers:
+      - 抽取到 clause.category ∈ [liability, indemnity, warranty, force_majeure, breach_remedy]
+      - 市场标尺对标出现偏差信号（base/market-benchmarks.yaml）
+      - base/missing-clauses.yaml 中 liability-cap / breach-remedy / force-majeure 任一判定为缺失
+    blocks_action: [release_to_legal, emit_final_report]
+    blueprint_ref: 第十二节 3
+
+  - gate_id: HG-04
+    title: 生效要件
+    scope: 有效签章、签署人权限、依赖附件是否齐备、法定形式（批准/登记/备案）、生效条件成就
+    why_irreplaceable: 合同是否成立生效是法律效力的终局判断，不在 Agent 能力边界内（蓝本第十七节）
+    approver_role: 法务
+    triggers:
+      - contract.yaml#INV-005 命中（签署状态缺陷）
+      - relations.yaml#DC-002 或 DC-007 命中
+      - contract_document.effectiveness.state ∈ [not_yet_effective, conditional, unknown]
+      - signature.authority_evidence = unknown
+    blocks_action: [release_to_legal, emit_final_report, declare_version_consistency]
+    blueprint_ref: 第十二节 4
+
+# ============================================================================
+# 四、动作
+# ============================================================================
+actions:
+
+  # ---- 第 1-2 步：解析与完整性 ----------------------------------------------
+
+  - id: register_case
+    stage: 1
+    title: 登记案件与版本
+    description: 建立 review_case，登记全部文档对象（含每份附件的独立版本），生成 manifest_digest
+    performed_by: contract-intake
+    preconditions:
+      - check: 至少一份文档已成功解析出文本或 OCR 结果
+        severity: severe
+        on_fail: reject_intake
+      - check: 每份文档均已计算 content_digest
+        severity: severe
+        on_fail: reject_intake
+    human_gate: null
+    outputs: [review_case, 'contract_document[]', version_matrix]
+    receipt_fields: [object_refs, executed_by, created_at]
+
+  - id: freeze_baseline
+    stage: 2
+    title: 执行四大冻结
+    description: 锁定主版本、附件清单、页码范围、签章状态；四项全部成立才允许写 frozen_at
+    performed_by: contract-intake
+    preconditions:
+      - check: contract.yaml#INV-001 满足（有且仅有一份主合同）
+        severity: severe
+        on_fail: block
+      - check: contract.yaml#INV-003 满足（每份文档含非 unknown 的 version_label 与 content_digest）
+        severity: severe
+        on_fail: block
+      - check: contract.yaml#INV-006 满足（页码连续）
+        severity: severe
+        on_fail: block
+      - check: contract.yaml#INV-005 满足（签署状态齐备）
+        severity: severe
+        on_fail: block
+        also_triggers: HG-04
+    human_gate: null
+    outputs: [freeze_record]
+    notes: 冻结失败不阻止记录事实，但阻止进入第 6 步版本对比（见 rules.md#R-013）
+
+  - id: run_intake_gate
+    stage: 2
+    title: 输入治理裁决
+    description: 输出 pass / conditional_pass / reject 三态裁决
+    performed_by: contract-intake
+    preconditions:
+      - check: relations.yaml#DC-001 未命中（不存在「引用了但清单没有」）
+        severity: severe
+        on_fail: reject_intake
+      - check: relations.yaml#DC-002 未命中（不存在「清单列明但文件未取得」）
+        severity: severe
+        on_fail: reject_intake
+      - check: contract.yaml#INV-004 未命中（无空字段占位符）
+        severity: severe
+        on_fail: reject_intake
+      - check: contract.yaml#INV-007 满足（当事方名称已归并或已判定为不同主体）
+        severity: severe
+        on_fail: reject_intake
+      - check: relations.yaml#DC-005 未命中（无孤儿修订件）
+        severity: severe
+        on_fail: reject_intake
+    human_gate: null
+    outputs: [intake_verdict, intake_verdict_reasons, 'failure_mark[]']
+    conditional_pass_scope: 仅适用 rules.md#R-020 例外情形，且必须在报告首页列明限制
+    notes: reject 时后续 Agent 一律不得启动——这是「阻断而非放行」的执行点
+
+  # ---- 第 3 步：条款抽取 ----------------------------------------------------
+
+  - id: extract_clauses
+    stage: 3
+    title: 条款结构化抽取
+    description: 抽取条款号、定义、金额、付款、期限、解除、争议解决，逐条保留来源页码
+    performed_by: clause-extractor
+    preconditions:
+      - check: intake_verdict ∈ [pass, conditional_pass]
+        severity: severe
+        on_fail: block
+      - check: parser.parser_revision 已登记
+        severity: important
+        on_fail: failure_mark
+    human_gate: null
+    outputs: ['clause[]', 'relations.references[]', 'failure_mark[]']
+    output_constraints:
+      - 任何 page = unknown 的条款只能进 failure_mark（类型 clause_hit_without_page），不得产出结论
+      - extraction_confidence 低于阈值（默认 0.85）的条款标记为 low_ocr_confidence
+      - 条款号重复时全部保留并标记 duplicate_clause_no，禁止择一丢弃
+
+  # ---- 第 4 步：法域知识注入 ------------------------------------------------
+
+  - id: load_jurisdiction_packs
+    stage: 4
+    title: 加载三层知识包
+    description: 按 custom > jurisdiction > base 优先级合并规则集，记录生效的 pack 版本
+    performed_by: jurisdiction-auditor
+    preconditions:
+      - check: contract.yaml#INV-008 满足（pack 版本覆盖全部法域线索）
+        severity: severe
+        on_fail: block
+        also_triggers: HG-02
+      - check: 各 pack 的 knowledge_base_version 与本体一致，或已输出数据对齐建议
+        severity: important
+        on_fail: flag
+    human_gate: null
+    outputs: [effective_ruleset, version_matrix.jurisdiction_pack_version]
+
+  - id: detect_jurisdiction_conflict
+    stage: 4
+    title: 法域冲突检测
+    description: 依据 relations.yaml#DC-006 与各 pack 的 conflicts 段，判定并列适用是否构成冲突
+    performed_by: jurisdiction-auditor
+    preconditions:
+      - check: 全部 governed_by 边已建立且带 evidence
+        severity: severe
+        on_fail: block
+    human_gate: HG-02
+    outputs: ['conflict_finding[]']
+    output_constraints:
+      - 每条冲突必须写明「哪两条声明、各自出处页码、冲突性质（互斥 / 需协调 / 范围不闭合）」
+      - 无法判定时输出 unknown 并进 Human Gate，禁止择一默认
+
+  # ---- 第 5 步：风险判读 ----------------------------------------------------
+
+  - id: assess_missing_clauses
+    stage: 5
+    title: 关键缺失条款检查
+    description: 按 base/missing-clauses.yaml 的 9 项逐项判定
+    performed_by: risk-scanner
+    preconditions:
+      - check: clause[] 已产出且覆盖矩阵骨架已建立
+        severity: severe
+        on_fail: block
+    human_gate: null
+    outputs: ['coverage_matrix_row[]']
+    output_constraints:
+      - 每项必须给出 covered / blank / blocked 三态之一，禁止省略
+      - 判定为缺失时必须写明检索范围（已检索的页码区间与关键词），否则该判定不成立
+
+  - id: benchmark_against_market
+    stage: 5
+    title: 市场标尺对标
+    description: 按 base/market-benchmarks.yaml 比对责任上限、续约通知期、竞业期限、数据导出
+    performed_by: risk-scanner
+    preconditions:
+      - check: 相关条款已抽取且含归一化数值
+        severity: important
+        on_fail: failure_mark
+    human_gate: HG-03
+    outputs: ['benchmark_finding[]']
+    output_constraints:
+      - 偏差信号必须给出实际值、基准值与差距，禁止只写「偏低」
+
+  - id: check_custom_redlines
+    stage: 5
+    title: 企业红线检查
+    description: 按 custom/redlines.yaml 逐条判定，命中红线的严重度不低于 important
+    performed_by: risk-scanner
+    preconditions:
+      - check: custom pack 已加载且 enabled 条目已过滤
+        severity: important
+        on_fail: flag
+      - check: custom 条目未试图放宽 jurisdiction 层 mandatory 规则（rules.md#R-050 例外）
+        severity: severe
+        on_fail: flag_and_use_jurisdiction
+    human_gate: null
+    outputs: ['redline_finding[]']
+
+  # ---- 第 6 步：版本对比 ----------------------------------------------------
+
+  - id: compare_versions
+    stage: 6
+    title: 版本对比
+    description: 比对主合同与**每一份附件**的版本与内容摘要，输出差异与风险变化方向
+    performed_by: review-reporter
+    preconditions:
+      - check: freeze 四项全部为 true
+        severity: severe
+        on_fail: force_undetermined
+        note: 未冻结时不阻断执行，但 risk_direction 强制为 undetermined 且禁止输出一致性结论（rules.md#R-013）
+      - check: 存在可比对的历史基线版本
+        severity: important
+        on_fail: mark_not_applicable
+    human_gate: null
+    outputs: [diff_result, risk_direction]
+    output_constraints:
+      - 必须逐份附件比对，禁止「主合同未变即认定案件未变」
+      - relations.yaml#DC-004 命中时禁止输出「无差异」，必须点名附件替换
+      - risk_direction = up 时，相关动作由「建议优化」升级为「先谈判」
+    blueprint_ref: 第九节
+
+  - id: declare_version_consistency
+    stage: 6
+    title: 声明版本一致
+    description: 输出「与基线一致」的结论。这是一个受严格限制的动作
+    performed_by: review-reporter
+    preconditions:
+      - check: freeze 四项全部为 true
+        severity: severe
+        on_fail: forbid_action
+      - check: relations.yaml#DC-004 未命中
+        severity: severe
+        on_fail: forbid_action
+      - check: 附件集合成员（按 object_id）与基线完全相同
+        severity: severe
+        on_fail: forbid_action
+    human_gate: HG-04
+    outputs: [consistency_statement]
+    notes: 本动作是「差异为 0」结论的唯一合法出口；任何绕过本动作直接写「无差异」的输出应被拒收
+
+  # ---- 第 7 步：报告与放行 --------------------------------------------------
+
+  - id: compute_score
+    stage: 7
+    title: 计算风险评分
+    description: 按权重计算总分——条款抽取 20%、风险评估 25%、合规稽核 20%、义务与时序映射 15%、建议生成 20%
+    performed_by: review-reporter
+    preconditions:
+      - check: 覆盖矩阵每一行 status 非空
+        severity: severe
+        on_fail: block
+      - check: blank 与 blocked 行已单列且未计入通过率
+        severity: severe
+        on_fail: reject_output
+    human_gate: null
+    outputs: [score, score_breakdown]
+    output_constraints:
+      - 必须输出五个维度各自得分与依据，禁止只给总分
+      - 存在未解决 severe 结论时，动作取评分档位与该结论档位中更保守者（rules.md#R-032 例外）
+
+  - id: emit_final_report
+    stage: 7
+    title: 输出最终报告
+    description: 条款级 Markdown + 证据索引 + 覆盖矩阵 + 待办清单 + 签核点 + 版本回滚条件
+    performed_by: review-reporter
+    preconditions:
+      - check: contract.yaml#INV-011 满足（全部非 blank 结论含完整四元组）
+        severity: severe
+        on_fail: reject_output
+      - check: contract.yaml#INV-012 满足（留白单列）
+        severity: severe
+        on_fail: reject_output
+      - check: version_matrix 五维度已落盘
+        severity: severe
+        on_fail: block
+      - check: 报告用语未出现定性表述（rules.md#R-060）
+        severity: severe
+        on_fail: reject_output
+    human_gate: null
+    outputs: [report_markdown, coverage_matrix, receipt]
+    notes: 报告可以在 Human Gate 未通过时输出，但其中不得含「可放行」结论
+
+  - id: release_to_legal
+    stage: 7
+    title: 放行至法务确认
+    description: 蓝本第五节 88-100 分档位的动作。注意它不是「通过」，而是「可以交给法务看」
+    performed_by: review-reporter
+    preconditions:
+      - check: score >= 88
+        severity: severe
+        on_fail: forbid_action
+      - check: 无未解决的 severe 结论
+        severity: severe
+        on_fail: forbid_action
+      - check: HG-01 已获人工确认
+        severity: severe
+        on_fail: returned_for_rereview
+      - check: HG-02 已获人工确认
+        severity: severe
+        on_fail: returned_for_rereview
+      - check: HG-03 已获人工确认
+        severity: severe
+        on_fail: returned_for_rereview
+      - check: HG-04 已获人工确认
+        severity: severe
+        on_fail: returned_for_rereview
+      - check: 覆盖矩阵无 blank 行
+        severity: severe
+        on_fail: returned_for_rereview
+    human_gate: [HG-01, HG-02, HG-03, HG-04]
+    outputs: [release_recommendation]
+    forbidden_wording: [本合同合法有效, 可以签署, 无法律风险, 已通过审查]
+    blueprint_ref: 第五节 / 第十二节 / 第十七节
+
+  - id: request_negotiation
+    stage: 7
+    title: 转为谈判项
+    description: 74-87 分档位，或 risk_direction = up 时由「建议优化」升级而来
+    performed_by: review-reporter
+    preconditions:
+      - check: 每个谈判项均带完整四元组与建议措辞方向
+        severity: important
+        on_fail: failure_mark
+    human_gate: null
+    outputs: [negotiation_list]
+
+  - id: halt_for_human_lead
+    stage: 7
+    title: 暂停推进，转人工主导
+    description: 48-59 分档位。这是一个终止动作，不得被后续动作覆盖
+    performed_by: review-reporter
+    preconditions: []
+    human_gate: null
+    outputs: [halt_notice, blocking_issue_list]
+
+  - id: rebuild_and_rerun
+    stage: 7
+    title: 重建条款并重跑评审
+    description: 0-47 分档位
+    performed_by: review-reporter
+    preconditions: []
+    human_gate: null
+    outputs: [rebuild_requirements]
+
+  # ---- 跨阶段：治理动作 ------------------------------------------------------
+
+  - id: rollback_version
+    stage: post
+    title: 版本回滚
+    description: 回到上一个已冻结基线，重跑审查
+    performed_by: review-reporter
+    preconditions:
+      - check: 目标基线的 freeze 四项全部为 true
+        severity: severe
+        on_fail: forbid_action
+      - check: 目标基线存在完整 receipt（可回放）
+        severity: severe
+        on_fail: forbid_action
+    human_gate: HG-04
+    outputs: [rollback_record]
+
+  - id: promote_correction_to_rule
+    stage: post
+    title: 把人工纠正固化为规则
+    description: 蓝本第十五节「一次纠正，下次自动执行」。写入 custom/redlines.yaml 或 test-cases/
+    performed_by: review-reporter
+    preconditions:
+      - check: 纠正内容已具备可判定的断言形式
+        severity: important
+        on_fail: failure_mark
+      - check: 已确认该纠正属普遍规则而非个案商业判断
+        severity: important
+        on_fail: write_test_case_only
+      - check: 用户已确认生效（rules.md#R-052）
+        severity: severe
+        on_fail: hold_as_draft
+    human_gate: null
+    outputs: [rule_diff, test_case]
+    notes: Agent 可以起草，但生效必须经用户确认——规则文件不是 Agent 的自留地
+
+  - id: emit_data_alignment_advice
+    stage: post
+    title: 输出数据对齐建议
+    description: 版本矩阵任一维度不一致时的产出。蓝本第八节：输出对齐建议，而非自动放行
+    performed_by: review-reporter
+    preconditions:
+      - check: 已识别出具体不一致的维度与两侧取值
+        severity: severe
+        on_fail: block
+    human_gate: null
+    outputs: [alignment_advice]
+    output_constraints:
+      - 必须写明：哪个维度、期望值、实际值、按该维度 on_mismatch 应采取的处理（重跑 / 人工确认 / 重算历史样本 / 阻断 / 不复用旧结论）
+
+# ============================================================================
+# 五、消费方
+# ============================================================================
+consumers:
+  # contract-review-lead（组长）：按 stage 顺序调度并在前置条件不满足时退回重审；不得代为确认 Human Gate
+  contract-review-lead: [policy, action_ordering, human_gates, emit_data_alignment_advice]
+  contract-intake: [register_case, freeze_baseline, run_intake_gate, policy]
+  clause-extractor: [extract_clauses, condition_syntax]
+  risk-scanner: [assess_missing_clauses, benchmark_against_market, check_custom_redlines, human_gates.HG-03]
+  jurisdiction-auditor: [load_jurisdiction_packs, detect_jurisdiction_conflict, human_gates.HG-02]
+  review-reporter: [compare_versions, declare_version_consistency, compute_score, emit_final_report, release_to_legal, request_negotiation, halt_for_human_lead, rebuild_and_rerun, rollback_version, promote_correction_to_rule, emit_data_alignment_advice, human_gates]

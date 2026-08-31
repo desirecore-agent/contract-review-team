@@ -1,0 +1,1299 @@
+# ============================================================================
+# risk-lexicon/triggers-zh.yaml —— 中文风险触发词库（29 项）
+# ----------------------------------------------------------------------------
+# 【读之前先读这一段】
+# 本文件里的 keywords 与 patterns **不是判据**，是**检索线索**。
+# 命中它们只说明「这句话值得看一眼」，离「这是一条风险」还差三步：
+# 限定（qualifiers）→ 排除（counter_examples）→ 判定（resolution）。
+# 跳过任何一步，得到的都是样本 TC-008 里那份「逐条排除误报比自己读一遍合同还慢」的报告。
+#
+# counter_examples 是必填字段，且必须写具体形态，不能写「视情况而定」。
+# 本文件里的绝大多数 counter_examples 直接来自 .testdata 的真实语料——
+# 它们不是假想的边界情况，是已经发生过或必然发生的误报。
+# ============================================================================
+
+meta:
+  pack_id: risk-lexicon
+  pack_version: lexicon-v1
+  language: zh-CN
+  knowledge_base_version: '2026-08-31'
+  updated_at: '2026-08-31'
+  entries_total: 29
+  pattern_syntax: JavaScript 正则，不含分隔符与标志位；匹配时按不区分大小写、全文多行处理
+
+triggers:
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 一、锁定与排他 lockin_exclusivity
+# ═══════════════════════════════════════════════════════════════════════════
+
+  - id: rt-exclusivity-obligation
+    title: 排他条款
+    category: lockin_exclusivity
+    severity: important
+    resolution: symmetry_check
+    status: enabled
+    why: 排他义务把「选择供应商 / 客户」的权利让渡出去，退出成本从商务问题变成违约问题
+    typical_position: 合作范围、独家授权、区域代理、采购承诺条款
+    clause_categories: [misc, payment, ip, non_compete]
+    keywords: [排他, 独家, 唯一供应商, 唯一渠道, 不得与第三方, 不得向第三方采购, 全部需求, 独占]
+    patterns:
+      - '独家(代理|经销|授权|供应|合作)'
+      - '(唯一|独家)的?(供应商|服务商|渠道|合作方)'
+      - '不得(与|向)(任何)?第三方(采购|购买|销售|提供|合作)'
+      - '(全部|所有|百分之百|100%)(的)?(需求|采购量|订单)(均|应|须|应当)?(由|向)'
+    qualifiers:
+      require_any:
+        - 存在一方被限制与第三方交易的表述
+        - 存在「全部需求由对方满足」的承诺
+      exclude_if:
+        - 「排他」「独家」出现在管辖或争议解决条款中（排他管辖是程序安排，不是商业锁定）
+        - 「独占」用于描述知识产权许可的授权类型且己方是被授权方（独占许可对被授权方有利）
+    requires_symmetry_check: true
+    counter_examples:
+      - form: 排他管辖 / 专属管辖
+        example: 「双方同意提交某法院排他管辖」
+        why_not_risk: 这是争议解决机制的程序性安排，属 missing-clauses.yaml#dispute-resolution 的要素，不是商业排他
+      - form: 「非独占」含「独占」子串
+        example: 「甲方在订阅期内享有非独占、不可转让的使用许可」
+        why_not_risk: |
+          「非独占」是「独占」的否定式，按子串必然命中而含义相反。
+          非独占许可是标准的订阅授权形态，判 pass（真实语料 C01 第 9.2 款）。
+      - form: 独占许可授予己方
+        example: 「甲方获得该软件在中国境内的独占使用许可」
+        why_not_risk: 授权类型描述，方向对己方有利
+      - form: 双方对等的排他
+        example: 「双方在合作期内均不与对方的直接竞争对手开展同类合作」
+        why_not_risk: 对等约束，判 pass 并注明对等；只有单方受限才升格
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: exclusivity
+    recommended_action: 进入谈判项
+    evidence_requirement: 必须引用限制交易的原句，并写明受限方是甲方还是乙方
+    notes: 与 rt-exclusivity-without-minimum-commitment 同组；两者同条款命中时合并为一条，取更高 severity
+
+  - id: rt-mfn-clause
+    title: 最惠国待遇（MFN）
+    category: lockin_exclusivity
+    severity: important
+    resolution: element_check
+    status: enabled
+    why: 承诺「不给别人更好的条件」等于把未来所有对外报价的定价自由一次性交出去，且难以自证合规
+    typical_position: 价格条款、商务条件、优惠承诺条款
+    clause_categories: [payment, misc]
+    keywords: [最惠国, 最优惠, 不低于其给予, 不低于其向任何第三方, 不高于其向任何第三方, 同等或更优, 最优条件, 价格保证]
+    patterns:
+      - '最惠国(待遇)?'
+      - '(不(得|会)|绝不)(向|给予)(任何)?第三方(提供|给予)(更)?优(惠|越)(的)?(价格|条件)'
+      - '(价格|条件|条款)(不(得|会)|应)(高于|劣于)(其)?(向|给予)(任何)?(其他|第三)(方|客户)'
+      - '(同等|不低于)(其)?(给予|提供)(任何)?(其他|第三)方的?(最优|最惠)'
+    qualifiers:
+      require_all:
+        - 承诺对象是「任何第三方」或「其他客户」这类开放集合，而非具名的特定主体
+      exclude_if:
+        - 仅承诺在本合同期内不上调价格（价格锁定，不是 MFN）
+        - 承诺对象是具名的关联方或已列明的少数主体
+    requires_symmetry_check: true
+    counter_examples:
+      - form: 价格锁定
+        example: 「本协议期内单价保持不变」
+        why_not_risk: 价格稳定承诺，不涉及与第三方的横向比较，判 pass
+      - form: 具名比较对象
+        example: 「不高于乙方给予附件四所列三家客户的价格」
+        why_not_risk: 封闭集合，可核查、可定价，属常见商务安排；仅在附件四缺失时转为审计权问题
+      - form: 采购方承诺的量价挂钩
+        example: 「年采购量达到 X 时适用折扣价」
+        why_not_risk: 阶梯定价，不是 MFN
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: HG-01
+    dedup_group: pricing-commitment
+    recommended_action: 进入谈判项
+    evidence_requirement: 必须写明承诺覆盖的对象范围（开放集合 / 封闭集合）与生效期间
+    notes: 命中即触发 HG-01（付款触发与回款），因为它直接改变未来的价格形成机制
+
+  - id: rt-exclusivity-without-minimum-commitment
+    title: 排他约束但无最低采购承诺
+    category: lockin_exclusivity
+    severity: important
+    resolution: element_check
+    status: enabled
+    why: 一方被锁定不得另找供应商，另一方却不承诺任何采购量，等于单向让渡而没有对价
+    typical_position: 合作范围条款与采购量条款之间（跨条款判定）
+    clause_categories: [misc, payment]
+    keywords: [不构成采购承诺, 参考额度, 预算为参考, 不保证采购量, 无最低采购, 具体以订单为准]
+    patterns:
+      - '(不构成|不视为|非)(采购|订购|购买)承诺'
+      - '(预算|额度|数量)(仅)?(为|系)?参考'
+      - '(不(作出|承担|提供)|无)(任何)?最低(采购|订购|消费|使用)(量|额|承诺)'
+    qualifiers:
+      require_all:
+        - 同一份合同中同时命中 rt-exclusivity-obligation（存在排他或独家约束）
+        - 无最低采购量、无保底费用、无补偿机制三者同时成立
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 框架协议无排他
+        example: 「预算为参考额度，不构成采购承诺」出现在**不含**任何排他条款的框架协议中
+        why_not_risk: 框架协议按订单履行是行业惯例，单独出现不构成风险，判 pass
+      - form: 有保底或补偿
+        example: 排他 + 「未达最低采购量的，甲方按差额的 X% 补偿」
+        why_not_risk: 排他有对价，属完整的商业安排
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: exclusivity
+    recommended_action: 进入谈判项
+    evidence_requirement: 必须同时引用排他条款与无承诺条款两处原文，各带条款号与页码
+    notes: 这是跨条款触发的典型例子——两处单独看都正常，放在一起才是风险
+
+  - id: rt-change-of-control
+    title: 控制权变更
+    category: lockin_exclusivity
+    severity: important
+    resolution: symmetry_check
+    status: enabled
+    why: 控制权变更触发对方解除权时，己方的融资、并购与重组会被外部合同牵制
+    typical_position: 转让、终止、生效与存续条款
+    clause_categories: [assignment, termination, misc]
+    keywords: [控制权变更, 实际控制人, 控股股东变更, 股权结构发生变化, 被收购, 合并或分立, 出售全部资产]
+    patterns:
+      - '控制权(发生)?(变更|变动|转移)'
+      - '(实际控制人|控股股东)(发生)?(变更|变化)'
+      - '(股权|股份)(结构)?(发生)?(重大)?(变更|变动|转让)(的|时)'
+      - '(被)?(收购|兼并|合并|分立)(的|时|之日)'
+    qualifiers:
+      require_any:
+        - 控制权变更导致对方享有解除权、终止权或价格重议权
+        - 控制权变更须经对方事先书面同意
+      exclude_if:
+        - 仅为通知义务（发生变更后告知对方），不附带任何后果
+        - 命中的是「变更控制」（change control，即合同变更管理流程），不是「控制权变更」
+    requires_symmetry_check: true
+    counter_examples:
+      - form: 「变更控制」不是「控制权变更」
+        example: 「第十三条　分包与变更控制」
+        why_not_risk: |
+          change control（变更管理流程）与 change of control（控制权变更）是完全不同的两件事，
+          中文里前者恰好是后者的字序颠倒，按子串必然互相误命中。
+          「变更控制」是 missing-clauses.yaml#subcontracting 的要素，属条款齐备的标志
+          （真实语料 C01 第十三条）。
+      - form: 纯通知义务
+        example: 「一方控制权发生变更的，应在 10 日内书面通知对方」
+        why_not_risk: 信息义务，不改变任何一方的权利，判 pass
+      - form: 双方对等的解除权
+        example: 「任何一方控制权变更时，对方均有权终止本协议」
+        why_not_risk: 对等安排，判 pass 并注明对等
+      - form: 转让限制的关联方例外
+        example: 「未经同意不得转让，但向关联方转让或因合并、出售全部资产而转让的除外」
+        why_not_risk: 这是**放宽**转让限制的例外条款，方向对己方有利
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: control-change
+    recommended_action: 进入谈判项
+    evidence_requirement: 必须写明触发后果（解除 / 同意权 / 重议）以及是否双方对等
+    notes: 与 rt-asymmetric-assignment-restriction 常在同一条款命中；同条款时合并
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 二、单方权力与不对等 unilateral_power
+# ═══════════════════════════════════════════════════════════════════════════
+
+  - id: rt-unilateral-amendment
+    title: 单方变更权
+    category: unilateral_power
+    severity: severe
+    resolution: symmetry_check
+    status: enabled
+    why: 一方可单方面修改合同内容时，己方签的是一份随时可能变成另一份的合同，所有其他条款的谈判成果都可被绕过
+    typical_position: 合同变更、条款修订、服务规则、政策更新条款
+    clause_categories: [misc, termination, payment]
+    keywords: [有权单方, 有权自行修改, 保留修改权, 随时修改, 无需对方同意, 届时有效的, 更新后的条款]
+    patterns:
+      - '(有权|可以|可)(单方(面)?|自行)(修改|变更|调整|更新)(本(协议|合同)|条款|规则|政策)'
+      - '(保留|享有)(随时)?(修改|变更|更新)(本(协议|合同)|条款|规则|政策)(的)?权利'
+      - '(无需|不需|不必)(经)?(对方|另一方|甲方|乙方)(事先)?(书面)?同意(即)?(可以|可|有权)(修改|变更)'
+      - '(以|按)(届时|当时)有效的(版本|条款|规则|政策)为准'
+    qualifiers:
+      require_all:
+        - 修改权归属于单一一方
+        - 修改对象是合同条款、服务规则或计费政策等对己方有约束力的内容
+      exclude_if:
+        - 修改须经双方书面确认或签署变更单
+        - 修改对象仅为对方内部作业流程、联系人、账户信息等不影响权利义务的事项
+    requires_symmetry_check: true
+    counter_examples:
+      - form: 书面变更单要求
+        example: 「本协议及其附件的任何修改，均须由双方授权代表签署书面变更单方为有效」
+        why_not_risk: |
+          这是 missing-clauses.yaml#subcontracting 要求的「变更的书面形式要求」要素，属条款齐备的标志。
+          **注意子串陷阱**：句中「变更单方为有效」的「单」属于「变更单」，不是「单方」。
+          按词边界与语义判断，不得按子串命中——这是本条最高频的误报来源（真实语料 C03 第 7.5 款）。
+      - form: 通知信息更新
+        example: 「一方变更通知地址或联系人的，应提前 5 日书面通知对方」
+        why_not_risk: 不影响权利义务的事务性安排
+      - form: 法律法规变化导致的被动调整
+        example: 「因适用法律强制性规定变化需调整本协议的，双方应协商修订」
+        why_not_risk: 约定了协商机制，不是单方权力
+      - form: 仲裁机构的届时有效规则
+        example: 「提交深圳国际仲裁院按其届时有效的仲裁规则在深圳仲裁」
+        why_not_risk: |
+          「届时有效的」在此修饰的是**仲裁机构自己的程序规则**，这是仲裁条款的标准写法，
+          既不是合同条款的单方修改权，修改主体也不是合同一方。按关键词「届时有效的」必然命中，
+          必须靠 require_all 与本例排除（真实语料 C05 第 12.3 款）。
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: unilateral-change
+    recommended_action: 先谈判
+    evidence_requirement: 必须写明谁享有修改权、修改的对象范围、是否设通知期与异议机制
+    notes: 修改权同时覆盖价格时与 rt-unilateral-price-adjustment 合并，取 severe
+
+  - id: rt-unilateral-price-adjustment
+    title: 单方定价调整权
+    category: unilateral_power
+    severity: important
+    resolution: element_check
+    status: enabled
+    why: 价格是合同的对价核心，可被一方单方面改变时，预算与成本模型都不再成立
+    typical_position: 价格与付款、调价机制、费率表条款
+    clause_categories: [payment]
+    keywords: [调价, 价格调整, 单方调整价格, 上调, 费率变更, 视为接受新价格, 届时价目表]
+    patterns:
+      - '(有权|可|可以)(单方(面)?|自行)(调整|上调|变更|提高)(价格|单价|费用|费率)'
+      - '(价格|单价|费用|费率)(的)?(调整|变更)(无需|不需)(对方|甲方|乙方)(书面)?同意'
+      - '(视为|即视为)(接受|同意)(新)?(价格|费率|价目)'
+      - '按(届时|调整后)(有效的)?(价目表|费率表|标准)执行'
+    qualifiers:
+      require_all:
+        - 调价的决定权在单一一方
+      require_any:
+        - 未约定调价上限或封顶
+        - 未约定己方的异议权或异议成功的后果
+        - 以己方沉默视为接受
+      exclude_if:
+        - 调价须双方书面确认后生效
+        - 调价挂钩客观公开指数（如 CPI、公开大宗商品价格）且设有封顶
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 客观触发 + 异议窗口 + 通知期
+        example: 「因主要原材料市场价格累计波动超过 15% 的，乙方可提出调价申请，并提前 15 日书面通知甲方」
+        why_not_risk: |
+          触发条件客观可核、有提前通知、且用词是「提出申请」而非「有权调整」。
+          仅当同一条款把「未在 N 日内提出异议视为接受」叠加上去时才升格——此时按本条与
+          rt-silence-deemed-consent 合并为一条 advisory/important（真实语料 C03 第 3.4 款）。
+      - form: 有涨幅封顶 + 有通知期的调价
+        example: 「续约期的服务费用涨幅不得超过上一订阅期年度费用的 5%。乙方拟调价的，应在前述 90 日通知期开始前书面告知调价方案」
+        why_not_risk: |
+          设有明确封顶（5%）且有充分通知期，调价可预测、可入预算，
+          正是 exclude_if「调价……设有封顶」命中的形态，判 pass（真实语料 C01 第 3.3 款）。
+      - form: 阶梯定价
+        example: 「年采购量达到 X 时自动适用折扣价」
+        why_not_risk: 规则事先约定且对己方有利
+      - form: 税费转嫁
+        example: 「报价不含增值税，税率法定调整时相应调整」
+        why_not_risk: 法定税费的被动传导，不是定价权
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: HG-01
+    dedup_group: pricing-commitment
+    recommended_action: 进入谈判项
+    evidence_requirement: 必须写明触发条件是否客观、有无通知期、有无异议机制、有无封顶
+    notes: 命中即触发 HG-01；调价机制属「付款触发与回款」，不得自动放行
+
+  - id: rt-silence-deemed-consent
+    title: 沉默视为同意
+    category: unilateral_power
+    severity: advisory
+    resolution: element_check
+    status: enabled
+    why: 把「没回复」等同于「同意」，会让一次疏忽产生与签字同等的法律后果
+    typical_position: 通知与确认、订单确认、对账、调价、变更条款
+    clause_categories: [notice, payment, misc]
+    keywords: [视为接受, 视为同意, 视为认可, 视为无异议, 逾期未回复, 未提出异议的]
+    patterns:
+      - '(逾期|届期)?(未|没有)(提出|作出)(书面)?异议(的)?[，,]?(即)?视为'
+      - '(未|没有)(在|于)[^。；]{0,20}(内)?(回复|答复|确认)(的)?[，,]?(即)?视为(接受|同意|认可)'
+      - '(沉默|不作表示)(即)?视为(同意|接受)'
+    qualifiers:
+      require_all:
+        - 沉默的后果是产生或变更实体权利义务
+      exclude_if:
+        - 响应窗口 ≥ 5 个工作日且事项为操作性回执（订单确认、对账、收货签收）
+        - 已同时约定重大瑕疵、隐蔽瑕疵或欺诈情形的例外
+    requires_symmetry_check: true
+    counter_examples:
+      - form: 操作性回执的合理窗口
+        example: 「乙方应在收到订单后 2 个工作日内书面确认或提出异议；逾期未回复的视为接受订单」
+        why_not_risk: |
+          订单确认是履约操作，不改变已约定的价格与责任分配；短窗口是交易效率的需要。
+          判 pass，仅在窗口短于 1 个工作日或事项涉及价格、责任、期限时才升格（真实语料 C03 第 4.1 款）。
+      - form: 带例外保留的默认验收
+        example: 「逾期未提出书面异议的视为验收合格，但隐蔽瑕疵除外」
+        why_not_risk: 保留了实质救济通道，按 rt-deemed-acceptance 的要素判定，齐备即 pass
+      - form: 双方对等适用
+        example: 「任何一方未在 10 日内提出异议的，视为无异议」
+        why_not_risk: 对等规则，判 pass 并注明对等
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: deemed-consent
+    recommended_action: 建议优化
+    evidence_requirement: 必须写明响应窗口的长度、事项性质、以及是否保留例外
+    notes: 与 rt-unilateral-price-adjustment / rt-deemed-acceptance 同条款命中时合并，取更高 severity
+
+  - id: rt-asymmetric-termination-right
+    title: 不对等的终止权
+    category: unilateral_power
+    severity: important
+    resolution: symmetry_check
+    status: enabled
+    why: 只有对方能随时退出时，己方承担了长期投入却没有对称的退出通道
+    typical_position: 合同期限、解除与终止、便利终止条款
+    clause_categories: [termination]
+    keywords: [有权随时解除, 有权单方解除, 无需理由终止, 甲方有权终止, 乙方不得解除]
+    patterns:
+      - '(甲方|乙方|一方)(有权)?(随时|任何时候)(单方(面)?)?(解除|终止)本(协议|合同)'
+      - '(乙方|甲方)(不得|无权)(单方(面)?)?(解除|终止)本(协议|合同)'
+      - '(无(需|须)|不需要)(任何)?理由(即)?(可以|可|有权)(解除|终止)'
+    qualifiers:
+      require_all:
+        - 便利终止权、随时解除权或通知期在两方之间存在实质差别
+      exclude_if:
+        - 双方享有相同的终止权与相同的通知期
+        - 差别源于法定情形（如一方破产、丧失资质）而非约定的自由裁量
+    requires_symmetry_check: true
+    counter_examples:
+      - form: 对等的便利终止
+        example: 「任何一方均有权提前 60 日书面通知对方无理由终止本协议」
+        why_not_risk: 对等安排，且属 missing-clauses.yaml#termination-convenience 的要素齐备表现，判 pass
+      - form: 采购方单方便利终止且己方是采购方
+        example: 「甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）」
+        why_not_risk: |
+          方向对己方有利时不是风险。**判定前必须先确定己方角色**——角色搞反会得到相反的结论
+          （见 README.md 第七节的同类提醒）。角色未知时输出 unknown，不得默认按不利处理。
+      - form: 违约方无解除权
+        example: 「违约方不得以本条为由解除本协议」
+        why_not_risk: 防止违约获益的常见安排
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: termination-asymmetry
+    recommended_action: 进入谈判项
+    evidence_requirement: 必须并列引用两方的终止权原文；只引用一方的判定不成立
+
+  - id: rt-asymmetric-assignment-restriction
+    title: 转让限制不对等
+    category: unilateral_power
+    severity: advisory
+    resolution: symmetry_check
+    status: enabled
+    why: 一方可自由转让而另一方须经同意时，己方可能在毫不知情的情况下换了交易对手
+    typical_position: 权利义务转让、合同承继条款
+    clause_categories: [assignment]
+    keywords: [不得转让, 转让本协议, 未经书面同意不得, 有权转让给, 可转让予关联方]
+    patterns:
+      - '(未经|非经)(对方|甲方|乙方)(事先)?书面同意[，,]?(任何一方|乙方|甲方)?不得转让'
+      - '(有权|可以|可)(将本(协议|合同)|其权利(和|与)义务)转让(给|予)'
+    qualifiers:
+      require_all:
+        - 转让限制在两方之间存在实质差别（一方可自由转让、另一方须经同意）
+      exclude_if:
+        - 双方受同一限制（「任何一方未经对方书面同意不得转让」）
+        - 差别仅体现为向关联方转让的对等例外
+    requires_symmetry_check: true
+    counter_examples:
+      - form: 双方对等的反转让条款（TC-008 ③ 的原型）
+        example: 「未经对方事先书面同意，任何一方不得转让本协议项下的权利或义务」
+        why_not_risk: |
+          标准反转让条款，双方对等。样本 TC-008 把它报为「限制商业灵活性，中风险」是明确的误报。
+          **不得输出任何等级的风险**，判 pass 并注明限制为双方对等（forbidden_findings#FB-03）。
+      - form: 关联方与并购例外
+        example: 「未经同意不得转让，但向关联方转让或因合并、出售全部资产而转让的除外」
+        why_not_risk: 例外是**放宽**限制，对双方同等适用
+      - form: 「转让」指人员或资源调配
+        example: 「乙方应指派具备相应技能的人员执行服务」中的「指派 / assign」
+        why_not_risk: 词义不同，不属合同权利义务转让
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: control-change
+    recommended_action: 建议优化
+    evidence_requirement: 必须并列引用两方的转让限制原文
+
+  - id: rt-sole-discretion-determination
+    title: 单方认定与自由裁量
+    category: unilateral_power
+    severity: important
+    resolution: symmetry_check
+    status: enabled
+    why: 把「是否合格」「是否违约」「是否满意」交给一方自行判断，等于让对方同时当运动员和裁判
+    typical_position: 验收、考核、违约认定、服务标准、质量判定条款
+    clause_categories: [warranty, breach_remedy, termination, misc]
+    keywords: [自行判断, 自行认定, 自行决定, 由甲方认为, 甲方认为, 满意为准, 独自判断, 最终解释权]
+    patterns:
+      - '(由)?(甲方|乙方|一方)(自行|独自|全权)(判断|认定|决定|裁量)'
+      - '(甲方|乙方)(认为|以为)[^。；]{0,15}(不合格|不符合|构成违约|不满意)'
+      - '以(甲方|乙方)(的)?(满意|认可|判断)为准'
+      - '(最终)?解释权(归|由)(甲方|乙方)(所有|享有)'
+    qualifiers:
+      require_all:
+        - 被判定的事项直接产生付款、验收、解除或赔偿后果
+      exclude_if:
+        - 判定须依据合同已约定的客观标准或附件中的验收标准
+        - 设有异议、复核或第三方鉴定通道
+    requires_symmetry_check: true
+    counter_examples:
+      - form: 依约定标准判定
+        example: 「各里程碑的验收标准依附件三《验收标准》执行」
+        why_not_risk: 判定依据客观化，判 pass；附件缺失属输入治理的阻断项，不在本词库范围
+      - form: 试用期录用条件判定
+        example: 「试用期内，甲方认为乙方不符合录用条件的，可解除本合同」
+        why_not_risk: |
+          劳动合同语境下的法定表述，其边界由强制性规定划定。
+          resolution 转 defer_to_jurisdiction，**不得**在此下结论（forbidden_findings#FB-07）。
+      - form: 商业判断保留
+        example: 「是否行使本条项下的选择权由甲方决定」
+        why_not_risk: 行使自己的选择权不是对他人履约的评判
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: sole-discretion
+    recommended_action: 进入谈判项
+    evidence_requirement: 必须写明被判定的事项、判定后果、以及有无客观标准或复核通道
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 三、责任敞口 liability_exposure
+# ═══════════════════════════════════════════════════════════════════════════
+
+  - id: rt-uncapped-indemnity
+    title: 无上限赔偿与兜底赔偿
+    category: liability_exposure
+    severity: severe
+    resolution: element_check
+    status: enabled
+    why: 赔偿范围不封顶时，单次事故的风险敞口不可估算，既无法定价也无法投保
+    typical_position: 赔偿、免责、责任限制条款
+    clause_categories: [indemnity, liability, breach_remedy]
+    keywords: [全部损失, 一切损失, 无限赔偿, 不受限额约束, 兜底, 使甲方免受损害, 所有索赔]
+    patterns:
+      - '(赔偿|承担)[^。；]{0,12}(全部|一切|所有)(直接(和|与)间接)?(损失|责任|费用|索赔)'
+      - '不受[^。；]{0,20}(限额|上限|责任限制)(的)?约束'
+      - '(无|不设)(赔偿)?(上限|限额|封顶)'
+    qualifiers:
+      require_all:
+        - 承担无上限赔偿的一方是己方，或双方对等但金额敞口不可估算
+      exclude_if:
+        - 属市场惯常的责任上限例外项（保密违约、知识产权侵权、故意或重大过失、人身伤害）
+        - 该条已被独立的责任上限条款覆盖且未声明排除
+    requires_symmetry_check: true
+    counter_examples:
+      - form: 惯常 carve-out
+        example: 「下列情形不受第 10.1 款限额约束：（一）知识产权侵权赔偿；（二）违反保密义务；（三）故意或重大过失造成的人身伤害或财产损失」
+        why_not_risk: |
+          market-benchmarks.yaml#liability-cap-months.carve_out_note 明确：这四类通常被排除在上限之外，
+          属条款完整的标志。缺少排除项时才提示，且不单独计为高风险——把 carve-out 本身报为
+          「无上限赔偿」是把好条款报成坏条款（真实语料 C01 第 10.3 款）。
+      - form: 供方给需方的侵权兜底且己方是需方
+        example: 「因乙方提供的服务侵犯第三方知识产权导致甲方被索赔的，乙方应承担全部赔偿责任并使甲方免责」
+        why_not_risk: 方向对己方有利；角色未确认时输出 unknown，不得默认按不利处理
+      - form: 「全部损失」用于描述赔偿范围而非取消上限
+        example: 「赔偿甲方因此遭受的全部损失」且同一合同另有责任上限条款且未声明排除
+        why_not_risk: 上限条款仍然适用，判 pass 并注明受上限约束
+    benchmark_link: market-benchmarks.yaml#liability-cap-months
+    missing_clause_link: missing-clauses.yaml#liability-cap
+    human_gate: HG-03
+    dedup_group: liability-exposure
+    recommended_action: 先谈判
+    evidence_requirement: 必须写明承担方、赔偿范围、以及是否存在仍然适用的责任上限条款
+    notes: 与责任上限的数值判定不重复——数值判定以 market-benchmarks 为准，本条只判「上限是否被整体架空」
+
+  - id: rt-joint-several-liability
+    title: 连带责任
+    category: liability_exposure
+    severity: important
+    resolution: element_check
+    status: enabled
+    why: 连带责任让己方可能为他人的债务被全额追偿，追偿对象与金额都不在己方控制范围内
+    typical_position: 责任承担、担保、关联方、分包条款
+    clause_categories: [liability, indemnity, subcontracting]
+    keywords: [连带责任, 连带清偿, 承担连带, 共同且分别, 互负连带]
+    patterns:
+      - '(承担|负)(无限)?连带(赔偿|清偿|保证)?责任'
+      - '连带(且)?(不可分割)?的?(债务|义务|责任)'
+    qualifiers:
+      require_all:
+        - 己方或己方关联方被列为连带责任人
+      exclude_if:
+        - 连带责任的承担方是对方，且指向对方对其分包方、次级处理者或人员行为的责任
+        - 属法律直接规定而非约定新增的连带（此时转 defer_to_jurisdiction）
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 分包责任不免除（最高频误报）
+        example: 「经甲方同意的分包不免除乙方责任，乙方对分包方的行为向甲方承担连带责任」
+        why_not_risk: |
+          这是 missing-clauses.yaml#subcontracting 明确要求的「分包方行为的责任归属」要素，
+          是条款齐备的标志，方向对采购方有利。真实语料 C01（唯一的干净基线）第 13.2 款
+          就是这一形态——在这里报风险等于在零缺陷样本上制造误报。
+      - form: 次级处理者责任
+        example: 「乙方对次级处理者的行为向甲方承担全部责任」
+        why_not_risk: 同上，责任链条完整化的表现
+      - form: 法定连带
+        example: 「依法承担连带责任」
+        why_not_risk: 指向法律规定，转 defer_to_jurisdiction，不在此下结论
+    benchmark_link: null
+    missing_clause_link: missing-clauses.yaml#subcontracting
+    human_gate: HG-03
+    dedup_group: liability-exposure
+    recommended_action: 进入谈判项
+    evidence_requirement: 必须写明谁对谁承担连带、因何事由承担；分不清承担方时输出 unknown
+
+  - id: rt-cross-default
+    title: 交叉违约
+    category: liability_exposure
+    severity: important
+    resolution: element_check
+    status: enabled
+    why: 一份合同的违约触发另一份合同的解除或加速到期，风险在合同之间传导且无法通过单份合同管理
+    typical_position: 违约、解除、加速到期条款
+    clause_categories: [breach_remedy, termination]
+    keywords: [交叉违约, 其他协议项下, 任何其他合同, 一并解除, 加速到期, 提前到期]
+    patterns:
+      - '交叉违约'
+      - '(违反|违约于)[^。；]{0,20}(其他|任何)(协议|合同)(项下)?[^。；]{0,20}(视为|构成)(本(协议|合同)项下的)?违约'
+      - '(有权)?(一并|同时)(解除|终止)(双方(之间)?的)?(其他|全部)(协议|合同)'
+      - '(债务|款项)(全部)?(加速|提前)到期'
+    qualifiers:
+      require_all:
+        - 触发源是本合同之外的其他协议项下的违约或事件
+      exclude_if:
+        - 仅指本合同及其附件、订单、SOW 构成的同一交易文件体系内部
+        - 仅约定关联协议同期终止而不产生违约后果
+    requires_symmetry_check: true
+    counter_examples:
+      - form: 同一交易文件体系
+        example: 「本协议与其附件、订单构成完整协议；任一订单违约的处理适用本协议第十一条」
+        why_not_risk: 同一份交易的内部结构，不是跨合同传导
+      - form: 附属协议同期终止
+        example: 「本协议自双方授权代表签字并加盖公章之日起生效，与《云服务主协议》同期终止」
+        why_not_risk: 生命周期绑定，不产生违约认定与赔偿后果，判 pass（真实语料 C05 第 13.1 款）
+      - form: 对等的交叉解除权
+        example: 「任何一方在双方其他协议项下发生重大违约的，对方均有权解除本协议」
+        why_not_risk: 对等安排，降为 advisory 并注明对等，不判 important
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: cross-default
+    recommended_action: 进入谈判项
+    evidence_requirement: 必须写明被牵连的其他协议范围（具名 / 全部）与触发后果
+
+  - id: rt-unlimited-guarantee
+    title: 无限期或无限额保证
+    category: liability_exposure
+    severity: severe
+    resolution: element_check
+    status: enabled
+    why: 保证责任没有期间与金额边界时，义务在合同终止后仍然存续且无法计提，等于一笔永远挂账的或有负债
+    typical_position: 保证与担保、质量保证、履约担保条款
+    clause_categories: [warranty, indemnity, liability]
+    keywords: [持续保证, 永久保证, 无限期保证, 保证期限不受限制, 不设保证期, 始终保证]
+    patterns:
+      - '(保证|担保)(责任|义务|期(限|间))?[^。；]{0,10}(永久|无限期|长期|始终|持续)(有效|存续|承担)'
+      - '(保证|担保)[^。；]{0,20}(不(受|设)|无)[^。；]{0,6}(期限|期间|金额|限额)(的)?(限制|约束)'
+      - '本(协议|合同)(终止|解除|届满)后[^。；]{0,15}(仍)?(继续|持续)(承担|保证)[^。；]{0,10}(无限期|永久)'
+    qualifiers:
+      require_all:
+        - 承担保证责任的一方是己方
+      require_any:
+        - 未约定保证期间
+        - 未约定保证金额上限且不受责任上限约束
+      exclude_if:
+        - 属权利授予（如永久使用许可）而非义务承担
+        - 保密义务的存续——转 rt-perpetual-obligation 判定，避免同一事实两处出结论
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 永久许可授予
+        example: 「乙方在开发中使用的自有既有组件，乙方应向甲方授予永久、全球、免费、可转授的使用许可」
+        why_not_risk: |
+          这是权利授予，方向对被授权方有利，与「永久义务」是相反的两件事。
+          把授权期限当成保证期限是本条最常见的分类错误（真实语料 C02 第 5.2 款）。
+      - form: 有期间的质量保证
+        example: 「乙方提供 12 个月的质量保证期」
+        why_not_risk: 边界清晰，判 pass 并写明实际期间
+      - form: 权利瑕疵担保
+        example: 「乙方保证交付成果不侵犯任何第三方知识产权」
+        why_not_risk: 陈述性保证，指向签约时点的事实状态，不产生无限期敞口
+    benchmark_link: null
+    missing_clause_link: missing-clauses.yaml#liability-cap
+    human_gate: HG-03
+    dedup_group: perpetual-obligation
+    recommended_action: 先谈判
+    evidence_requirement: 必须写明保证事项、期间（或未约定）、金额上限（或未约定）
+
+  - id: rt-liquidated-damages-asymmetry
+    title: 违约金不对等
+    category: liability_exposure
+    severity: important
+    resolution: symmetry_check
+    status: enabled
+    why: 同类违约在两方之间适用不同的违约金标准时，合同的约束力实际上是单向的
+    typical_position: 违约责任、违约金、逾期付款条款
+    clause_categories: [breach_remedy, payment]
+    keywords: [违约金, 每逾期一日, 按日万分之, 支付违约金人民币, 赔偿金比例]
+    patterns:
+      - '(支付|承担)违约金[^。；]{0,25}(人民币|¥|元)'
+      - '每(逾期|延迟)一日[^。；]{0,20}(万分之|千分之|百分之|%)'
+      - '按(合同|订单)?(总)?(价款|金额)的?[^。；]{0,10}(%|百分之)[^。；]{0,10}(支付|承担)违约金'
+    qualifiers:
+      require_all:
+        - 合同中存在两方各自的违约金约定，且标准或计算基数存在实质差别
+      exclude_if:
+        - 仅一方负有可量化的金钱给付义务（如仅采购方付款），此时缺少可比对象
+        - 属劳动合同中对劳动者约定的违约金——转 defer_to_jurisdiction
+    requires_symmetry_check: true
+    counter_examples:
+      - form: 只有一方的逾期付款违约金
+        example: 「甲方逾期付款的，每逾期一日按未付金额的万分之五支付违约金」
+        why_not_risk: 付款义务本就只有一方，无可比对象；判 pass 并注明「无对称义务，不构成不对等」
+      - form: 双方相同标准
+        example: 「任何一方逾期履行的，每逾期一日按万分之五支付违约金」
+        why_not_risk: 对等，判 pass
+      - form: 劳动者违约金
+        example: 「乙方违反本条约定的，应向甲方支付违约金人民币伍拾万元整」
+        why_not_risk: |
+          劳动者违约金的可约定情形受强制性规定限制，属法域判定。
+          转 defer_to_jurisdiction，不得在此输出「过高」「无效」（forbidden_findings#FB-07）。
+    benchmark_link: null
+    missing_clause_link: missing-clauses.yaml#breach-remedy
+    human_gate: HG-03
+    dedup_group: liability-exposure
+    recommended_action: 进入谈判项
+    evidence_requirement: 必须并列引用两方的违约金原文与各自的计算基数；只有一方时判 pass 而非风险
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 四、期限、续约与退出 term_renewal_exit
+# ═══════════════════════════════════════════════════════════════════════════
+
+  - id: rt-auto-renewal-silent
+    title: 自动续约与静默续期
+    category: term_renewal_exit
+    severity: important
+    resolution: benchmark_compare
+    status: enabled
+    why: 自动续约叠加过短或缺失的通知窗口，等于把「继续付费」设成默认值，错过窗口就再锁定一个周期
+    typical_position: 合同期限、续约、终止条款
+    clause_categories: [term_duration, termination]
+    keywords: [自动续约, 自动续期, 自动展期, 顺延一年, 期满自动延长, 不再续约的除外]
+    patterns:
+      - '自动(续约|续期|展期|延长|顺延)'
+      - '(期(满|届满))后?[^。；]{0,10}(自动)?(延长|顺延|续)(为|至)?[^。；]{0,12}(年|月|个月)'
+      - '(除非|但)[^。；]{0,30}(通知|告知)[^。；]{0,10}不(再)?(续约|续期)'
+    qualifiers:
+      require_all:
+        - 存在期满自动进入下一周期的机制
+      exclude_if:
+        - 到期即终止、无自动续期机制
+    requires_symmetry_check: true
+    counter_examples:
+      - form: 自动续约 + 达标通知期（干净基线的形态）
+        example: 「订阅期届满前，本协议自动续约 12 个月，但任何一方在订阅期届满前 90 日以书面形式通知对方不再续约的除外」
+        why_not_risk: |
+          通知期 90 日等于 market-benchmarks.yaml#renewal-notice-days 的基准值，判 aligned / pass，
+          且双方均可发出通知。真实语料 C01 是唯一的干净基线，在这里报风险即为误报
+          （market-benchmarks.yaml#renewal-notice-days 的 days >= 90 档明确 conclusion: pass）。
+      - form: 到期即终止
+        example: 「本协议于 2027 年 12 月 31 日届满，届满后自然终止」
+        why_not_risk: 清晰安排，benchmark 的「未约定续约机制」档判 pass
+      - form: 续约需双方书面确认
+        example: 「期满后经双方书面确认可续签」
+        why_not_risk: 非自动，不构成静默续期
+    benchmark_link: market-benchmarks.yaml#renewal-notice-days
+    missing_clause_link: missing-clauses.yaml#termination-convenience
+    human_gate: null
+    dedup_group: renewal
+    recommended_action: 进入谈判项
+    evidence_requirement: |
+      必须抽出通知期天数并写出「实际值 / 基准值 / 差距」三者，禁止只写「偏短」。
+      抽不到天数时输出 conclusion = unknown，不得按风险计（forbidden_findings#FB-04）。
+    notes: |
+      结论以 market-benchmarks.yaml#renewal-notice-days 的档位为准，本条不另定阈值：
+      >=90 判 pass ｜ 60-89 判 important ｜ <60 判 severe ｜ 自动续约且无通知期约定判 severe。
+
+  - id: rt-perpetual-obligation
+    title: 无限期义务存续
+    category: term_renewal_exit
+    severity: important
+    resolution: element_check
+    status: enabled
+    why: 义务永不终止而合同随时可终止，会形成「协议可退出、义务退不出」的不对称结构，且无法在台账上销项
+    typical_position: 保密、存续条款、终止后义务
+    clause_categories: [confidentiality, term_duration, termination]
+    keywords: [永久, 永久有效, 无限期, 不受时间限制, 长期有效, 始终有效, 一直有效]
+    patterns:
+      - '(义务|责任)[^。；]{0,15}(永久|永远|无限期)(有效|存续|持续|继续)'
+      - '(不(受|设)|无)(任何)?(时间|期限)(的)?限制'
+      - '(不会|不因)[^。；]{0,20}(时间经过|届满|终止)(而)?(失效|解除|免除)'
+    qualifiers:
+      require_all:
+        - 存续的是义务（保密、限制、赔偿），不是权利或许可
+      require_any:
+        - 未约定任何终止机制或解除条件
+        - 存续期限与合同期限严重不匹配且义务方为己方
+      exclude_if:
+        - 属权利或许可的永久授予
+        - 商业秘密类信息在其保密性存续期间内持续受保护的惯常表述（此时按要素齐备判定）
+    requires_symmetry_check: true
+    counter_examples:
+      - form: 永久许可 / 永久授权
+        example: 「授予永久、全球、免费、非独占的使用许可」
+        why_not_risk: 权利授予不是义务承担，方向相反（同 rt-unlimited-guarantee 的分类提醒）
+      - form: 有期限的保密义务
+        example: 「保密义务在本协议终止后继续有效 3 年」
+        why_not_risk: 边界清晰，属 missing-clauses 要素齐备的表现，判 pass 并写明实际期限
+      - form: 与信息性质挂钩的存续
+        example: 「保密义务持续至该信息进入公有领域为止」
+        why_not_risk: 设有客观终止条件，不是无限期
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: perpetual-obligation
+    recommended_action: 进入谈判项
+    evidence_requirement: 必须写明存续的义务类型、有无终止机制、以及合同本身的终止条件（用于说明不对称）
+    notes: |
+      叠加判定：合同可被任一方短期通知终止、而某项义务永久存续且无任何解除通道时，
+      severity 升为 severe（真实语料 C08 第 6.1 款 30 天终止 + 第 6.2 款永久保密的组合）。
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 五、知识产权与数据权利 ip_data_rights
+# ═══════════════════════════════════════════════════════════════════════════
+
+  - id: rt-ip-ownership-inversion
+    title: 知识产权归属倒挂
+    category: ip_data_rights
+    severity: severe
+    resolution: element_check
+    status: enabled
+    why: 出资方付费开发却拿不到成果权属，或成果权属与付款节点脱钩，等于花钱买了一份使用许可
+    typical_position: 知识产权、成果归属、交付物条款
+    clause_categories: [ip]
+    keywords: [知识产权归, 成果归, 著作权归, 权利归属, 所有权归, 保留全部权利]
+    patterns:
+      - '(知识产权|著作权|所有权|全部权利)[^。；]{0,10}(归|属于|由)[^。；]{0,12}(所有|享有|保留)'
+      - '(乙方|供应商|受托方)(保留|享有)[^。；]{0,20}(交付(物|成果)|开发成果)[^。；]{0,10}(全部)?(权利|知识产权)'
+      - '(甲方|委托方|客户)(仅|只)(享有|获得|取得)[^。；]{0,12}(使用|许可)(权)?'
+    qualifiers:
+      require_all:
+        - 己方是出资方 / 委托方，且成果系为己方定制开发
+      require_any:
+        - 定制开发成果的权属归受托方
+        - 己方仅取得使用许可而非权属
+        - 权属转移的时点晚于全额付款或附加了不可控的条件
+      exclude_if:
+        - 争议对象是供方的既有组件、工具、方法论（背景知识产权），而非定制成果
+        - 己方是受托方且保留背景知识产权
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 背景知识产权保留 + 授予许可
+        example: 「乙方保留其既有材料、工具与方法论的所有权，并授予甲方在交付物中使用该等背景知识产权的永久、全球、非独占、免费许可」
+        why_not_risk: |
+          背景知识产权归供方是行业通例，只要交付物本身的权属清晰且许可范围覆盖使用需求即可，
+          判 pass（真实语料 C07 第 5.2 款）。把背景知识产权保留当成归属倒挂是分类错误。
+      - form: 权属随付款转移
+        example: 「乙方基于本合同开发的全部软件成果的知识产权自甲方支付相应节点款项之日起归甲方所有」
+        why_not_risk: 权属最终归出资方，付款挂钩是对供方的正常保护，判 pass（真实语料 C02 第 5.1 款）
+      - form: 标准产品的权属
+        example: 「服务软件及其相关文档的知识产权归乙方所有」
+        why_not_risk: |
+          SaaS / 标准产品的软件权属本就归服务商，客户购买的是订阅使用权，
+          在此报「归属倒挂」是把商业模式当成风险（真实语料 C01 第 9.1 款）。
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: ip-ownership
+    recommended_action: 先谈判
+    evidence_requirement: 必须先写明合同类型（定制开发 / 标准产品订阅）与己方角色，再给权属结论；两者未确认时输出 unknown
+
+  - id: rt-broad-data-license
+    title: 数据使用授权范围过宽
+    category: ip_data_rights
+    severity: important
+    resolution: element_check
+    status: enabled
+    why: 授权范围写成开放集合时，己方数据可被用于训练、转售或对外披露，且事后无法界定越界
+    typical_position: 数据使用、授权许可、改进服务条款
+    clause_categories: [data_protection, ip]
+    keywords: [用于任何目的, 不可撤销, 可转授, 用于模型训练, 改进产品, 去标识化后, 永久免费使用]
+    patterns:
+      - '(用于|使用于)[^。；]{0,10}(任何|一切|其他)(目的|用途|业务)'
+      - '(不可撤销|永久)(的)?[^。；]{0,8}(免费|无偿)[^。；]{0,8}(可转授|可再许可)'
+      - '(用于|以)[^。；]{0,12}(模型|算法|人工智能|AI)(的)?(训练|优化)'
+      - '(向|对)(任何)?第三方(披露|提供|共享|转让)[^。；]{0,10}(数据|信息)'
+    qualifiers:
+      require_all:
+        - 授权对象是己方的数据、内容或业务信息
+      require_any:
+        - 用途表述为开放集合（任何目的 / 其他用途）
+        - 允许转授权或向未具名第三方共享
+        - 允许用于模型训练且未设退出机制
+      exclude_if:
+        - 授权范围被明确限定为「为履行本协议提供服务所必需」
+        - 已约定去标识化 + 用途限定 + 退出机制三者
+        - 命中的是否定式（「**不得**用于任何其他目的」）——那是用途限定，与开放授权含义相反
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 履约必需的最小授权
+        example: 「乙方仅为向甲方提供本协议约定的服务而处理甲方数据，不得用于其他目的」
+        why_not_risk: 目的限定明确，判 pass；这正是 DPA 的标准写法
+      - form: 经同意的次级处理者
+        example: 「乙方经甲方事先书面一般性授权，可委托次级处理者。现有次级处理者清单见附件一」
+        why_not_risk: |
+          有授权基础 + 有清单 + 可审计，属 missing-clauses.yaml#subcontracting 的要素齐备形态，
+          判 pass（真实语料 C05 第 5.1 款）。
+      - form: 统计与聚合数据
+        example: 「乙方可使用不能识别到甲方及其用户的聚合统计数据改进服务」
+        why_not_risk: 已去标识且不指向个体，属惯常安排
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: data-rights
+    recommended_action: 进入谈判项
+    evidence_requirement: 必须写明授权的用途表述、被授权主体范围、有无退出机制三项
+
+  - id: rt-data-ownership-unclear
+    title: 数据所有权未约定
+    category: ip_data_rights
+    severity: important
+    resolution: element_check
+    status: enabled
+    why: 数据归属留白时，终止清算、导出请求与第三方索赔都缺少权利基础，争议时只能靠事实占有说话
+    typical_position: 数据、知识产权、终止后安排条款
+    clause_categories: [data_protection, ip, termination]
+    keywords: [数据归属, 数据所有权, 客户数据, 业务数据, 归甲方所有, 数据权属]
+    patterns:
+      - '(客户|甲方|业务|用户)数据[^。；]{0,10}(的)?(所有权|权属|归属)'
+      - '数据(的)?(所有权|权属)(归|属于)'
+    qualifiers:
+      require_all:
+        - 合同涉及一方持有另一方的业务数据或个人数据
+        - 全文检索后未找到数据权属的明确约定
+      exclude_if:
+        - 已有「客户数据归客户所有」或等效表述
+        - 合同类型不涉及数据托管（如纯采购货物合同）
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 已明确约定归属
+        example: 「甲方业务数据的所有权归甲方所有，乙方仅为提供服务而处理」
+        why_not_risk: 要素齐备，判 pass
+      - form: DPA 语境下的控制者/处理者划分
+        example: 「甲方为个人信息处理者，乙方为受托处理方」
+        why_not_risk: 角色划分已确定处理权限边界，等效于权属安排，判 pass
+      - form: 不涉及数据托管的合同
+        example: 货物采购框架协议中无数据条款
+        why_not_risk: |
+          该检查项对本合同类型不适用，写 not_applicable 并说明理由，
+          不得写成缺失风险（这是把「不适用」误报成「缺失」的高频来源）。
+    benchmark_link: null
+    missing_clause_link: missing-clauses.yaml#data-export
+    human_gate: null
+    dedup_group: data-rights
+    recommended_action: 建议优化
+    evidence_requirement: 判定为未约定时必须给出已检索的页码区间与检索关键词，否则判定不成立
+
+  - id: rt-data-export-restricted
+    title: 数据导出被禁止、附条件或收费
+    category: ip_data_rights
+    severity: severe
+    resolution: benchmark_compare
+    status: enabled
+    why: 导出通道被关闭或加价时，数据事实上被锁定，切换供应商的成本变成无限大
+    typical_position: 数据导出、终止后安排、数据本地化条款
+    clause_categories: [data_protection, termination]
+    keywords: [不提供导出, 不得导出, 不提供数据返还, 逐条查阅, 导出费用, 按工时收费, 终止后删除]
+    patterns:
+      - '(不得|不提供|不支持|禁止)[^。；]{0,15}(导出|下载|返还|批量(拉取|复制))'
+      - '(导出|返还|迁移)[^。；]{0,20}(收取|按|支付)[^。；]{0,15}(费用|工时|人天|服务费)'
+      - '(终止|解除|届满)后[^。；]{0,20}(彻底)?删除[^。；]{0,20}(不提供|无)[^。；]{0,10}(返还|导出)'
+      - '(单次|每次)(查询|导出)[^。；]{0,15}不得超过[^。；]{0,10}(条|行|记录)'
+    qualifiers:
+      require_any:
+        - 完全禁止导出或终止即删除且无导出窗口
+        - 导出窗口短于基准值
+        - 导出格式为专有格式或未约定
+        - 导出需额外付费或需主动请求且逾期即删除
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 达标的导出安排（干净基线的形态）
+        example: 「乙方应继续为甲方保留数据导出通道 90 日」且提供 CSV / JSON / SQL 标准格式
+        why_not_risk: |
+          90 日 + 标准格式 = market-benchmarks.yaml#data-export-window-days 的 aligned 档，
+          明确 conclusion: pass。真实语料 C01 与 C03 均为此形态，在此报风险即为误报。
+      - form: 合规目的的本地化存储
+        example: 「个人数据仅存储于境内数据中心」
+        why_not_risk: |
+          存储地限制不等于导出限制，是两件事。仅当同一合同另有禁止导出条款时才由该条款触发本项
+          （真实语料 C05 中真正的风险来源是第 8.2、8.3、8.4 款，不是第 8.1 款的本地化本身）。
+      - form: 删除承诺
+        example: 「终止后 30 日内删除全部数据并出具删除证明」且另有 90 日导出窗口
+        why_not_risk: 删除承诺与导出窗口配对存在时属完整安排；只有删除没有导出才是最不利组合
+    benchmark_link: market-benchmarks.yaml#data-export-window-days
+    missing_clause_link: missing-clauses.yaml#data-export
+    human_gate: null
+    dedup_group: data-export
+    recommended_action: 先谈判
+    evidence_requirement: |
+      必须写出实际值（天数 / 格式 / 费用条件）、基准值（90 天 + 标准格式）与差距三者。
+      「条款存在但方向不利」必须报为风险，不得报为「条款缺失」——两者是不同的分类。
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 六、验收与履约 acceptance_performance
+# ═══════════════════════════════════════════════════════════════════════════
+
+  - id: rt-deemed-acceptance
+    title: 验收默认通过
+    category: acceptance_performance
+    severity: severe
+    resolution: element_check
+    status: enabled
+    why: 逾期未表态即视为验收合格时，付款义务与质量责任在没有人做出实质判断的情况下被触发
+    typical_position: 交付与验收、里程碑、质量确认条款
+    clause_categories: [warranty, payment, misc]
+    keywords: [视为验收合格, 视为验收通过, 视为交付完成, 逾期未验收, 自动通过验收, 默认验收]
+    patterns:
+      - '视为(验收)?(合格|通过|完成|接受)'
+      - '(逾期|届期)?(未|没有)(在|于)?[^。；]{0,20}(内)?(完成)?(验收|检验)[^。；]{0,10}视为'
+      - '(自动|即)(通过|完成)验收'
+    qualifiers:
+      require_all:
+        - 默认通过的后果是触发付款、起算保修期或免除对方的交付责任
+      exclude_if:
+        - 已保留隐蔽瑕疵、重大瑕疵或欺诈情形的例外
+        - 检验期充分（一般不短于 5 个工作日）且交付物性质允许在该期间内完成检验
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 带例外保留的默认验收
+        example: 「甲方应在收货后 7 个工作日内完成到货检验，逾期未提出书面异议的视为验收合格，但隐蔽瑕疵除外」
+        why_not_risk: |
+          检验期 7 个工作日充分，且保留了隐蔽瑕疵的实质救济通道，属惯常的商业安排，判 pass。
+          真实语料 C03 是这一形态，其 expected_risks 中没有默认验收项——在此报风险即为误报。
+      - form: 订单确认的静默期
+        example: 「乙方应在收到订单后 2 个工作日内书面确认或提出异议；逾期未回复的视为接受订单」
+        why_not_risk: 这是订单成立而非交付验收，转 rt-silence-deemed-consent 判定，避免同一事实两处出结论
+      - form: 有客观验收标准
+        example: 「验收标准依附件三《验收标准》执行」且约定了复验通道
+        why_not_risk: 判定依据客观化，默认通过的风险被验收标准与复验通道抵消
+    benchmark_link: null
+    missing_clause_link: missing-clauses.yaml#breach-remedy
+    human_gate: HG-01
+    dedup_group: deemed-consent
+    recommended_action: 先谈判
+    evidence_requirement: 必须写明检验期长度、默认通过的后果、有无例外保留三项；缺任一项判 unknown
+    notes: 命中即触发 HG-01——默认验收直接改变付款触发条件，属法务不可替代动作
+
+  - id: rt-service-level-commitment
+    title: 服务水平承诺与补偿标准
+    category: acceptance_performance
+    severity: advisory
+    resolution: defer_to_version_comparison
+    status: enabled
+    why: 可用性与服务信用是 SaaS 合同中唯一可量化的履约承诺，也是版本替换时最常被悄悄下调的数值
+    typical_position: 服务水平协议（SLA）、可用性承诺、服务信用条款
+    clause_categories: [warranty, misc]
+    keywords: [可用性, 服务可用率, 服务信用, 服务信用补偿, 服务费减免, 月度可用性, 响应时间, 恢复目标, SLA]
+    patterns:
+      - '(月度|年度)?(服务)?可用(性|率)[^。；]{0,10}(不低于|达到|保证)[^。；]{0,10}(\d{1,2}(\.\d+)?%)'
+      - '(服务)?信用(补偿)?[^。；]{0,15}(\d{1,3}%)'
+      - '(减免|返还|补偿)[^。；]{0,12}(当月|该月)[^。；]{0,10}(服务费|费用)[^。；]{0,10}(\d{1,3}%)'
+      - '低于\s*\d{1,2}(\.\d+)?\s*%'
+      - '(响应时间|恢复目标|RTO|RPO)[^。；]{0,15}(不超过)?[^。；]{0,10}\d+\s*(分钟|小时|个工作日)'
+    qualifiers:
+      require_any:
+        - 存在可用性百分比承诺
+        - 存在服务信用或费用减免的档位表
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 单版本审查
+        example: 只提交了一个版本，没有可比基线
+        why_not_risk: |
+          可用性数值本身没有市场标尺（market-benchmarks.yaml 的四条标尺不含 SLA），
+          单版本下不得判定「99.0% 偏低」——那是无基准的主观判断（forbidden_findings#FB-05）。
+          正确做法是把数值抽成 comparable 并写 conclusion = unknown。
+      - form: 承诺高于行业常见水平
+        example: 「月度可用性不低于 99.9%」
+        why_not_risk: 属正常承诺，抽成 comparable 即可，不出风险结论
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: service-level
+    recommended_action: 转版本对比判定
+    evidence_requirement: |
+      必须抽出可用性百分比、各补偿档位比例、申请窗口天数三类数值，逐个带 {part, page, quote}，
+      并写进交接块的 comparables 段。方向判定（上升 / 下调 / 持平）属 review-reporter 的
+      compare_versions 动作，本 Agent 不表态。
+    notes: |
+      这是「差异为 0 陷阱」的关键输入。附件被整体替换时，主合同正文逐字节相同，
+      唯一能暴露实质变化的就是这些数值。抽不全等于把陷阱原样传给下游。
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 七、人员限制 restraint_personnel
+# ═══════════════════════════════════════════════════════════════════════════
+
+  - id: rt-non-compete-term
+    title: 竞业限制期限
+    category: restraint_personnel
+    severity: important
+    resolution: benchmark_compare
+    status: enabled
+    why: 竞业期限越长，对受限方的择业与经营限制越重，谈判阻力与后续争议概率同步放大
+    typical_position: 竞业限制、离职后义务、保密与限制条款
+    clause_categories: [non_compete, confidentiality]
+    keywords: [竞业限制, 竞业禁止, 离职后不得, 不得自营, 不得从事竞争业务, 竞争关系的业务]
+    patterns:
+      - '竞业(限制|禁止)'
+      - '(离职|终止|解除)后[^。；]{0,12}(\d+|[一二三四五六七八九十两]+)\s*(年|个月)[^。；]{0,15}(不得|禁止)[^。；]{0,15}(经营|从事|任职|自营)'
+      - '(不得)[^。；]{0,10}(自营|为他人经营)[^。；]{0,15}(竞争|同类)(关系的)?业务'
+    qualifiers:
+      require_all:
+        - 存在离职后或合作结束后的竞业限制约定
+        - 能抽出明确的期限数值
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 落在基准区间
+        example: 「离职后 2 年内不得从事与甲方有竞争关系的业务」
+        why_not_risk: |
+          market-benchmarks.yaml#non-compete-years 的基准区间为 1-2 年，
+          落在区间内判 aligned / pass，不得输出任何等级的风险。
+      - form: 短于基准区间
+        example: 「离职后 6 个月内不得……」
+        why_not_risk: 标尺明确「短于常见区间对受限方有利，不构成风险」，判 pass
+      - form: 在职期间的忠实义务
+        example: 「乙方在职期间不得兼职于甲方的竞争对手」
+        why_not_risk: 在职忠实义务不是离职后竞业限制，不适用本标尺
+    benchmark_link: market-benchmarks.yaml#non-compete-years
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: non-compete
+    recommended_action: 先谈判
+    evidence_requirement: 必须写出实际年数、基准区间 1-2 年与差距；抽不到年数时判 unknown
+    notes: |
+      结论以标尺档位为准：1-2 年判 pass ｜ <1 年判 pass ｜ 2-5 年判 important ｜ >=5 年判 severe ｜
+      无期限约定判 severe。**法律效力另论**——竞业限制受强制性规定约束且各法域差异极大，
+      「超过法定上限」「超出部分无效」一律转 defer_to_jurisdiction，不得在此输出
+      （market-benchmarks.yaml#non-compete-years.jurisdiction_override_warning）。
+
+  - id: rt-non-compete-without-compensation
+    title: 竞业限制未约定经济补偿
+    category: restraint_personnel
+    severity: severe
+    resolution: element_check
+    status: enabled
+    why: 竞业限制加在一方身上却没有对价安排时，这条限制在执行阶段极易落空，等于双方都拿不到确定性
+    typical_position: 竞业限制条款及其补偿约定
+    clause_categories: [non_compete]
+    keywords: [无需另行支付, 已包含相应对价, 不另行支付经济补偿, 无需支付补偿, 已包含在薪酬中]
+    patterns:
+      - '(无(需|须)|不)另行(向|给)[^。；]{0,10}支付[^。；]{0,10}(经济)?补偿'
+      - '(已)?(包含|涵盖)(在|于)[^。；]{0,15}(薪酬|工资|培训投入|对价)(中|内)'
+      - '(不|无)(支付|给予)[^。；]{0,8}(经济)?补偿(金)?'
+    qualifiers:
+      require_all:
+        - 存在竞业限制约定（rt-non-compete-term 同时命中）
+        - 未约定按月或按期支付的经济补偿，或明示不予支付
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 约定了按月补偿
+        example: 「竞业限制期内甲方按月向乙方支付上年度月平均工资的 30% 作为经济补偿」
+        why_not_risk: 要素齐备，判 pass 并写明补偿标准
+      - form: 商事主体之间的竞业约束
+        example: 「合作期内双方均不与对方的直接竞争对手开展同类合作」
+        why_not_risk: |
+          商事竞业与劳动竞业的对价逻辑不同，商事主体的对价体现在合作本身，
+          不适用「必须另付补偿」的判据；转 rt-exclusivity-obligation 判定。
+      - form: 补偿写在另一份文件
+        example: 正文未写补偿但附件《竞业限制补充确认书》已随材料送达并载明补偿
+        why_not_risk: 要素存在于已冻结的部件中即为齐备；附件未送达时写 blank 而非缺失
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: non-compete
+    recommended_action: 先谈判
+    evidence_requirement: |
+      必须并列引用竞业限制条款与补偿条款（或证明补偿条款不存在的检索范围）两处。
+      本条只判「要素是否齐备」这一结构事实；「对劳动者是否具有约束力」属法律效力判断，
+      须同时登记到 deferred_to_jurisdiction，由 jurisdiction-auditor 给出（forbidden_findings#FB-07）。
+
+  - id: rt-non-solicit-broad
+    title: 挖角限制范围过宽
+    category: restraint_personnel
+    severity: important
+    resolution: element_check
+    status: enabled
+    why: 不得招聘的对象写成开放集合时，己方正常的公开招聘都可能构成违约，且无法事前自查
+    typical_position: 人员限制、禁止招揽、保密与限制条款
+    clause_categories: [non_compete, misc]
+    keywords: [不得招聘, 不得招揽, 不得雇佣, 禁止挖角, 任何员工, 不得引诱]
+    patterns:
+      - '(不得|禁止)[^。；]{0,10}(招聘|招揽|雇佣|聘用|引诱)[^。；]{0,15}(员工|雇员|人员)'
+      - '(不得|禁止)[^。；]{0,10}(招聘|招揽|雇佣)[^。；]{0,10}(任何|全部|所有)[^。；]{0,10}(员工|人员)'
+    qualifiers:
+      require_all:
+        - 存在禁止招揽对方人员的约定
+      require_any:
+        - 限制对象为对方「任何员工」而非参与本项目的人员
+        - 未约定限制期限
+        - 未保留公开招聘、员工主动应聘的例外
+      exclude_if:
+        - 限制对象限定为参与本项目的具体人员且设有期限
+        - 已保留公开招聘或主动应聘的例外
+    requires_symmetry_check: true
+    counter_examples:
+      - form: 限定范围 + 期限 + 例外
+        example: 「合作期内及结束后 12 个月内，双方不得主动招揽参与本项目的对方人员，但对方人员响应公开招聘的除外」
+        why_not_risk: 三要素齐备，属惯常安排，判 pass
+      - form: 双方对等
+        example: 「双方互不招揽对方员工」且期限明确
+        why_not_risk: 对等安排，判 pass 并注明对等
+      - form: 保密义务中的人员条款
+        example: 「接触保密信息的人员范围应限于必要人员」
+        why_not_risk: 这是保密信息的知悉范围控制，不是挖角限制，属分类错误
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: non-compete
+    recommended_action: 进入谈判项
+    evidence_requirement: 必须写明限制对象范围、期限、有无例外三项
+
+  - id: rt-probation-period
+    title: 试用期约定
+    category: restraint_personnel
+    severity: important
+    resolution: defer_to_jurisdiction
+    status: enabled
+    why: 试用期的长度、延长与解除条件普遍受强制性规定约束，超限约定会让相关解除行为失去依据
+    typical_position: 劳动合同的合同期限与试用期条款
+    clause_categories: [term_duration, termination]
+    keywords: [试用期, 试用期为, 延长试用期, 试用期内解除, 转正]
+    patterns:
+      - '试用期(为|自)?[^。；]{0,15}(\d+|[一二三四五六七八九十两]+)\s*(个月|年|日|天)'
+      - '(延长|顺延)试用期'
+      - '试用期(内|满)[^。；]{0,20}(解除|终止|考核)'
+    qualifiers:
+      require_all:
+        - 合同类型为劳动合同或含雇佣关系条款
+        - 能抽出试用期的期限数值或延长约定
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 非劳动合同中的「试用」
+        example: 「甲方可先行试用本服务 30 日」
+        why_not_risk: 服务试用期不是劳动法意义上的试用期，属同词异义，判 not_triggered
+      - form: 已抽取但无可比法域包
+        example: 未加载任何 jurisdiction 包时命中试用期条款
+        why_not_risk: |
+          base 层的结论永远不能单独构成合规结论。此时只登记事实与证据，
+          写「须加载法域包后判定」，不得输出「超出法定上限」（forbidden_findings#FB-07）。
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: statutory-employment
+    recommended_action: 转法域合规判定
+    evidence_requirement: |
+      必须抽出：合同期限总长、试用期长度、是否可延长、延长后的总长，四项各带 {part, page, quote}，
+      写进交接块的 deferred_to_jurisdiction 段并置 must_escalate: true。
+      本 Agent 不写「超出法定上限」「超限一倍」这类判断——那是 jurisdiction-auditor 的结论。
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 八、措辞精度 drafting_precision
+# ═══════════════════════════════════════════════════════════════════════════
+
+  - id: rt-absolute-warranty-wording
+    title: 保证与陈述的绝对化措辞
+    category: drafting_precision
+    severity: important
+    resolution: element_check
+    status: enabled
+    why: 对不可控结果作出绝对承诺时，任何一次外部原因造成的中断都直接构成违约，且免责条款救不回来
+    typical_position: 陈述与保证、服务承诺、安全承诺条款
+    clause_categories: [warranty, misc]
+    keywords: [绝不, 绝对, 保证不会发生任何, 确保在任何情况下, 百分之百, 永不, 完全避免]
+    patterns:
+      - '(保证|承诺|确保)[^。；]{0,20}(绝不|永不|绝对不)(会)?'
+      - '(保证|承诺|确保)[^。；]{0,15}(不(会)?(发生|出现)|无)[^。；]{0,6}(任何)[^。；]{0,12}(中断|故障|泄露|事故|损失)'
+      - '(保证|承诺|确保)[^。；]{0,12}(百分之百|100%|完全)(可用|安全|准确|无误)'
+      - '在任何情况下(均)?(保证|确保)'
+    qualifiers:
+      require_all:
+        - 承诺方是己方
+        - 承诺的对象是结果状态（不中断、不泄露、无缺陷），而非行为义务（采取措施、遵守标准）
+      exclude_if:
+        - 属权利瑕疵担保、有权签约、不侵权等惯常陈述与保证
+        - 「全部 / 任何 / 所有」用于界定赔偿范围、保密信息范围或交付物清单
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 惯常的不侵权保证
+        example: 「乙方保证交付成果不侵犯任何第三方知识产权」
+        why_not_risk: |
+          知识产权不侵权保证是行业样板条款，其中的「任何」界定的是第三方范围，
+          不是对不可控结果的绝对承诺。判 pass（forbidden_findings#FB-06；真实语料 C02 第 5.3 款、C07 第 5.3 款）。
+      - form: 「全部损失」界定赔偿范围
+        example: 「赔偿甲方因此遭受的全部损失」
+        why_not_risk: |
+          「全部」修饰的是赔偿范围而非承诺的确定性，属 rt-uncapped-indemnity 的判定对象，
+          在此判 not_triggered，避免同一句话被两个条目各报一次。
+      - form: 行为义务而非结果承诺
+        example: 「乙方应采取不低于行业标准的技术措施保护数据安全」
+        why_not_risk: 承诺的是行为标准，留有合理努力的空间，判 pass
+      - form: 保密信息范围的「包括但不限于」
+        example: '「Confidential Information includes, without limitation: ……」'
+        why_not_risk: 定义条款的开放式列举，是标准起草手法，不是绝对承诺（真实语料 C08 第 1.2 款）
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: drafting
+    recommended_action: 建议优化
+    evidence_requirement: 必须引用完整的承诺句并写明承诺对象是「结果」还是「行为」；判不清时判 unknown
+
+  - id: rt-vague-time-terms
+    title: 时间条款的模糊表述
+    category: drafting_precision
+    severity: advisory
+    resolution: element_check
+    status: enabled
+    why: 「及时」「合理期限」无法起算也无法举证，履约争议时双方各执一词，救济条款随之失效
+    typical_position: 通知义务、交付、付款、整改、响应时限条款
+    clause_categories: [notice, payment, warranty, breach_remedy]
+    keywords: [及时, 尽快, 尽早, 合理期限, 适时, 尽速, 在合理时间内, 第一时间]
+    patterns:
+      - '(应|须|应当)(及时|尽快|尽早|尽速|适时|第一时间)'
+      - '在?合理(的)?(期限|时间|期间)(内)?'
+      - '(适当|相应)(的)?(期限|时间)内'
+    qualifiers:
+      require_all:
+        - 模糊表述所修饰的是一项有法律后果的义务（触发违约、解除、赔偿或付款）
+      exclude_if:
+        - 同一句或同一款中已给出确定的天数或工作日数
+        - 修饰的是努力程度而非时间点（如「合理必要的技能」「合理努力」）
+        - 出现在不产生直接后果的说明性、倡导性表述中
+    requires_symmetry_check: false
+    counter_examples:
+      - form: 「及时」后紧跟确定期限
+        example: 「接收方应及时返还或销毁全部保密信息，并在收到请求后 10 个工作日内出具书面证明」
+        why_not_risk: |
+          同句已给出 10 个工作日的确定期限，模糊词只是修辞，不影响可执行性，判 pass
+          （真实语料 C08 第 5.1 款）。这是本条最高频的误报来源。
+      - form: 「合理」修饰能力或标准
+        example: 「乙方应指派具备合理必要技能与经验的人员执行服务」
+        why_not_risk: 修饰的是人员资质标准，不是时间点，属分类错误
+      - form: 「合理注意标准」
+        example: 「不低于合理的注意标准」
+        why_not_risk: 注意义务的程度描述，是法律上的成熟概念，不是模糊时限
+      - form: 不可抗力的通知已有期限
+        example: 「受影响方应在十日内书面通知并提供证明」
+        why_not_risk: 期限确定，判 pass；这正是 missing-clauses.yaml#force-majeure 的要素齐备表现
+    benchmark_link: null
+    missing_clause_link: null
+    human_gate: null
+    dedup_group: drafting
+    recommended_action: 建议优化
+    evidence_requirement: 必须引用整句并写明该义务的后果；同句已有确定期限的一律判 not_triggered
+    notes: |
+      本条 severity 固定为 advisory，不得升格。它是效率类问题（影响执行顺畅），
+      不是权益类问题；把它报成 important 会稀释真正的高风险项（蓝本第十六节的误报计数）。
