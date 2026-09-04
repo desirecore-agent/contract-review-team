@@ -35,6 +35,8 @@ rules:
       article: 第十九条
       article_confidence: high
       content_confidence: high
+      verified_against: statutes/labor-contract-law.md#第十九条
+      verified_note: 「三个月以上不满一年的，试用期不得超过一个月；一年以上不满三年的，不得超过二个月；三年以上固定期限和无固定期限的，不得超过六个月」；同条另有「只能约定一次试用期」
     detection:
       clause_categories: [term_duration]
       keywords: [试用期, 试用, 转正]
@@ -67,6 +69,8 @@ rules:
       article: 第二十三条、第二十四条
       article_confidence: high
       content_confidence: high
+      verified_against: statutes/labor-contract-law.md#第二十三条,第二十四条
+      verified_note: 23 条为保密与竞业限制的约定依据及按月给予经济补偿；24 条限定人员范围（高管、高级技术人员及其他负有保密义务的人员）并规定期限不得超过二年
     detection:
       clause_categories: [non_compete, confidentiality]
       keywords: [竞业限制, 竞业禁止, 离职后不得]
@@ -102,6 +106,8 @@ rules:
       article: 第二十五条
       article_confidence: high
       content_confidence: high
+      verified_against: statutes/labor-contract-law.md#第二十五条
+      verified_note: 「除本法第二十二条和第二十三条规定的情形外，用人单位不得与劳动者约定由劳动者承担违约金」——即只有服务期与竞业限制两种例外
     detection:
       clause_categories: [breach_remedy]
       keywords: [违约金, 赔偿金, 提前离职, 服务期]
@@ -131,6 +137,8 @@ rules:
       article: 第五百八十五条
       article_confidence: high
       content_confidence: high
+      verified_against: statutes/civil-code.md#第五百八十五条
+      verified_note: 约定违约金；过分高于损失的，可请求人民法院或仲裁机构适当减少
     detection:
       clause_categories: [breach_remedy, liability]
       keywords: [违约金, 每日万分之, 逾期一日, 赔偿损失]
@@ -161,6 +169,8 @@ rules:
       article: 第五百八十六条至第五百八十八条
       article_confidence: high
       content_confidence: high
+      verified_against: statutes/civil-code.md#第五百八十六条,第五百八十七条,第五百八十八条
+      verified_note: 586 定金合同自实际交付时成立、数额不得超过主合同标的额的百分之二十；587 定金罚则；588 违约金与定金择一适用
     detection:
       clause_categories: [payment]
       keywords: [定金, 订金, 保证金, 双倍返还]
@@ -186,7 +196,7 @@ rules:
     title: 格式条款的提示说明义务与不利解释
     category: misc
     mandatory: true
-    confidence: content_high_article_uncertain
+    confidence: high
     statement: |
       采用格式条款订立合同的，提供格式条款的一方应当遵循公平原则确定当事人之间的权利义务，
       并采取合理的方式提示对方注意免除或者减轻其责任等与对方有重大利害关系的条款，
@@ -196,8 +206,10 @@ rules:
     legal_basis:
       instrument: 《中华人民共和国民法典》
       article: 第四百九十六条至第四百九十八条
-      article_confidence: content_high_article_uncertain
+      article_confidence: high
       content_confidence: high
+      verified_against: statutes/civil-code.md#第四百九十六条,第四百九十七条,第四百九十八条
+      verified_note: 496 定义+提示说明义务、497 无效情形、498 不利解释，三条内容与本规则逐句对应
     detection:
       clause_categories: [liability, warranty, misc]
       keywords: [本协议为格式合同, 用户协议, 服务条款, 概不负责, 免除责任]
@@ -226,6 +238,8 @@ rules:
       article: 第五百零二条
       article_confidence: high
       content_confidence: high
+      verified_against: statutes/civil-code.md#第五百零二条
+      verified_note: 「依法成立的合同，自成立时生效，但是法律另有规定或者当事人另有约定的除外」
     detection:
       clause_categories: [misc]
       keywords: [自签署之日起生效, 经批准后生效, 备案, 登记, 生效条件]
@@ -244,7 +258,7 @@ rules:
     title: 签署权限与印章效力
     category: misc
     mandatory: false
-    confidence: content_high_article_uncertain
+    confidence: high
     statement: |
       法定代表人或者负责人超越权限订立的合同，除相对人知道或者应当知道其超越权限外，
       该代表行为有效。司法实践中，判断盖章行为的效力重在盖章之人是否有代表权或代理权，
@@ -252,8 +266,10 @@ rules:
     legal_basis:
       instrument: 《中华人民共和国民法典》
       article: 第五百零四条
-      article_confidence: content_high_article_uncertain
+      article_confidence: high
       content_confidence: high
+      verified_against: statutes/civil-code.md#第五百零四条
+      verified_note: 「法定代表人或者负责人超越权限订立的合同，除相对人知道或者应当知道其超越权限外，该代表行为有效」
     detection:
       clause_categories: [misc]
       keywords: [法定代表人, 授权代表, 公章, 合同专用章, 授权委托书]
@@ -278,16 +294,25 @@ rules:
     title: 仲裁协议的有效要件
     category: dispute_resolution
     mandatory: true
-    confidence: content_high_article_uncertain
+    confidence: high
     statement: |
-      仲裁协议应当具有请求仲裁的意思表示、仲裁事项、选定的仲裁委员会三项内容。
-      仲裁协议对仲裁事项或者仲裁委员会没有约定或者约定不明确的，当事人可以补充协议；
+      仲裁协议应当具有请求仲裁的意思表示、仲裁事项、选定的仲裁机构三项内容。
+      仲裁协议对仲裁事项或者仲裁机构没有约定或者约定不明确的，当事人可以补充协议；
       达不成补充协议的，仲裁协议无效。
     legal_basis:
       instrument: 《中华人民共和国仲裁法》
-      article: 第十六条、第十八条
-      article_confidence: content_high_article_uncertain
+      article: 第二十七条、第二十九条
+      article_confidence: high
       content_confidence: high
+      verified_against: statutes/arbitration-law.md#第二十七条,第二十九条
+      verified_note: |
+        ⚠️ 本条原写「第十六条、第十八条」，那是 2017 版序号。库中 2025 修订版：
+          第十六条 = 仲裁机构变更登记    第十八条 = 仲裁机构组成人员
+        二者与仲裁协议要件毫无关系。实际对应：
+          第二十七条 = 仲裁协议要件（含「（三）选定的仲裁机构」）
+          第二十九条 = 「对仲裁事项或者仲裁机构没有约定或者约定不明确的，当事人可以
+                        补充协议；达不成补充协议的，仲裁协议无效」
+        条号在、内容对不上，是本库最典型的陷阱 —— 见 statutes/index.yaml 纪律一。
     detection:
       clause_categories: [dispute_resolution]
       keywords: [仲裁, 仲裁委员会, 仲裁规则, 裁决为终局]
@@ -303,21 +328,32 @@ rules:
         conclusion: pass
     human_gate: HG-02
     needs_human_confirmation:
-      - 仲裁法处于修订活跃期，条文序号与部分规则可能已变化，引用时需人工确认现行文本
+      - |
+        条号已按库中 2025 修订版核实并更正（见 legal_basis.verified_note）。
+        仍待人工确认的是**效力状态**：库中 frontmatter 自相矛盾（status 标「已废止」
+        却带 effective_date 2026-03-01，title 残留「（current年）」占位符）。
+        引用前须确认该修订版是否已生效，以及个案适用的是修订前还是修订后文本。
 
   - id: cn-arbitration-or-litigation-conflict
     title: 「或裁或审」条款
     category: dispute_resolution
     mandatory: true
-    confidence: needs_human_confirmation
+    confidence: high
     statement: |
       当事人约定争议既可以申请仲裁也可以向人民法院起诉的（俗称「或裁或审」），
       按司法解释规则该仲裁协议原则上无效，但一方申请仲裁而另一方在规定期限内未提出异议的除外。
     legal_basis:
       instrument: 最高人民法院关于适用《中华人民共和国仲裁法》若干问题的解释
-      article: 需人工确认
-      article_confidence: needs_human_confirmation
-      content_confidence: content_high_article_uncertain
+      article: 第七条
+      article_confidence: high
+      content_confidence: high
+      verified_against: statutes/arbitration-law-interpretation.md#第七条
+      verified_note: |
+        「当事人约定争议可以向仲裁机构申请仲裁也可以向人民法院起诉的，仲裁协议无效。
+        但一方向仲裁机构申请仲裁，另一方未在仲裁法第二十条第二款规定期间内提出异议的除外」。
+        相邻两条同样常用：第五条（约定两个以上仲裁机构）、第六条（约定「某地的仲裁
+        机构」且该地仅有一个时，视为已约定）——后者意味着"某地仲裁机构"这种写法
+        **不必然无效**，判断要看该地机构数量，不能一律判死。
     detection:
       clause_categories: [dispute_resolution]
       keywords: [可以向, 也可以, 仲裁或者诉讼, 任一方可选择]
@@ -328,21 +364,32 @@ rules:
       - condition: 约定分层争议解决（协商→调解→仲裁）且最终途径唯一
         conclusion: pass
     human_gate: HG-02
-    notes: 本条 confidence 为 needs_human_confirmation，报告中须写明「具体司法解释条文需人工确认」，只陈述规则方向
+    notes: |
+      条号已核实为最高法仲裁法解释第七条（见 legal_basis.verified_against），
+      不再是「条文需人工确认」。
+      ⚠️ 但**结论不能一律判无效**：同一解释第六条规定「约定由某地的仲裁机构仲裁
+      且该地仅有一个仲裁机构的，该仲裁机构视为约定的仲裁机构」。
+      所以「某地仲裁机构」这类写法要先看该地机构数量，不得直接套第七条判死。
 
   - id: cn-forum-selection
     title: 协议管辖的限制
     category: dispute_resolution
     mandatory: true
-    confidence: content_high_article_uncertain
+    confidence: high
     statement: |
       当事人可以书面协议选择与争议有实际联系的地点的人民法院管辖，
       但不得违反级别管辖和专属管辖的规定。
     legal_basis:
       instrument: 《中华人民共和国民事诉讼法》
-      article: 协议管辖条款（条文序号因修订可能变化，需人工确认）
-      article_confidence: needs_human_confirmation
+      article: 第三十五条
+      article_confidence: high
       content_confidence: high
+      verified_against: statutes/civil-procedure-law.md#第三十五条
+      verified_note: |
+        「合同或者其他财产权益纠纷的当事人可以书面协议选择被告住所地、合同履行地、
+        合同签订地、原告住所地、标的物所在地等与争议有实际联系的地点的人民法院管辖，
+        但不得违反本法对级别管辖和专属管辖的规定」。
+        涉外协议管辖另见第二百七十七条。
     detection:
       clause_categories: [dispute_resolution]
       keywords: [管辖, 人民法院, 诉讼, 原告所在地, 被告所在地, 合同签订地]
@@ -379,6 +426,8 @@ rules:
       article: 第一百八十条、第五百九十条
       article_confidence: high
       content_confidence: high
+      verified_against: statutes/civil-code.md#第一百八十条,第五百九十条
+      verified_note: 180 条不可抗力免责的一般规则与定义；590 条按不可抗力影响部分或全部免除合同责任，并含及时通知与证明义务
     detection:
       clause_categories: [force_majeure]
       keywords: [不可抗力, 不能预见, 政府行为, 自然灾害]
@@ -408,6 +457,8 @@ rules:
       article: 第五百三十三条
       article_confidence: high
       content_confidence: high
+      verified_against: statutes/civil-code.md#第五百三十三条
+      verified_note: 情势变更：合同基础条件发生订立时无法预见、不属于商业风险的重大变化，继续履行显失公平的，可重新协商或请求变更、解除
     detection:
       clause_categories: [misc, force_majeure]
       keywords: [情势变更, 重新协商, 显失公平]
@@ -433,6 +484,8 @@ rules:
       article: 第一百八十八条
       article_confidence: high
       content_confidence: high
+      verified_against: statutes/civil-code.md#第一百八十八条
+      verified_note: 「向人民法院请求保护民事权利的诉讼时效期间为三年」
     detection:
       clause_categories: [misc, breach_remedy]
       keywords: [时效, 索赔期限, 应在...日内提出]
@@ -455,7 +508,7 @@ rules:
     title: 个人信息出境的合规路径
     category: data_protection
     mandatory: true
-    confidence: content_high_article_uncertain
+    confidence: high
     statement: |
       个人信息处理者因业务等需要确需向中华人民共和国境外提供个人信息的，
       应当具备下列条件之一：通过国家网信部门组织的安全评估；
@@ -466,8 +519,10 @@ rules:
     legal_basis:
       instrument: 《中华人民共和国个人信息保护法》
       article: 第三十八条、第四十条
-      article_confidence: content_high_article_uncertain
+      article_confidence: high
       content_confidence: high
+      verified_against: statutes/pipl.md#第三十八条,第四十条
+      verified_note: 38 条列举跨境提供的四项前置条件；40 条为关键信息基础设施运营者的境内存储与安全评估要求
     detection:
       clause_categories: [data_protection]
       keywords: [个人信息, 数据出境, 跨境传输, 境外接收方, 标准合同, 安全评估]
@@ -492,7 +547,7 @@ rules:
     title: 委托处理个人信息的约定要求
     category: data_protection
     mandatory: true
-    confidence: content_high_article_uncertain
+    confidence: high
     statement: |
       个人信息处理者委托处理个人信息的，应当与受托人约定委托处理的目的、期限、处理方式、
       个人信息的种类、保护措施以及双方的权利和义务等，并对受托人的个人信息处理活动进行监督。
@@ -500,9 +555,15 @@ rules:
       委托合同不生效、无效、被撤销或者终止的，受托人应当返还个人信息或者予以删除，不得保留。
     legal_basis:
       instrument: 《中华人民共和国个人信息保护法》
-      article: 委托处理条款（条文序号需人工确认）
-      article_confidence: needs_human_confirmation
+      article: 第二十一条
+      article_confidence: high
       content_confidence: high
+      verified_against: statutes/pipl.md#第二十一条
+      verified_note: |
+        「个人信息处理者委托处理个人信息的，应当与受托人约定委托处理的目的、期限、
+        处理方式、个人信息的种类、保护措施以及双方的权利和义务等，并对受托人的
+        个人信息处理活动进行监督」；同条第三款「未经个人信息处理者同意，受托人
+        不得转委托他人处理个人信息」。
     detection:
       clause_categories: [data_protection]
       keywords: [委托处理, 受托方, 数据处理协议, 处理目的, 删除或返还]
@@ -522,16 +583,23 @@ rules:
     title: 商业秘密的构成与保密条款
     category: confidentiality
     mandatory: false
-    confidence: content_high_article_uncertain
+    confidence: high
     statement: |
       商业秘密是指不为公众所知悉、具有商业价值并经权利人采取相应保密措施的
       技术信息、经营信息等商业信息。保密条款的可执行性取决于信息是否满足上述三要件，
       以及权利人是否实际采取了保密措施。
     legal_basis:
       instrument: 《中华人民共和国反不正当竞争法》
-      article: 商业秘密定义条款（条文序号需人工确认）
-      article_confidence: needs_human_confirmation
+      article: 第十条
+      article_confidence: high
       content_confidence: high
+      verified_against: statutes/anti-unfair-competition-law.md#第十条
+      verified_note: |
+        同一条内既有定义也有侵权情形：「本法所称的商业秘密，是指不为公众所知悉、
+        具有商业价值并经权利人采取相应保密措施的技术信息、经营信息等商业信息」；
+        第一款四项列举侵犯行为，其中（三）为「违反保密义务……披露、使用」。
+        ⚠️ **「经权利人采取相应保密措施」是构成要件**——合同里没有保密安排，
+        信息就不构成商业秘密，谈不上侵权。这是审查保密条款时最实用的落点。
     detection:
       clause_categories: [confidentiality]
       keywords: [保密信息, 商业秘密, 保密义务, 保密期限]
@@ -550,7 +618,7 @@ rules:
     title: 电子签名的效力与不适用情形
     category: misc
     mandatory: true
-    confidence: content_high_article_uncertain
+    confidence: high
     statement: |
       民事活动中的合同可以约定使用电子签名、数据电文；可靠的电子签名与手写签名或者盖章
       具有同等的法律效力。但涉及婚姻、收养、继承等人身关系的文书，
@@ -558,9 +626,16 @@ rules:
       其他情形，不适用电子签名。
     legal_basis:
       instrument: 《中华人民共和国电子签名法》
-      article: 第三条及可靠电子签名条款
-      article_confidence: content_high_article_uncertain
-      content_confidence: content_high_article_uncertain
+      article: 第三条、第十三条、第十四条
+      article_confidence: high
+      content_confidence: high
+      verified_against: statutes/e-signature-law.md#第三条,第十三条,第十四条
+      verified_note: |
+        第三条  当事人可以约定使用或不使用电子签名；约定使用的不得仅因该形式否定其效力
+        第十三条 可靠电子签名的四项条件
+        第十四条 可靠的电子签名与手写签名或者盖章具有同等的法律效力
+        ⚠️ 条号已核实，但**效力状态未确认**：库中 frontmatter 的 status 标「已废止」
+        且 title 残留「（current年）」占位符，属上游元数据错误（见 index.yaml 纪律一）。
     detection:
       clause_categories: [misc]
       keywords: [电子签名, 电子合同, 数据电文, 在线签署, CA 证书]
