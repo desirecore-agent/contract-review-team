@@ -887,3 +887,38 @@ R03:
     验收只看两件事：(1) **不得**报「引用已废止的《合同法》」；
     (2) 仲裁条款的处理落在 A/B/C 哪一档，C 档视为时间效力机制失败。
     与 R02 成对运行才有意义——同一份合同两个签署日，结论相反才说明机制真的在工作。
+
+  # ---------------------------------------------------------------------------
+  # 实测基线（2026-09-05，全新实例从仓库安装后跑通七步）
+  # ---------------------------------------------------------------------------
+  measured_baseline:
+    env: 干净实例 D8，团队与知识包全部由 git 仓库安装，模型 desirecore-cloud/kimi-k3
+    case_id: case-20260905-251ed6a9
+    gate: conditional        # 与 R02 一致，理由同为三方统一社会信用代码缺失
+    temporal_gate_landed: |
+      contract_execution_date: '2019-06-20'（取自 intake 四大冻结，execution_date_frozen: true）
+      民法典（2021-01-01 施行）     contract_date_in_range=false → citation_forbidden
+      仲裁法（2026-03-01 施行）     contract_date_in_range=false → citation_forbidden
+      仲裁法解释（2006-09-08 施行） contract_date_in_range=true  → citable_with_note
+      政府采购法/招标投标法          applicable_from=unknown      → citation_requires_human_confirmation
+      民法典系列 8 条规则因 temporal_gate 全部转 not_applicable
+    repealed_law_citation: |
+      **未误报**。法域审计原文：「《合同法》签署日（2019-06-20）时仍有效
+      （2021-01-01 方废止），援引正确，不得报为缺陷」。
+    arbitration_probe: |
+      **A 档**。最终报告 report.md 中「第二十七条/第二十九条」出现 **0 次**；
+      法域审计里出现 3 次但均为版本对照（「2025 修订版第二十七条/第二十九条；
+      2017 修正版第十六条/第十八条」），并明确写「本库无该版全文 ⇒ 只陈述规则
+      方向，禁止写条号」。
+    must_not_flag: 占位符/附件缺失/签署不全 三项均 0
+    bonus_hit:
+      - continuing-fact-disclosure：披露了「履行期跨越法律更替日的持续性法律事实
+        原则上适用新法」，并说明本库无《合同法》全文故不能据此出实体结论
+      - 时点意识：查的是「买方所在地（合肥）**在 2019 年时**的仲裁机构数量」，
+        而不是当下的数量——司法解释第六条用在了正确的时点上
+    rework_observed: |
+      统筹官驳回过第一版法域审计并要求返工（AUDIT-...-afcaf7dc → -r1，
+      「三行转 not_applicable」）。返工机制正常。
+    halted_at: |
+      流水线停在 Human Gate（HG-01~HG-04）等授权人决定，未自动收口。
+      这是设计要的行为——业务决策不由 Agent 代拍。
