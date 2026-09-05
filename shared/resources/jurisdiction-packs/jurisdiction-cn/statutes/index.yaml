@@ -8,7 +8,7 @@
 #   statutes/    是**原文**——法条逐字文本，供报告引用与人工复核
 #   temporal.yaml 是**版本与时间效力**——哪一版、什么时候生效、旧合同该用哪版
 #
-# 21 部、2876 条、914 KB。
+# 29 部、4096 条、1241 KB。
 #
 # ┌─────────────────────────────────────────────────────────────────────────┐
 # │ 四条纪律。每一条都对应一次真实发生过的错误，不是防御性套话。            │
@@ -40,6 +40,10 @@
 #       仲裁协议要件在第十六条，不是本库的第二十七条
 #     · 合同签署日 < 2021-01-01 却引用《合同法》，那是**正确的**，不是缺陷；
 #       只有 >= 2021-01-01 仍引用才是法律引用失效
+#   本库现已收录 **5 部已废止但旧合同仍适用的法**（合同法、担保法、民法通则、
+#   物权法、侵权责任法）。这不是历史资料，是**判据**：2021-01-01 前签署的合同，
+#   那几部才是当时有效的法，可正常引用条号。没有它们，旧合同只能一律报
+#   「本库未覆盖」——R03 第一次跑就是这个结果，一条实体结论都出不来。
 #   完整规程与逐部版本区间见 **temporal.yaml**，引用任何条文前必须先过那一关。
 # ============================================================================
 
@@ -48,7 +52,8 @@ meta:
   source_ref: history-rebuild          # 注意：默认分支不是 main
   fetched_at: '2026-09-05'
   jurisdiction: 中国大陆（不含港澳台）
-  totals: {instruments: 21, articles: 2876, bytes: 935481}
+  includes_repealed: true    # 5 部已废止法，供 2021-01-01 前签署的合同使用
+  totals: {instruments: 29, articles: 4096, bytes: 1270526}
   temporal_metadata: temporal.yaml     # 版本与时间效力，引用前必读
   consistency_check: 'node check-temporal.mjs'
   license: |
@@ -99,6 +104,17 @@ coverage:
     - {file: copyright-law.md, articles: 67}
   电子:
     - {file: e-signature-law.md, articles: 36, note: '可否约定3 / 可靠条件13 / 同等效力14'}
+  已废止_旧合同适用:
+    # ⚠️ 这组不是历史资料。签署日 ∈ 各自区间的合同，这几部才是当时的法。
+    - {file: contract-law-repealed.md, articles: 428, note: '1999-10-01 ~ 2020-12-31；总则+分则完整'}
+    - {file: security-law-repealed.md, articles: 96, note: '1995-10-01 ~ 2020-12-31'}
+    - {file: civil-law-general-principles-repealed.md, articles: 156, note: '1987-01-01 ~ 2020-12-31'}
+    - {file: property-law-repealed.md, articles: 247, note: '2007-10-01 ~ 2020-12-31'}
+    - {file: tort-liability-law-repealed.md, articles: 92, note: '2010-07-01 ~ 2020-12-31'}
+  行政法规:
+    - {file: govt-procurement-law-regulation.md, articles: 79, note: '2015-03-01 起'}
+    - {file: tendering-bidding-law-regulation.md, articles: 84}
+    - {file: labor-contract-law-regulation.md, articles: 38, note: '2008-09-18 起'}
 
 # ---------------------------------------------------------------------------
 # 未覆盖 —— 明确列出，避免误以为「查不到 = 不存在」
@@ -106,7 +122,10 @@ coverage:
 not_covered:
   - 任何法律的**历史版本全文**。上游只有刑法提供了 1979 年版，其余一律只有最新版
     ——这是 temporal.yaml 整套规程存在的原因：判得出该用哪一版，但拿不出那一版原文
-  - 行政法规与部门规章（政府采购法**实施条例**、招标投标法实施条例均不在库）
+  - 部门规章。行政法规只收了三部实施条例（政府采购/招标投标/劳动合同法），其余未纳入
+  - >-
+    **民法总则**（2017-10-01 至 2020-12-31）。上游文件只有 54 条（实际 206 条），
+    覆盖不到民事法律行为章，属残缺 ⇒ 刻意不入库，宁可报未覆盖也不放残本进来
   - 其余司法解释（源仓库 judicial/ 677 件，本库取了 6 件）
   - 地方性法规（源仓库 15224 件）
   - 刑法及刑事司法解释（合同诈骗等刑事判断一律报未覆盖）

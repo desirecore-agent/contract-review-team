@@ -15,7 +15,7 @@ meta:
   pack_id: jurisdiction-cn
   # 版本号格式 cn-v<n>，对应蓝本第八节 version_matrix.jurisdiction_pack_version。
   # 与法域线索不一致时**阻断**（contract.yaml#INV-008）。
-  pack_version: cn-v2                # ⚠️ 改这里必须同步 rules.yaml#meta.pack_version，
+  pack_version: cn-v3                # ⚠️ 改这里必须同步 rules.yaml#meta.pack_version，
                                      #    两处不一致 → 版本矩阵 on_mismatch=block → 流水线停机
   knowledge_base_version: '2026-09-05'
   precedence: 20                     # 高于 base(10)，低于 custom(30)
