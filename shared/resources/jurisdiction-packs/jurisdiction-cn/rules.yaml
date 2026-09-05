@@ -10,8 +10,8 @@
 
 meta:
   pack_id: jurisdiction-cn
-  pack_version: cn-v2
-  knowledge_base_version: '2026-09-05'
+  pack_version: cn-v3
+  knowledge_base_version: '2026-09-05b'
   updated_at: '2026-09-05'
   jurisdiction: 中国大陆（不含港澳台）
 
@@ -47,9 +47,12 @@ temporal_policy:
 #   cn-contract-effectiveness / cn-authority-and-seal / cn-force-majeure
 #   cn-change-of-circumstances / cn-limitation-period
 #
-# ⇒ 签署日 **< 2021-01-01** 的合同适用《合同法》《担保法》《民法通则》等旧法，
-#   本库**没有**这些法的全文（民法典第一千二百六十条已列明它们同时废止）。
-#   此时只能陈述规则方向，禁止引用民法典条号，报「本库无当时适用法全文，需人工确认」。
+# ⇒ 签署日 **< 2021-01-01** 的合同适用《合同法》《担保法》《民法通则》《物权法》
+#   《侵权责任法》等旧法（民法典第一千二百六十条已列明它们同时废止）。
+#   **这五部的全文现已入库**（*-repealed.md），所以此时不是报「未覆盖」，而是
+#   **改引旧法条号**：禁止引用民法典条号，正常引用当时有效那部法的条文。
+#     例：违约金调减，2021 前引《合同法》第一百一十四条，2021 起引民法典第五百八十五条。
+#   逐部有效区间见 statutes/temporal.yaml。
 #
 # ⇒ 由此推出一条最容易搞反的判断：
 #   合同签署日 < 2021-01-01 而引用《中华人民共和国合同法》的，是**正确**的，

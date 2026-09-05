@@ -277,6 +277,97 @@ statutes:
       ⇒ 签署日 **< 2025-10-15** 的合同（含全部 2017 修订版时期的），
         商业秘密条款的条号与本库不同 ⇒ 报未覆盖，本库无那一版全文。
 
+
+  # ══ 已废止，但 2021-01-01 之前签署的合同仍适用 ══════════════════════════
+  # 这批是本文件全部价值的落点。没有它们，2021 年前的合同只能一律报
+  # 「本库未覆盖」——R03（签于 2019-06-20）第一次跑就是这个结果：
+  # 民法典系列 8 条规则全部转 not_applicable，一条实体结论都出不来。
+  #
+  # 废止日期不是查来的，是**库内可验证**的：civil-code.md 第一千二百六十条
+  # 逐字列明「本法自2021年1月1日起施行。《中华人民共和国婚姻法》……
+  # 《中华人民共和国合同法》、《中华人民共和国物权法》、《中华人民共和国
+  # 侵权责任法》……同时废止」。所以 applicable_until 一律 2020-12-31。
+
+  - file: contract-law-repealed.md
+    name: 中华人民共和国合同法（已废止）
+    in_library: 1999 年通过版（428 条，总则+分则完整）
+    is_current: false
+    applicable_from: '1999-10-01'
+    applicable_from_source: 'text:附则「本法自1999年10月1日起施行」'
+    applicable_until: '2020-12-31'
+    applicable_until_source: 'statutes/civil-code.md#第一千二百六十条（列入同时废止清单）'
+    ⚠️_use: |
+      签署日 ∈ [1999-10-01, 2020-12-31] 的合同，**这部才是当时的法**，可正常引用。
+      签署日 >= 2021-01-01 的，改用民法典合同编（第 463~988 条）。
+      ⇒ 合同引用《合同法》本身**不是缺陷**，除非签署日已在 2021-01-01 之后。
+
+  - file: security-law-repealed.md
+    name: 中华人民共和国担保法（已废止）
+    in_library: 1995 年通过版（96 条）
+    is_current: false
+    applicable_from: '1995-10-01'
+    applicable_from_source: 'text:附则「本法自1995年10月1日起施行」'
+    applicable_until: '2020-12-31'
+    applicable_until_source: 'statutes/civil-code.md#第一千二百六十条'
+    ⚠️_use: 2021-01-01 起由民法典物权编担保物权分编 + 合同编保证合同章取代
+
+  - file: civil-law-general-principles-repealed.md
+    name: 中华人民共和国民法通则（已废止）
+    in_library: 1986 年通过版（156 条）
+    is_current: false
+    applicable_from: '1987-01-01'
+    applicable_from_source: 'text:附则「本法自1987年1月1日起施行」'
+    applicable_until: '2020-12-31'
+    applicable_until_source: 'statutes/civil-code.md#第一千二百六十条'
+
+  - file: property-law-repealed.md
+    name: 中华人民共和国物权法（已废止）
+    in_library: 2007 年通过版（247 条）
+    is_current: false
+    applicable_from: '2007-10-01'
+    applicable_from_source: 'text:附则「本法自2007年10月1日起施行」'
+    applicable_until: '2020-12-31'
+    applicable_until_source: 'statutes/civil-code.md#第一千二百六十条'
+
+  - file: tort-liability-law-repealed.md
+    name: 中华人民共和国侵权责任法（已废止）
+    in_library: 2009 年通过版（92 条）
+    is_current: false
+    applicable_from: '2010-07-01'
+    applicable_from_source: 'text:附则「本法自2010年7月1日起施行」'
+    applicable_until: '2020-12-31'
+    applicable_until_source: 'statutes/civil-code.md#第一千二百六十条'
+
+  # ══ 行政法规（实施条例）════════════════════════════════════════════════
+  - file: govt-procurement-law-regulation.md
+    name: 中华人民共和国政府采购法实施条例
+    in_library: 2015 年版（79 条）
+    is_current: true
+    applicable_from: '2015-03-01'
+    applicable_from_source: 'text:附则「自2015年3月1日起施行」'
+    applicable_until: null
+    ⚠️_use: |
+      配套政府采购法。⇒ 签署日 < 2015-03-01 的政府采购合同不适用本条例，
+      而本库无更早版本 ⇒ 那种情况报未覆盖。
+
+  - file: tendering-bidding-law-regulation.md
+    name: 中华人民共和国招标投标法实施条例
+    in_library: 2019-03-02 修订版（84 条）
+    is_current: true
+    applicable_from: unknown_needs_human
+    applicable_from_note: |
+      附则写的是初版施行日 2012-02-01；本库收录的是 2019-03-02 修订版，
+      其施行日在修订决定里而那不在本库 ⇒ 按 step_5 三段判据处理。
+    applicable_until: null
+
+  - file: labor-contract-law-regulation.md
+    name: 中华人民共和国劳动合同法实施条例
+    in_library: 2008 年版（38 条）
+    is_current: true
+    applicable_from: '2008-09-18'
+    applicable_from_source: 'text:附则「自公布之日起施行」+ frontmatter publish_date 2008-09-18'
+    applicable_until: null
+
   # ══ 数据与网络 ══════════════════════════════════════════════════════════
   - file: pipl.md
     name: 中华人民共和国个人信息保护法
@@ -333,10 +424,11 @@ statutes:
 # 汇总 —— 供 Agent 快速判断风险面
 # ---------------------------------------------------------------------------
 summary:
-  total: 21
-  applicable_from_confirmed: 12        # 有正文出处
-  applicable_from_unknown: 9           # 正文未载，须人工确认
-  not_current_version: 1               # company-law.md（2018 修正版）
+  total: 29
+  applicable_from_confirmed: 19        # 有正文出处
+  applicable_from_unknown: 10           # 正文未载，须人工确认
+  not_current_version: 6               # company-law（2018 版）+ 5 部已废止法
+  repealed_but_applicable_to_old_contracts: 5   # 合同法/担保法/民法通则/物权法/侵权责任法
   renumbered_across_versions: 1        # arbitration-law.md（条号整体重排）
   highest_risk:
     - file: arbitration-law.md
