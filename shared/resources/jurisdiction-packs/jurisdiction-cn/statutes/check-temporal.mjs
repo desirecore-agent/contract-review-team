@@ -67,6 +67,23 @@ for (const e of entries) {
   }
 }
 
+// pack.yaml 与 rules.yaml 的 pack_version 必须一致。
+// 不一致会让整条流水线在版本矩阵校验处停机（on_mismatch=block），而症状
+// ——「最终报告未出具」——离真正的原因（改了一处忘了另一处）很远。
+// 这次就是这么撞上的：rules.yaml 改成 cn-v2，pack.yaml 还是 cn-v1。
+const packDir = join(here, '..')
+const readVer = (f) => {
+  try {
+    const m = readFileSync(join(packDir, f), 'utf8').match(/^\s*pack_version:\s*(\S+)/m)
+    return m ? m[1] : null
+  } catch { return null }
+}
+const vPack = readVer('pack.yaml')
+const vRules = readVer('rules.yaml')
+if (vPack && vRules && vPack !== vRules) {
+  problems.push(`pack.yaml 的 pack_version=${vPack} 与 rules.yaml 的 ${vRules} 不一致 —— 会导致流水线在版本矩阵校验处停机`)
+}
+
 if (problems.length) {
   console.error('✗ temporal.yaml 自检未通过：')
   for (const p of problems) console.error('  -', p)
