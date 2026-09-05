@@ -187,6 +187,15 @@ rules:
       content_confidence: high
       verified_against: statutes/civil-code.md#第五百八十五条
       verified_note: 约定违约金；过分高于损失的，可请求人民法院或仲裁机构适当减少
+      old_law_counterpart:
+        version: 合同法（2020-12-31 前）
+        article: 第一百一十四条
+        in_library: true
+        verified_against: statutes/contract-law-repealed.md#第一百一十四条
+        note: |
+          与民法典第五百八十五条**内容一致，只是条号不同**——和诉讼时效那条
+          （cn-limitation-period，二年 vs 三年）是两种不同形态：
+          这条换条号就行，那条换的是实体规则。两种都得按签署日选版本。
     detection:
       clause_categories: [breach_remedy, liability]
       keywords: [违约金, 每日万分之, 逾期一日, 赔偿损失]
@@ -542,13 +551,34 @@ rules:
     mandatory: true
     confidence: high
     statement: |
-      向人民法院请求保护民事权利的诉讼时效期间为三年，法律另有规定的依照其规定。
-      诉讼时效期间自权利人知道或者应当知道权利受到损害以及义务人之日起计算。
+      向人民法院请求保护民事权利的诉讼时效期间：**2021-01-01 起为三年**（民法典），
+      **此前为二年**（民法通则）。诉讼时效期间自权利人知道或者应当知道权利受到损害
+      以及义务人之日起计算。
     legal_basis:
       instrument: 《中华人民共和国民法典》
-      article: 第一百八十八条
+      article_by_version:
+        - version: 民法典
+          applicable_from: '2021-01-01'
+          article: 第一百八十八条
+          in_library: true
+          verified_against: statutes/civil-code.md#第一百八十八条
+          quote: 「向人民法院请求保护民事权利的诉讼时效期间为**三年**」
+        - version: 民法通则
+          applicable_until: '2020-12-31'
+          article: 第一百三十五条
+          in_library: true
+          verified_against: statutes/civil-law-general-principles-repealed.md#第一百三十五条
+          quote: 「向人民法院请求保护民事权利的诉讼时效期间为**二年**」
       article_confidence: high
       content_confidence: high
+      ⚠️_substantive_difference: |
+        **这一条的跨版本差异不是条号，是实体规则本身：二年 vs 三年。**
+        条号变了还能靠原文比对发现；期间从二年变三年，拿现行法套旧合同会得出
+        「还在时效内」这种**看起来完全正常、实际差一年**的结论。
+        本库两版全文都有（民法通则见 *-repealed.md），按签署日选，不必报未覆盖。
+        民法通则第一百三十六条另有一年短时效的四种情形（身体受伤害赔偿、
+        出售质量不合格商品未声明、延付或拒付租金、寄存财物被丢失或损毁），
+        民法典未保留，涉及这些标的的旧合同要单独查。
       verified_against: statutes/civil-code.md#第一百八十八条
       verified_note: 「向人民法院请求保护民事权利的诉讼时效期间为三年」
     detection:
