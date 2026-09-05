@@ -2,7 +2,7 @@
   "$schema": "agentfs/v1/team-members-lock",
   "lockfileVersion": 1,
   "teamId": "contract-review-team",
-  "resolvedAt": "2026-09-04T08:24:37.757Z",
+  "resolvedAt": "2026-09-05T07:29:57.870Z",
   "agents": {
     "contract-review-lead": {
       "source": "git",
@@ -44,10 +44,10 @@
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/jurisdiction-auditor.git",
-      "commit": "3863fdfa20433bb8ae7265f5ff5f9cb60cbfb5cd",
-      "syncedAt": "2026-09-04T08:24:37.757Z",
-      "version": "1.1.0",
-      "contentHash": "v3:2bc7f0d94ec14f804efb630489be04c70b140e3e188784be3615ba76f2de9a90"
+      "commit": "771f4f543cf128c94b3c3a44dd55212a77158a3f",
+      "syncedAt": "2026-09-05T07:29:57.870Z",
+      "version": "1.2.0",
+      "contentHash": "v3:bd797ca0de902a6e85dd0750e5522b565cf044d0d8358185e418dc7c458a2a6a"
     },
     "review-reporter": {
       "source": "git",
