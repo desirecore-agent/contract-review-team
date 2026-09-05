@@ -1,0 +1,327 @@
+# ============================================================================
+# statutes/temporal.yaml —— 法的时间效力元数据
+# ----------------------------------------------------------------------------
+# 【这个文件要解决的问题】
+# 「03 年的案子对应 03 年的刑法」——法不溯及既往。合同审查里同理：一份 2019 年签的
+# 合同，适用的是**当时**有效的法律，不是今天的现行法。
+#
+# 举两个本库里真实存在、且会直接把结论带错的例子：
+#
+#   仲裁法：2025-09-12 修订、2026-03-01 施行。条号**整体重排**。
+#     2026-03-01 之后签的合同 → 仲裁协议要件在第二十七条
+#     2026-03-01 之前签的合同 → 在第十六条
+#     拿现行版条号去套旧合同，条号和内容全错，而报告看起来一样专业。
+#
+#   公司法：本库收录的是 **2018 修正版**（218 条），而 2023-12-29 修订版
+#     （266 条）已于 2024-07-01 施行。⇒ 2024-07-01 之后的合同，本库的公司法
+#     **根本不能用**；而 2024-07-01 之前的合同，本库这一版正是当时有效的。
+#
+# 【法律依据】不是拍脑袋定的规则：
+#   《最高人民法院关于适用〈中华人民共和国民法典〉时间效力的若干规定》第一条：
+#     「民法典施行后的法律事实引起的民事纠纷案件，适用民法典的规定。
+#      民法典施行前的法律事实引起的民事纠纷案件，**适用当时的法律、司法解释的规定**……
+#      民法典施行前的法律事实**持续至**民法典施行后的，适用民法典的规定。」
+#   全文见 civil-code-temporal-effect.md，第三款的「持续性法律事实」尤其要注意——
+#   履行期跨越法律更替日的合同，不是简单按签署日一刀切。
+#
+# 【数据来源与可信度】
+#   history / first_effective  ← 来自法律**正文**（开头括号的沿革串、附则的施行条款）。
+#                                 这是法律文本自身的一部分，权威。
+#   in_library                 ← 由条文数、标题年份标注、特征条文交叉判定，判据写在各条目里。
+#   applicable_from            ← **只填能证实的**。法律附则写的永远是**初版**施行日；
+#                                 修正版的施行日在「修正决定」里，而那些文件不在本库。
+#                                 证实不了的一律 `unknown_needs_human`，**不得由通过日推断**
+#                                 ——通过与施行常隔数月，跨那段区间的合同就会选错版本。
+#
+#   ⚠️ 上游 frontmatter 的 `status` / `effective_date` / `title` 一概不作数据源：
+#      21 部里多部标「已废止」却带现行生效日期、title 残留 `（current年）` 占位符。
+#      判据只能是正文。
+# ============================================================================
+
+meta:
+  generated_at: '2026-09-05'
+  legal_basis: statutes/civil-code-temporal-effect.md
+  jurisdiction: 中国大陆（不含港澳台）
+
+# ---------------------------------------------------------------------------
+# 使用规程 —— jurisdiction-auditor 必须按此判定，不得跳步
+# ---------------------------------------------------------------------------
+procedure:
+  step_1_anchor: |
+    先确定**合同签署日**（contract-intake 的四大冻结之一已冻结该日期）。
+    签署日不明 ⇒ 不得选定任何版本，报「签署日未冻结，无法判定适用法律版本」。
+  step_2_pick_version: |
+    对每一部要引用的法：拿签署日与本文件的 `applicable_from` / `applicable_until` 比对。
+    命中本库收录版本的有效区间 ⇒ 可引用。
+  step_3_out_of_range: |
+    签署日**不在**本库收录版本的有效区间内 ⇒ **禁止引用本库条文**，
+    报「本库收录的是 X 版（有效期 A~B），该合同签于 C，需人工确认当时文本」。
+    ⚠️ 这是最危险的失败模式：拿现行版条号去套旧合同，看起来最专业，实际全错。
+  step_4_continuing_facts: |
+    履行期**跨越**法律更替日的（如 2020 年签、2022 年仍在履行），按时间效力规定
+    第一条第三款属「持续性法律事实」，原则上适用新法，但必须显式披露该判断，
+    并触发人工确认——这一步不是机械比日期能定的。
+  step_5_unknown: |
+    `applicable_from: unknown_needs_human` 的条目，**不得假定本库版本适用于任何日期**。
+    引用前必须由人工确认该版本的施行日。
+
+# ---------------------------------------------------------------------------
+# 逐部元数据
+# ---------------------------------------------------------------------------
+statutes:
+
+  # ══ 民事基本法 ══════════════════════════════════════════════════════════
+  - file: civil-code.md
+    name: 中华人民共和国民法典
+    in_library: 2020 年通过版（1260 条完整）
+    in_library_basis: 条文 1~1260 连续无缺口；第一千二百六十条载施行日与废止清单
+    is_current: true
+    applicable_from: '2021-01-01'
+    applicable_from_source: 'text:第一千二百六十条「本法自2021年1月1日起施行」'
+    applicable_until: null
+    supersedes:
+      note: |
+        第一千二百六十条逐字列明同时废止：婚姻法、继承法、民法通则、收养法、担保法、
+        **合同法**、物权法、侵权责任法、民法总则。
+        ⇒ 合同签署日 **< 2021-01-01** 而引用《合同法》的，是**正确**的，不得报为缺陷；
+        ⇒ 签署日 **>= 2021-01-01** 仍引用《合同法》的，才是法律引用失效。
+        这条区分是本库最容易搞反的地方。
+
+  - file: civil-code-temporal-effect.md
+    name: 最高人民法院关于适用《中华人民共和国民法典》时间效力的若干规定
+    in_library: 2020 年通过版
+    is_current: true
+    applicable_from: '2021-01-01'
+    applicable_from_source: 'text:自2021年1月1日起施行'
+    applicable_until: null
+    role: 本文件整套时间效力规程的法律依据，见顶部 legal_basis
+
+  - file: civil-code-general-part-interpretation.md
+    name: 最高人民法院关于适用《中华人民共和国民法典》总则编若干问题的解释
+    in_library: 2022 年施行版
+    is_current: true
+    applicable_from: '2022-03-01'
+    applicable_from_source: 'text:自2022年3月1日起施行'
+    applicable_until: null
+
+  - file: security-system-interpretation.md
+    name: 最高人民法院关于适用《中华人民共和国民法典》有关担保制度的解释
+    in_library: 2020-12-25 通过版
+    is_current: true
+    applicable_from: '2021-01-01'
+    applicable_from_source: 'text:自2021年1月1日起施行'
+    applicable_until: null
+
+  - file: sales-contract-interpretation.md
+    name: 最高人民法院关于审理买卖合同纠纷案件适用法律问题的解释
+    in_library: 2012 年版
+    is_current: unknown
+    applicable_from: '2012-07-01'
+    applicable_from_source: 'text:自2012年7月1日起施行'
+    applicable_until: null
+    ⚠️: 本解释在民法典施行后经 2020 年修正，本库这一版可能非最新，引用前须人工确认
+
+  - file: construction-contract-interpretation-1.md
+    name: 最高人民法院关于审理建设工程施工合同纠纷案件适用法律问题的解释（一）
+    in_library: 2020-12-25 通过版
+    is_current: true
+    applicable_from: '2021-01-01'
+    applicable_from_source: 'text:自2021年1月1日起施行'
+    applicable_until: null
+
+  # ══ 劳动 ════════════════════════════════════════════════════════════════
+  - file: labor-contract-law.md
+    name: 中华人民共和国劳动合同法
+    in_library: 2012 年修正版
+    in_library_basis: 标题与 H1 均标注「2012年修正」；2012 是该法最后一次修正
+    is_current: true
+    applicable_from: unknown_needs_human
+    applicable_from_note: |
+      附则第九十八条写的是**初版**施行日 2008-01-01。2012-12-28 修正决定的施行日
+      正文不载（在修正决定里，不在本库）。
+      ⇒ 签署日在 2008-01-01 ~ 2012 年底之间的劳动合同，适用的是初版还是修正版，
+        必须人工确认；本库这一版是修正版。
+    applicable_until: null
+
+  - file: labor-dispute-interpretation-1.md
+    name: 最高人民法院关于审理劳动争议案件适用法律问题的解释（一）
+    in_library: 2020-12-25 通过版
+    is_current: true
+    applicable_from: '2021-01-01'
+    applicable_from_source: 'text:自2021年1月1日起施行'
+    applicable_until: null
+
+  # ══ 争议解决 ════════════════════════════════════════════════════════════
+  - file: arbitration-law.md
+    name: 中华人民共和国仲裁法
+    in_library: 2025-09-12 修订版（96 条）
+    in_library_basis: 沿革末项为 2025-09-12 修订；第二十七条为仲裁协议要件（旧版在第十六条）
+    is_current: true
+    applicable_from: '2026-03-01'
+    applicable_from_source: 'text:本法自2026年3月1日起施行'
+    applicable_until: null
+    ⚠️_renumbered: |
+      **条号整体重排，这是本库最锋利的一把刀**：
+
+        事项              | 2017 修正版 | 本库 2025 修订版
+        仲裁协议要件      | 第十六条    | **第二十七条**
+        约定不明→无效     | 第十八条    | **第二十九条**
+
+      本库 2025 版的第十六条讲「仲裁机构变更登记」、第十八条讲「组成人员」，
+      与仲裁协议要件毫无关系。
+      ⇒ 签署日 **< 2026-03-01** 的合同：**禁止引用本库条号**，当时适用的是
+        2017 修正版（第十六、十八条），而本库**没有**那一版全文 ⇒ 报未覆盖。
+      ⇒ 签署日 **>= 2026-03-01**：可用本库条号。
+
+  - file: arbitration-law-interpretation.md
+    name: 最高人民法院关于适用《中华人民共和国仲裁法》若干问题的解释
+    in_library: 2006 年版
+    is_current: unknown
+    applicable_from: '2006-09-08'
+    applicable_from_source: 'text:自2006年9月8日起施行'
+    applicable_until: null
+    ⚠️: |
+      本解释配套的是**旧仲裁法**。2025 修订版施行后该解释是否继续适用、
+      条文是否需相应调整，本库无从判断 ⇒ 对 2026-03-01 之后的合同引用本解释时，
+      必须标注「配套旧法的解释，适用性需人工确认」。
+      第六条（「某地仲裁机构」且该地仅有一个时视为已约定）是审查中最常用的一条。
+
+  - file: civil-procedure-law.md
+    name: 中华人民共和国民事诉讼法
+    in_library: 2023-09-01 第五次修正版（306 条）
+    in_library_basis: 沿革末项为 2023-09-01 第五次修正
+    is_current: true
+    applicable_from: unknown_needs_human
+    applicable_from_note: |
+      附则第三百零六条写的是 1991 年初版的「自公布之日起施行」。
+      2023 修正决定的施行日正文不载 ⇒ 需人工确认。
+    applicable_until: null
+
+  # ══ 专门法 ══════════════════════════════════════════════════════════════
+  - file: govt-procurement-law.md
+    name: 中华人民共和国政府采购法
+    in_library: 2014-08-31 修正版（88 条）
+    is_current: true
+    applicable_from: unknown_needs_human
+    applicable_from_note: 附则第八十八条为初版施行日 2003-01-01；2014 修正决定施行日正文不载
+    applicable_until: null
+    ⚠️: 配套的《政府采购法实施条例》**不在本库**，涉及实施细则一律报未覆盖
+
+  - file: tendering-bidding-law.md
+    name: 中华人民共和国招标投标法
+    in_library: 2017-12-27 修正版（68 条）
+    is_current: true
+    applicable_from: unknown_needs_human
+    applicable_from_note: 附则为初版施行日 2000-01-01；2017 修正决定施行日正文不载
+    applicable_until: null
+
+  - file: company-law.md
+    name: 中华人民共和国公司法
+    in_library: '**2018 年修正版（218 条）—— 非现行版**'
+    in_library_basis: |
+      标题与 H1 均标注「2018年修正」；条文止于第二百一十八条；
+      库内检索 2023 修订版特征条文「五年内缴足」「审计委员会」**均零命中**。
+    is_current: false
+    applicable_from: unknown_needs_human
+    applicable_from_note: |
+      本库这一版是 2018-10-26 修正版，其施行日正文不载（在修正决定里，不在本库）；
+      附则写的是 2006-01-01，那是 2005 年修订版的施行日，不是本版的。
+      ⇒ 2018 修正版从哪天起适用，须人工确认。
+    applicable_until: '2024-06-30'
+    applicable_until_note: 2023 修订版自 2024-07-01 施行，故本版最迟适用至 2024-06-30
+    ⚠️_superseded: |
+      **本库这一部是过时版本。** 公司法 2023-12-29 修订、2024-07-01 施行，
+      是一次大改（注册资本认缴改五年实缴、可不设监事会改设审计委员会、
+      董事对第三人责任等），条文从 218 条增至 266 条。
+      ⇒ 签署日 **>= 2024-07-01** 的合同：本库公司法**不可用**，一律报
+        「本库收录 2018 修正版，该合同适用 2023 修订版，本库未覆盖，需人工确认」。
+      ⇒ 签署日 **< 2024-07-01**：本版正是当时有效版本，可用。
+      这条同时说明一件事：**不能假定「入库的就是现行版」**——上游给的可能是旧版。
+
+  - file: product-quality-law.md
+    name: 中华人民共和国产品质量法
+    in_library: 2018-12-29 第三次修正版（74 条）
+    is_current: true
+    applicable_from: unknown_needs_human
+    applicable_from_note: 附则为初版施行日 1993-09-01；2018 修正决定施行日正文不载
+    applicable_until: null
+
+  - file: anti-unfair-competition-law.md
+    name: 中华人民共和国反不正当竞争法
+    in_library: 2025-06-27 第二次修订版（41 条）
+    is_current: true
+    applicable_from: '2025-10-15'
+    applicable_from_source: 'text:第四十一条「本法自2025年10月15日起施行」'
+    applicable_until: null
+    ⚠️: |
+      ⇒ 签署日 **< 2025-10-15** 的合同（含全部 2017 修订版时期的），
+        商业秘密条款的条号与本库不同 ⇒ 报未覆盖，本库无那一版全文。
+
+  # ══ 数据与网络 ══════════════════════════════════════════════════════════
+  - file: pipl.md
+    name: 中华人民共和国个人信息保护法
+    in_library: 2021-08-20 通过版（74 条）
+    is_current: true
+    applicable_from: '2021-11-01'
+    applicable_from_source: 'text:本法自2021年11月1日起施行'
+    applicable_until: null
+    ⚠️: ⇒ 签署日 < 2021-11-01 的合同不适用本法，不得据此判个人信息条款违规
+
+  - file: data-security-law.md
+    name: 中华人民共和国数据安全法
+    in_library: 2021-06-10 通过版（55 条）
+    is_current: true
+    applicable_from: '2021-09-01'
+    applicable_from_source: 'text:自2021年9月1日起施行'
+    applicable_until: null
+
+  - file: cybersecurity-law.md
+    name: 中华人民共和国网络安全法
+    in_library: 2025-10-28 修正版（81 条）
+    in_library_basis: 沿革末项为 2025-10-28 修正
+    is_current: true
+    applicable_from: unknown_needs_human
+    applicable_from_note: |
+      附则为初版施行日 2017-06-01；2025 修正决定施行日正文不载。
+      ⚠️ 2025 修正距今很近，2017-06-01 ~ 该修正施行日之间签署的合同用的是初版，
+      而本库只有修正版 ⇒ 这段区间必须人工确认。
+    applicable_until: null
+
+  - file: e-signature-law.md
+    name: 中华人民共和国电子签名法
+    in_library: 2019-04-23 第二次修正版（36 条）
+    in_library_basis: 沿革为 2004 通过 → 2015 第一次修正 → 2019 第二次修正
+    is_current: true
+    applicable_from: unknown_needs_human
+    applicable_from_note: |
+      附则第三十六条为初版施行日 2005-04-01；2019 修正决定施行日正文不载。
+      两次修正（2015、2019）都是「打包修法」（《关于修改〈中华人民共和国电力法〉
+      等六部法律的决定》之类），改动幅度小，但施行日仍须人工确认。
+    applicable_until: null
+    key_articles_note: 第三条（可否约定使用电子签名）、第十三条（可靠电子签名条件）、第十四条（同等效力）
+
+  - file: copyright-law.md
+    name: 中华人民共和国著作权法
+    in_library: 2020-11-11 第三次修正版（67 条）
+    in_library_basis: 标题标注 2020；沿革末项 2020-11-11
+    is_current: true
+    applicable_from: unknown_needs_human
+    applicable_from_note: 附则为初版施行日 1991-06-01；2020 修正决定施行日正文不载
+    applicable_until: null
+
+# ---------------------------------------------------------------------------
+# 汇总 —— 供 Agent 快速判断风险面
+# ---------------------------------------------------------------------------
+summary:
+  total: 21
+  applicable_from_confirmed: 12        # 有正文出处
+  applicable_from_unknown: 9           # 正文未载，须人工确认
+  not_current_version: 1               # company-law.md（2018 修正版）
+  renumbered_across_versions: 1        # arbitration-law.md（条号整体重排）
+  highest_risk:
+    - file: arbitration-law.md
+      why: 条号整体重排 + 2026-03-01 才施行，跨界合同用错版本必然给出错误条号
+    - file: company-law.md
+      why: 本库是过时版本，2024-07-01 之后的合同完全不可用
+    - file: anti-unfair-competition-law.md
+      why: 2025-10-15 才施行，此前签署的合同本库无对应版本
