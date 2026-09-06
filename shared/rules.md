@@ -23,8 +23,12 @@
 
 ## 二、闸门不可绕过
 
-`contract-intake` 给出 `verdict: reject` 时，流水线**立即终止**。
+`contract-intake` 给出 `verdict: blocked` 时，流水线**立即终止**。
 不得降级为提醒、不得「先抽出来供参考」、不得由下游自行判断是否继续。
+
+与词表无关的停机信号是 **`handoff.to: null`**。任何成员判定终止时都必须同时
+把它置空；下游看到 `to: null` 就不启动，不需要先看懂 `verdict` 的取值。
+两个信号并存是刻意的：`verdict` 说「为什么停」，`handoff.to` 说「停没停」。
 
 ## 三、结构化交接（不传对话历史）
 
@@ -60,13 +64,41 @@ handoff:
 passed | conditional | blocked
 ```
 
+**管辖范围**：`contract-intake` 的门禁裁决（`handoff.verdict` / `intake_verdict`），
+以及**任何会被下游拿去做字面量准入判断的 verdict**。
+
 **不得使用变体**：`conditional_pass`、`pass`、`reject`、`rejected`、`通过`/`条件通过`/`拒绝`
 都不是合法的机器值。中文只能出现在 `verdict_label` 这类展示字段里，
-`verdict` 字段恒为上述三个 ASCII 字面量之一。
+门禁 `verdict` 字段恒为上述三个 ASCII 字面量之一。
 
-> 实测教训：intake 产出 `conditional`、clause-extractor 期望 `conditional_pass`，
+**不受本枚举管辖的**（下面这些是**别的字段**，同名不同义，照旧使用）：
+
+| 字段 | 合法取值 | 例 |
+|---|---|---|
+| 检查项状态 | `pass` / `block` / `flag` / `n/a` / `not_covered` | intake 的 `checks[].status` |
+| 风险等级 | `severe` / `important` / `advisory` / `pass` / `unknown` | risk-scanner、jurisdiction-auditor |
+| 覆盖状态 | `covered` / `blank` / `blocked` / `deferred` | 覆盖矩阵 |
+| 生效状态 | `effective` / `not_yet_effective` / `conditional` / `ineffective` / `unknown` | `contract_document.effectiveness.state` |
+| 人工审批 | `approved` / `rejected` / `pending` | 编排账本的 Human Gate |
+
+域内 Agent 自有的裁决词表（如 `jurisdiction-auditor` 的
+`out_of_service_scope` / `blocked_version_mismatch`）**不受本枚举管辖**——
+前提是没有任何下游对它做字面量准入判断。这类裁决终止流水线时，
+靠的是上面那条 `handoff.to: null`，不是靠 `verdict` 长什么样。
+
+> 实测教训（一）：intake 产出 `conditional`、clause-extractor 期望 `conditional_pass`，
 > 导致第 3 步准入被拒、白白触发一次返工。枚举不统一不会报错，只会让流水线在
 > 「双方都没错」的情况下卡住。
+>
+> 实测教训（二）（2026-09-06）：上面这条写下来之后，**本文第二节自己**还在写
+> 「`verdict: reject` 时立即终止」——而 `reject` 恰恰是本节禁用的字面量，
+> intake 从不产出它。于是「闸门不可绕过」这条最硬的规则，按字面**永远不触发**。
+> 编排官与两个下游成员的 principles 全都照着 `reject` 写，同样永不匹配。
+>
+> 那为什么真机跑起来闸门还是关上了？因为模型看懂了 `blocked` 的语义。
+> **闸门靠的是模型的宽容解读，不是规则。** 这类缺陷不会报错、不会漏做，
+> 只会在你给它加一道结构化校验的那天，一次性全部暴露。
+> 自检脚本见 `shared/resources/check-gate-verdict.mjs`。
 
 ### YAML 书写：值里含结构字符必须加引号
 

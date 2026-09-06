@@ -161,7 +161,7 @@ actions:
   - id: run_intake_gate
     stage: 2
     title: 输入治理裁决
-    description: 输出 pass / conditional_pass / reject 三态裁决
+    description: 输出 passed / conditional / blocked 三态裁决（字面量见 rules.md#三之一）
     performed_by: contract-intake
     preconditions:
       - check: relations.yaml#DC-001 未命中（不存在「引用了但清单没有」）
@@ -181,7 +181,7 @@ actions:
         on_fail: reject_intake
     human_gate: null
     outputs: [intake_verdict, intake_verdict_reasons, 'failure_mark[]']
-    conditional_pass_scope: 仅适用 rules.md#R-020 例外情形，且必须在报告首页列明限制
+    conditional_scope: 仅适用 rules.md#R-020 例外情形，且必须在报告首页列明限制
     notes: reject 时后续 Agent 一律不得启动——这是「阻断而非放行」的执行点
 
   # ---- 第 3 步：条款抽取 ----------------------------------------------------
@@ -192,7 +192,7 @@ actions:
     description: 抽取条款号、定义、金额、付款、期限、解除、争议解决，逐条保留来源页码
     performed_by: clause-extractor
     preconditions:
-      - check: intake_verdict ∈ [pass, conditional_pass]
+      - check: intake_verdict ∈ [passed, conditional]
         severity: severe
         on_fail: block
       - check: parser.parser_revision 已登记

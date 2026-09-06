@@ -734,7 +734,30 @@ C08:
 # 解读，不是规则。** 给这个字段加任何结构化校验，现存每一份回执都会不通过。
 #
 # 消费侧自己也不一致：jurisdiction-auditor 的技能用 blocked，risk-scanner 用
-# conditional_pass。收敛要跨团队仓库 + 三个 Agent 仓库，另开工单处理。
+# conditional_pass。
+#
+# ── 2026-09-06 后续：已收敛（团队 v0.1.5 + 三个 Agent 仓库）──
+# 全查一遍才发现比上面写的更糟，而且**canonical 早就定了**：
+# rules.md#三之一 明写「只有 passed | conditional | blocked」，并禁用
+# conditional_pass / pass / reject / rejected。真正的问题是——
+#
+#   **rules.md 第二节自己**还写着「`verdict: reject` 时立即终止」。
+#   reject 恰是它自己禁用的字面量，intake 从不产出。
+#   于是「闸门不可绕过」这条最硬的规则，按字面**永远不触发**。
+#
+# 编排官与两个下游成员的 persona/principles 全都照着 reject 写，同样永不匹配。
+# v0.1.1 那次「统一门禁裁决枚举」只改了两个成员的 SKILL.md，其余全漏。
+#
+# 运行时产物里留下了两条直接证据（在 workspace/ 与 inbox/ 里）：
+#   · 编排官自己写的 PLAN：
+#     「verdict=reject → 终止；conditional → 全量派发并传递 pending；passed → 进 O2」
+#     ——三分支里两支用对字面量，**终止那支是死支**
+#   · 风险识别官收到交接块时当场手工桥接：
+#     「上游回执 `verdict: conditional`（**属 `conditional_pass` 等价情形**），可启动」
+#
+# 闸门确实关上了，靠的是模型看懂了语义。不报错、不漏做，只在加结构化校验那天暴露。
+# 现由 shared/resources/check-gate-verdict.mjs 机械兜住（canonical 从 rules.md 读，
+# 不抄第二份；可跨 Agent 仓库扫描；运行时产物目录不扫）。
 # ---------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------

@@ -151,7 +151,7 @@ shared/resources/
   **它不得代替 `review-reporter` 给结论**，也不得代替人确认 Human Gate。
   组长读 `rules.md` 与 `actions.yaml` 是为了知道什么时候该拦，不是为了自己判。
 - **`contract-intake`** 用本体的不变量 `INV-001..INV-008` 与派生检查
-  `DC-001/002/003/005/007` 做 5 分钟硬校验，输出 `pass` / `conditional_pass` / `reject`。
+  `DC-001/002/003/005/007` 做 5 分钟硬校验，输出 `passed` / `conditional` / `blocked`。
   `reject` 时后续 Agent **一律不启动**——这是「阻断而非放行」的执行点。
 - **`clause-extractor`** 只产出事实（条款、页码、数值、引用边），不产出判断。
 - **`risk-scanner`** 消费 `base` 与 `custom`，做缺失检查、市场标尺对标与红线检查。
