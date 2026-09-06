@@ -2,61 +2,61 @@
   "$schema": "agentfs/v1/team-members-lock",
   "lockfileVersion": 1,
   "teamId": "contract-review-team",
-  "resolvedAt": "2026-09-05T07:29:57.870Z",
+  "resolvedAt": "2026-09-06T06:31:28.188Z",
   "agents": {
     "contract-review-lead": {
       "source": "git",
       "role": "supervisor",
       "url": "https://github.com/desirecore-agent/contract-review-lead.git",
-      "commit": "c2d0af38f400f220b37050e19dacd8d36f911691",
+      "commit": "8925cf24b140c21b117ab680b2427f62cbe02692",
       "syncedAt": "2026-08-31T18:44:05.312Z",
       "version": "1.0.0",
-      "contentHash": "v3:8f9cac78c9a13b5ef09bfb57bf27612b3064c9c0182905aee54c65d536f45257"
+      "contentHash": "v3:22a2be58b00ec099ede40590c07d0f1c13d052f65eb2594738f509a56d1e575d"
     },
     "contract-intake": {
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/contract-intake.git",
-      "commit": "36e8915ac3c417f2bc7173667981324b1ca086ca",
+      "commit": "8d89a60f0d1722ebc7efcf715fc55ae0ef33b521",
       "syncedAt": "2026-08-31T18:44:06.717Z",
       "version": "1.0.0",
-      "contentHash": "v3:15a9cc5a26060f5b6d7017b1ea5e63333d4f1038a2f27c03fe1043d6340dc534"
+      "contentHash": "v3:a82c3401a20a22f7cde741aed1e565fa05e7bc6d46b0856e7ad3c9a690d547b8"
     },
     "clause-extractor": {
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/clause-extractor.git",
-      "commit": "3924e35d6b9f312736c8e752a7b288c0563c9768",
+      "commit": "cbb2044a0ec4585f3105014f2038ef94eeabb329",
       "syncedAt": "2026-08-31T18:44:08.287Z",
       "version": "1.0.0",
-      "contentHash": "v3:4ee85a3a4e13ebe709530089eef0f623bcb1551cfb29a26b98f4fd8df361f941"
+      "contentHash": "v3:7c3ba4a225edda98741400c1df0d7a0fc084f990f21ed9469ba5f861c159b6fb"
     },
     "risk-scanner": {
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/risk-scanner.git",
-      "commit": "04639c484c1ea70fe69a81c524262f2b6951fdcd",
+      "commit": "b318d7aa0a909fd1236e9fe3ca9d72d441b0e3da",
       "syncedAt": "2026-08-31T18:44:09.862Z",
       "version": "1.0.0",
-      "contentHash": "v3:0bbf00bac6331ca1f5c1eb5d2f98ab6d7f3900a0b76ac21b3c8be83d088bf779"
+      "contentHash": "v3:22c5be5152288bbd39b95ab75579496a13763886b2d783b0d5fca0c9a2a12bcb"
     },
     "jurisdiction-auditor": {
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/jurisdiction-auditor.git",
-      "commit": "771f4f543cf128c94b3c3a44dd55212a77158a3f",
+      "commit": "26273a2da619f0080ae30602de0baad8e99e318b",
       "syncedAt": "2026-09-05T07:29:57.870Z",
       "version": "1.2.0",
-      "contentHash": "v3:bd797ca0de902a6e85dd0750e5522b565cf044d0d8358185e418dc7c458a2a6a"
+      "contentHash": "v3:3a74db5b2008e6070fcda92ed49ee09434fdcf7ecd8efead61c5a0c8655fa1a6"
     },
     "review-reporter": {
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/review-reporter.git",
-      "commit": "fd8e26f61b77c2e12f96b5c72ba45742d6cb0895",
+      "commit": "d8c43dadd05e9d0d348c681c0ea510ce6ea49808",
       "syncedAt": "2026-08-31T18:44:13.004Z",
       "version": "1.0.0",
-      "contentHash": "v3:f2816328c0687bfdba21bff54e2f07b328f7f0020c971d1a10f4757aa736ced1"
+      "contentHash": "v3:1a71b4aee9e8e9df554057ce7180754f7a39e1c1dafa9835a8f6c349dd0ba5ed"
     }
   }
 }
