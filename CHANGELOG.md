@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.13] - 2026-09-07
+
+### 修复
+
+- `review-reporter` 升级至 `1.0.2`，在评分回执写入后增加完整回读与 YAML 结构闸门；发现不可解析或结构歧义时以 `REJECT-SCORECARD-YAML` fail-closed，禁止把半成品交给报告或编排官。
+- 更新成员锁定到 `review-reporter` 合并提交 `081b0b4ea62bb697c6420fce385bf9b5b9f5fb2a` 及对应 `v3` 内容摘要，保留真实 Agent ID 指挥权白名单。
+
 ## [0.1.12] - 2026-09-07
 
 ### 修复
