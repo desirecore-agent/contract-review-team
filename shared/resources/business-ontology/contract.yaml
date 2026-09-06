@@ -775,6 +775,30 @@ invariants:
     rationale: 用中国法包审一份约定纽约法的合同，输出看上去完整但整份无效
     on_violation: block
     blueprint_ref: 第八节 版本矩阵
+    # ⚠️ 违反 INV-008 时有**两种**成因，结论完全不同，不得一律按「缺包」处理：
+    #
+    #   (a) 该法域在本团队服务范围内，只是规则包还没建 → 「缺包」，出路是补包
+    #   (b) 该法域**不在**本团队服务范围内            → 「越界」，出路是转介，不是补包
+    #
+    # 判据在 jurisdiction-packs/jurisdiction-cn/pack.yaml#service_scope：
+    #   is_sole_supported_jurisdiction: true 时，除 `jurisdiction` 声明的法域外
+    #   一切法域都属 (b)；`excluded` 列出的是最常撞见的几类，不是穷举。
+    #
+    # 判成 (a) 的代价：报告会建议「补充 jurisdiction-xx 规则包后重新受理」，
+    # 而按服务范围声明这个包永远不会有，用户被留在一条走不通的路上。
+    # 2026-09-06 C07（新加坡法 MSA）真机跑出的就是这个结果——门禁**正确地**
+    # 拦了下来、下游一步没派发，但定性写成「知识库无 sg 包」并建议补包。
+    # 成因不是 Agent 判断失误：service_scope 写在法域包里，而做本条判定的
+    # 输入治理 Agent 根本不加载法域包（run 记录里读过的只有 custom/pack.yaml
+    # 与本文件）。规则要放在**做判定的那个 Agent 真的会读的地方**。
+    service_scope_ref: jurisdiction-packs/jurisdiction-cn/pack.yaml#service_scope
+    out_of_scope_verdict: |
+      判定为 (b) 越界时，回执与报告必须：
+        · 明确写出「该合同法域为 X，不在本团队服务范围」
+        · 不出任何该法域的实体合规结论（一条都不行，包括「看起来没问题」）
+        · 出路写「转介熟悉该法域的专业人士」，**不得**写「补充 xx 法域规则包后重新受理」
+      通用文档治理（占位符、签署状态、页码、主体一致性等不依赖法域知识的检查）
+      照常执行并照常报告——越界不是「什么都不做」。
 
   - id: INV-009
     statement: freeze 四项未全部为 true 时，risk_direction 只能取 undetermined，且禁止输出任何一致性结论
