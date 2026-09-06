@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.17] - 2026-09-07
+
+### 修复
+
+- `review-reporter` 升级至 `1.0.4`：最终报告使用 lead 交接提供的 canonical `contract-review/` 根写入，首写、路径边界和回读失败均 fail closed 为 `REJECT-OUTPUT-DIR`，禁止成员 workspace 回退。
+- 更新成员锁定与 v3 内容摘要。
+
 ## [0.1.16] - 2026-09-07
 
 ### 修复
