@@ -2,7 +2,7 @@
   "$schema": "agentfs/v1/team-members-lock",
   "lockfileVersion": 1,
   "teamId": "contract-review-team",
-  "resolvedAt": "2026-09-06T12:44:09.000Z",
+  "resolvedAt": "2026-09-06T14:24:00.000Z",
   "agents": {
     "contract-review-lead": {
       "source": "git",
@@ -26,10 +26,10 @@
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/clause-extractor.git",
-      "commit": "9d59ac2394fdc988d76c06a8934aa12e12caf146",
-      "syncedAt": "2026-09-06T11:11:46.238Z",
-      "version": "1.0.2",
-      "contentHash": "v3:f80a176524dee78113777c8e573d5ee21f772f3a983d676072ccb06493d545de"
+      "commit": "504c9fbb528d39ba0ec624d95a13ba930e924332",
+      "syncedAt": "2026-09-06T14:24:00.000Z",
+      "version": "1.0.3",
+      "contentHash": "v3:9b21f74366bc434dd4b78584638bd9ac0952ffb6bd0b39f1d8d8772bf59b0363"
     },
     "risk-scanner": {
       "source": "git",
