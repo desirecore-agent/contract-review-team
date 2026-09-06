@@ -11,7 +11,7 @@
       "commit": "a481da94ac473e4a51ad13731e679311cae4226e",
       "syncedAt": "2026-09-07T07:30:00.000Z",
       "version": "1.0.10",
-      "contentHash": "v3:a7444df3d75d34d58ca7263a593beb908008d3f0d82ed75df4ff9b22e489d1b9"
+      "contentHash": "v3:da22bbbb8613a93f08af1b900e13919c9f61712a3f73d5302a14d357304576e1"
     },
     "contract-intake": {
       "source": "git",
@@ -29,7 +29,7 @@
       "commit": "331bca289cfafcbc04373a498538a02339556720",
       "syncedAt": "2026-09-07T07:30:00.000Z",
       "version": "1.0.5",
-      "contentHash": "v3:a7ab9a895c413ad9e5ac11e6de3e4cb2cefb68cd2c396fc7db3978dde48481c7"
+      "contentHash": "v3:46fc752cbb4b1e6e7f882134986e61bf21369bc1880553da291868d5d667cd85"
     },
     "risk-scanner": {
       "source": "git",
@@ -53,10 +53,10 @@
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/review-reporter.git",
-      "commit": "1bffff076b406f2ce2d649672b7bf86a2b42c4ef",
+      "commit": "c6d23c01a7e3ea30a740df3b13fa8328343b8a1e",
       "syncedAt": "2026-09-07T07:30:00.000Z",
       "version": "1.0.4",
-      "contentHash": "v3:2663971c4074295507eb4d7c259cfd5b959b003564eb13860f53415b3717c257"
+      "contentHash": "v3:e712cb3ba9f2fb8c2dce2b2da66ce85cb206949d28bd9a58491422fca029af91"
     }
   }
 }
