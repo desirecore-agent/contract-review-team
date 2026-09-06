@@ -84,6 +84,29 @@ if (vPack && vRules && vPack !== vRules) {
   problems.push(`pack.yaml 的 pack_version=${vPack} 与 rules.yaml 的 ${vRules} 不一致 —— 会导致流水线在版本矩阵校验处停机`)
 }
 
+// changelog 的最新条目必须就是当前 pack_version。
+// 前两次 bump（cn-v2 / cn-v3）都只改了 pack_version 没写 changelog，
+// 于是「这一版到底改了什么」在包内无处可查——而 changelog 恰恰是人工审阅的入口。
+// 这类遗漏和 pack_version 只改一处一样：不会报错，只会静默。
+try {
+  const packText = readFileSync(join(packDir, 'pack.yaml'), 'utf8')
+  const clIdx = packText.search(/^changelog:/m)
+  if (clIdx < 0) problems.push('pack.yaml 没有 changelog 段')
+  else {
+    // changelog 按新→旧排列，取第一条 `- version:`
+    const first = packText.slice(clIdx).match(/^\s*-\s*version:\s*(\S+)/m)
+    if (!first) problems.push('pack.yaml 的 changelog 段里没有任何 `- version:` 条目')
+    else if (vPack && first[1] !== vPack) {
+      problems.push(
+        `pack.yaml 的 pack_version=${vPack}，但 changelog 最新条目是 ${first[1]} —— ` +
+        `这一版改了什么在包内查不到，补一条 changelog`
+      )
+    }
+  }
+} catch {
+  problems.push('读不到 pack.yaml，无法校验 changelog')
+}
+
 if (problems.length) {
   console.error('✗ temporal.yaml 自检未通过：')
   for (const p of problems) console.error('  -', p)

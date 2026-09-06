@@ -103,7 +103,7 @@ applies_to:
     - 涉外仲裁裁决承认与执行的程序细节
     - 特定受管制行业（金融、医疗、教育培训）的行业专门规定
   coverage_gap_disclosure: |
-    本包 cn-v1 覆盖的是通用商事合同与劳动合同中最常见的强制性约束，
+    本包覆盖的是通用商事合同与劳动合同中最常见的强制性约束，
     **不是**中国法的完整检查表。未覆盖领域必须在报告中标注为「本次未检查」，
     并在覆盖矩阵中留白，不得按通过计（contract.yaml#INV-012）。
 
@@ -128,6 +128,20 @@ citation_discipline:
   - 法律修订频繁的领域（数据跨境、仲裁程序）默认按 needs_human_confirmation 处理
 
 changelog:
+  # ⚠️ 每次改 meta.pack_version 都必须在这里加一条，且最新条目的 version
+  #    必须与 meta.pack_version 相同——statutes/check-temporal.mjs 会强制这一点。
+  - version: cn-v3
+    date: '2026-09-05'
+    changes: |
+      法条全文库 21 → 29 部（2876 → 4096 条）。补入 5 部已废止但旧合同仍适用的法
+      （合同法 1999、担保法 1995、民法通则 1986、物权法 2007、侵权责任法 2009）
+      与 3 部实施条例。诉讼时效、违约金调减两类规则改为按签署日分版本给条号。
+  - version: cn-v2
+    date: '2026-09-05'
+    changes: |
+      服务范围收窄为中国大陆（service_scope），境外法域一律不出实体合规结论；
+      引入法的时间效力机制（statutes/temporal.yaml + 自检脚本），
+      仲裁协议要件等跨版本重排的条号改为 article_by_version 双版本并存。
   - version: cn-v1
     date: '2026-08-31'
     changes: 初始建立：劳动、违约金与定金、格式条款、争议解决、生效与签署、数据合规六类规则 + 冲突判定
