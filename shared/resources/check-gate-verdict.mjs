@@ -97,7 +97,10 @@ const files = walk(root).filter((f) => !SKIP_FILES.some((s) => f.endsWith(s)))
 for (const f of files) {
   let text
   try { text = readFileSync(f, 'utf8') } catch { continue }
-  const rel = relative(root, f)
+  // Normalize the relative path before matching repository-owned exclusions.
+  // Windows returns `shared\\rules.md`; the rules-file exemptions must behave
+  // identically on Windows and POSIX.
+  const rel = relative(root, f).replaceAll('\\', '/')
   const isRules = rel.endsWith('shared/rules.md') || rel === 'shared/rules.md'
   text.split('\n').forEach((line, i) => {
     // rules.md 里「不得使用变体」那一行和实测教训段落本来就要写出禁用词
