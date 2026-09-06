@@ -44,11 +44,19 @@ if (!canonical || canonical.length === 0) {
 // pass / reject / rejected 在别的字段里是合法取值（检查项状态、风险等级、人工审批），
 // 所以只在**门禁 verdict 上下文**里才判违规——靠下面的模式限定，而不是裸词匹配。
 const ALWAYS_BANNED = /conditional_pass/
+// 字段名：门禁裁决在各处的叫法。漏一个就等于对那处失明——
+// 2026-09-06 的第一版只写了 verdict / intake_verdict，于是编排官技能里的
+// `judge=reject` 与流程图里的 `verdict=reject` 双双漏检，靠真机 run 记录才发现。
+const GATE_FIELD = String.raw`(?:intake_verdict|upstream[._]verdict|verdict|judge)`
+// 运算符：`=` 一开始没写，而 ASCII 流程图和一行式说明恰恰只用 `=`。
+const GATE_OP = String.raw`(?:=|==|:|∈|为|是)`
+
 const GATE_CONTEXT = [
-  // intake_verdict = reject / intake_verdict ∈ [pass, ...]
-  /intake_verdict\s*(?:=|∈|:)\s*\[?\s*[`'"]?(pass|reject|rejected|conditional_pass)\b/,
-  // verdict: reject / `verdict` 为 `reject` / verdict ∈ {pass, conditional_pass}
-  /[`']?verdict[`']?\s*(?::|为|是|∈)\s*[\[{]?\s*[`'"]?(pass|reject|rejected|conditional_pass)\b/,
+  // verdict = reject / intake_verdict ∈ [pass, …] / `judge`=reject / verdict: reject
+  new RegExp(
+    String.raw`[\`']?` + GATE_FIELD + String.raw`[\`']?\s*` + GATE_OP +
+    String.raw`\s*[\[{]?\s*[\`'"]?(pass|reject|rejected|conditional_pass)\b`
+  ),
   // 「返回 reject 时」「判 reject 时」——编排官 principles 的写法
   /(?:返回|判|给出|产出)\s*[`'"]?(reject|rejected|conditional_pass)[`'"]?\s*时/,
   // ⚠️ 不要加「∈ {…pass…} 就算违规」这类不带字段名的模式：
