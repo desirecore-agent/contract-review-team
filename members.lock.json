@@ -2,7 +2,7 @@
   "$schema": "agentfs/v1/team-members-lock",
   "lockfileVersion": 1,
   "teamId": "contract-review-team",
-  "resolvedAt": "2026-09-06T11:11:46.238Z",
+  "resolvedAt": "2026-09-06T12:44:09.000Z",
   "agents": {
     "contract-review-lead": {
       "source": "git",
@@ -17,10 +17,10 @@
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/contract-intake.git",
-      "commit": "a1ee585733652add7d0eda92f62cde2c887cc442",
-      "syncedAt": "2026-09-06T11:11:46.238Z",
+      "commit": "a1499eaef69116ed9042995df0fb52dadb43ac04",
+      "syncedAt": "2026-09-06T12:44:09.000Z",
       "version": "1.0.1",
-      "contentHash": "v3:8c0348a41de22c5a68d52a646e1babfa0a7f41d1eff35d1542369c29b1f6d889"
+      "contentHash": "v3:78986cecf5c12d3420383c089d86d21fe46a38ab59596aedd4016636ef407696"
     },
     "clause-extractor": {
       "source": "git",
