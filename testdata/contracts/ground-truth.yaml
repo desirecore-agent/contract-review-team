@@ -639,7 +639,138 @@ C08:
 #   allowed  在明确声明不在服务范围的前提下，附带指出「若需审查请转介熟悉该法域的
 #            专业人士」或列出通用（base 层）观察，不计为越界。
 #
-# ⚠️ 本条尚**未经真机验证**（R03 优先）。跑之前不要把它当已验收的基线。
+# ---------------------------------------------------------------------------
+# C07 真机实测基线（2026-09-06，cn-v3 / us-v1，desirecore-cloud/kimi-k3）
+# ---------------------------------------------------------------------------
+# run 38cd6619 · session 9b5271ed · 全程 11 分 12 秒 · terminal=completed/partial=false
+# 产物：teams/<id>/workspace/cases/case-2026-0906-001/
+#       （orchestration-ledger.md / coverage-matrix.yaml / intake/INTAKE-20260906-d2dd7deb.receipt.yaml）
+#
+#   must_not_flag  foreign-law-substantive-conclusion  →  ✅ 通过
+#     境外法实体结论**零命中**。流水线在第 1-2 步被 intake 门禁终止，
+#     条款抽取 / 风险判读 / 法域合规 / 复核报告四个下游任务一个都没派发。
+#     覆盖矩阵 35 项：covered 7 / blank 26 / blocked 1 / deferred 1，
+#     26 项 blank 逐行写明「第 3-7 步依法未启动」，没有静默略过。
+#
+#   must_detect  out-of-service-scope                  →  ⚠️ 部分通过
+#     认出了非中国大陆法域，证据扎实：第 12.1 条准据法（新加坡共和国法律）、
+#     第 12.3 条 SIAC 仲裁 + 仲裁地新加坡、首部 Place of Execution: Singapore，
+#     三条独立线索带条款号与页码，resolved_jurisdiction=sg。
+#     **但定性错了**：判成 INV-008「知识库无 sg 法域规则包」（缺包），
+#     出路写成「由知识库维护方补充 jurisdiction-sg 规则包后重新提交受理」。
+#     全文没有出现「不在本团队服务范围」，也没有「转介专业人士」。
+#
+#     这与 jurisdiction-cn/pack.yaml#service_scope 直接矛盾：
+#     is_sole_supported_jurisdiction: true，且 excluded 明列「一切境外法域
+#     （美国各州、新加坡、欧盟等）」——那个 sg 包按声明永远不会有，
+#     用户被留在一条走不通的路上。
+#
+#   根因不是 Agent 判断失误。查 run 记录，输入治理 Agent 这一轮读过的只有
+#   custom/pack.yaml 与 business-ontology/contract.yaml——它**不加载法域包**，
+#   所以从没看见过 service_scope。而 INV-008 的原文只说「声明的法域必须覆盖
+#   线索」，rationale 举的例子也是「用中国法包审纽约法合同」，纯粹是缺包框架。
+#   Agent 完全按写着的判据执行，是**判据放错了地方**。
+#
+#   ⇒ 规则要放在**做这个判定的 Agent 真的会读的那个文件里**。
+#     修法见 business-ontology/contract.yaml#INV-008 的 (a) 缺包 / (b) 越界分支。
+#
+# 测试污染检查：ground-truth.yaml **未被读取**（只在一次 Ls 目录列表里出现过
+# 文件名，无 Read）。本次结论不受基线泄漏影响。
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# C08 真机实测基线（2026-09-06，同一实例同一模型）
+# ---------------------------------------------------------------------------
+# run eab12682 · session 2ea723b5 · 全程 26 分 53 秒 · terminal=completed/partial=false
+# 产物：workspace/cases/case-2026-0906-61b77a76/
+#       + workspace/contract-review/NWA-NDA-2026-0119/intake/INTAKE-20260906-ba62da2c.receipt.yaml
+#
+#   ① 原判据 signature-status-unconfirmed（阻断）      →  ✅ 通过
+#      「签署栏四要素全空 ×2」，行 106-114 / 116-124 带行号，并且**接住了那层推论**：
+#      6.1 条以 "the date last written below" 起算，签署日期缺失 ⇒ 生效日期整体不可得
+#      ⇒ 生效要件不成立。四大冻结里「签章状态」明确标 ✗ 未冻结。
+#      同时把签名行下划线额外归为 placeholder-unfilled——按 acceptable_additional_findings
+#      这不计误报（前提是同时给出签署状态问题，它给了）。
+#
+#   ② must_not_flag page-discontinuity                →  ✅ 未误报（Page 1-4 of 4 连续）
+#   ③ must_not_flag party-name-inconsistency          →  ✅ 未误报
+#   ④ must_not_flag foreign-law-substantive-conclusion →  ✅ 零命中，第 3-7 步未启动
+#
+#   ⑤ Delaware 干扰项（见上方 2026-09-06 更正）        →  ✅ **没有被误导**
+#      intake 回执的 jurisdiction_clues 是分层的：
+#        primary       = 8.1 准据法（新加坡共和国法律）
+#        corroboration = 8.2 新加坡法院专属管辖 + 首部 Place of Execution: Singapore
+#        resolved_jurisdiction: sg
+#      Blue Harbor 的特拉华注册地**根本没进 jurisdiction_clues**——当事方注册州
+#      被正确地当成与准据法无关。回执还登记了 jurisdiction-us 为 detection_only。
+#      ⇒ 「`jurisdiction-us` 的 detection_clues 里 `Delaware` 是裸词」这个隐患
+#        实测不可利用，**因此不改那个包**。先观察后修，观察结果是不用修。
+#
+#   ⑥ must_detect out-of-service-scope                →  ⚠️ 部分通过，**与 C07 同型**
+#      同样认出 sg、同样终止流水线、同样定性成「缺包」。
+#      补齐清单第 3 条：「**配置 sg（新加坡）法域规则包**并登记到账本版本矩阵，
+#      或确认改用其他已覆盖法域作为准据法」。
+#      两份语料独立复现 ⇒ 这是**系统性**的判据缺陷，不是单次波动。
+#
+# 测试污染检查：ground-truth.yaml Read 次数 = 0（同 C07，仅出现在 Ls 列表）。
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# 顺带查出：intake_verdict 有两套零重叠的词表（2026-09-06）
+# ---------------------------------------------------------------------------
+# 不是本轮判据的一部分，但两次运行的回执都撞到，记在这里免得下次再查一遍。
+#
+#   本体侧  pass / conditional_pass / reject / pending
+#     business-ontology/contract.yaml:314-322（enum）
+#     business-ontology/actions.yaml:164、:195（前置检查 intake_verdict ∈ [pass, conditional_pass]）
+#     README.md:154、test-cases/TC-002-party-name-drift.yaml:54
+#
+#   技能侧  passed / conditional / blocked      ← 真机回执实际写的是这套
+#     contract-intake 的 skills/contract-intake-gate/SKILL.md:632、:688、:831
+#
+# 两套词**零重叠**。于是 actions.yaml:195 那条前置检查按字面永远不成立。
+# 本轮 postfix 运行里 intake 输出 verdict: conditional，clause-extractor 照常启动了
+# ——模型把 conditional 当成了 conditional_pass。**结论对，但靠的是模型的宽容
+# 解读，不是规则。** 给这个字段加任何结构化校验，现存每一份回执都会不通过。
+#
+# 消费侧自己也不一致：jurisdiction-auditor 的技能用 blocked，risk-scanner 用
+# conditional_pass。收敛要跨团队仓库 + 三个 Agent 仓库，另开工单处理。
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# C07 修法后复跑：A/B 对照（2026-09-06）
+# ---------------------------------------------------------------------------
+# 只改一个文件——business-ontology/contract.yaml 的 INV-008 加 (a)缺包/(b)越界分支，
+# 语料、模型、实例、提示词全部不变。run 9ad2c383 · session 606bec6c · 36 分 09 秒。
+#
+#                       │ 修法前 run 38cd6619   │ 修法后 run 9ad2c383
+#   ────────────────────┼──────────────────────┼──────────────────────────────
+#   定性                │ BLK-...-PACK-MISMATCH │ verdict: out_of_service_scope
+#                       │ （缺包）              │ （越界）
+#   「不在本团队服务范围」│ 0 处                  │ intake / extraction / jurisdiction
+#                       │                       │ 三份产物均出现
+#   「补 jurisdiction-sg │ 有，且是唯一出路       │ **零命中**
+#     包后重新受理」     │                       │
+#   转介建议            │ 无                    │ 5 处「转交具备新加坡法域能力的
+#                       │                       │ 团队/外部法务」
+#   境外法实体结论      │ 0（下游根本没跑）      │ 0（compliance_findings: []
+#                       │                       │  + conclusion_lock: locked）
+#   流水线              │ 第 1-2 步终止          │ 第 1-5 步，第 4 步法域审计处终止
+#
+#   最后一行是关键：修法前那个 0 是**空跑出来的**，修法后这个 0 是**锁出来的**。
+#   法域合规官这一轮真的跑了，然后自己上了锁：
+#     conclusion_lock: locked / compliance_conclusion_allowed: false /
+#     compliance_findings: []，还自检了禁用措辞
+#     （「无『合规无异常 / 符合新加坡 / 按新加坡法有效』等禁用措辞」）。
+#   风险识别官出的是「通用风控视角的结构观察」，带 disclaimer 明写
+#   「『条款完整』不等于『按新加坡法有效』」——正好落在本段 allowed 的那一条上。
+#
+#   ⚠️ 扫描时注意：`按新加坡法有效` 会在 disclaimer 里作为**被否定的对象**出现。
+#     正则命中不等于违规，要看上下文。这一处是唯一命中，是纪律声明不是结论。
+#
+#   ⇒ must_detect out-of-service-scope：⚠️ 部分通过 → ✅ **通过**
+#     must_not_flag foreign-law-substantive-conclusion：✅ 通过（且判据比之前更硬）
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 
 R01:
