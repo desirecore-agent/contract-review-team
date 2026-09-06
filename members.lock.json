@@ -8,8 +8,8 @@
       "source": "git",
       "role": "supervisor",
       "url": "https://github.com/desirecore-agent/contract-review-lead.git",
-      "commit": "a481da94ac473e4a51ad13731e679311cae4226e",
-      "syncedAt": "2026-09-07T07:30:00.000Z",
+      "commit": "fd9a6f93188e92d07bd2a291b1bf606fc54d06e6",
+      "syncedAt": "2026-09-07T07:45:00.000Z",
       "version": "1.0.10",
       "contentHash": "v3:da22bbbb8613a93f08af1b900e13919c9f61712a3f73d5302a14d357304576e1"
     },
@@ -26,8 +26,8 @@
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/clause-extractor.git",
-      "commit": "331bca289cfafcbc04373a498538a02339556720",
-      "syncedAt": "2026-09-07T07:30:00.000Z",
+      "commit": "0288d27953487eef6ece1834a3d729a18109be55",
+      "syncedAt": "2026-09-07T07:45:00.000Z",
       "version": "1.0.5",
       "contentHash": "v3:46fc752cbb4b1e6e7f882134986e61bf21369bc1880553da291868d5d667cd85"
     },
@@ -53,8 +53,8 @@
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/review-reporter.git",
-      "commit": "c6d23c01a7e3ea30a740df3b13fa8328343b8a1e",
-      "syncedAt": "2026-09-07T07:30:00.000Z",
+      "commit": "5ace88dffe97022080a7bb5e86f22327ee9c94e6",
+      "syncedAt": "2026-09-07T07:45:00.000Z",
       "version": "1.0.4",
       "contentHash": "v3:e712cb3ba9f2fb8c2dce2b2da66ce85cb206949d28bd9a58491422fca029af91"
     }
