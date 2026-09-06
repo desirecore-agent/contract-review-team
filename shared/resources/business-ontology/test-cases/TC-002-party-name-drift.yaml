@@ -51,7 +51,7 @@ expected_behavior:
   must_not_output:
     - 以「乙方」角色词表述责任归属而不指明具体法人
     - 数据保护风险可控 之类未区分主体的结论
-  scoring_expectation: intake_verdict = reject，后续 Agent 不启动
+  scoring_expectation: intake_verdict = blocked，后续 Agent 不启动
 
 repro_input:
   documents:

@@ -2,6 +2,39 @@
 
 本团队的所有显著变更记录于此。
 
+## [0.1.6] - 2026-09-06
+
+### 修复
+
+- **门禁三态枚举全仓库对齐，并加机械自检。**`rules.md#三之一` 早就规定只有
+  `passed` / `conditional` / `blocked`，可 `rules.md` **第二节自己**仍写着
+  「`verdict: reject` 时立即终止」——`reject` 恰是它禁用的字面量，上游 intake
+  从不产出。于是「闸门不可绕过」这条最硬的规则按字面**永远不触发**；编排官与
+  两个下游成员的 persona/principles 全都照着 `reject` 写，同样永不匹配。
+  真机里闸门还是关上了，因为模型看懂了 `blocked` 的语义——**闸门靠的是模型的
+  宽容解读，不是规则**
+- v0.1.1 那次「统一门禁裁决枚举」只改了两个成员的 SKILL.md，persona.md /
+  principles.md 与另外两个仓库全漏了；本次跨 4 个仓库共修正 11 处
+- 本体侧同步对齐：`contract.yaml#intake_verdict` 的 enum 此前是
+  `[pass, conditional_pass, reject, pending]`——四个值没有一个是 intake 真会
+  产出的，导致 `actions.yaml` 的准入检查 `intake_verdict ∈ [pass, conditional_pass]`
+  按字面永远不成立
+- `rules.md` 补上枚举的**管辖范围**：只管门禁裁决与会被下游做字面量准入的 verdict；
+  检查项状态、风险等级、覆盖状态、人工审批里的同名取值不受管辖（此前没说，
+  导致「`pass` 到底能不能用」无法判断）
+- 明确 `handoff.to: null` 是**与词表无关**的停机信号，域内 Agent 的自有裁决词表
+  （如法域合规官的 `out_of_service_scope`）据此终止，不必套用三态枚举
+
+### 新增
+
+- `shared/resources/check-gate-verdict.mjs`：零依赖门禁裁决字面量自检，canonical
+  从 `rules.md` 读（不抄第二份），可跨 Agent 仓库扫描。变异验证：还原到修法前，
+  团队仓库检出 2 处、三个 Agent 仓库检出 6 / 1 / 4 处，修法后全绿
+
+### 变更
+
+- 重锁成员：合同审查统筹官 `1.0.3`、条款结构化官 `1.0.1`、合同风险识别官 `1.0.1`
+
 ## [0.1.5] - 2026-09-06
 
 ### 变更

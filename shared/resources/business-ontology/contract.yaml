@@ -314,12 +314,16 @@ entities:
       intake_verdict:
         type: string
         required: true
-        enum: [pass, conditional_pass, reject, pending]
-        description: 输入治理 Agent 的裁决；reject 时后续 Agent 一律不得启动
+        # 字面量由 rules.md#三之一「门禁三态枚举」定义，那里是唯一来源。
+        # 此前这里写的是 [pass, conditional_pass, reject, pending]——四个值
+        # 没有一个是 intake 真的会产出的，于是下面 actions.yaml 的准入检查
+        # 按字面永远不成立。改动前先读 rules.md，不要只改这一处。
+        enum: [passed, conditional, blocked]
+        description: 输入治理 Agent 的门禁裁决；blocked 时后续 Agent 一律不得启动
       intake_verdict_reasons:
         type: array<string>
         required: true
-        description: 裁决理由列表；conditional_pass 与 reject 必须非空
+        description: 裁决理由列表；conditional 与 blocked 必须非空
 
   contract_document:
     description: |

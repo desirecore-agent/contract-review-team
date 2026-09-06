@@ -48,7 +48,7 @@ expected_behavior:
   must_output:
     - 逐个列出占位符出现的位置（条款号 + 页码 + 原文片段）
     - breach-remedy 的覆盖状态为 blocked（不是 covered，也不是 blank）
-    - intake_verdict = reject，理由指明占位符
+    - intake_verdict = blocked，理由指明占位符
   must_not_output:
     - 违约责任已约定 / 该项通过
     - 把含占位符的条款计入通过率
