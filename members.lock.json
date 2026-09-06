@@ -2,7 +2,7 @@
   "$schema": "agentfs/v1/team-members-lock",
   "lockfileVersion": 1,
   "teamId": "contract-review-team",
-  "resolvedAt": "2026-09-07T05:30:00.000Z",
+  "resolvedAt": "2026-09-07T06:30:00.000Z",
   "agents": {
     "contract-review-lead": {
       "source": "git",
@@ -26,10 +26,10 @@
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/clause-extractor.git",
-      "commit": "504c9fbb528d39ba0ec624d95a13ba930e924332",
-      "syncedAt": "2026-09-06T14:24:00.000Z",
-      "version": "1.0.3",
-      "contentHash": "v3:9b21f74366bc434dd4b78584638bd9ac0952ffb6bd0b39f1d8d8772bf59b0363"
+      "commit": "39af84f62cfd61e55006a965701aeb8bcaa63594",
+      "syncedAt": "2026-09-07T06:30:00.000Z",
+      "version": "1.0.4",
+      "contentHash": "v3:3e09f7d63e5f182e760390ac5b8be9a607bc5b7a9e760ecdb01d1b5ddcc0f0d4"
     },
     "risk-scanner": {
       "source": "git",
@@ -53,10 +53,10 @@
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/review-reporter.git",
-      "commit": "081b0b4ea62bb697c6420fce385bf9b5b9f5fb2a",
-      "syncedAt": "2026-09-07T02:43:28.000Z",
-      "version": "1.0.2",
-      "contentHash": "v3:53e015b55b6f5a5500374cce2c04f41685817335fa63e9f23e7c36fcfcfef6d8"
+      "commit": "b461bd0d9ceab02efa4ae7b0633dac29b7fdfb8f",
+      "syncedAt": "2026-09-07T06:30:00.000Z",
+      "version": "1.0.3",
+      "contentHash": "v3:1e1d05e01ffb2618c495f495a9d377cf2526525de4888932e4d56916cc292a82"
     }
   }
 }

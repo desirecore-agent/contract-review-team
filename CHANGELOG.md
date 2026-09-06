@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.16] - 2026-09-07
+
+### 修复
+
+- `review-reporter` 升级至 `1.0.3`：第 6–7 步评分与报告产物统一写入 lead 指定的 canonical `contract-review/` 根，路径边界不明或根外时返回 `REJECT-OUTPUT-DIR`。
+- `clause-extractor` 升级至 `1.0.4`，条款 YAML 禁止非空 flow map/sequence；写入后解析失败返回 `REJECT-CLAUSES-YAML` 并停止交接。
+- 更新成员锁定与 v3 内容摘要。
+
 ## [0.1.15] - 2026-09-07
 
 ### 修复
