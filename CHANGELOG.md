@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.18] - 2026-09-07
+
+### 修复
+
+- `contract-review-lead` 升级至 `1.0.10`，handoff 显式传递 `canonical_artifact_root` 与 `lead_workspace`，所有 artifact 路径从该根派生并做段边界校验。
+- `clause-extractor` 升级至 `1.0.5`，补强 flow YAML 禁止规则、产物扫描与解析失败闭账。
+- 更新成员锁定及 v3 内容摘要。
+
 ## [0.1.17] - 2026-09-07
 
 ### 修复

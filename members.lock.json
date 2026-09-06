@@ -2,16 +2,16 @@
   "$schema": "agentfs/v1/team-members-lock",
   "lockfileVersion": 1,
   "teamId": "contract-review-team",
-  "resolvedAt": "2026-09-07T07:00:00.000Z",
+  "resolvedAt": "2026-09-07T07:30:00.000Z",
   "agents": {
     "contract-review-lead": {
       "source": "git",
       "role": "supervisor",
       "url": "https://github.com/desirecore-agent/contract-review-lead.git",
-      "commit": "9c59b5cea029e4bc4727c92382f4b5b6d1cd2c48",
-      "syncedAt": "2026-09-07T05:30:00.000Z",
-      "version": "1.0.9",
-      "contentHash": "v3:da7759364faae88325ac23948c769287c4635e7f093f15a4a00ea142fb096102"
+      "commit": "c598ea1edc7ce81dac5bd0ec9dd142552be1e773",
+      "syncedAt": "2026-09-07T07:30:00.000Z",
+      "version": "1.0.10",
+      "contentHash": "v3:a7444df3d75d34d58ca7263a593beb908008d3f0d82ed75df4ff9b22e489d1b9"
     },
     "contract-intake": {
       "source": "git",
@@ -26,10 +26,10 @@
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/clause-extractor.git",
-      "commit": "39af84f62cfd61e55006a965701aeb8bcaa63594",
-      "syncedAt": "2026-09-07T06:30:00.000Z",
-      "version": "1.0.4",
-      "contentHash": "v3:3e09f7d63e5f182e760390ac5b8be9a607bc5b7a9e760ecdb01d1b5ddcc0f0d4"
+      "commit": "331bca289cfafcbc04373a498538a02339556720",
+      "syncedAt": "2026-09-07T07:30:00.000Z",
+      "version": "1.0.5",
+      "contentHash": "v3:a7ab9a895c413ad9e5ac11e6de3e4cb2cefb68cd2c396fc7db3978dde48481c7"
     },
     "risk-scanner": {
       "source": "git",
@@ -54,9 +54,9 @@
       "role": "member",
       "url": "https://github.com/desirecore-agent/review-reporter.git",
       "commit": "1bffff076b406f2ce2d649672b7bf86a2b42c4ef",
-      "syncedAt": "2026-09-07T07:00:00.000Z",
+      "syncedAt": "2026-09-07T07:30:00.000Z",
       "version": "1.0.4",
-      "contentHash": "v3:9ff138ade07aa7ca4df4c2680ae4409db07a0a33daca457c99c7396e0967dae7"
+      "contentHash": "v3:2663971c4074295507eb4d7c259cfd5b959b003564eb13860f53415b3717c257"
     }
   }
 }
