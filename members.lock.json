@@ -2,16 +2,16 @@
   "$schema": "agentfs/v1/team-members-lock",
   "lockfileVersion": 1,
   "teamId": "contract-review-team",
-  "resolvedAt": "2026-09-07T00:45:00.000Z",
+  "resolvedAt": "2026-09-07T01:25:00.000Z",
   "agents": {
     "contract-review-lead": {
       "source": "git",
       "role": "supervisor",
       "url": "https://github.com/desirecore-agent/contract-review-lead.git",
-      "commit": "1431d4789a71e5fc6dce771c9cc1bcb3e1103d72",
-      "syncedAt": "2026-09-07T00:45:00.000Z",
-      "version": "1.0.7",
-      "contentHash": "v3:83245c6db300702771057ee9f6b26747b490e6d68ba17f109dcdaae19fd62c41"
+      "commit": "c3628dfa2fe4ec3358bfe021418cee369c874f70",
+      "syncedAt": "2026-09-07T01:25:00.000Z",
+      "version": "1.0.8",
+      "contentHash": "v3:61fdbeaf0eeb02d9800fb99e6b455cc4db1d0682b5a4d04e1dd7c73ec92b2e90"
     },
     "contract-intake": {
       "source": "git",
