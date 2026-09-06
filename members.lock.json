@@ -2,16 +2,16 @@
   "$schema": "agentfs/v1/team-members-lock",
   "lockfileVersion": 1,
   "teamId": "contract-review-team",
-  "resolvedAt": "2026-09-07T05:30:00.000Z",
+  "resolvedAt": "2026-09-07T07:30:00.000Z",
   "agents": {
     "contract-review-lead": {
       "source": "git",
       "role": "supervisor",
       "url": "https://github.com/desirecore-agent/contract-review-lead.git",
-      "commit": "9c59b5cea029e4bc4727c92382f4b5b6d1cd2c48",
-      "syncedAt": "2026-09-07T05:30:00.000Z",
-      "version": "1.0.9",
-      "contentHash": "v3:da7759364faae88325ac23948c769287c4635e7f093f15a4a00ea142fb096102"
+      "commit": "fd9a6f93188e92d07bd2a291b1bf606fc54d06e6",
+      "syncedAt": "2026-09-07T07:45:00.000Z",
+      "version": "1.0.10",
+      "contentHash": "v3:da22bbbb8613a93f08af1b900e13919c9f61712a3f73d5302a14d357304576e1"
     },
     "contract-intake": {
       "source": "git",
@@ -26,10 +26,10 @@
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/clause-extractor.git",
-      "commit": "504c9fbb528d39ba0ec624d95a13ba930e924332",
-      "syncedAt": "2026-09-06T14:24:00.000Z",
-      "version": "1.0.3",
-      "contentHash": "v3:9b21f74366bc434dd4b78584638bd9ac0952ffb6bd0b39f1d8d8772bf59b0363"
+      "commit": "0288d27953487eef6ece1834a3d729a18109be55",
+      "syncedAt": "2026-09-07T07:45:00.000Z",
+      "version": "1.0.5",
+      "contentHash": "v3:46fc752cbb4b1e6e7f882134986e61bf21369bc1880553da291868d5d667cd85"
     },
     "risk-scanner": {
       "source": "git",
@@ -53,10 +53,10 @@
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/review-reporter.git",
-      "commit": "081b0b4ea62bb697c6420fce385bf9b5b9f5fb2a",
-      "syncedAt": "2026-09-07T02:43:28.000Z",
-      "version": "1.0.2",
-      "contentHash": "v3:53e015b55b6f5a5500374cce2c04f41685817335fa63e9f23e7c36fcfcfef6d8"
+      "commit": "5ace88dffe97022080a7bb5e86f22327ee9c94e6",
+      "syncedAt": "2026-09-07T07:45:00.000Z",
+      "version": "1.0.4",
+      "contentHash": "v3:e712cb3ba9f2fb8c2dce2b2da66ce85cb206949d28bd9a58491422fca029af91"
     }
   }
 }

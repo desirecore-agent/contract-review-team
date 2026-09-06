@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.1.18] - 2026-09-07
+
+### 修复
+
+- `contract-review-lead` 升级至 `1.0.10`，handoff 显式传递 `canonical_artifact_root` 与 `lead_workspace`，所有 artifact 路径从该根派生并做段边界校验。
+- `clause-extractor` 升级至 `1.0.5`，补强 flow YAML 禁止规则、产物扫描与解析失败闭账。
+- 更新成员锁定及 v3 内容摘要。
+
+## [0.1.17] - 2026-09-07
+
+### 修复
+
+- `review-reporter` 升级至 `1.0.4`：最终报告使用 lead 交接提供的 canonical `contract-review/` 根写入，首写、路径边界和回读失败均 fail closed 为 `REJECT-OUTPUT-DIR`，禁止成员 workspace 回退。
+- 更新成员锁定与 v3 内容摘要。
+
+## [0.1.16] - 2026-09-07
+
+### 修复
+
+- `review-reporter` 升级至 `1.0.3`：第 6–7 步评分与报告产物统一写入 lead 指定的 canonical `contract-review/` 根，路径边界不明或根外时返回 `REJECT-OUTPUT-DIR`。
+- `clause-extractor` 升级至 `1.0.4`，条款 YAML 禁止非空 flow map/sequence；写入后解析失败返回 `REJECT-CLAUSES-YAML` 并停止交接。
+- 更新成员锁定与 v3 内容摘要。
+
 ## [0.1.15] - 2026-09-07
 
 ### 修复
