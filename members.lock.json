@@ -2,7 +2,7 @@
   "$schema": "agentfs/v1/team-members-lock",
   "lockfileVersion": 1,
   "teamId": "contract-review-team",
-  "resolvedAt": "2026-09-07T09:30:00.000Z",
+  "resolvedAt": "2026-09-07T10:30:00.000Z",
   "agents": {
     "contract-review-lead": {
       "source": "git",
@@ -11,7 +11,7 @@
       "commit": "fc877c69a687a2258a9c66118bd222b594c91ae4",
       "syncedAt": "2026-09-07T08:30:00.000Z",
       "version": "1.0.11",
-      "contentHash": "v3:f2b34ac9097eec73f692174214830e1d425af95ac0bd6bfabb020d89137977d0"
+      "contentHash": "v3:31d4745a9cf5fa37dea6eb3c78620a646ac5d05075a14573ab498f2af51fa1bc"
     },
     "contract-intake": {
       "source": "git",
@@ -29,7 +29,7 @@
       "commit": "0288d27953487eef6ece1834a3d729a18109be55",
       "syncedAt": "2026-09-07T07:45:00.000Z",
       "version": "1.0.5",
-      "contentHash": "v3:46fc752cbb4b1e6e7f882134986e61bf21369bc1880553da291868d5d667cd85"
+      "contentHash": "v3:a7ab9a895c413ad9e5ac11e6de3e4cb2cefb68cd2c396fc7db3978dde48481c7"
     },
     "risk-scanner": {
       "source": "git",
@@ -38,7 +38,7 @@
       "commit": "53ddec93478bcdadb3426a805920dad863717839",
       "syncedAt": "2026-09-07T02:50:00.000Z",
       "version": "1.0.4",
-      "contentHash": "v3:32e5fd138401d6f24c7e6c5e31d0c565e83a457b52b9c1e9801ea632d7646ac9"
+      "contentHash": "v3:5c82940445058ab978a7ffd85eeb10917383310788965a98fb89523162f720ca"
     },
     "jurisdiction-auditor": {
       "source": "git",
@@ -47,7 +47,7 @@
       "commit": "8c6f3759da969cbbaebfbf295f0ccfeb07225944",
       "syncedAt": "2026-09-06T11:11:46.238Z",
       "version": "1.2.1",
-      "contentHash": "v3:7a368fcb808accb6f9623cf3cf5690793f5bd26bae02cf124ccc97a782362ab7"
+      "contentHash": "v3:9a018f17ce3d41f1fabbf5882b02d3d42d6368420c9369c6def144eee2c3b35e"
     },
     "review-reporter": {
       "source": "git",
