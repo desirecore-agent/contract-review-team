@@ -1,6 +1,6 @@
 # 合同审查团队共享资源（`shared/resources/`）
 
-> **版本**：本体 `onto-v1` ｜ 规则 `rules-v1` ｜ 动作 `actions-v1` ｜
+> **版本**：本体 `onto-v1` ｜ 规则 `rules-v2` ｜ 动作 `actions-v2` ｜
 > 知识包 `base-v1` / `cn-v1` / `us-v1` / `custom-v1`
 > **知识库基准日期**：2026-08-31
 > **设计依据**：`.design/合同审查智能体团队-设计蓝本.md`（权威来源）
@@ -11,8 +11,10 @@
 放进业务链就错了——因为它们处理的根本不是同一个对象。这套文件存在的全部意义，
 就是让「同一个对象」成为一件可验证的事。
 
-全部内容是 **YAML 与 Markdown**，没有一行代码。按 DesireCore 的数据驱动原则，
-行为由数据决定：要改变团队的判断，改这里的规则和描述，不是改 Agent 的提示词。
+业务资源以 **YAML 与 Markdown** 表达；随附 `.mjs` guard 用于可复现的契约自检。
+`check-gate-verdict.mjs` 是零依赖 Node 检查，intake verdict guard 使用根目录锁定的
+`yaml` v2 解析器。按 DesireCore 的数据驱动原则，行为由数据决定：要改变团队的判断，
+改这里的规则和描述，不是改 Agent 的提示词。
 
 ---
 
@@ -21,6 +23,7 @@
 ```
 shared/resources/
 ├── README.md                      ← 本文件
+├── check-intake-verdict-contract.mjs ← shared rule/action/ontology intake 契约自检
 ├── business-ontology/             ← 业务本体：对象、关系、规则、动作
 │   ├── contract.yaml              ← 对象模型（合同/附件/修订/当事方/条款/回执）
 │   ├── relations.yaml             ← 对象间关系与 10 项派生检查
@@ -152,7 +155,7 @@ shared/resources/
   组长读 `rules.md` 与 `actions.yaml` 是为了知道什么时候该拦，不是为了自己判。
 - **`contract-intake`** 用本体的不变量 `INV-001..INV-008` 与派生检查
   `DC-001/002/003/005/007` 做 5 分钟硬校验，输出 `passed` / `conditional` / `blocked`。
-  `reject` 时后续 Agent **一律不启动**——这是「阻断而非放行」的执行点。
+  `blocked` 时后续 Agent **一律不启动**——这是「阻断而非放行」的执行点。
 - **`clause-extractor`** 只产出事实（条款、页码、数值、引用边），不产出判断。
 - **`risk-scanner`** 消费 `base` 与 `custom`，做缺失检查、市场标尺对标与红线检查。
 - **`jurisdiction-auditor`** 消费 `jurisdiction-*`，做规则匹配与冲突标注（`DC-006`）。
@@ -292,3 +295,22 @@ Gate 的通过**只能由人给出**，Agent 不得代为确认，也不得预�
 | 第十五节 响应矩阵与经验固化 | `contract.yaml#entities.coverage_matrix_row`、`rules.md#R-014/R-052`、`test-cases/` |
 | 第十六节 衡量标准 | `test-cases/_index.yaml`（must_detect / must_not_flag 计数） |
 | 第十七节 适用边界 | `rules.md#R-060`、`actions.yaml#release_to_legal.forbidden_wording` |
+### Intake verdict contract guard
+
+The team repository is independently testable. Run `npm ci` from the team
+root before invoking guards; this installs the locked `yaml` v2 parser used
+for fail-closed validation of shared YAML resources.
+
+```bash
+npm ci
+npm run check:gates
+```
+
+Run `node shared/resources/check-intake-verdict-contract.mjs` after changing
+the shared intake rule, action definition, or ontology. It keeps R7 (a known
+manifest entry whose body was not delivered) scope-only and verdict-preserving,
+while reserving `conditional`/PEND-001 for R9 (the authoritative manifest
+itself is unavailable). R9 keeps attachment work in scope without reducing
+downstream stages; unknown content is `not_covered` or a limited assertion,
+never treated as covered. A body reference absent from the formal manifest
+remains blocked.

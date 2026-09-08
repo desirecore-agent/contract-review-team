@@ -319,7 +319,7 @@ entities:
         # 没有一个是 intake 真的会产出的，于是下面 actions.yaml 的准入检查
         # 按字面永远不成立。改动前先读 rules.md，不要只改这一处。
         enum: [passed, conditional, blocked]
-        description: 输入治理 Agent 的门禁裁决；blocked 时后续 Agent 一律不得启动
+        description: 输入治理 Agent 的门禁裁决；blocked 时后续 Agent 一律不得启动。R7：正式附件清单已知但已列明附件正文未送达时仅记录 SCOPE-ATTACHMENT-BODY-ABSENT，保持原裁决（无其他 BLK-*/FLG-* 时为 passed），不得生成 PEND-001。R9：仅权威正式附件清单本身未取得、完整 declared 集合无法确定时才为 conditional，并附 FLG-ATTACHMENT-MANIFEST-INCOMPLETE 与 must_escalate 的 PEND-001；附件审查工作仍为 in_scope，下游阶段范围不得缩减，未知附件内容只能以 not_covered 或受限断言呈现，不得当作已覆盖；正文引用却无清单项仍为 blocked。
       intake_verdict_reasons:
         type: array<string>
         required: true

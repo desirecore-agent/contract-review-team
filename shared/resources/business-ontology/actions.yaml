@@ -12,9 +12,9 @@
 
 meta:
   ontology_version: onto-v1
-  actions_version: actions-v1
+  actions_version: actions-v2
   knowledge_base_version: '2026-08-31'
-  updated_at: '2026-08-31'
+  updated_at: '2026-09-08'
 
 # ============================================================================
 # 一、全局策略
@@ -127,10 +127,10 @@ actions:
     preconditions:
       - check: 至少一份文档已成功解析出文本或 OCR 结果
         severity: severe
-        on_fail: reject_intake
+        on_fail: block
       - check: 每份文档均已计算 content_digest
         severity: severe
-        on_fail: reject_intake
+        on_fail: block
     human_gate: null
     outputs: [review_case, 'contract_document[]', version_matrix]
     receipt_fields: [object_refs, executed_by, created_at]
@@ -166,23 +166,25 @@ actions:
     preconditions:
       - check: relations.yaml#DC-001 未命中（不存在「引用了但清单没有」）
         severity: severe
-        on_fail: reject_intake
-      - check: relations.yaml#DC-002 未命中（不存在「清单列明但文件未取得」）
-        severity: severe
-        on_fail: reject_intake
+        on_fail: block
       - check: contract.yaml#INV-004 未命中（无空字段占位符）
         severity: severe
-        on_fail: reject_intake
+        on_fail: block
       - check: contract.yaml#INV-007 满足（当事方名称已归并或已判定为不同主体）
         severity: severe
-        on_fail: reject_intake
+        on_fail: block
       - check: relations.yaml#DC-005 未命中（无孤儿修订件）
         severity: severe
-        on_fail: reject_intake
+        on_fail: block
     human_gate: null
     outputs: [intake_verdict, intake_verdict_reasons, 'failure_mark[]']
-    conditional_scope: 仅适用 rules.md#R-020 例外情形，且必须在报告首页列明限制
-    notes: reject 时后续 Agent 一律不得启动——这是「阻断而非放行」的执行点
+    conditional_scope: >-
+      仅适用 rules.md#R-020A 的 R9：权威正式附件清单本身未取得、完整 declared 集合无法确定；
+      必须输出 conditional、FLG-ATTACHMENT-MANIFEST-INCOMPLETE，以及 must_escalate: true 的
+      PEND-001，并将其列在报告首页。附件审查工作仍为 in_scope，下游阶段范围不得缩减；未知附件内容
+      只能以 not_covered 或受限断言呈现，不得当作已覆盖。R7 已列明附件正文未送达只记录
+      SCOPE-ATTACHMENT-BODY-ABSENT，保持原裁决。
+    notes: verdict=blocked 时后续 Agent 一律不得启动；R9 的 conditional 继续完整工具链并逐项保留 pending；R7 不得生成 PEND-001 或降级为 conditional
 
   # ---- 第 3 步：条款抽取 ----------------------------------------------------
 

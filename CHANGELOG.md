@@ -1,3 +1,12 @@
+## [0.1.26] - 2026-09-08
+
+### 修复
+
+- `contract-review-lead` 升级至 `1.0.14`：O1 只能同步、隔离地委派给 `contract-intake`；统筹官不再自行生成 intake 回执、裁决或待确认项。条件通过保持完整下游范围并原样传递 pending。
+- `contract-intake` 升级至 `1.0.3`：R7 的正式清单已知但附件正文未取得仅记录 `SCOPE-ATTACHMENT-BODY-ABSENT` 并保持裁决；只有 R9 的权威正式附件清单本身缺失、完整 `declared` 集合无法确定时，才以 `FLG-ATTACHMENT-MANIFEST-INCOMPLETE` 输出 `conditional` 与 `PEND-001`。正文引用却无正式清单项仍阻断。
+- 对齐共享本体 R-020/R-020A、动作和门禁三态，并新增跨文件 intake 契约自检。
+- 更新两名成员锁定至精确合并提交及对应 `v3` 内容摘要。
+
 # Changelog
 
 ## [0.1.25] - 2026-09-08

@@ -1,0 +1,13 @@
+{
+  "name": "contract-review-team",
+  "version": "0.1.26",
+  "private": true,
+  "type": "module",
+  "description": "Contract review team shared-resource guard dependencies.",
+  "scripts": {
+    "check:gates": "node shared/resources/check-gate-verdict.mjs && node shared/resources/check-intake-verdict-contract.mjs"
+  },
+  "dependencies": {
+    "yaml": "2.9.0"
+  }
+}
