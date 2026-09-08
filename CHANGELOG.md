@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.25] - 2026-09-08
+
+### 修复
+
+- `contract-review-lead` 升级至 `1.0.13`：顶层与 Smart profile 的 `llm.reasoning` 均设为 `auto`，避免官方云 Anthropic-compat 接入面收到强制 thinking budget。
+- 更新成员锁定至 `591e7108c9f6db57603cf35e3173efd22337cf31` 及对应 `v3` 内容摘要。
+
 ## [0.1.24] - 2026-09-08
 
 ### 修复
