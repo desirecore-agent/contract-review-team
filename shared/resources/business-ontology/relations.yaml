@@ -253,14 +253,16 @@ derived_checks:
     common_mistake: 归一化不彻底导致「附件三」与「附件 3」被算成两个键，差集虚高；必须先过归一化映射表
 
   - id: DC-002
-    title: 清单列明了但文件未取得
+    title: 已列明附件正文未取得（R7 范围事实）
     description: |
       计算方式：清单集 L 中，终点对象 kind = exhibit_referenced_only 的成员。
       与 DC-001 是不同缺口：DC-001 是「清单漏列」，DC-002 是「文件没拿到」。
-      两者都阻断，但给用户的动作不同（前者要求补清单，后者要求补文件）。
+      DC-002 对应 R7：清单已知，附件身份已冻结，只记录 SCOPE-ATTACHMENT-BODY-ABSENT 与 delivered: false，
+      供下游把相关检查项留为 not_covered；它不改变 intake verdict，也不得生成 PEND-001。权威附件清单本身
+      未取得、完整 declared 集合无法确定的 R9 才输出 FLG-ATTACHMENT-MANIFEST-INCOMPLETE 与 conditional。
     inputs: [relations.has_attachment]
-    severity: severe
-    on_violation: block
+    severity: info
+    on_violation: scope_limit
     blueprint_ref: 第四节 缺失附件
 
   - id: DC-003
