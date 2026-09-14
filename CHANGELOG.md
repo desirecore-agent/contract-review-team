@@ -1,3 +1,8 @@
+## 0.1.30 - 2026-09-15
+
+- `review-reporter` 升级至 1.0.6：获得 `ExportRedlineDocument` 能力，在原文锚点明确且唯一时生成带真实 `w:del`/`w:ins` 修订的 DOCX；失败保持 Markdown 交付并返回明确状态。
+- 更新成员锁定至 `9198728db040106525341de260f7dc8b5f50742a` 及对应 `v3` 内容摘要。
+
 ## 0.1.29 - 2026-09-15
 
 - contract-review-lead 升级至 1.0.17：O0 改为 KPI 驱动的最小可验证环；FileDigest 参数只允许一次修正，摘要缺失降级为 frozen_without_digest 并继续事实审查；覆盖矩阵不再作为 O0 的强制技能依赖。
