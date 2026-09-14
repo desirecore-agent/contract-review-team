@@ -2,16 +2,16 @@
   "$schema": "agentfs/v1/team-members-lock",
   "lockfileVersion": 1,
   "teamId": "contract-review-team",
-  "resolvedAt": "2026-09-08T10:07:38.732Z",
+  "resolvedAt": "2026-09-15T06:00:00.000Z",
   "agents": {
     "contract-review-lead": {
       "source": "git",
       "role": "supervisor",
       "url": "https://github.com/desirecore-agent/contract-review-lead.git",
-      "commit": "b3014d6a0c88b8c6734c8a37b90766eff23dfebd",
-      "syncedAt": "2026-09-08T10:07:38.732Z",
-      "version": "1.0.14",
-      "contentHash": "v3:33b50a549e923f0f85d11f00459c6d0209c96814a1f5ff1cc1168632c6a9b1e0"
+      "commit": "c4819b8ea33ebdefe7a3dbc3b06bc7523b718ecd",
+      "syncedAt": "2026-09-15T06:00:00.000Z",
+      "version": "1.0.16",
+      "contentHash": "v3:83da4a0bc1e0f54a2934450b0d340c3ff2cab54c47f89ee575f3eb5bdca00b89"
     },
     "contract-intake": {
       "source": "git",
@@ -27,7 +27,7 @@
       "role": "member",
       "url": "https://github.com/desirecore-agent/clause-extractor.git",
       "commit": "6129add5f40109f895d4125065a761b58f73819d",
-      "syncedAt": "2026-09-15T03:40:00.000Z",
+      "syncedAt": "2026-09-15T03:40:00Z",
       "version": "1.1.0",
       "contentHash": "v3:fccbf087f78a00e704e1bdefc8a10dad5372f61413cec65900e2544dd73de476"
     },
@@ -35,26 +35,26 @@
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/risk-scanner.git",
-      "commit": "53ddec93478bcdadb3426a805920dad863717839",
-      "syncedAt": "2026-09-07T02:50:00.000Z",
-      "version": "1.0.4",
-      "contentHash": "v3:32e5fd138401d6f24c7e6c5e31d0c565e83a457b52b9c1e9801ea632d7646ac9"
+      "commit": "ea396f95e0a3c1917bd0b8fa02e956c4cc7bf578",
+      "syncedAt": "2026-09-15T06:00:00.000Z",
+      "version": "1.1.0",
+      "contentHash": "v3:263ddfb20fdf5692e9dfa5b40f54254292d425f72168b11a8e4c7f0af1fe76b7"
     },
     "jurisdiction-auditor": {
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/jurisdiction-auditor.git",
-      "commit": "8c6f3759da969cbbaebfbf295f0ccfeb07225944",
-      "syncedAt": "2026-09-06T11:11:46.238Z",
-      "version": "1.2.1",
-      "contentHash": "v3:7a368fcb808accb6f9623cf3cf5690793f5bd26bae02cf124ccc97a782362ab7"
+      "commit": "7ae69f15a6f56dc71cbfef9f07d6e65642563601",
+      "syncedAt": "2026-09-15T06:00:00.000Z",
+      "version": "1.3.0",
+      "contentHash": "v3:70feab2e65c999007bf3b3f46a27d8eb3e297577cbdd62f3b783cbfe8d58176a"
     },
     "review-reporter": {
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/review-reporter.git",
       "commit": "b279a2b889b02a477ae2705598e86b3e17c894e0",
-      "syncedAt": "2026-09-07T09:30:00.000Z",
+      "syncedAt": "2026-09-07T09:30:00Z",
       "version": "1.0.5",
       "contentHash": "v3:f49f83c0f1cb1e86c87e383f64aabe6d17f94eb0acfe9aa1ff807adda67a9c96"
     }
