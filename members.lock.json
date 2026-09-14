@@ -53,10 +53,10 @@
       "source": "git",
       "role": "member",
       "url": "https://github.com/desirecore-agent/review-reporter.git",
-      "commit": "b279a2b889b02a477ae2705598e86b3e17c894e0",
-      "syncedAt": "2026-09-07T09:30:00Z",
-      "version": "1.0.5",
-      "contentHash": "v3:f49f83c0f1cb1e86c87e383f64aabe6d17f94eb0acfe9aa1ff807adda67a9c96"
+      "commit": "9198728db040106525341de260f7dc8b5f50742a",
+      "syncedAt": "2026-09-15T07:00:00Z",
+      "version": "1.0.6",
+      "contentHash": "v3:bc7a2c28243c9b132433ce7c5eb0ba5beed829269143d5610642f14a1adc6c41"
     }
   }
 }
