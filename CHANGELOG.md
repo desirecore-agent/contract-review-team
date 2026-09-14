@@ -1,3 +1,8 @@
+## 0.1.29 - 2026-09-15
+
+- contract-review-lead 升级至 1.0.17：O0 改为 KPI 驱动的最小可验证环；FileDigest 参数只允许一次修正，摘要缺失降级为 frozen_without_digest 并继续事实审查；覆盖矩阵不再作为 O0 的强制技能依赖。
+- 更新 Lead 锁定至 cb3cd7db2ebceae980b6438dfe941acb3e2d48d5 及对应 v3 内容摘要。
+
 ## 0.1.28 - 2026-09-15
 
 - contract-review-lead 升级至 1.0.16：O0→O4 改为有界编排，真实回执、磁盘回读和覆盖矩阵同步作为完成 KPI；成员超时立即阻塞并记录能力债务。
