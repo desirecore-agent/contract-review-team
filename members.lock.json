@@ -8,7 +8,7 @@
       "source": "git",
       "role": "supervisor",
       "url": "https://github.com/desirecore-agent/contract-review-lead.git",
-      "commit": "cf11ca6",
+      "commit": "cf11ca60ca3b56b910c4651e8049ab8668ddb55d",
       "syncedAt": "2026-09-15T06:20:00.000Z",
       "version": "1.0.20",
       "contentHash": "v3:e0ac76188093a065b1cf598b428a16d11fd2697b60f4e926664224916e3ad513"
