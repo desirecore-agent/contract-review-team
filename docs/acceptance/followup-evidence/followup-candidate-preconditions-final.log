@@ -1,0 +1,16 @@
+✔ exact six-member clean pinned platform is accepted (0.422833ms)
+✔ member order is immaterial (0.070709ms)
+✔ missing member cannot produce a valid candidate (0.379333ms)
+✔ extra member cannot produce a valid candidate (0.051666ms)
+✔ duplicate member cannot substitute for the missing member (0.059375ms)
+✔ different platform commit is rejected (0.049625ms)
+✔ tracked-dirty platform is rejected (0.042667ms)
+✔ unknown tracked-clean evidence is rejected (0.044ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 40.64775

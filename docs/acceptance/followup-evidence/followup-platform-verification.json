@@ -1,0 +1,18 @@
+{
+  "observedAt": "2026-09-29T12:55:05.677527+00:00",
+  "platformHead": "1536138e8c71db71b906d436212812086268e3c9",
+  "trackedChanges": [],
+  "results": [
+    {
+      "file": "followup-platform-unit.log",
+      "sha256": "09bf397c6085dc07e68c06d196a3790c4006f5bb39dc50230b7f987ba742d02c",
+      "summary": "\n RUN  v5.0.1 <platform-workspace>\n\n ✓  unit  packages/agent-service/src/__tests__/team-installer.test.ts (14 tests) 130ms\n ✓  unit  app/components/market/__tests__/MarketTeamPostInstall.test.tsx (12 tests) 43ms\n ✓  unit  app/data/market-i18n-foundation.test.ts (4 tests) 7ms\n\n Test Files  3 passed (3)\n      Tests  30 passed (30)\n   Start at  08:50:41\n   Duration  2.40s (transform 39%, environment 36%, import 16%, tests 8%, setup 1%)\n"
+    },
+    {
+      "file": "followup-platform-resource.log",
+      "sha256": "93e6378b2aec9f5a379e6b688bc5d56e16101ebcf1fa1030e1de0229a88c9e8e",
+      "summary": " ✓  resource  packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts (5 tests) 6056ms\n   ✓ 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 (5)\n     ✓ 完整 clone 不可达但远端允许按完整 SHA 获取时，仍精确安装锁定 commit 2715ms\n     ✓ 范围外 commit → 精确 SHA fetch 后 checkout 成功，仍保持有界浅仓库 475ms\n     ✓ 范围内 commit → 一次浅克隆就够，不触发补齐（仍是浅仓库） 397ms\n     ✓ commit 根本不存在 → 补齐完整历史后仍失败，干净地报 failed 且不留残留目录 531ms\n     ✓ 未锁定 commit → depth 1 克隆默认分支 305ms\n\n Test Files  1 passed (1)\n      Tests  5 passed (5)\n   Start at  08:51:08\n   Duration  6.90s (tests 89%, transform 8%, import 2%, setup 1%)\n"
+    }
+  ],
+  "scope": "unit/jsdom and local Git resource; not live market installation"
+}

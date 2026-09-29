@@ -1,0 +1,105 @@
+{
+  "observedAt": "2026-09-29T12:48:04.500615+00:00",
+  "teamMain": "e1837f2931ec077b7bf522f5c223c0af5df840cf\trefs/heads/main",
+  "teamReadExit": 0,
+  "prs": [
+    {
+      "repo": "desirecore-agent/contract-review-lead",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "main",
+        "headRefName": "optimize/contract-takeover-20260929",
+        "headRefOid": "f11a7cea1309465bac23ea3cda12e852cb2bad8c",
+        "isDraft": true,
+        "mergedAt": null,
+        "number": 23,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore-agent/contract-review-lead/pull/23"
+      }
+    },
+    {
+      "repo": "desirecore-agent/contract-intake",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "main",
+        "headRefName": "optimize/contract-takeover-20260929",
+        "headRefOid": "586f1b5d9ab04950934ac7b9d4231a2b8bf75551",
+        "isDraft": true,
+        "mergedAt": null,
+        "number": 11,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore-agent/contract-intake/pull/11"
+      }
+    },
+    {
+      "repo": "desirecore-agent/clause-extractor",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "main",
+        "headRefName": "optimize/contract-takeover-20260929",
+        "headRefOid": "3daecf141194ca0b5d0b64c7464c8036799cba59",
+        "isDraft": true,
+        "mergedAt": null,
+        "number": 10,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore-agent/clause-extractor/pull/10"
+      }
+    },
+    {
+      "repo": "desirecore-agent/risk-scanner",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "main",
+        "headRefName": "optimize/contract-takeover-20260929",
+        "headRefOid": "63fdfe8c7bc637a9611e925b1fc11c7049b68f2f",
+        "isDraft": true,
+        "mergedAt": null,
+        "number": 7,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore-agent/risk-scanner/pull/7"
+      }
+    },
+    {
+      "repo": "desirecore-agent/jurisdiction-auditor",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "main",
+        "headRefName": "optimize/contract-takeover-20260929",
+        "headRefOid": "70eeeb7255cb3949e3fa6eb37499752d50c7738c",
+        "isDraft": true,
+        "mergedAt": null,
+        "number": 6,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore-agent/jurisdiction-auditor/pull/6"
+      }
+    },
+    {
+      "repo": "desirecore-agent/review-reporter",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "main",
+        "headRefName": "optimize/contract-takeover-20260929",
+        "headRefOid": "27ca925f3c556744d4e57766dc214ac977b8c447",
+        "isDraft": true,
+        "mergedAt": null,
+        "number": 8,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore-agent/review-reporter/pull/8"
+      }
+    },
+    {
+      "repo": "desirecore/desirecore",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "dev",
+        "headRefName": "fix/team-install-locked-sha-20260929",
+        "headRefOid": "1536138e8c71db71b906d436212812086268e3c9",
+        "isDraft": true,
+        "mergedAt": null,
+        "number": 3558,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore/desirecore/pull/3558"
+      }
+    }
+  ]
+}
