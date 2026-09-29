@@ -1,0 +1,100 @@
+✔ generator derives only normative.cases and checker passes (145.680792ms)
+✖ index quote substitution fails even when the replacement remains a literal substring (101.639458ms)
+✖ unknown nonempty source case in the index cannot pass (108.185875ms)
+✖ malformed literals return bounded failure rather than an uncaught TypeError (98.476ms)
+✔ oracle byte drift fails without automatic regeneration (86.282667ms)
+✔ blank quote fails closed (110.580708ms)
+✔ unknown source case fails closed (95.433834ms)
+✔ invalid path fails closed (94.705833ms)
+✔ zero literals fails closed (116.779291ms)
+✔ zero sources fails closed (117.663541ms)
+✔ matching repositories, exact HEADs and blobs pass (734.311583ms)
+✔ same version but wrong HEAD fails (785.375667ms)
+✔ missing repository fails source identity (423.779666ms)
+✔ present matching-version config without its repository cannot pass (620.176375ms)
+✔ dirty agent.json fails byte identity (742.01625ms)
+✔ missing lock entry fails closed (660.040916ms)
+✔ incomplete CLI parameter is usage error (35.580917ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 14
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4089.54975
+
+✖ failing tests:
+
+test at shared/resources/tests/evidence-index.test.mjs:21:1
+✖ index quote substitution fails even when the replacement remains a literal substring (101.639458ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file://<team-workspace>/shared/resources/tests/evidence-index.test.mjs:21:256)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at shared/resources/tests/evidence-index.test.mjs:22:1
+✖ unknown nonempty source case in the index cannot pass (108.185875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file://<team-workspace>/shared/resources/tests/evidence-index.test.mjs:22:231)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at shared/resources/tests/evidence-index.test.mjs:23:1
+✖ malformed literals return bounded failure rather than an uncaught TypeError (98.476ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /TypeError|at file:/. Input:
+  
+  'file://<team-workspace>/testdata/contracts/check-evidence.mjs:29\n' +
+    'for (const [i, item] of (index?.literals ?? []).entries()) {\n' +
+    '                                                ^\n' +
+    '\n' +
+    'TypeError: ((intermediate value) ?? []).entries is not a function or its return value is not iterable\n' +
+    '    at file://<team-workspace>/testdata/contracts/check-evidence.mjs:29:49\n' +
+    '    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)\n' +
+    '    at async node:internal/modules/esm/loader:650:26\n' +
+    '    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n' +
+    '\n' +
+    'Node.js v26.5.0\n'
+  
+      at TestContext.<anonymous> (file://<team-workspace>/shared/resources/tests/evidence-index.test.mjs:23:257)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'file://<team-workspace>/testdata/contracts/check-evidence.mjs:29\nfor (const [i, item] of (index?.literals ?? []).entries()) {\n                                                ^\n\nTypeError: ((intermediate value) ?? []).entries is not a function or its return value is not iterable\n    at file://<team-workspace>/testdata/contracts/check-evidence.mjs:29:49\n    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)\n    at async node:internal/modules/esm/loader:650:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n\nNode.js v26.5.0\n',
+    expected: /TypeError|at file:/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }

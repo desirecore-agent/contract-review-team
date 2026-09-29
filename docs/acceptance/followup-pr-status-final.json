@@ -1,0 +1,128 @@
+{
+  "observedAt": "2026-09-29T13:44:37.726052+00:00",
+  "note": "Point-in-time remote metadata; later documentation-only commits do not invalidate test snapshots. No merge or publication is requested.",
+  "concurrentTeamMain": "346343b63347f70603fe47c14887b6f1fb799275",
+  "concurrentTeamVersion": "0.1.37",
+  "prs": [
+    {
+      "repo": "desirecore-agent/contract-review-team",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "main",
+        "headRefName": "optimize/contract-takeover-20260929",
+        "headRefOid": "9fe002a96d366ce9f3825f7dd9a6b442d794275e",
+        "isDraft": true,
+        "mergeable": "CONFLICTING",
+        "mergedAt": null,
+        "number": 48,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore-agent/contract-review-team/pull/48"
+      }
+    },
+    {
+      "repo": "desirecore-agent/contract-review-lead",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "main",
+        "headRefName": "optimize/contract-takeover-20260929",
+        "headRefOid": "c28919295c2ad611bf2ebee2ba4a4532b18ea1b9",
+        "isDraft": true,
+        "mergeable": "UNKNOWN",
+        "mergedAt": null,
+        "number": 23,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore-agent/contract-review-lead/pull/23"
+      }
+    },
+    {
+      "repo": "desirecore-agent/contract-intake",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "main",
+        "headRefName": "optimize/contract-takeover-20260929",
+        "headRefOid": "6a43c714e599def32f0514d2071113dce4bb3d5c",
+        "isDraft": true,
+        "mergeable": "UNKNOWN",
+        "mergedAt": null,
+        "number": 11,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore-agent/contract-intake/pull/11"
+      }
+    },
+    {
+      "repo": "desirecore-agent/clause-extractor",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "main",
+        "headRefName": "optimize/contract-takeover-20260929",
+        "headRefOid": "01aba64dee10871fa3d697f42b8d1aa12e35ec94",
+        "isDraft": true,
+        "mergeable": "UNKNOWN",
+        "mergedAt": null,
+        "number": 10,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore-agent/clause-extractor/pull/10"
+      }
+    },
+    {
+      "repo": "desirecore-agent/risk-scanner",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "main",
+        "headRefName": "optimize/contract-takeover-20260929",
+        "headRefOid": "5d02c3177c3ee93706d726d40cceeafbb7e25de6",
+        "isDraft": true,
+        "mergeable": "MERGEABLE",
+        "mergedAt": null,
+        "number": 7,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore-agent/risk-scanner/pull/7"
+      }
+    },
+    {
+      "repo": "desirecore-agent/jurisdiction-auditor",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "main",
+        "headRefName": "optimize/contract-takeover-20260929",
+        "headRefOid": "2e37e0ae096f7b067bbab2d0b025ebe25eaecc86",
+        "isDraft": true,
+        "mergeable": "UNKNOWN",
+        "mergedAt": null,
+        "number": 6,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore-agent/jurisdiction-auditor/pull/6"
+      }
+    },
+    {
+      "repo": "desirecore-agent/review-reporter",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "main",
+        "headRefName": "optimize/contract-takeover-20260929",
+        "headRefOid": "678cbfaa49ac8d6c404160b65c415e07fabe4508",
+        "isDraft": true,
+        "mergeable": "MERGEABLE",
+        "mergedAt": null,
+        "number": 8,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore-agent/review-reporter/pull/8"
+      }
+    },
+    {
+      "repo": "desirecore/desirecore",
+      "exitCode": 0,
+      "data": {
+        "baseRefName": "dev",
+        "headRefName": "fix/team-install-locked-sha-20260929",
+        "headRefOid": "1536138e8c71db71b906d436212812086268e3c9",
+        "isDraft": true,
+        "mergeable": "UNKNOWN",
+        "mergedAt": null,
+        "number": 3558,
+        "state": "OPEN",
+        "url": "https://github.com/desirecore/desirecore/pull/3558"
+      }
+    }
+  ]
+}

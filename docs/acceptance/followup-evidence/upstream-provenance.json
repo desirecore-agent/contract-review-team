@@ -1,0 +1,78 @@
+{
+  "createdAt": "2026-09-29T14:12:50.400055+00:00",
+  "scope": "concurrent upstream integration diagnostics, distinct from the original 80/49 repair snapshot",
+  "files": [
+    {
+      "path": "followup-member-upstream-access-blocked.json",
+      "rawSha256": "db927b5e6fa79b6f814d749a6560f979c3aa6d3f6d43ffea815556f058432d0e",
+      "publishedSha256": "db927b5e6fa79b6f814d749a6560f979c3aa6d3f6d43ffea815556f058432d0e",
+      "redacted": false
+    },
+    {
+      "path": "followup-upstream-integration-result.md",
+      "rawSha256": "c99065312316b2237b6e3ad26fc1a1f7ad83421d6b3bd6e3dce31e894081b956",
+      "publishedSha256": "e3796f802efc01defd1d7c5768e7e59b46ab8711e38b141fbb042302e703f355",
+      "redacted": true
+    },
+    {
+      "path": "followup-upstream-independent-review.md",
+      "rawSha256": "db7a25b404c20af266838c59292a249e5a76ef7968f20922d10fe550151b1852",
+      "publishedSha256": "a0981cb00d7e5ef6bed4694fcaac1966fd00e25d3b6b4b989cf89790ef3f518b",
+      "redacted": true
+    },
+    {
+      "path": "followup-upstream-checker-docs-fix.md",
+      "rawSha256": "5fab3c7c4b8abd25a9607450cf9fc72bd9b1d8a0b321accdd1a75aedc61a67ac",
+      "publishedSha256": "5234dcb958069013dbf249eae06c00abc3762ecf3694d5642747badd31b0d990",
+      "redacted": true
+    },
+    {
+      "path": "followup-upstream-team-check.log",
+      "rawSha256": "507bf85376081f942f9aafbb359d1817eb108e04bbb41f8ef1a6861de0d911a6",
+      "publishedSha256": "507bf85376081f942f9aafbb359d1817eb108e04bbb41f8ef1a6861de0d911a6",
+      "redacted": false
+    },
+    {
+      "path": "followup-c09-byte-probe.json",
+      "rawSha256": "056f0433683e58ebc1bf42eb6d768369743dc4788cc8f376d894b6a89850b96a",
+      "publishedSha256": "056f0433683e58ebc1bf42eb6d768369743dc4788cc8f376d894b6a89850b96a",
+      "redacted": false
+    },
+    {
+      "path": "followup-ceiling-source-negative-probe.json",
+      "rawSha256": "b25ece7cbea1d112cff2df1486aba3fdd51a1232a24b06a9e2233485d3d9541d",
+      "publishedSha256": "ba9011fcdc3831a3560fc4731d55254c3e3841f0151d2791a7843929bfbf5e46",
+      "redacted": true
+    },
+    {
+      "path": "followup-c09-digest-negative.log",
+      "rawSha256": "1faf988ebf6b706c33c2da5768c2b1d8d587a7028ba87541e4c62c8bb56f4b37",
+      "publishedSha256": "9513bd30bf59e134459319a76906210c14023a3227835ea731495f889df28af6",
+      "redacted": true
+    },
+    {
+      "path": "followup-c09-digest-final.log",
+      "rawSha256": "2fd6dccc6ba4477e041cd46acffcbfd439e04cd949e834699b75277c9ebe3f1a",
+      "publishedSha256": "2fd6dccc6ba4477e041cd46acffcbfd439e04cd949e834699b75277c9ebe3f1a",
+      "redacted": false
+    },
+    {
+      "path": "followup-upstream-byte-preservation.json",
+      "rawSha256": "963ae17cbece042e617fa7fcb639da9412dfe4e0018a76587f078e959430bedd",
+      "publishedSha256": "963ae17cbece042e617fa7fcb639da9412dfe4e0018a76587f078e959430bedd",
+      "redacted": false
+    },
+    {
+      "path": "followup-index-integrity-negative.log",
+      "rawSha256": "7a2cfcba76148080c7bab6b7e7581de553d99e5bd5c4f2d5c849a1aa1aba4e78",
+      "publishedSha256": "7dac4ab3c46fee1f83e9d32494647a57add4443077f7e06a85d0d6ba4a584637",
+      "redacted": true
+    },
+    {
+      "path": "followup-upstream-final-check.log",
+      "rawSha256": "4f05cf6f95cdf1d11b531554860b21b2e67dd9c1278c3c8e585f263587a26a09",
+      "publishedSha256": "4a2947ec2cfc871988e050eeeb90ead47e677026c707aedfe9ea9be6edb3a0b4",
+      "redacted": true
+    }
+  ]
+}
