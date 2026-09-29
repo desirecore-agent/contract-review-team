@@ -1,0 +1,23 @@
+{
+  "upstreamCommit": "346343b63347f70603fe47c14887b6f1fb799275",
+  "rows": [
+    {
+      "id": "C09a",
+      "file": "testdata/contracts/C09a-saas-manifest-deferred.md",
+      "currentSha256": "98f546c3f6bf68ce8336cdef4d5e53d31f8cffd9bc0f3a6fd4f997283b7779f6",
+      "upstreamSha256": "98f546c3f6bf68ce8336cdef4d5e53d31f8cffd9bc0f3a6fd4f997283b7779f6",
+      "bytesMatchUpstream": true,
+      "oracleSha256": "a64cba371205982bbd127392eeb014bfee1067284d46719047b449fec7fb224c",
+      "bindingsSha256": "a64cba371205982bbd127392eeb014bfee1067284d46719047b449fec7fb224c"
+    },
+    {
+      "id": "C09b",
+      "file": "testdata/contracts/C09b-saas-attachment-unlisted.md",
+      "currentSha256": "20a9462e3d02ff466f0c09a0a370237244e3203f73300c65bd5c53dd9a687aaf",
+      "upstreamSha256": "20a9462e3d02ff466f0c09a0a370237244e3203f73300c65bd5c53dd9a687aaf",
+      "bytesMatchUpstream": true,
+      "oracleSha256": "bb6052ead1891b0f0fe3ab5e08d2defa82ce3bc5ab971ecfaa211fd8918d3bbe",
+      "bindingsSha256": "bb6052ead1891b0f0fe3ab5e08d2defa82ce3bc5ab971ecfaa211fd8918d3bbe"
+    }
+  ]
+}

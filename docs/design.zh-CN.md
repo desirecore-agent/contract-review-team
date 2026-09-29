@@ -6,7 +6,7 @@ last-reviewed: 2026-09-29
 
 [English](design.md) · [入门](quickstart.zh-CN.md) · [测试](testing.zh-CN.md)
 
-基线为团队 0.1.37 及 [members.lock.json](../members.lock.json)，说明日期 2026-09-29。这是设计与验收说明，不是生产就绪声明。
+已发布基线为团队 0.1.37 及 [members.lock.json](../members.lock.json)；本分支 oracle/workflow 改动仍是未发布 candidate。这是设计与验收说明，不是生产就绪声明。
 
 ## 职责与调用
 

@@ -1,0 +1,791 @@
+{
+  "format": "contract-evidence-index/v1",
+  "derivedFrom": "ground-truth.yaml normative.cases only",
+  "oracleSha256": "c4474f683f2b4dbb46e41787b9f8ef73d617c5edae7422bd8342e24c65f73e6a",
+  "sources": {
+    "C01-saas-subscription.md": "fb0c1aad49f41d5d6eb892339494a7b4deaad6c11108d6888e56043810bdb035",
+    "C02-software-outsourcing.md": "5f1c96d116e9df8f064eda569d3c9ff19a99c481a67a3f5f536bd94d8f49f394",
+    "C03-procurement-framework.md": "36d9d9437431fe0a4d571e84d9c435714d6bc497ba42401b435c5ac10c3e6420",
+    "C04-labor-contract.md": "709e5419e5d16140c50715a754ce79c6a8278071cc5c552144dccae0f5a55ea0",
+    "C05-data-processing-agreement.md": "75be9d27d2f24a4d384a439fe16262cfcf860aa1469aae404eefddd1c366a198",
+    "C06a-saas-v1.md": "8fc2f1d7c0f4ebb97378ffaa88a70bf866d34faa2c182ad3f66c1ddc146633ac",
+    "C06b-saas-v2.md": "059199f50bf77a12737b4836aa08efe33499a3ef9bc7d8ae64e64d50d7bda1d6",
+    "C07-master-services-agreement.md": "e6aac24270c0972fa0fc5d2f016a6f4b2b4258760af10dfe15f3f7b5f16a664a",
+    "C08-mutual-nda.md": "882ff9eae5b54aa8ae3974cdb21bffe7cdb00c171a9a1e936aeff7a973900c64",
+    "C09a-saas-manifest-deferred.md": "98f546c3f6bf68ce8336cdef4d5e53d31f8cffd9bc0f3a6fd4f997283b7779f6",
+    "C09b-saas-attachment-unlisted.md": "20a9462e3d02ff466f0c09a0a370237244e3203f73300c65bd5c53dd9a687aaf",
+    "R01-govt-purchase-real.md": "795d5d49f2c58d61a2349458dc5de78c909c8045091fa8539334017b4bcc57ff",
+    "R02-govt-purchase-executed.md": "2a5052027408597306beb39644dbce6fa76f109d220cfcf2effc44ea027e41fd",
+    "R03-govt-purchase-2019.md": "fd15853948848eaa3a1cf7485347d48a25c14c897833ef488c3b96d7affa799d"
+  },
+  "literals": [
+    {
+      "case": "C01",
+      "evidenceIndex": 0,
+      "id": "c01-total",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）"
+    },
+    {
+      "case": "C01",
+      "evidenceIndex": 1,
+      "id": "c01-manifest",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "附件二　《服务水平协议 SLA-v1.2》"
+    },
+    {
+      "case": "C01",
+      "evidenceIndex": 2,
+      "id": "c01-signature",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "授权代表签字：陈慕远"
+    },
+    {
+      "case": "C01",
+      "evidenceIndex": 3,
+      "id": "c01-pages",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "第 9 页 / 共 9 页"
+    },
+    {
+      "case": "C01",
+      "evidenceIndex": 4,
+      "id": "c01-parties",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "**乙方（服务商）：云梯信息技术（示例）有限公司**"
+    },
+    {
+      "case": "C01",
+      "evidenceIndex": 5,
+      "id": "c01-liability",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "不超过索赔事件发生前 12 个月内甲方实际支付的服务费用总额"
+    },
+    {
+      "case": "C01",
+      "evidenceIndex": 6,
+      "id": "c01-dispute",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "提交上海国际经济贸易仲裁委员会"
+    },
+    {
+      "case": "C01",
+      "evidenceIndex": 7,
+      "id": "c01-remedy",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "## 第十一条　违约责任与救济"
+    },
+    {
+      "case": "C01",
+      "evidenceIndex": 8,
+      "id": "c01-grace",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "该期间为违约治愈宽限期"
+    },
+    {
+      "case": "C01",
+      "evidenceIndex": 9,
+      "id": "c01-termination",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）"
+    },
+    {
+      "case": "C01",
+      "evidenceIndex": 10,
+      "id": "c01-subcontracting",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "## 第十三条　分包与变更控制"
+    },
+    {
+      "case": "C01",
+      "evidenceIndex": 11,
+      "id": "c01-audit",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "## 第十四条　审计权"
+    },
+    {
+      "case": "C01",
+      "evidenceIndex": 12,
+      "id": "c01-force-majeure",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "## 第十五条　不可抗力"
+    },
+    {
+      "case": "C01",
+      "evidenceIndex": 13,
+      "id": "c01-export",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "导出格式为 CSV、JSON 及标准 SQL 转储文件，不收取任何费用"
+    },
+    {
+      "case": "C01",
+      "evidenceIndex": 14,
+      "id": "c01-renewal",
+      "sourceCase": "C01",
+      "file": "C01-saas-subscription.md",
+      "quote": "订阅期届满前 90 日以书面形式通知对方不再续约"
+    },
+    {
+      "case": "C02",
+      "evidenceIndex": 0,
+      "id": "c02-placeholder",
+      "sourceCase": "C02",
+      "file": "C02-software-outsourcing.md",
+      "quote": "4.1 本合同总价款为人民币 $X 元（大写：【待定】），含 6% 增值税。"
+    },
+    {
+      "case": "C02",
+      "evidenceIndex": 1,
+      "id": "c02-attachment",
+      "sourceCase": "C02",
+      "file": "C02-software-outsourcing.md",
+      "quote": "2.3 各里程碑的验收标准依附件三《验收标准》执行"
+    },
+    {
+      "case": "C02",
+      "evidenceIndex": 2,
+      "id": "c02-version",
+      "sourceCase": "C02",
+      "file": "C02-software-outsourcing.md",
+      "quote": "1.2 详细功能规格以附件二《技术规格书 V1.3》为准。"
+    },
+    {
+      "case": "C02",
+      "evidenceIndex": 3,
+      "id": "c02-party",
+      "sourceCase": "C02",
+      "file": "C02-software-outsourcing.md",
+      "quote": "10.4 本合同解除后，乙方应在 10 个工作日内向云梯科技（示例）有限公司移交全部已完成的阶段性成果。"
+    },
+    {
+      "case": "C02",
+      "evidenceIndex": 4,
+      "id": "c02-page",
+      "sourceCase": "C02",
+      "file": "C02-software-outsourcing.md",
+      "quote": "第 4 页 / 共 8 页"
+    },
+    {
+      "case": "C03",
+      "evidenceIndex": 0,
+      "id": "c03-amount",
+      "sourceCase": "C03",
+      "file": "C03-procurement-framework.md",
+      "quote": "3.2 协议期内首年采购预算总额为人民币壹佰贰拾万元整（¥1,280,000.00），该预算为参考额度，不构成采购承诺。"
+    },
+    {
+      "case": "C03",
+      "evidenceIndex": 1,
+      "id": "c03-export",
+      "sourceCase": "C03",
+      "file": "C03-procurement-framework.md",
+      "quote": "乙方可在该期间内以 CSV 或 Excel 标准格式导出其历史交易与质量数据"
+    },
+    {
+      "case": "C04",
+      "evidenceIndex": 0,
+      "id": "c04-five-years",
+      "sourceCase": "C04",
+      "file": "C04-labor-contract.md",
+      "quote": "8.1 乙方离职后，在 5 年内不得自营或为他人经营与甲方有竞争关系的业务"
+    },
+    {
+      "case": "C04",
+      "evidenceIndex": 1,
+      "id": "c04-no-compensation",
+      "sourceCase": "C04",
+      "file": "C04-labor-contract.md",
+      "quote": "甲方在竞业限制期限内无需另行向乙方支付经济补偿"
+    },
+    {
+      "case": "C04",
+      "evidenceIndex": 2,
+      "id": "c04-probation",
+      "sourceCase": "C04",
+      "file": "C04-labor-contract.md",
+      "quote": "1.2 试用期为 12 个月，自 2026 年 5 月 6 日起至 2027 年 5 月 5 日止。"
+    },
+    {
+      "case": "C04",
+      "evidenceIndex": 3,
+      "id": "c04-redaction",
+      "sourceCase": "C04",
+      "file": "C04-labor-contract.md",
+      "quote": "居民身份证号码：310115********0417"
+    },
+    {
+      "case": "C05",
+      "evidenceIndex": 0,
+      "id": "c05-cn-law",
+      "sourceCase": "C05",
+      "file": "C05-data-processing-agreement.md",
+      "quote": "12.1 本协议的订立、效力、解释、履行及争议解决，均适用中华人民共和国法律（不含港澳台地区法律）。"
+    },
+    {
+      "case": "C05",
+      "evidenceIndex": 1,
+      "id": "c05-gdpr-dublin",
+      "sourceCase": "C05",
+      "file": "C05-data-processing-agreement.md",
+      "quote": "应受欧盟《通用数据保护条例》（Regulation (EU) 2016/679, GDPR）管辖并依其规定解释；就该等事项产生的任何争议，双方同意提交爱尔兰共和国都柏林法院专属管辖。"
+    },
+    {
+      "case": "C05",
+      "evidenceIndex": 2,
+      "id": "c05-shenzhen",
+      "sourceCase": "C05",
+      "file": "C05-data-processing-agreement.md",
+      "quote": "任何一方均应提交深圳国际仲裁院按其届时有效的仲裁规则在深圳仲裁"
+    },
+    {
+      "case": "C05",
+      "evidenceIndex": 3,
+      "id": "c05-export",
+      "sourceCase": "C05",
+      "file": "C05-data-processing-agreement.md",
+      "quote": "乙方不得以任何形式向甲方、甲方关联方或任何第三方导出、下载或交付个人数据的批量副本"
+    },
+    {
+      "case": "C05",
+      "evidenceIndex": 4,
+      "id": "c05-audit",
+      "sourceCase": "C05",
+      "file": "C05-data-processing-agreement.md",
+      "quote": "9.1 甲方有权每 12 个月对乙方履行本协议的情况进行一次审计"
+    },
+    {
+      "case": "C05",
+      "evidenceIndex": 5,
+      "id": "c05-liability",
+      "sourceCase": "C05",
+      "file": "C05-data-processing-agreement.md",
+      "quote": "不超过索赔事件发生前 12 个月内甲方依《云服务主协议》实际支付服务费用的总额"
+    },
+    {
+      "case": "C06a",
+      "evidenceIndex": 0,
+      "id": "c06a-manifest",
+      "sourceCase": "C06a",
+      "file": "C06a-saas-v1.md",
+      "quote": "附件三　《数据处理附录》"
+    },
+    {
+      "case": "C06b",
+      "evidenceIndex": 0,
+      "id": "c06a-sla-version",
+      "sourceCase": "C06a",
+      "file": "C06a-saas-v1.md",
+      "quote": "# 附件二　服务水平协议（SLA-v1.2）"
+    },
+    {
+      "case": "C06b",
+      "evidenceIndex": 1,
+      "id": "c06b-sla-version",
+      "sourceCase": "C06b",
+      "file": "C06b-saas-v2.md",
+      "quote": "# 附件二　服务水平协议（SLA-v2.0）"
+    },
+    {
+      "case": "C06b",
+      "evidenceIndex": 2,
+      "id": "c06b-availability",
+      "sourceCase": "C06b",
+      "file": "C06b-saas-v2.md",
+      "quote": "2.1 乙方承诺服务的月度可用性不低于 **99.0%**。"
+    },
+    {
+      "case": "C06b",
+      "evidenceIndex": 3,
+      "id": "c06b-cap",
+      "sourceCase": "C06b",
+      "file": "C06b-saas-v2.md",
+      "quote": "不超过索赔事件发生前 3 个月内甲方实际支付的服务费用总额"
+    },
+    {
+      "case": "C06b",
+      "evidenceIndex": 4,
+      "id": "c06b-manifest",
+      "sourceCase": "C06b",
+      "file": "C06b-saas-v2.md",
+      "quote": "附件三　《数据处理附录》"
+    },
+    {
+      "case": "C07",
+      "evidenceIndex": 0,
+      "id": "c07-law",
+      "sourceCase": "C07",
+      "file": "C07-master-services-agreement.md",
+      "quote": "12.1 This Agreement shall be governed by and construed in accordance with the laws of the Republic of Singapore."
+    },
+    {
+      "case": "C07",
+      "evidenceIndex": 1,
+      "id": "c07-signature",
+      "sourceCase": "C07",
+      "file": "C07-master-services-agreement.md",
+      "quote": "Signature: /s/ Adela Fournier"
+    },
+    {
+      "case": "C07",
+      "evidenceIndex": 2,
+      "id": "c07-exhibits",
+      "sourceCase": "C07",
+      "file": "C07-master-services-agreement.md",
+      "quote": "Exhibit C — Information Security Requirements"
+    },
+    {
+      "case": "C07",
+      "evidenceIndex": 3,
+      "id": "c07-liability",
+      "sourceCase": "C07",
+      "file": "C07-master-services-agreement.md",
+      "quote": "during the three (3) months immediately preceding the event giving rise to the claim"
+    },
+    {
+      "case": "C07",
+      "evidenceIndex": 4,
+      "id": "c07-renewal",
+      "sourceCase": "C07",
+      "file": "C07-master-services-agreement.md",
+      "quote": "no later than thirty (30) days prior to the end of the then-current term"
+    },
+    {
+      "case": "C07",
+      "evidenceIndex": 5,
+      "id": "c07-subcontracting",
+      "sourceCase": "C07",
+      "file": "C07-master-services-agreement.md",
+      "quote": "Supplier shall not subcontract any part of the services without Client's prior written consent"
+    },
+    {
+      "case": "C08",
+      "evidenceIndex": 0,
+      "id": "c08-signature",
+      "sourceCase": "C08",
+      "file": "C08-mutual-nda.md",
+      "quote": "Signature: ______________________________"
+    },
+    {
+      "case": "C08",
+      "evidenceIndex": 1,
+      "id": "c08-law",
+      "sourceCase": "C08",
+      "file": "C08-mutual-nda.md",
+      "quote": "8.1 This Agreement shall be governed by and construed in accordance with the laws of the Republic of Singapore."
+    },
+    {
+      "case": "C08",
+      "evidenceIndex": 2,
+      "id": "c08-page",
+      "sourceCase": "C08",
+      "file": "C08-mutual-nda.md",
+      "quote": "Page 4 of 4"
+    },
+    {
+      "case": "C08",
+      "evidenceIndex": 3,
+      "id": "c08-parties",
+      "sourceCase": "C08",
+      "file": "C08-mutual-nda.md",
+      "quote": "Northwind and Blue Harbor are each referred to as a \"Party\" and together as the \"Parties\"."
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 0,
+      "id": "c01-total",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 1,
+      "id": "c01-manifest",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "附件二　《服务水平协议 SLA-v1.2》"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 2,
+      "id": "c01-signature",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "授权代表签字：陈慕远"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 3,
+      "id": "c01-pages",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "第 9 页 / 共 9 页"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 4,
+      "id": "c01-parties",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "**乙方（服务商）：云梯信息技术（示例）有限公司**"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 5,
+      "id": "c01-liability",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "不超过索赔事件发生前 12 个月内甲方实际支付的服务费用总额"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 6,
+      "id": "c01-dispute",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "提交上海国际经济贸易仲裁委员会"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 7,
+      "id": "c01-remedy",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "## 第十一条　违约责任与救济"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 8,
+      "id": "c01-grace",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "该期间为违约治愈宽限期"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 9,
+      "id": "c01-termination",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 10,
+      "id": "c01-subcontracting",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "## 第十三条　分包与变更控制"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 11,
+      "id": "c01-audit",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "## 第十四条　审计权"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 12,
+      "id": "c01-force-majeure",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "## 第十五条　不可抗力"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 13,
+      "id": "c01-export",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "导出格式为 CSV、JSON 及标准 SQL 转储文件，不收取任何费用"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 14,
+      "id": "c01-renewal",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "订阅期届满前 90 日以书面形式通知对方不再续约"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 15,
+      "id": "c09a-authoritative-manifest",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "完整附件清单以双方另行签署的《合同附件目录》（编号 XHKJ-FJML-2026-0117）为准，该目录为本协议附件清单的唯一权威来源"
+    },
+    {
+      "case": "C09a",
+      "evidenceIndex": 16,
+      "id": "c09a-listed-attachments",
+      "sourceCase": "C09a",
+      "file": "C09a-saas-manifest-deferred.md",
+      "quote": "附件二　《服务水平协议 SLA-v1.2》"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 0,
+      "id": "c01-total",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 1,
+      "id": "c01-manifest",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "附件二　《服务水平协议 SLA-v1.2》"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 2,
+      "id": "c01-signature",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "授权代表签字：陈慕远"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 3,
+      "id": "c01-pages",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "第 9 页 / 共 9 页"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 4,
+      "id": "c01-parties",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "**乙方（服务商）：云梯信息技术（示例）有限公司**"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 5,
+      "id": "c01-liability",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "不超过索赔事件发生前 12 个月内甲方实际支付的服务费用总额"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 6,
+      "id": "c01-dispute",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "提交上海国际经济贸易仲裁委员会"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 7,
+      "id": "c01-remedy",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "## 第十一条　违约责任与救济"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 8,
+      "id": "c01-grace",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "该期间为违约治愈宽限期"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 9,
+      "id": "c01-termination",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 10,
+      "id": "c01-subcontracting",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "## 第十三条　分包与变更控制"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 11,
+      "id": "c01-audit",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "## 第十四条　审计权"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 12,
+      "id": "c01-force-majeure",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "## 第十五条　不可抗力"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 13,
+      "id": "c01-export",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "导出格式为 CSV、JSON 及标准 SQL 转储文件，不收取任何费用"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 14,
+      "id": "c01-renewal",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "订阅期届满前 90 日以书面形式通知对方不再续约"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 15,
+      "id": "c09b-body-reference",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "审计所需的安全合规证明材料清单以附件四《安全合规证明材料清单 V1.0》为准。"
+    },
+    {
+      "case": "C09b",
+      "evidenceIndex": 16,
+      "id": "c09b-manifest",
+      "sourceCase": "C09b",
+      "file": "C09b-saas-attachment-unlisted.md",
+      "quote": "17.4 本协议附件清单如下："
+    },
+    {
+      "case": "R01",
+      "evidenceIndex": 0,
+      "id": "r01-constituent-files",
+      "sourceCase": "R01",
+      "file": "R01-govt-purchase-real.md",
+      "quote": "2、组成合同的文件"
+    },
+    {
+      "case": "R01",
+      "evidenceIndex": 1,
+      "id": "r01-party-placeholders",
+      "sourceCase": "R01",
+      "file": "R01-govt-purchase-real.md",
+      "quote": "买  方：XXXXXXXXXXXX                  电话：XXX-XXXXXX"
+    },
+    {
+      "case": "R01",
+      "evidenceIndex": 2,
+      "id": "r01-old-law",
+      "sourceCase": "R01",
+      "file": "R01-govt-purchase-real.md",
+      "quote": "根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定"
+    },
+    {
+      "case": "R01",
+      "evidenceIndex": 3,
+      "id": "r01-dispute",
+      "sourceCase": "R01",
+      "file": "R01-govt-purchase-real.md",
+      "quote": "按以下第（ ）项方式处理：①根据《中华人民共和国仲裁法》的规定向\n           申请仲裁。②向            人民法院起诉。"
+    },
+    {
+      "case": "R02",
+      "evidenceIndex": 0,
+      "id": "r02-parties",
+      "sourceCase": "R02",
+      "file": "R02-govt-purchase-executed.md",
+      "quote": "买  方：安徽建筑大学                  电话：0551-63828001"
+    },
+    {
+      "case": "R02",
+      "evidenceIndex": 1,
+      "id": "r02-date",
+      "sourceCase": "R02",
+      "file": "R02-govt-purchase-executed.md",
+      "quote": "日    期：2026年8月18日              日    期:2026年8月18日"
+    },
+    {
+      "case": "R02",
+      "evidenceIndex": 2,
+      "id": "r02-old-law",
+      "sourceCase": "R02",
+      "file": "R02-govt-purchase-executed.md",
+      "quote": "根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定"
+    },
+    {
+      "case": "R02",
+      "evidenceIndex": 3,
+      "id": "r02-constituent-files",
+      "sourceCase": "R02",
+      "file": "R02-govt-purchase-executed.md",
+      "quote": "二、组成合同的文件"
+    },
+    {
+      "case": "R02",
+      "evidenceIndex": 4,
+      "id": "r02-arbitration",
+      "sourceCase": "R02",
+      "file": "R02-govt-purchase-executed.md",
+      "quote": "按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向\n           买方所在地仲裁机构 申请仲裁。②向            人民法院起诉。"
+    },
+    {
+      "case": "R03",
+      "evidenceIndex": 0,
+      "id": "r03-parties",
+      "sourceCase": "R03",
+      "file": "R03-govt-purchase-2019.md",
+      "quote": "买  方：安徽建筑大学                  电话：0551-63828001"
+    },
+    {
+      "case": "R03",
+      "evidenceIndex": 1,
+      "id": "r03-date",
+      "sourceCase": "R03",
+      "file": "R03-govt-purchase-2019.md",
+      "quote": "日    期：2019年6月20日              日    期:2019年6月20日"
+    },
+    {
+      "case": "R03",
+      "evidenceIndex": 2,
+      "id": "r03-old-law",
+      "sourceCase": "R03",
+      "file": "R03-govt-purchase-2019.md",
+      "quote": "根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定"
+    },
+    {
+      "case": "R03",
+      "evidenceIndex": 3,
+      "id": "r03-constituent-files",
+      "sourceCase": "R03",
+      "file": "R03-govt-purchase-2019.md",
+      "quote": "二、组成合同的文件"
+    },
+    {
+      "case": "R03",
+      "evidenceIndex": 4,
+      "id": "r03-arbitration",
+      "sourceCase": "R03",
+      "file": "R03-govt-purchase-2019.md",
+      "quote": "按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向\n           买方所在地仲裁机构 申请仲裁。②向            人民法院起诉。"
+    }
+  ]
+}

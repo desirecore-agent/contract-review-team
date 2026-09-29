@@ -10,7 +10,7 @@ last-reviewed: 2026-09-29
 
 | File | What to verify |
 |---|---|
-| [team.json](../team.json) | Team identity, supervisor, members and distributable version: baseline 0.1.37. |
+| [team.json](../team.json) | Team identity, supervisor, members and distributable version: published baseline 0.1.37. |
 | [members.lock.json](../members.lock.json) | Each member's repository, exact commit, version and content hash. |
 | [Shared rules](../shared/rules.md) | Instructions injected into members; behavior changes require runtime regression. |
 | [Resources](../shared/resources/README.md) | Pack versions, scope, rules, statutes and provenance; read each pack's metadata. |
@@ -28,10 +28,12 @@ npm ci
 npm run check:gates
 node shared/resources/jurisdiction-packs/jurisdiction-cn/statutes/check-temporal.mjs
 node testdata/contracts/check-evidence.mjs
-node shared/resources/check-member-tool-ceiling.mjs   # reads installed members; see docs/maintenance
+node shared/resources/check-member-tool-ceiling.mjs   # reads installed member repositories
 ```
 
-Check the current directory first: `team.json` and `package.json` must be present. `check:gates` invokes the gate-literal and intake-contract guards. The temporal script resolves files beside itself and checks statute registration/temporal metadata consistency. `check-evidence.mjs` confirms every evidence string in ground-truth.yaml occurs verbatim in its corpus file; it is zero-dependency, and `check:gates` does not cover testdata. `check-member-tool-ceiling.mjs` confirms each member's tool allowlist lies within the supervisor's: a delegated session is capped at the delegator's tools and inherits its deny list, so a tool missing from the lead silently disappears from members. It reads installed members (`<root>/teams/<team>` beside `<root>/agents/<id>`); in a development checkout pass `--agents-dir <parent of member directories>`. It fails if any member cannot be read. None of these calls a live model, installs from the marketplace, validates every historical oracle entry, proves legal correctness or checks DOCX appearance.
+Check the current directory first: `team.json` and `package.json` must be present. `check:gates` invokes the gate-literal and intake-contract guards. The temporal script resolves files beside itself and checks statute registration/temporal metadata consistency. `check-evidence.mjs` is Node-core-only and validates the reviewed JSON index against exact oracle/source bytes and current normative literal quotes. Regenerate that derived index only explicitly with `npm ci && node testdata/contracts/generate-evidence-index.mjs`, then review its diff; runtime never rebuilds drift away. The member checker is NPM-independent but requires native Git and validates installed repo roots, exact locked HEADs and committed `agent.json` bytes before checking tool ceilings. Use `--agents-dir` and `--lock` for a development layout. Missing Git/repository/commit or dirty configuration fails as unverified. This is not a platform v3 content-hash or full-tree/runtime proof. None calls a live model, installs from the marketplace, validates every historical oracle entry, proves legal correctness or establishes DOCX availability; the current optional `ExportDocument` exclusion leaves known DOCX capability debt.
+
+The member preflight proves only finite, explicit tool-name relationships in exact selected sources. It subtracts each member's own denied tools before applying the supervisor's allowed/denied ceiling and excludes Delegate, DelegateControl and spawn_agent, which children cannot inherit. In production, `allowed: []` is unrestricted rather than zero tools; without the live registry this checker reports it as unverified. `["none"]` is the deny-all sentinel. Malformed, blank or wildcard policies cannot receive a static pass. Optional ExportDocument gaps are disclosed as capability debt, not satisfied requirements. The evidence index binds every normative source, including negative-only and empty-literal cases; a declared source-digest mismatch prevents generation. After explicit regeneration, independently review the index and synchronize the review pin in the checker rather than accepting a new pin at runtime.
 
 Also check changed Markdown links, bilingual counterparts and stated counts/versions against source files. For corpus changes, recheck evidence quotations and version-pair invariants. Resolve known oracle mismatches explicitly and document their meaning; do not silently rewrite history to make a test pass.
 
@@ -39,7 +41,7 @@ Also check changed Markdown links, bilingual counterparts and stated counts/vers
 
 1. Make and review the change in its owning member or resource repository. State the affected goal, expected behavior and failure example.
 2. Record the exact reviewed member commit and version in the lock using the supported DesireCore publishing/locking process. Verify its content hash using the platform's canonical implementation; do not invent a replacement hashing algorithm or copy a stale digest.
-3. Check every listed member resolves to its expected content. Keep machine-local credentials and model preferences out of published assets. Whenever a member or the lead changes `tool_permissions`, run `check-member-tool-ceiling.mjs`.
+3. Check every listed member resolves to its expected content. Keep machine-local credentials and model preferences out of published assets. Whenever tool permissions change, run the member ceiling checker.
 4. Run the scoped guards and affected live scenarios. Changes to delegation, scope, evidence handling or export need the relevant end-to-end acceptance, not only text checks.
 5. Update paired documentation and the change log with actual results and unfinished checks. A documentation-only correction does not close a runtime defect.
 

@@ -1,0 +1,27 @@
+{
+  "kind": "source-contract-not-runtime-enforcement",
+  "checks": 4,
+  "mutationsRejected": 4,
+  "evidence": [
+    {
+      "member": "contract-intake",
+      "stage": "intake",
+      "exampleOutput": "/authorized/contract-review/CASE/OBJECT/VERSION/RUN/intake/unique-receipt.yaml"
+    },
+    {
+      "member": "clause-extractor",
+      "stage": "clause-extraction",
+      "exampleOutput": "/authorized/contract-review/CASE/OBJECT/VERSION/RUN/clause-extraction/unique-receipt.yaml"
+    },
+    {
+      "member": "risk-scanner",
+      "stage": "risk-scan",
+      "exampleOutput": "/authorized/contract-review/CASE/OBJECT/VERSION/RUN/risk-scan/unique-receipt.yaml"
+    },
+    {
+      "member": "jurisdiction-auditor",
+      "stage": "jurisdiction-audit",
+      "exampleOutput": "/authorized/contract-review/CASE/OBJECT/VERSION/RUN/jurisdiction-audit/unique-receipt.yaml"
+    }
+  ]
+}

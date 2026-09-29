@@ -10,10 +10,10 @@
 
 meta:
   index_version: cases-v1
-  ontology_version: onto-v1
-  updated_at: '2026-08-31'
-  total_cases: 8
-  must_detect_count: 7
+  ontology_version: onto-v2
+  updated_at: '2026-09-29'
+  total_cases: 9
+  must_detect_count: 8
   must_not_flag_count: 1
 
 # ---------------------------------------------------------------------------
@@ -93,6 +93,15 @@ cases:
     guarded_by_primary: [base/market-benchmarks.yaml#evaluation_protocol, rules.md#R-012, rules.md#R-060]
     blueprint_ref: 第十一节 / 第十六节
 
+  - id: TC-009
+    file: TC-009-workflow-policy-drift.yaml
+    title: 流程契约漂移导致有限报告、待决交付与范围边界失真
+    category: must_detect
+    severity: severe
+    failure_mode: 跨文件流程契约漂移
+    guarded_by_primary: [actions.yaml#workflow_contract, contract.yaml#INV-003, contract.yaml#INV-008, rules.md#R-031]
+    blueprint_ref: 第二节 / 第十二节 / 第十四节
+
 # ---------------------------------------------------------------------------
 # 失败模式分类（用于判断新样本是否覆盖了新的模式）
 # ---------------------------------------------------------------------------
@@ -104,6 +113,7 @@ failure_modes:
   欠账被消音: 未覆盖项被合并进通过，检查越不完整通过率越高
   自我确认: 下游读到上游的理由后，把验证理由当成验证事实
   关键词命中即结论: 词库命中未经基准比对直接升格为风险结论
+  跨文件流程契约漂移: 单个文件看似合理，但动作、对象、关系与回执组合后绕过固定依赖或扩大结论
 
 # ---------------------------------------------------------------------------
 # 新增样本的规范

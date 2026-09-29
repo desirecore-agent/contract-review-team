@@ -46,7 +46,7 @@ why_missed:
 # ---------------------------------------------------------------------------
 guarded_by:
   - ref: contract.yaml#INV-003
-    how: 每个 contract_document（含每一份附件）的 version_label 与 content_digest 必须非 unknown，否则阻断。附件从此是一等对象
+    how: 每个对象绑定 case/object/version/规范化绝对路径；摘要成功时必须是完整 FileDigest SHA-256，失败时 frozen_without_digest 并禁止一致性强声明
   - ref: relations.yaml#DC-004
     how: 主合同 digest 相同但任一附件 digest/version 变化或成员增删时，禁止输出「无差异」，必须点名附件替换
   - ref: contract.yaml#INV-010
@@ -65,8 +65,8 @@ guarded_by:
 # ---------------------------------------------------------------------------
 expected_behavior:
   must_output:
-    - 明确指出「主合同正文未变，附件三由 v1.2 变更为 v2.0」，并给出两版的 content_digest 前 8 位
-    - risk_direction = up
+    - 明确指出「主合同正文未变，附件三由 v1.2 变更为 v2.0」，并使用 FileDigest 返回的完整 SHA-256 绑定证据
+    - 局部附件风险方向 = up；若附件集合或摘要仍有缺口，全案 risk_direction = undetermined
     - 针对可用性承诺下降输出结论四元组：附件三第 3.1 条（p.2）｜severe｜动作：先谈判
     - 针对新增免责口径输出独立的一条结论，不与上一条合并
     - 触发 HG-03（责任与违约分配），不自动放行
@@ -80,11 +80,11 @@ expected_behavior:
 # ---------------------------------------------------------------------------
 repro_input:
   baseline:
-    main_contract: {object_id: doc-main-001, version_label: v1.0, content_digest: 3f2a9c1b8e4d7a60}
+    main_contract: {object_id: doc-main-001, version_label: v1.0, content_digest: 3f2a9c1b8e4d7a603f2a9c1b8e4d7a603f2a9c1b8e4d7a603f2a9c1b8e4d7a60}
     attachments:
-      - {object_id: doc-att-003, listed_as: 附件三, version_label: v1.2, content_digest: 91c4de08aa17b2f5}
+      - {object_id: doc-att-003, listed_as: 附件三, version_label: v1.2, content_digest: 91c4de08aa17b2f591c4de08aa17b2f591c4de08aa17b2f591c4de08aa17b2f5}
   current:
-    main_contract: {object_id: doc-main-001, version_label: v1.0, content_digest: 3f2a9c1b8e4d7a60}
+    main_contract: {object_id: doc-main-001, version_label: v1.0, content_digest: 3f2a9c1b8e4d7a603f2a9c1b8e4d7a603f2a9c1b8e4d7a603f2a9c1b8e4d7a60}
     attachments:
-      - {object_id: doc-att-003, listed_as: 附件三, version_label: v2.0, content_digest: 7b60fe3391ad0c42}
+      - {object_id: doc-att-003, listed_as: 附件三, version_label: v2.0, content_digest: 7b60fe3391ad0c427b60fe3391ad0c427b60fe3391ad0c427b60fe3391ad0c42}
   note: 主合同 digest 两轮完全相同，这是本样本的关键构造

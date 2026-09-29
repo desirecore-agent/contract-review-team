@@ -1,0 +1,143 @@
+
+ RUN  v5.0.1 <platform-workspace>
+
+Switched to a new branch 'sha-only'
+Switched to branch 'main'
+Cloning into bare repository '<temporary-path>'...
+done.
+stdout | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > 完整 clone 不可达但远端允许按完整 SHA 获取时，仍精确安装锁定 commit
+[AgentFSWatcher] Config changed: type=agent action=change agentId=shallow-member path=agents/shallow-member
+
+stderr | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > 完整 clone 不可达但远端允许按完整 SHA 获取时，仍精确安装锁定 commit
+[AgentRegistry] 已注册 Agent: shallow-member (SHA-only member)
+[Socket Server] Cannot broadcast: server not initialized
+
+stderr | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > 完整 clone 不可达但远端允许按完整 SHA 获取时，仍精确安装锁定 commit
+[AgentRegistry] 已注销 Agent: shallow-member
+
+stderr | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > 范围外 commit → 精确 SHA fetch 后 checkout 成功，仍保持有界浅仓库
+[agent-reader] Auto-commit failed for shallow-member/agent.json: GitError: fatal: not a git repository (or any of the parent directories): .git
+
+    at Object.action (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:4399:25)
+    at PluginStore.exec (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:4438:25)
+    at file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:1323:43
+    at new Promise (<anonymous>)
+    at GitExecutorChain.handleTaskData (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:1321:16)
+    at GitExecutorChain.attemptRemoteTask (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:1308:42)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at GitExecutorChain.attemptTask (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:1281:18) {
+  task: {
+    format: 'utf-8',
+    commands: [ 'status', '--porcelain', '-b', '-u', '--null' ],
+    parser: [Function: parser]
+  }
+}
+
+stdout | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > 范围外 commit → 精确 SHA fetch 后 checkout 成功，仍保持有界浅仓库
+[AgentFSWatcher] Config changed: type=agent action=change agentId=shallow-member path=agents/shallow-member
+
+stderr | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > 范围外 commit → 精确 SHA fetch 后 checkout 成功，仍保持有界浅仓库
+[AgentRegistry] 已注册 Agent: shallow-member (Shallow member)
+[Socket Server] Cannot broadcast: server not initialized
+
+stderr | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > 范围外 commit → 精确 SHA fetch 后 checkout 成功，仍保持有界浅仓库
+[AgentRegistry] 已注销 Agent: shallow-member
+
+stderr | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > 范围内 commit → 一次浅克隆就够，不触发补齐（仍是浅仓库）
+[agent-reader] Auto-commit failed for shallow-member/agent.json: GitError: fatal: not a git repository (or any of the parent directories): .git
+
+    at Object.action (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:4399:25)
+    at PluginStore.exec (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:4438:25)
+    at file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:1323:43
+    at new Promise (<anonymous>)
+    at GitExecutorChain.handleTaskData (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:1321:16)
+    at GitExecutorChain.attemptRemoteTask (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:1308:42)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at GitExecutorChain.attemptTask (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:1281:18) {
+  task: {
+    format: 'utf-8',
+    commands: [ 'status', '--porcelain', '-b', '-u', '--null' ],
+    parser: [Function: parser]
+  }
+}
+
+stdout | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > 范围内 commit → 一次浅克隆就够，不触发补齐（仍是浅仓库）
+[AgentFSWatcher] Config changed: type=agent action=change agentId=shallow-member path=agents/shallow-member
+
+stderr | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > 范围内 commit → 一次浅克隆就够，不触发补齐（仍是浅仓库）
+[AgentRegistry] 已注册 Agent: shallow-member (Shallow member)
+[Socket Server] Cannot broadcast: server not initialized
+
+stderr | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > 范围内 commit → 一次浅克隆就够，不触发补齐（仍是浅仓库）
+[AgentRegistry] 已注销 Agent: shallow-member
+
+stderr | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > commit 根本不存在 → 补齐完整历史后仍失败，干净地报 failed 且不留残留目录
+[agent-reader] Auto-commit failed for shallow-member/agent.json: GitError: fatal: not a git repository (or any of the parent directories): .git
+
+    at Object.action (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:4399:25)
+    at PluginStore.exec (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:4438:25)
+    at file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:1323:43
+    at new Promise (<anonymous>)
+    at GitExecutorChain.handleTaskData (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:1321:16)
+    at GitExecutorChain.attemptRemoteTask (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:1308:42)
+    at GitExecutorChain.attemptTask (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:1281:18) {
+  task: {
+    format: 'utf-8',
+    commands: [ 'status', '--porcelain', '-b', '-u', '--null' ],
+    parser: [Function: parser]
+  }
+}
+
+stdout | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > 未锁定 commit → depth 1 克隆默认分支
+[AgentFSWatcher] Config changed: type=agent action=change agentId=shallow-member path=agents/shallow-member
+
+stderr | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > 未锁定 commit → depth 1 克隆默认分支
+[AgentRegistry] 已注册 Agent: shallow-member (Shallow member)
+[Socket Server] Cannot broadcast: server not initialized
+
+stderr | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts > 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 > 未锁定 commit → depth 1 克隆默认分支
+[AgentRegistry] 已注销 Agent: shallow-member
+
+stderr | packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts
+[agent-reader] Auto-commit failed for shallow-member/agent.json: GitConstructError: Cannot use simple-git on a directory that does not exist
+    at gitInstanceFactory (file://<platform-workspace>/node_modules/simple-git/dist/esm/index.js:4574:11)
+    at createGit (<platform-workspace>/packages/agent-service/src/git-backend/native-git-backend.ts:203:7)
+    at NativeGitBackend.statusMatrix (<platform-workspace>/packages/agent-service/src/git-backend/native-git-backend.ts:906:15)
+    at <platform-workspace>/packages/agent-service/src/agent/git.ts:1193:34 {
+  task: undefined,
+  config: {
+    baseDir: '/tmp/dc-installer-shallow-1790686268758-42nssftfy5m/agents/shallow-member',
+    binary: 'git',
+    maxConcurrentProcesses: 5,
+    config: [
+      'http.followRedirects=false',
+      'http.lowSpeedLimit=1',
+      'http.lowSpeedTime=8',
+      'protocol.https.allow=always',
+      'protocol.ssh.allow=always',
+      'protocol.file.allow=always',
+      'protocol.ext.allow=never'
+    ],
+    trimmed: false,
+    unsafe: {
+      allowUnsafeProtocolOverride: true,
+      allowUnsafeAskPass: true,
+      allowUnsafeConfigPaths: true,
+      allowUnsafeConfigEnvCount: true
+    }
+  }
+}
+
+ ✓  resource  packages/agent-service/src/__tests__/team-installer-shallow-retry.resource.test.ts (5 tests) 6056ms
+   ✓ 成员安装：锁定 commit 落在浅克隆之外时补齐完整历史 (5)
+     ✓ 完整 clone 不可达但远端允许按完整 SHA 获取时，仍精确安装锁定 commit 2715ms
+     ✓ 范围外 commit → 精确 SHA fetch 后 checkout 成功，仍保持有界浅仓库 475ms
+     ✓ 范围内 commit → 一次浅克隆就够，不触发补齐（仍是浅仓库） 397ms
+     ✓ commit 根本不存在 → 补齐完整历史后仍失败，干净地报 failed 且不留残留目录 531ms
+     ✓ 未锁定 commit → depth 1 克隆默认分支 305ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  08:51:08
+   Duration  6.90s (tests 89%, transform 8%, import 2%, setup 1%)
+

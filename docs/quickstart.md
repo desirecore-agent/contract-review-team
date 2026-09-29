@@ -6,7 +6,7 @@ last-reviewed: 2026-09-29
 
 [中文](quickstart.zh-CN.md) · [Design](design.md) · [Testing](testing.md)
 
-This guide describes the intended user journey for team **0.1.37**. It is not a record that every step has passed acceptance. Read the outstanding implementation conflicts in [Design](design.md).
+This guide describes the intended user journey for published team **0.1.37** and this branch's unreleased candidate rules. It is not a record that every step has passed acceptance. Read the outstanding implementation conflicts in [Design](design.md).
 
 ## Install and prepare
 

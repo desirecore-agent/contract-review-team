@@ -6,6 +6,11 @@ last-reviewed: 2026-09-29
 
 [中文详细记录](CHANGELOG.zh-CN.md)
 
+## Unreleased — normalized oracle/workflow candidate
+
+- Preserve published team 0.1.37 locks and add C09a/C09b to the normalized 14-file oracle, with explicit R7/R9/R1 positive, prohibition, mapping, and source-binding guards.
+- Keep the upstream live-run report as non-normative provenance; no live pass is inherited for this candidate.
+
 ## 0.1.37 - 2026-09-29
 
 - Pin intake 1.0.7: validate receipt YAML with StructuredFileValidate against a schema shipped with the skill; the old "no parser, no passed" fallback made `passed` unreachable while its own receipts failed to parse twice. S8 version-unavailable flags no longer count as verdict-affecting.

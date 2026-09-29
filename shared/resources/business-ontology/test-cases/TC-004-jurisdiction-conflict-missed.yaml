@@ -39,9 +39,9 @@ guarded_by:
   - ref: relations.yaml#DC-006
     how: 同一文档存在两条及以上 governed_by 边时触发法域冲突检测，判定是 carve_out 还是全局并列
   - ref: contract.yaml#INV-008
-    how: jurisdiction_pack_version 必须覆盖 jurisdiction_clues 中出现的全部法域线索，否则阻断
+    how: 全部法域线索必须记录和分类；中国大陆实体检查须加载 jurisdiction-cn，域外转介而非要求 foreign pack
   - ref: rules.md#R-021
-    how: 法域包与法域线索不一致时阻断；未明示准据法时可按注册地推定但必须标注并触发人工确认
+    how: 未明示准据法时注册地只能作为线索，依法留白并转专业确认，不得自动推定
   - ref: actions.yaml#detect_jurisdiction_conflict
     how: 无法判定时输出 unknown 并进 HG-02，禁止择一默认
   - ref: rules.md#R-061
@@ -50,7 +50,7 @@ guarded_by:
 expected_behavior:
   must_output:
     - 列出两条声明各自的条款号与页码，指出并列适用关系
-    - 判定冲突性质：准据法只能有一个（第 18.1 条），GDPR 的提及需界定为 carve_out 才成立
+    - 在读取适用专业规则后判定声明关系；未读专业包时只登记候选冲突与待确认范围，不断言法律冲突或效力
     - 指出范围不闭合的三点：数据主体属地未界定、跨境传输机制未约定、两制度义务优先级未约定
     - 触发 HG-02（争议解决机制），阻断放行
     - 若未加载 jurisdiction-cn 包，直接阻断并输出数据对齐建议

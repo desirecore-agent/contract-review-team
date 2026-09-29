@@ -8,7 +8,7 @@ last-reviewed: 2026-09-29
 
 A six-member DesireCore team for evidence-based contract review. It separates intake, extraction, risk observations, jurisdiction analysis, independent review, and delivery. Its supported legal service scope is mainland China; foreign-law material requires referral, even when general document governance can continue.
 
-**Status:** team 0.1.37. Documentation audited on 2026-09-29 against commit aa67148; 0.1.37 updates the intake and lead locks (see [CHANGELOG](CHANGELOG.md)). This is not a production-readiness certificate: unresolved shared-rule conflicts and incomplete end-to-end evidence are listed in [testing](docs/testing.md).
+**Status:** published team 0.1.37; this branch also contains unreleased oracle/workflow candidate changes. This is not a production-readiness certificate: evidence limits are listed in [testing](docs/testing.md).
 
 ## Start here
 
@@ -40,17 +40,17 @@ O3 risk and jurisdiction work can run in parallel after extraction. O4 and O5 ar
 
 The CN pack identifies itself as cn-v3. Its statute index declares 29 instruments, 4,096 articles and 1,270,526 bytes. These are repository metadata, not certification of completeness, freshness or legal applicability.
 
-The corpus has 14 contract files and 13 case IDs: eleven synthetic C-series files (C06 is a version pair; C09a/C09b are attachment-manifest derivatives of C01), a public blank procurement template R01, and generated derivatives R02/R03. R02 includes intentionally inserted defects; neither derivative is evidence of an executed customer contract.
+The corpus has 14 contract files and 14 normative source-case IDs. C06 is a version pair; C09a/C09b are attachment-manifest derivatives of C01. R02 includes intentionally inserted defects; neither derivative is evidence of an executed customer contract.
 
 ```sh
 npm ci
 npm run check:gates
 node shared/resources/jurisdiction-packs/jurisdiction-cn/statutes/check-temporal.mjs
 node testdata/contracts/check-evidence.mjs
-node shared/resources/check-member-tool-ceiling.mjs   # reads installed members; see docs/maintenance
+node shared/resources/check-member-tool-ceiling.mjs   # reads installed member repositories
 ```
 
-These are static consistency checks, not agent or legal acceptance tests. The private tooling package still reports 0.1.30; the published team version comes from team.json. No version alignment is made by this documentation update.
+The evidence checker is Node-core-only at runtime and fails on an unreviewed oracle/index drift or a missing/mismatched quote. The member checker also has no NPM dependency but requires native Git; it fails unless each installed repository root, exact locked HEAD and committed `agent.json` bytes match. This locks only the configuration it reads, not the full tree or all runtime capability. These are static consistency checks, not agent or legal acceptance tests. The private tooling package still reports 0.1.30; the published team version comes from team.json. No version alignment is made by this documentation update.
 
 ## License and responsibility
 

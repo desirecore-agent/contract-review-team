@@ -1,0 +1,68 @@
+✔ frontmatter is byte-zero YAML and skill versions are internally consistent (7.189625ms)
+✔ real Draft-07 schema accepts the valid document and rejects the combined review counterexample (34.783292ms)
+✔ each receipt contradiction is independently rejected (22.692083ms)
+✔ real Draft-07 schema accepts required, not_applicable and unknown role receipts without conflating them (14.625792ms)
+✔ a blocking finding elsewhere takes precedence over an S7 flag (13.269458ms)
+✔ tool success with report.valid false is denied by the real admission decision (1.724125ms)
+✖ admission fails closed unless both validator hashes bind the read receipt and schema (2.317ms)
+✖ admission rejects malformed input with a bounded result (0.142583ms)
+✔ skill records role applicability and write-once sidecar validation semantics (0.973292ms)
+✔ intake artifact layout keeps machine, detail and validation files run-local and distinct (0.462791ms)
+✔ validation sidecar binds actual validator report hashes and fails closed on mismatch (0.160666ms)
+✔ supplemental material requires a new run root and intake id without mutating the prior receipt (0.112042ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 10
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 248.501208
+
+✖ failing tests:
+
+test at workspace/sources/contract-intake/skills/contract-intake-gate/tests/consistency.contract.test.mjs:132:1
+✖ admission fails closed unless both validator hashes bind the read receipt and schema (2.317ms)
+  AssertionError [ERR_ASSERTION]: (x) => { delete x.expectedDocumentSha256 }
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file://<team-workspace>/workspace/sources/contract-intake/skills/contract-intake-gate/tests/consistency.contract.test.mjs:146:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at workspace/sources/contract-intake/skills/contract-intake-gate/tests/consistency.contract.test.mjs:150:1
+✖ admission rejects malformed input with a bounded result (0.142583ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Cannot destructure property 'toolSuccess' of 'undefined' as it is undefined."
+      at TestContext.<anonymous> (file://<team-workspace>/workspace/sources/contract-intake/skills/contract-intake-gate/tests/consistency.contract.test.mjs:152:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: TypeError: Cannot destructure property 'toolSuccess' of 'undefined' as it is undefined.
+        at decideReceiptAdmission (file://<team-workspace>/workspace/sources/contract-intake/skills/contract-intake-gate/lib/intake-decision.mjs:1:42)
+        at file://<team-workspace>/workspace/sources/contract-intake/skills/contract-intake-gate/tests/consistency.contract.test.mjs:152:31
+        at getActual (node:assert:580:5)
+        at strict.doesNotThrow (node:assert:748:32)
+        at TestContext.<anonymous> (file://<team-workspace>/workspace/sources/contract-intake/skills/contract-intake-gate/tests/consistency.contract.test.mjs:152:12)
+        at Test.runInAsyncScope (node:async_hooks:226:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }

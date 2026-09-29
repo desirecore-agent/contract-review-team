@@ -6,6 +6,11 @@ last-reviewed: 2026-09-29
 
 [English](CHANGELOG.md)
 
+## 未发布 — 规范化 oracle/workflow candidate
+
+- 原样保留已发布团队 0.1.37 锁，并把 C09a/C09b 融入 14 文件规范 oracle；新增 R7/R9/R1 正例、禁报、错误映射及 source-binding guard。
+- 上游真机报告仅作为 non-normative provenance；本 candidate 不继承真机通过结论。
+
 ## 0.1.37 - 2026-09-29
 
 - `contract-intake` 升级至 1.0.7：用 `StructuredFileValidate` 按随技能分发的回执 Schema 校验 YAML，恢复 `passed` 的可达性。此前「无解析器即禁止 passed」让任何合同都拿不到 passed，而兜底写出的回执本身两次解析失败（C01 第 164 行、C09a 第 153 行，均为未加引号的冒号）。S8 版本维度「取不到值」标记不再被判定表算作影响结论的 FLG-*。

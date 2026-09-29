@@ -1,0 +1,20 @@
+✔ frontmatter is byte-zero YAML and skill versions are internally consistent (6.673542ms)
+✔ real Draft-07 schema accepts the valid document and rejects the combined review counterexample (31.861542ms)
+✔ each receipt contradiction is independently rejected (18.736167ms)
+✔ real Draft-07 schema accepts required, not_applicable and unknown role receipts without conflating them (13.242875ms)
+✔ a blocking finding elsewhere takes precedence over an S7 flag (12.986458ms)
+✔ admission separates tool failure, schema invalidity and business gates (2.528333ms)
+✔ admission fails closed unless both validator hashes bind the read receipt and schema (1.380084ms)
+✔ admission rejects malformed input with a bounded result (0.132833ms)
+✔ skill records role applicability and write-once sidecar validation semantics (0.404042ms)
+✔ intake artifact layout keeps machine, detail and validation files run-local and distinct (0.427625ms)
+✔ validation sidecar binds actual validator report hashes and fails closed on mismatch (0.141417ms)
+✔ supplemental material requires a new run root and intake id without mutating the prior receipt (0.105334ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 212.402167

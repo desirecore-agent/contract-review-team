@@ -1,0 +1,114 @@
+✔ the real normative oracle and frozen bindings pass (81.413417ms)
+✔ the parsed historical oracle remains value-for-value frozen (52.146667ms)
+✔ all 12 source digests remain byte-accurate (56.465625ms)
+✔ 49 legacy scope changes are isolated in explicitly non-normative provenance (51.218167ms)
+✔ rejects a normative legacy-disposition backdoor (41.0665ms)
+✔ rejects a missing scope-change target (37.574166ms)
+✔ rejects a scope-change mapping without audit rationale (37.452334ms)
+✔ rejects a missing R case with coverage diagnosis (36.535042ms)
+✔ rejects an incorrect input digest (37.434708ms)
+✔ rejects a fabricated literal quote (38.99825ms)
+✔ rejects historical observations in normative cases (36.872583ms)
+✔ rejects a foreign pack remedy (36.06625ms)
+✔ rejects missing requiredness on a new current target (35.852125ms)
+✔ rejects optional current targets without a reason (35.335958ms)
+✔ rejects duplicate IDs within a collection (36.05725ms)
+✔ rejects the same ID across positive and negative collections (36.668208ms)
+✔ rejects grace evidence swapped to audit evidence (36.796458ms)
+✔ rejects liability evidence swapped to amount evidence (36.374375ms)
+✔ rejects crossing R01 attachment and party-name evidence (42.010709ms)
+✔ rejects changing a frozen negative-search pattern (36.435667ms)
+✔ rejects deleting either R01 false-positive prohibition (45.89775ms)
+✔ evaluator fails closed for missing output without throwing (38.682291ms)
+✔ evaluator fails closed for null output without throwing (36.878875ms)
+✔ evaluator fails closed for missing detected_ids without throwing (34.0835ms)
+✔ evaluator fails closed for null detected_ids without throwing (33.696459ms)
+✔ evaluator fails closed for numeric detected_ids without throwing (33.393958ms)
+✔ evaluator fails closed for object detected_ids without throwing (32.496667ms)
+✔ evaluator fails closed for single string detected_ids without throwing (32.520083ms)
+✔ evaluator fails closed for null array element without throwing (32.0895ms)
+✔ evaluator fails closed for numeric array element without throwing (32.255625ms)
+✔ evaluator fails closed for blank ID without throwing (32.127417ms)
+✔ evaluator fails closed for whitespace ID without throwing (32.813041ms)
+✔ evaluator fails closed for duplicate ID without throwing (32.648584ms)
+✔ evaluator fails closed for unknown detected ID without throwing (32.544458ms)
+✖ rejects erased assertions even when the target keeps its evidence refs (39.028209ms)
+✖ rejects coordinated oracle and binding substitution with unrelated existing evidence (35.074834ms)
+✖ placeholder dollar-X negative searches match literal dollar-X, not an end anchor (34.208292ms)
+✔ unknown observations must be explicitly unassessed and still require manual classification (32.659583ms)
+✔ unknown observation cannot hide among detected IDs (32.518541ms)
+✔ optional C01 arithmetic observation is independent from forbidden wording mismatch (32.458208ms)
+✔ C04 passes on required source facts and old legal-effect labels cannot substitute (32.943334ms)
+✔ C05 and C07 require actual out-of-scope referral, not a missing-pack label (32.037ms)
+✔ R01/R02/R03 executable requirements are source facts and professional-review boundaries (32.760083ms)
+✔ R01 keeps both source-grounded prohibitions (32.534834ms)
+ℹ tests 44
+ℹ suites 0
+ℹ pass 41
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1782.837917
+
+✖ failing tests:
+
+test at shared/resources/tests/oracle-contract.test.mjs:75:1
+✖ rejects erased assertions even when the target keeps its evidence refs (39.028209ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(validateOracle(baseline(), {baseDir, sourceBindings:bindings}).some((error) => /assertion|digest/.test(error)))
+  
+      at TestContext.<anonymous> (file://<team-workspace>/shared/resources/tests/oracle-contract.test.mjs:78:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at shared/resources/tests/oracle-contract.test.mjs:81:1
+✖ rejects coordinated oracle and binding substitution with unrelated existing evidence (35.074834ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(validateOracle(oracle, {baseDir, sourceBindings:bindings}).some((error) => /digest/.test(error)))
+  
+      at TestContext.<anonymous> (file://<team-workspace>/shared/resources/tests/oracle-contract.test.mjs:88:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at shared/resources/tests/oracle-contract.test.mjs:91:1
+✖ placeholder dollar-X negative searches match literal dollar-X, not an end anchor (34.208292ms)
+  AssertionError [ERR_ASSERTION]: C01
+      at TestContext.<anonymous> (file://<team-workspace>/shared/resources/tests/oracle-contract.test.mjs:95:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

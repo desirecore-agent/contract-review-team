@@ -1,0 +1,144 @@
+
+> contract-review-team@0.1.30 check
+> npm run check:gates && npm run check:oracle && npm run check:workflow && npm run check:evidence && npm run test:contracts
+
+
+> contract-review-team@0.1.30 check:gates
+> node shared/resources/check-gate-verdict.mjs && node shared/resources/check-intake-verdict-contract.mjs
+
+✓ 门禁裁决字面量一致：canonical = passed | conditional | blocked，扫描 125 个文件无违规
+✓ parsed YAML: shared/resources/business-ontology/actions.yaml
+✓ parsed YAML: shared/resources/business-ontology/contract.yaml
+✓ parsed YAML: shared/resources/business-ontology/relations.yaml
+✓ intake verdict contract agrees across shared rules, actions, and ontology
+
+> contract-review-team@0.1.30 check:oracle
+> node shared/resources/check-oracle-contract.mjs
+
+✓ oracle contract valid: <team-workspace>/testdata/contracts/ground-truth.yaml
+
+> contract-review-team@0.1.30 check:workflow
+> node shared/resources/check-workflow-contract.mjs
+
+✓ parsed YAML: actions.yaml, contract.yaml, relations.yaml
+✓ workflow contract: O0→O5 dependencies, Human Gates, evidence, scope and digest semantics agree
+
+> contract-review-team@0.1.30 check:evidence
+> node testdata/contracts/check-evidence.mjs
+
+✓ 96 current normative literal evidence values match 14 source files (reviewed index bound to oracle bytes)
+
+> contract-review-team@0.1.30 test:contracts
+> node --test shared/resources/tests/*.test.mjs
+
+✔ default reviewed index passes with no custom pin override (53.66325ms)
+✔ generator derives only normative.cases and checker passes (140.398542ms)
+✔ index quote substitution fails even when the replacement remains a literal substring (166.420042ms)
+✔ unknown nonempty source case in the index cannot pass (126.938042ms)
+✔ malformed literals return bounded failure rather than an uncaught TypeError (115.82025ms)
+✔ oracle byte drift fails without automatic regeneration (125.61575ms)
+✔ blank quote fails closed (138.496583ms)
+✔ unknown source case fails closed (125.929041ms)
+✔ invalid path fails closed (144.110834ms)
+✔ zero literals fails closed (148.798833ms)
+✔ zero sources fails closed (136.089792ms)
+✔ matching repositories, exact HEADs and blobs pass (1167.3015ms)
+✔ same version but wrong HEAD fails (729.996208ms)
+✔ missing repository fails source identity (360.208208ms)
+✔ present matching-version config without its repository cannot pass (620.087291ms)
+✔ dirty agent.json fails byte identity (495.954167ms)
+✔ missing lock entry fails closed (459.357625ms)
+✔ incomplete CLI parameter is usage error (32.769084ms)
+✔ the real normative oracle and frozen bindings pass (149.386833ms)
+✔ the parsed historical oracle remains value-for-value frozen (61.4305ms)
+✔ all 14 source digests remain byte-accurate while the original 12 stay present (96.714542ms)
+✔ 49 legacy scope changes are isolated in explicitly non-normative provenance (84.907459ms)
+✔ rejects a normative legacy-disposition backdoor (70.618708ms)
+✔ rejects a missing scope-change target (63.641084ms)
+✔ rejects a scope-change mapping without audit rationale (55.139917ms)
+✔ rejects a missing R case with coverage diagnosis (66.181583ms)
+✔ rejects an incorrect input digest (57.794917ms)
+✔ rejects a fabricated literal quote (60.018542ms)
+✔ rejects historical observations in normative cases (92.796791ms)
+✔ rejects a foreign pack remedy (73.294667ms)
+✔ rejects missing requiredness on a new current target (84.4265ms)
+✔ rejects optional current targets without a reason (94.552167ms)
+✔ rejects duplicate IDs within a collection (85.14625ms)
+✔ rejects the same ID across positive and negative collections (88.949958ms)
+✔ rejects grace evidence swapped to audit evidence (76.107125ms)
+✔ rejects liability evidence swapped to amount evidence (69.15075ms)
+✔ rejects crossing R01 attachment and party-name evidence (49.4945ms)
+✔ rejects changing a frozen negative-search pattern (55.915166ms)
+✔ rejects deleting either R01 false-positive prohibition (46.467833ms)
+✔ evaluator fails closed for missing output without throwing (42.180125ms)
+✔ evaluator fails closed for null output without throwing (45.173416ms)
+✔ evaluator fails closed for missing detected_ids without throwing (42.409458ms)
+✔ evaluator fails closed for null detected_ids without throwing (50.039875ms)
+✔ evaluator fails closed for numeric detected_ids without throwing (43.694333ms)
+✔ evaluator fails closed for object detected_ids without throwing (49.721125ms)
+✔ evaluator fails closed for single string detected_ids without throwing (55.390458ms)
+✔ evaluator fails closed for null array element without throwing (47.119083ms)
+✔ evaluator fails closed for numeric array element without throwing (44.778125ms)
+✔ evaluator fails closed for blank ID without throwing (45.348666ms)
+✔ evaluator fails closed for whitespace ID without throwing (45.946958ms)
+✔ evaluator fails closed for duplicate ID without throwing (41.397542ms)
+✔ evaluator fails closed for unknown detected ID without throwing (40.5445ms)
+✔ the exact independently reviewable source-binding values remain frozen (0.639916ms)
+✔ rejects erased assertions even when the target keeps its evidence refs (45.259625ms)
+✔ rejects coordinated oracle and binding substitution with unrelated existing evidence (44.097291ms)
+✔ rejects duplicate or substituted assertions even with the expected array length (148.243875ms)
+✔ placeholder dollar-X negative searches match literal dollar-X, not an end anchor (59.406ms)
+✔ unknown observations must be explicitly unassessed and still require manual classification (48.682209ms)
+✔ unknown observation cannot hide among detected IDs (47.690917ms)
+✔ optional C01 arithmetic observation is independent from forbidden wording mismatch (49.552666ms)
+✔ C04 passes on required source facts and old legal-effect labels cannot substitute (49.152792ms)
+✔ C05 and C07 require actual out-of-scope referral, not a missing-pack label (67.637625ms)
+✔ R01/R02/R03 executable requirements are source facts and professional-review boundaries (40.661667ms)
+✔ R01 keeps both source-grounded prohibitions (41.969125ms)
+✔ C09 metadata binds the exact upstream raw bytes, without newline normalization (42.830666ms)
+✔ C01 is the R7 positive control and forbids an R9 report (41.699792ms)
+✔ C09a requires R9 and forbids an R1 mapping (41.712792ms)
+✔ C09b requires R1 and forbids an R9 downgrade (39.517625ms)
+✔ rejects an R9-to-R1 mapping substitution (44.750417ms)
+✔ the normative parsed YAML workflow contract passes (93.417416ms)
+✔ rejects a Human Gate that blocks report delivery (82.920083ms)
+✔ rejects O3 without both parallel isolated branches (41.182292ms)
+✔ rejects O3 whose declared owners diverge from its branches (46.654ms)
+✔ rejects merged O4 and O5 reporter calls (79.066167ms)
+✔ rejects O5 without a qualified O4 receipt (50.714791ms)
+✔ rejects O4 hard-depending on every successful O3 subaction (49.219541ms)
+✔ rejects an O3 join ledger without auditable branch fields (34.965959ms)
+✔ rejects an O3 join missing either settled receipt dependency (39.270166ms)
+✔ rejects a branch receipt that settles on success only (37.053875ms)
+✔ rejects a branch-receipt dependency cycle (38.092125ms)
+✔ rejects an early join that depends only on extraction (41.375292ms)
+✔ event-level join cannot run before both matching branch invocation terminal events (45.647ms)
+✔ success, failed and cancelled use one typed terminal-record validator (0.069375ms)
+✔ terminal-record validator rejects wrong field types and cross-invocation reuse (0.247708ms)
+✔ rejects settle nodes wired directly to extraction instead of invocation (35.874375ms)
+✔ rejects terminal event binding to a different invocation id (46.579125ms)
+✔ rejects an illegal risk direction (70.456916ms)
+✔ rejects restoring a mandatory direction for single-version not_applicable (36.142375ms)
+✔ rejects party identity without role applicability (35.931292ms)
+✔ rejects truncated digest semantics (46.163291ms)
+✔ rejects digest identity without canonical path binding (47.145208ms)
+✔ rejects foreign-pack requirements outside CN service scope (52.670042ms)
+✔ rejects jurisdiction scope without signing-place clues (44.260125ms)
+✔ rejects legal conflict conclusions based only on multiple declarations (52.059458ms)
+✔ rejects optional R7 delivered state (42.414417ms)
+✔ rejects optional or provenance-free Human Gate decisions (48.887833ms)
+✔ rejects Human Gate provenance without decision-source coupling (51.840375ms)
+✔ rejects coverage states without conditional evidence requirements (48.799708ms)
+✔ rejects actions with missing or backward phases (47.680625ms)
+✔ rejects an action with no phase (36.656958ms)
+✔ rejects numeric-stage ordering replacing the phase contract (29.066125ms)
+✔ rejects reordered workflow phases (30.5375ms)
+✔ rejects register_case reassigned from lead (29.882083ms)
+ℹ tests 103
+ℹ suites 0
+ℹ pass 103
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3921.105875

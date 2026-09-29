@@ -1,0 +1,20 @@
+test_all_skipped_is_not_a_pass (test_verify_member_candidates.EvidenceAccounting.test_all_skipped_is_not_a_pass) ... ok
+test_ambiguous_duplicate_summaries_fail_closed (test_verify_member_candidates.EvidenceAccounting.test_ambiguous_duplicate_summaries_fail_closed) ... ok
+test_cancelled_is_incomplete_even_with_zero_exit (test_verify_member_candidates.EvidenceAccounting.test_cancelled_is_incomplete_even_with_zero_exit) ... ok
+test_complete_pass (test_verify_member_candidates.EvidenceAccounting.test_complete_pass) ... ok
+test_failure_counter_cannot_be_overridden_by_exit_zero (test_verify_member_candidates.EvidenceAccounting.test_failure_counter_cannot_be_overridden_by_exit_zero) ... ok
+test_inconsistent_totals_fail_closed (test_verify_member_candidates.EvidenceAccounting.test_inconsistent_totals_fail_closed) ... ok
+test_missing_summary_fails_closed (test_verify_member_candidates.EvidenceAccounting.test_missing_summary_fails_closed) ... ok
+test_nonzero_exit_and_timeout_are_not_passes (test_verify_member_candidates.EvidenceAccounting.test_nonzero_exit_and_timeout_are_not_passes) ... ok
+test_partially_skipped_mandatory_suite_is_incomplete (test_verify_member_candidates.EvidenceAccounting.test_partially_skipped_mandatory_suite_is_incomplete) ... ok
+test_real_node_all_skipped_is_incomplete (test_verify_member_candidates.EvidenceAccounting.test_real_node_all_skipped_is_incomplete) ... ok
+test_real_node_success_is_executed (test_verify_member_candidates.EvidenceAccounting.test_real_node_success_is_executed) ... ok
+test_source_helper_is_copied_but_runtime_workspace_is_not (test_verify_member_candidates.EvidenceAccounting.test_source_helper_is_copied_but_runtime_workspace_is_not) ... ok
+test_tap_summary (test_verify_member_candidates.EvidenceAccounting.test_tap_summary) ... ok
+test_todo_is_incomplete (test_verify_member_candidates.EvidenceAccounting.test_todo_is_incomplete) ... ok
+test_zero_tests_is_not_a_pass (test_verify_member_candidates.EvidenceAccounting.test_zero_tests_is_not_a_pass) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.261s
+
+OK

@@ -35,7 +35,7 @@ why_missed:
 
 guarded_by:
   - ref: contract.yaml#entities.coverage_matrix_row
-    how: status 四态 covered/blank/blocked/deferred；conclusion 含 blank 等级
+    how: 状态统一为 covered/blank/blocked/deferred/unknown/not_applicable；仅 covered 有真实回执，其他状态不计 pass
   - ref: contract.yaml#INV-012
     how: blank 与 blocked 不得计入通过率，必须在报告正文单列
   - ref: relations.yaml#DC-010

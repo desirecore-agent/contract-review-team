@@ -56,4 +56,4 @@ last-reviewed: 2026-09-29
 
 9 月 C07 属本地历史观察：O0–O4 与部分 O5、合同分数 62、人工修 YAML、外部生成 DOCX。仓库没有公开可复验 run 日志包。旧共享步骤与 O0–O5 仍有冲突，见[设计](design.zh-CN.md)。行为改动后须重跑，再声称完成。[维护](maintenance.zh-CN.md)中的静态 guard 不执行以上模型真机验收。
 
-2026-09-29 的 C01/C09a/C09b 运行（desirecore-cloud/kimi-k3，本地实例）记录在 ground-truth 的「C01 / C09a / C09b 真机实测基线」注释块。它们**不是盲测**：语料取自团队目录，ground-truth.yaml 会出现在目录列表里（没有成员打开它）；每个场景只跑了一次而非三次。应视为 intake 1.0.7 / 统筹官 1.0.22 门禁修复的回归证据，不是验收。
+上游 0.1.37 的 C01/C09a/C09b 报告保存在 [upstream-0.1.37-live-baseline.json](../testdata/contracts/upstream-0.1.37-live-baseline.json)，明确标为 non-normative provenance。该报告非盲测、每场景单次，修后仅重跑 intake 第 1–2 步，因此本 candidate 不继承为真机通过。

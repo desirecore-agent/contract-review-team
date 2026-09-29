@@ -18,7 +18,7 @@ last-reviewed: 2026-09-29
 
 ## 远端基线与阅读顺序
 
-团队仓库：[desirecore-agent/contract-review-team](https://github.com/desirecore-agent/contract-review-team)。文档补全 [PR #46](https://github.com/desirecore-agent/contract-review-team/pull/46) 已合并，基线提交为 7d6c7290ca603f52543fb48a4db629df57a374d4，团队版本 0.1.36。开始前 fetch 并比较最新 main，不能覆盖后续工作。
+团队仓库：[desirecore-agent/contract-review-team](https://github.com/desirecore-agent/contract-review-team)。已发布基线为 PR #45 提交 346343b63347f70603fe47c14887b6f1fb799275、团队 0.1.37；本分支另加未发布的规范化 oracle/workflow candidate，不替换正式锁。
 
 依次阅读：
 
@@ -28,11 +28,11 @@ last-reviewed: 2026-09-29
 4. [共享注入规则](../shared/rules.md)、[本体规则](../shared/resources/business-ontology/rules.md)、[资源说明](../shared/resources/README.zh-CN.md)。
 5. [样本来源及判据限制](../testdata/contracts/README.zh-CN.md)、[oracle](../testdata/contracts/ground-truth.yaml)、[历史](../CHANGELOG.zh-CN.md)。
 
-成员源码仓库由 members.json 给出；执行基线以 members.lock.json 的精确 commit/contentHash 为准，而非成员仓库最新 main。基线版本：lead 1.0.21、intake 1.0.6、extractor 1.1.0、risk 1.1.0、jurisdiction 1.3.0、reporter 1.0.6。私有工具 package.json 的 0.1.30 不是团队版本。
+成员源码仓库由 members.json 给出；执行基线以 members.lock.json 的精确 commit/contentHash 为准，而非成员仓库最新 main。已发布版本：lead 1.0.22、intake 1.0.7、extractor 1.1.0、risk 1.1.0、jurisdiction 1.3.0、reporter 1.0.6。私有工具 package.json 的 0.1.30 不是团队版本。
 
-PR #46 只改文档，未改运行规则、oracle、成员锁或模型，也未发布市场更新。
+PR #46 只改文档。随后 PR #45 发布 0.1.37，修正成员锁，并新增 C09a/C09b、证据检查与工具上限检查。其真机测量单独保留为 non-normative provenance，不作为本 candidate 的真机通过声明。
 
-2026-09-29 更新——PR #45 发布团队 0.1.37：intake 1.0.7 用 StructuredFileValidate 校验回执 YAML，S8 版本「取不到值」标记不再阻止 `passed`；统筹官 1.0.22 白名单补入 StructuredFileValidate 与 UnderstandImage，因为委派会话的工具上限是统筹官的子集。锁文件同时修正了一个不在 main 历史上的 intake 提交和两条过期内容摘要。新增 C09a/C09b 语料、`check-evidence.mjs`、`check-member-tool-ceiling.mjs`。当前基线请重读 members.lock.json；上文版本号描述的是 #46 快照。
+2026-09-29 更新——PR #45 发布团队 0.1.37：intake 1.0.7 用 StructuredFileValidate 校验回执 YAML，S8 版本「取不到值」标记不再阻止 `passed`；统筹官 1.0.22 白名单补入 StructuredFileValidate 与 UnderstandImage，因为委派会话的工具上限是统筹官的子集。锁文件同时修正了一个不在 main 历史上的 intake 提交和两条过期内容摘要。新增 C09a/C09b 语料、`check-evidence.mjs`、`check-member-tool-ceiling.mjs`。当前精确提交与版本以 members.lock.json 为准；本段保留上游发布记录，不代表本次已复验新成员源码或模型运行。
 
 平台源码入口：[desirecore/desirecore](https://github.com/desirecore/desirecore)；平台配置的市场源：[desirecore/market](https://github.com/desirecore/market)。访问需使用接手环境自己的授权；发布前重新核对当前平台市场配置和对应条目，不假定历史源或分支未变。
 

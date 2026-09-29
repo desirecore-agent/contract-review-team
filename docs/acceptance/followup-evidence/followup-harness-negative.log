@@ -1,0 +1,89 @@
+test_all_skipped_is_not_a_pass (test_verify_member_candidates.EvidenceAccounting.test_all_skipped_is_not_a_pass) ... FAIL
+test_ambiguous_duplicate_summaries_fail_closed (test_verify_member_candidates.EvidenceAccounting.test_ambiguous_duplicate_summaries_fail_closed) ... FAIL
+test_cancelled_is_incomplete_even_with_zero_exit (test_verify_member_candidates.EvidenceAccounting.test_cancelled_is_incomplete_even_with_zero_exit) ... FAIL
+test_complete_pass (test_verify_member_candidates.EvidenceAccounting.test_complete_pass) ... ok
+test_failure_counter_cannot_be_overridden_by_exit_zero (test_verify_member_candidates.EvidenceAccounting.test_failure_counter_cannot_be_overridden_by_exit_zero) ... FAIL
+test_inconsistent_totals_fail_closed (test_verify_member_candidates.EvidenceAccounting.test_inconsistent_totals_fail_closed) ... FAIL
+test_missing_summary_fails_closed (test_verify_member_candidates.EvidenceAccounting.test_missing_summary_fails_closed) ... FAIL
+test_nonzero_exit_and_timeout_are_not_passes (test_verify_member_candidates.EvidenceAccounting.test_nonzero_exit_and_timeout_are_not_passes) ... ok
+test_partially_skipped_mandatory_suite_is_incomplete (test_verify_member_candidates.EvidenceAccounting.test_partially_skipped_mandatory_suite_is_incomplete) ... FAIL
+test_tap_summary (test_verify_member_candidates.EvidenceAccounting.test_tap_summary) ... ok
+test_todo_is_incomplete (test_verify_member_candidates.EvidenceAccounting.test_todo_is_incomplete) ... FAIL
+test_zero_tests_is_not_a_pass (test_verify_member_candidates.EvidenceAccounting.test_zero_tests_is_not_a_pass) ... ok
+
+======================================================================
+FAIL: test_all_skipped_is_not_a_pass (test_verify_member_candidates.EvidenceAccounting.test_all_skipped_is_not_a_pass)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<team-workspace>/scripts/tests/test_verify_member_candidates.py", line 26, in test_all_skipped_is_not_a_pass
+    self.assertFalse(verify.assess_test_result(node_result(passed=0, skipped=3))['passed'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_ambiguous_duplicate_summaries_fail_closed (test_verify_member_candidates.EvidenceAccounting.test_ambiguous_duplicate_summaries_fail_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<team-workspace>/scripts/tests/test_verify_member_candidates.py", line 57, in test_ambiguous_duplicate_summaries_fail_closed
+    self.assertFalse(verify.assess_test_result(result)['passed'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_cancelled_is_incomplete_even_with_zero_exit (test_verify_member_candidates.EvidenceAccounting.test_cancelled_is_incomplete_even_with_zero_exit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<team-workspace>/scripts/tests/test_verify_member_candidates.py", line 32, in test_cancelled_is_incomplete_even_with_zero_exit
+    self.assertFalse(verify.assess_test_result(node_result(passed=2, cancelled=1))['passed'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_failure_counter_cannot_be_overridden_by_exit_zero (test_verify_member_candidates.EvidenceAccounting.test_failure_counter_cannot_be_overridden_by_exit_zero)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<team-workspace>/scripts/tests/test_verify_member_candidates.py", line 38, in test_failure_counter_cannot_be_overridden_by_exit_zero
+    self.assertFalse(verify.assess_test_result(node_result(passed=2, failed=1))['passed'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_inconsistent_totals_fail_closed (test_verify_member_candidates.EvidenceAccounting.test_inconsistent_totals_fail_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<team-workspace>/scripts/tests/test_verify_member_candidates.py", line 52, in test_inconsistent_totals_fail_closed
+    self.assertFalse(verify.assess_test_result(node_result(tests=4, passed=3))['passed'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_missing_summary_fails_closed (test_verify_member_candidates.EvidenceAccounting.test_missing_summary_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<team-workspace>/scripts/tests/test_verify_member_candidates.py", line 41, in test_missing_summary_fails_closed
+    self.assertFalse(verify.assess_test_result({'exitCode': 0, 'output': 'ℹ tests 3'})['passed'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_partially_skipped_mandatory_suite_is_incomplete (test_verify_member_candidates.EvidenceAccounting.test_partially_skipped_mandatory_suite_is_incomplete)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<team-workspace>/scripts/tests/test_verify_member_candidates.py", line 29, in test_partially_skipped_mandatory_suite_is_incomplete
+    self.assertFalse(verify.assess_test_result(node_result(passed=2, skipped=1))['passed'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_todo_is_incomplete (test_verify_member_candidates.EvidenceAccounting.test_todo_is_incomplete)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<team-workspace>/scripts/tests/test_verify_member_candidates.py", line 35, in test_todo_is_incomplete
+    self.assertFalse(verify.assess_test_result(node_result(passed=2, todo=1))['passed'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.014s
+
+FAILED (failures=8)

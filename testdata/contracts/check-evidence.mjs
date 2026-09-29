@@ -1,112 +1,53 @@
 #!/usr/bin/env node
-/**
- * ground-truth.yaml 证据字符串自检：每条证据必须能在对应语料 .md 中按**固定字符串**原文找到。
- *
- * 为什么要有这个：README 第 3 节写着「全部证据字符串通过校验，改动语料后必须重跑」，
- * 但仓库里一直没有能跑的校验。结果 R01/R02/R03 的仲裁条款证据写成了全角空格，
- * 而原文是 .doc→textutil 转换留下的「换行 + ASCII 空格」——三条都匹配不上，没人发现。
- * 证据匹配不上的后果不是报错，是**判据悄悄失效**：验收时拿它去原文里找，找不到，
- * 就无法判断 Agent 报的那条到底对不对。
- *
- * 覆盖三类证据：`evidence`、`additional_evidence`（列表）、`clause_presence_evidence`（映射）。
- * 只认双引号标量；遇到任何其他写法**直接失败**而不是跳过——跳过就是空转。
- *
- * ⚠️ 零依赖，刻意不用 js-yaml：testdata/ 随团队目录分发到用户实例，那里没有 node_modules
- *    （jurisdiction-cn/statutes/check-temporal.mjs 第一版就栽在这上面）。
- *
- * 用法：node testdata/contracts/check-evidence.mjs   （零退出码 = 全部命中）
- */
+/** Node-core-only runtime check of the reviewed index derived from normative.cases. */
+import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { dirname, isAbsolute, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-
 const here = dirname(fileURLToPath(import.meta.url))
-const lines = readFileSync(join(here, 'ground-truth.yaml'), 'utf8').split('\n')
-
-const ENTRY_KEY = /^(C0\d[ab]?|R0\d):\s*$/
-const indentOf = (s) => s.match(/^ */)[0].length
-
-/** YAML 双引号标量的最小反转义。证据里只出现过 \" 与 \\，其余按规范一并处理。 */
-function unquote(raw, where) {
-  const m = raw.match(/^"((?:[^"\\]|\\.)*)"\s*(#.*)?$/)
-  if (!m) throw new Error(`${where}: 证据不是单行双引号标量，本脚本不支持这种写法：${raw.slice(0, 60)}`)
-  return m[1].replace(/\\(u[0-9a-fA-F]{4}|.)/g, (_, e) => {
-    if (e[0] === 'u') return String.fromCharCode(parseInt(e.slice(1), 16))
-    return { n: '\n', t: '\t', '"': '"', '\\': '\\', '/': '/', ' ': ' ' }[e] ?? e
-  })
+// A reviewed derived-index pin, not a signature or a runtime authority grant.
+// Regenerate explicitly during development and independently review the pin update.
+const REVIEWED_INDEX_SHA256 = 'b4dbbe6effca260f8bab99b3548865d69c0c309505038eaa729d46081b9900fb'
+function args(argv) {
+  const out = { oracle: join(here, 'ground-truth.yaml'), index: join(here, 'evidence-index.json') }
+  for (let i = 0; i < argv.length; i++) {
+    const k = argv[i], v = argv[++i]
+    if (!['--oracle', '--index', '--index-sha256'].includes(k) || !v || v.startsWith('--')) throw new Error(`invalid/incomplete argument: ${k}`)
+    if (k === '--index-sha256') {
+      if (!/^[a-f0-9]{64}$/.test(v)) throw new Error('invalid --index-sha256')
+      out.indexSha256 = v
+    } else out[k.slice(2)] = resolve(v)
+  }
+  if (out.index !== join(here, 'evidence-index.json') && !out.indexSha256) throw new Error('custom --index requires its independently expected --index-sha256')
+  if (out.index === join(here, 'evidence-index.json') && out.indexSha256 && out.indexSha256 !== REVIEWED_INDEX_SHA256) throw new Error('cannot override the reviewed default index pin')
+  out.indexSha256 ??= REVIEWED_INDEX_SHA256
+  return out
 }
-
-const items = []          // { entry, file, kind, text, line }
-const problems = []
-let entry = null
-let file = null
-let block = null          // { kind, indent } —— 正在读的 additional_evidence 列表或 clause_presence_evidence 映射
-
-lines.forEach((raw, i) => {
-  const ln = i + 1
-  if (/^\S/.test(raw) && !raw.startsWith('#')) {       // 顶层键：切换条目
-    const m = raw.match(ENTRY_KEY)
-    entry = m ? m[1] : null
-    file = null
-    block = null
-    return
-  }
-  if (!entry || /^\s*(#.*)?$/.test(raw)) return
-
-  const fm = raw.match(/^ {2}file:\s*(\S+)\s*$/)
-  if (fm) { file = fm[1]; return }
-
-  const ind = indentOf(raw)
-  if (block && ind <= block.indent) block = null
-
-  if (block) {
-    const where = `ground-truth.yaml:${ln}`
-    if (block.kind === 'additional_evidence') {
-      const lm = raw.match(/^\s+-\s+(.*)$/)
-      if (!lm) { problems.push(`${where}: additional_evidence 下出现非列表项`); return }
-      try { items.push({ entry, file, kind: block.kind, text: unquote(lm[1].trim(), where), line: ln }) }
-      catch (e) { problems.push(e.message) }
-    } else {
-      const km = raw.match(/^\s+([A-Za-z0-9_-]+):\s*(.*)$/)
-      if (!km) { problems.push(`${where}: clause_presence_evidence 下出现非映射项`); return }
-      try { items.push({ entry, file, kind: `clause_presence_evidence.${km[1]}`, text: unquote(km[2].trim(), where), line: ln }) }
-      catch (e) { problems.push(e.message) }
-    }
-    return
-  }
-
-  const em = raw.match(/^\s+evidence:\s*(.*)$/)
-  if (em) {
-    try { items.push({ entry, file, kind: 'evidence', text: unquote(em[1].trim(), `ground-truth.yaml:${ln}`), line: ln }) }
-    catch (e) { problems.push(e.message) }
-    return
-  }
-  const bm = raw.match(/^(\s+)(additional_evidence|clause_presence_evidence):\s*$/)
-  if (bm) block = { kind: bm[2], indent: bm[1].length }
-})
-
+let opt
+try { opt = args(process.argv.slice(2)) } catch (e) { console.error(`✗ evidence arguments: ${e.message}`); process.exit(2) }
+const base = dirname(opt.oracle), problems = []; let index, oracleBytes, indexBytes
+try { oracleBytes = readFileSync(opt.oracle); indexBytes = readFileSync(opt.index); index = JSON.parse(indexBytes.toString('utf8')) } catch (e) { console.error(`✗ evidence check failed: ${e.message}`); process.exit(1) }
+const sha = (b) => createHash('sha256').update(b).digest('hex')
+const safe = (file) => typeof file === 'string' && file.length > 0 && !isAbsolute(file) && !file.split(/[\\/]/).includes('..') && relative(base, resolve(base, file)) === file
+if (sha(indexBytes) !== opt.indexSha256) problems.push('index digest mismatch; regenerate and independently review the explicit pin before reuse')
+if (index?.format !== 'contract-evidence-index/v1') problems.push('unknown evidence index format')
+if (index?.oracleSha256 !== sha(oracleBytes)) problems.push('oracle/index SHA-256 binding mismatch; explicitly regenerate and review the index')
+if (!index?.sources || typeof index.sources !== 'object' || Array.isArray(index.sources) || Object.keys(index.sources).length === 0) problems.push('index has zero source files')
+if (!Array.isArray(index?.literals) || index.literals.length === 0) problems.push('index has zero literals')
 const cache = new Map()
-const source = (f) => {
-  if (!cache.has(f)) cache.set(f, readFileSync(join(here, f), 'utf8'))
-  return cache.get(f)
+const sources = index?.sources && typeof index.sources === 'object' && !Array.isArray(index.sources) ? index.sources : {}
+const literals = Array.isArray(index?.literals) ? index.literals : []
+for (const [file, expected] of Object.entries(sources)) {
+  if (!safe(file)) { problems.push(`invalid source path: ${JSON.stringify(file)}`); continue }
+  try { const bytes = readFileSync(join(base, file)); cache.set(file, bytes.toString('utf8')); if (sha(bytes) !== expected) problems.push(`${file}: source SHA-256 mismatch`) } catch (e) { problems.push(`${file}: cannot read source (${e.code ?? e.message})`) }
 }
-
-let ok = 0
-for (const it of items) {
-  if (!it.file) { problems.push(`ground-truth.yaml:${it.line}: 条目 ${it.entry} 没有 file 字段，无法定位语料`); continue }
-  let text
-  try { text = source(it.file) } catch { problems.push(`ground-truth.yaml:${it.line}: 语料文件不存在：${it.file}`); continue }
-  if (text.includes(it.text)) ok++
-  else problems.push(`ground-truth.yaml:${it.line}: ${it.entry}.${it.kind} 在 ${it.file} 中找不到：${JSON.stringify(it.text.slice(0, 50))}`)
+let checked = 0
+for (const [i, item] of literals.entries()) {
+  if (!safe(item?.file) || !Object.hasOwn(sources, item.file)) { problems.push(`literal[${i}]: invalid or unindexed source path`); continue }
+  if (typeof item.sourceCase !== 'string' || !item.sourceCase || typeof item.case !== 'string' || !item.case) { problems.push(`literal[${i}]: missing case/sourceCase`); continue }
+  if (typeof item.quote !== 'string' || item.quote.trim() === '') { problems.push(`literal[${i}]: blank quote`); continue }
+  checked++
+  if (!cache.get(item.file)?.includes(item.quote)) problems.push(`literal[${i}] ${item.case}/${item.id ?? '<no-id>'}: quote absent from ${item.file}`)
 }
-
-// 反空转：一条都没抽到时不能报绿
-if (items.length === 0) problems.push('一条证据都没有抽到——解析器很可能已经跟文件格式脱节')
-
-if (problems.length) {
-  console.error(`✗ 证据自检未通过（${ok}/${items.length} 命中）：`)
-  for (const p of problems) console.error('  -', p)
-  process.exit(1)
-}
-const entries = new Set(items.map((i) => i.entry)).size
-console.log(`✓ ${items.length} 条证据全部在原文中命中（${entries} 份语料）`)
+if (problems.length) { console.error(`✗ normative evidence check failed (${checked}/${index?.literals?.length ?? 0} literals; ${Object.keys(index?.sources ?? {}).length} source files):`); for (const p of problems.slice(0, 50)) console.error('  -', p); if (problems.length > 50) console.error(`  - … ${problems.length - 50} more`); process.exit(1) }
+console.log(`✓ ${checked} current normative literal evidence values match ${Object.keys(index.sources).length} source files (reviewed index bound to oracle bytes)`)
