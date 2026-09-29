@@ -11,10 +11,10 @@
 # ============================================================================
 
 meta:
-  ontology_version: onto-v1
-  actions_version: actions-v2
+  ontology_version: onto-v2
+  actions_version: actions-v3
   knowledge_base_version: '2026-08-31'
-  updated_at: '2026-09-08'
+  updated_at: '2026-09-29'
 
 # ============================================================================
 # 一、全局策略
@@ -28,7 +28,7 @@ policy:
 
   on_precondition_failure:
     # 蓝本第十二节原话：不满足则退回重审，不做默认通过。
-    rule: returned_for_rereview
+    rule: 仅当前置条件属于业务批准、签署或放行动作时 returned_for_rereview；事实处理失败按动作自己的 on_fail 留欠账，已完成报告仍可交付
     forbidden_alternatives:
       - 提示风险后继续执行
       - 超时后默认通过
@@ -39,10 +39,34 @@ policy:
     rule: Human Gate 的通过只能由人给出，Agent 不得代为确认，也不得预填确认结果
     evidence_required: 确认必须落入 receipt.human_confirmations（gate_id / confirmed_by / confirmed_at / decision）
     timeout_behavior: 无超时自动通过；未确认即停在该动作，案件状态保持 pending
+    pending_effect: 只阻止对应的业务批准、签署、放行；不阻止报告、待决清单、回执或谈判修订草稿的落盘、回读与返回
+    interaction: 先返回可取得的报告与 pending；除非当前任务必须立即作业务决定或对象身份无法确定，不强制逐项同步 AskUserQuestion
+    simulated_decision: 任何测试或模拟的 approved 都不得写入真人确认，也不改变 pending
 
   action_ordering:
-    rule: 动作的执行顺序受 rules.md#R-001 的 7 步工具链约束，本文件的 stage 字段标明动作归属哪一步
-    forbidden: 由模型自行编排动作顺序
+    rule: 动作按 workflow_contract.phase 与 depends_on 调度；stage 仅保留为 legacy 七项覆盖目标，不表示调用顺序
+    forbidden: 跳过依赖、把 O3 两支串行执行、把 O4/O5 合并为一次调用，或由模型从 numeric stage 推导调用排序
+
+workflow_contract:
+  contract_version: workflow-v1
+  phase_order: [O0, O1, O2, O3, O4, O5, reconcile]
+  phases:
+    O0: {owner: contract-review-lead, depends_on: [], invocation: isolated}
+    O1: {owner: contract-intake, depends_on: [O0], invocation: sync_isolated}
+    O2: {owner: clause-extractor, depends_on: [O1], invocation: sync_isolated}
+    O3:
+      owners: [jurisdiction-auditor, risk-scanner]
+      depends_on: [O2]
+      invocation: fan_out_parallel_isolated
+      required_branches: [jurisdiction-auditor, risk-scanner]
+      branch_failure_policy: 保留失败分支欠账；另一支结果不得消失，允许进入范围受限 O4
+    O4: {owner: review-reporter, depends_on: [O3], invocation: sync_isolated, call_id: independent_evidence_call}
+    O5: {owner: review-reporter, depends_on: [O4], invocation: sync_isolated, call_id: report_delivery_call, required_receipt: O4_independent_evidence_receipt}
+    reconcile: {owner: contract-review-lead, depends_on: [O5], invocation: lead_reconciliation}
+  hard_stops:
+    O1_blocked: 不启动 O2/O3/O4/O5；统筹官只登记失败回执
+  limited_completion:
+    rule: O3 单支失败时可对已有证据执行 O4 并交付有限报告；缺失能力保持 blocked，不能输出完整评分
 
 # ============================================================================
 # 二、条件表达式约定
@@ -72,7 +96,7 @@ human_gates:
       - 抽取到 clause.category = payment 且含 monetary_terms 或 temporal_terms
       - 版本对比发现付款相关条款变化（risk_direction 任意值）
       - custom 层付款红线被命中
-    blocks_action: [release_to_legal, emit_final_report]
+    blocks_action: [release_to_legal, approve_business_terms, sign_contract]
     blueprint_ref: 第十二节 1
 
   - gate_id: HG-02
@@ -84,7 +108,7 @@ human_gates:
       - 抽取到 clause.category ∈ [dispute_resolution, governing_law]
       - relations.yaml#DC-006 命中法域冲突
       - base/missing-clauses.yaml#dispute-resolution 判定为缺失
-    blocks_action: [release_to_legal, emit_final_report]
+    blocks_action: [release_to_legal, approve_business_terms, sign_contract]
     blueprint_ref: 第十二节 2
 
   - gate_id: HG-03
@@ -96,7 +120,7 @@ human_gates:
       - 抽取到 clause.category ∈ [liability, indemnity, warranty, force_majeure, breach_remedy]
       - 市场标尺对标出现偏差信号（base/market-benchmarks.yaml）
       - base/missing-clauses.yaml 中 liability-cap / breach-remedy / force-majeure 任一判定为缺失
-    blocks_action: [release_to_legal, emit_final_report]
+    blocks_action: [release_to_legal, approve_business_terms, sign_contract]
     blueprint_ref: 第十二节 3
 
   - gate_id: HG-04
@@ -109,7 +133,7 @@ human_gates:
       - relations.yaml#DC-002 或 DC-007 命中
       - contract_document.effectiveness.state ∈ [not_yet_effective, conditional, unknown]
       - signature.authority_evidence = unknown
-    blocks_action: [release_to_legal, emit_final_report, declare_version_consistency]
+    blocks_action: [release_to_legal, approve_effectiveness, sign_contract, declare_version_consistency]
     blueprint_ref: 第十二节 4
 
 # ============================================================================
@@ -121,22 +145,26 @@ actions:
 
   - id: register_case
     stage: 1
+    phase: O0
+    depends_on: []
     title: 登记案件与版本
     description: 建立 review_case，登记全部文档对象（含每份附件的独立版本），生成 manifest_digest
-    performed_by: contract-intake
+    performed_by: contract-review-lead
     preconditions:
       - check: 至少一份文档已成功解析出文本或 OCR 结果
         severity: severe
         on_fail: block
-      - check: 每份文档均已计算 content_digest
-        severity: severe
-        on_fail: block
+      - check: 每份成功读取的文档均已请求 FileDigest；成功值为完整 SHA-256，失败则绑定 case/object/version/规范化绝对路径并记 frozen_without_digest
+        severity: important
+        on_fail: continue_with_identity_unverified
     human_gate: null
     outputs: [review_case, 'contract_document[]', version_matrix]
     receipt_fields: [object_refs, executed_by, created_at]
 
   - id: freeze_baseline
     stage: 2
+    phase: O1
+    depends_on: [register_case]
     title: 执行四大冻结
     description: 锁定主版本、附件清单、页码范围、签章状态；四项全部成立才允许写 frozen_at
     performed_by: contract-intake
@@ -144,22 +172,24 @@ actions:
       - check: contract.yaml#INV-001 满足（有且仅有一份主合同）
         severity: severe
         on_fail: block
-      - check: contract.yaml#INV-003 满足（每份文档含非 unknown 的 version_label 与 content_digest）
+      - check: contract.yaml#INV-003 满足（摘要成功时为完整 FileDigest SHA-256；失败时明确 frozen_without_digest，禁止强身份与一致性声明）
         severity: severe
-        on_fail: block
+        on_fail: continue_facts_forbid_identity_claim
       - check: contract.yaml#INV-006 满足（页码连续）
         severity: severe
         on_fail: block
-      - check: contract.yaml#INV-005 满足（签署状态齐备）
+      - check: contract.yaml#INV-005 满足（按 review_scope 判断签署文本完整性；真实性与授权另记 unknown/pending）
         severity: severe
         on_fail: block
         also_triggers: HG-04
     human_gate: null
     outputs: [freeze_record]
-    notes: 冻结失败不阻止记录事实，但阻止进入第 6 步版本对比（见 rules.md#R-013）
+    notes: FileDigest 失败可 frozen_without_digest 继续事实审查；任一冻结项失败均禁止肯定一致性声明，摘要 aggregate 仅覆盖本次实际读取文件，不证明未交附件或真实签署
 
   - id: run_intake_gate
     stage: 2
+    phase: O1
+    depends_on: [register_case]
     title: 输入治理裁决
     description: 输出 passed / conditional / blocked 三态裁决（字面量见 rules.md#三之一）
     performed_by: contract-intake
@@ -178,8 +208,8 @@ actions:
         on_fail: block
     human_gate: null
     outputs: [intake_verdict, intake_verdict_reasons, 'failure_mark[]']
-    conditional_scope: >-
-      仅适用 rules.md#R-020A 的 R9：权威正式附件清单本身未取得、完整 declared 集合无法确定；
+    attachment_manifest_conditional_scope: >-
+      附件清单类 conditional 仅适用 rules.md#R-020A 的 R9：权威正式附件清单本身未取得、完整 declared 集合无法确定；
       必须输出 conditional、FLG-ATTACHMENT-MANIFEST-INCOMPLETE，以及 must_escalate: true 的
       PEND-001，并将其列在报告首页。附件审查工作仍为 in_scope，下游阶段范围不得缩减；未知附件内容
       只能以 not_covered 或受限断言呈现，不得当作已覆盖。R7 已列明附件正文未送达只记录
@@ -190,6 +220,8 @@ actions:
 
   - id: extract_clauses
     stage: 3
+    phase: O2
+    depends_on: [run_intake_gate]
     title: 条款结构化抽取
     description: 抽取条款号、定义、金额、付款、期限、解除、争议解决，逐条保留来源页码
     performed_by: clause-extractor
@@ -203,7 +235,7 @@ actions:
     human_gate: null
     outputs: ['clause[]', 'relations.references[]', 'failure_mark[]']
     output_constraints:
-      - 任何 page = unknown 的条款只能进 failure_mark（类型 clause_hit_without_page），不得产出结论
+      - 未分页文本允许 page = unknown 且提供绝对路径、行号或段落与命中串的 locator；只有无法定位时才进 failure_mark
       - extraction_confidence 低于阈值（默认 0.85）的条款标记为 low_ocr_confidence
       - 条款号重复时全部保留并标记 duplicate_clause_no，禁止择一丢弃
 
@@ -211,13 +243,15 @@ actions:
 
   - id: load_jurisdiction_packs
     stage: 4
+    phase: O3
+    depends_on: [extract_clauses]
     title: 加载三层知识包
-    description: 按 custom > jurisdiction > base 优先级合并规则集，记录生效的 pack 版本
+    description: 先判服务范围；仅中国大陆实体法律检查加载 jurisdiction-cn。域外只做通用治理与转介，不以缺 foreign pack 阻断，也不加载中国法包冒充
     performed_by: jurisdiction-auditor
     preconditions:
-      - check: contract.yaml#INV-008 满足（pack 版本覆盖全部法域线索）
+      - check: contract.yaml#INV-008 满足（线索已完整记录并分类为中国大陆域内、域外转介或依法未知；多条声明本身不等于法律冲突）
         severity: severe
-        on_fail: block
+        on_fail: limit_substantive_conclusions
         also_triggers: HG-02
       - check: 各 pack 的 knowledge_base_version 与本体一致，或已输出数据对齐建议
         severity: important
@@ -227,8 +261,10 @@ actions:
 
   - id: detect_jurisdiction_conflict
     stage: 4
+    phase: O3
+    depends_on: [extract_clauses]
     title: 法域冲突检测
-    description: 依据 relations.yaml#DC-006 与各 pack 的 conflicts 段，判定并列适用是否构成冲突
+    description: 依据 relations.yaml#DC-006 与适用专业规则判断；多条声明只是调查线索，未读适用专业包不得断言法律冲突或效力
     performed_by: jurisdiction-auditor
     preconditions:
       - check: 全部 governed_by 边已建立且带 evidence
@@ -244,6 +280,8 @@ actions:
 
   - id: assess_missing_clauses
     stage: 5
+    phase: O3
+    depends_on: [extract_clauses]
     title: 关键缺失条款检查
     description: 按 base/missing-clauses.yaml 的 9 项逐项判定
     performed_by: risk-scanner
@@ -254,11 +292,13 @@ actions:
     human_gate: null
     outputs: ['coverage_matrix_row[]']
     output_constraints:
-      - 每项必须给出 covered / blank / blocked 三态之一，禁止省略
+      - 每项必须给出 covered / blank / blocked / deferred / unknown / not_applicable 之一，禁止省略；仅 covered 可指向真实检查回执
       - 判定为缺失时必须写明检索范围（已检索的页码区间与关键词），否则该判定不成立
 
   - id: benchmark_against_market
     stage: 5
+    phase: O3
+    depends_on: [extract_clauses]
     title: 市场标尺对标
     description: 按 base/market-benchmarks.yaml 比对责任上限、续约通知期、竞业期限、数据导出
     performed_by: risk-scanner
@@ -273,6 +313,8 @@ actions:
 
   - id: check_custom_redlines
     stage: 5
+    phase: O3
+    depends_on: [extract_clauses]
     title: 企业红线检查
     description: 按 custom/redlines.yaml 逐条判定，命中红线的严重度不低于 important
     performed_by: risk-scanner
@@ -286,10 +328,110 @@ actions:
     human_gate: null
     outputs: ['redline_finding[]']
 
-  # ---- 第 6 步：版本对比 ----------------------------------------------------
+  - id: invoke_jurisdiction_branch
+    stage: 5
+    phase: O3
+    depends_on: [extract_clauses]
+    title: 启动法域分支独立调用
+    description: Lead 创建真实 branch invocation，生成唯一 invocation_id；业务子动作在该调用内执行，但 terminal 可以是 success、failed 或 cancelled
+    performed_by: contract-review-lead
+    invocation_target: jurisdiction-auditor
+    outputs: [jurisdiction_branch_invocation]
+
+  - id: invoke_risk_branch
+    stage: 5
+    phase: O3
+    depends_on: [extract_clauses]
+    title: 启动风险分支独立调用
+    description: Lead 创建真实 branch invocation，生成唯一 invocation_id；业务子动作在该调用内执行，但 terminal 可以是 success、failed 或 cancelled
+    performed_by: contract-review-lead
+    invocation_target: risk-scanner
+    outputs: [risk_branch_invocation]
+
+  - id: settle_jurisdiction_branch_receipt
+    stage: 5
+    phase: O3
+    depends_on: [invoke_jurisdiction_branch]
+    title: 接收法域分支 terminal 回执
+    description: jurisdiction-auditor 独立调用结束后，无论 success、failed 或 cancelled 均形成 settled 回执；失败与取消原因作为 branch debt 保留
+    performed_by: jurisdiction-auditor
+    terminal_requirement: settled
+    terminal_outcomes: [success, failed, cancelled]
+    invocation_ref: jurisdiction_branch_invocation.invocation_id
+    terminal_event:
+      event_type: branch_invocation_terminal
+      invocation_id_must_equal: jurisdiction_branch_invocation.invocation_id
+      required_fields: [event_type, branch_id, invocation_id, outcome, receipt_ref, searched_scope, reason]
+    outputs: [jurisdiction_branch_settled_receipt]
+
+  - id: settle_risk_branch_receipt
+    stage: 5
+    phase: O3
+    depends_on: [invoke_risk_branch]
+    title: 接收风险分支 terminal 回执
+    description: risk-scanner 独立调用结束后，无论 success、failed 或 cancelled 均形成 settled 回执；失败与取消原因作为 branch debt 保留
+    performed_by: risk-scanner
+    terminal_requirement: settled
+    terminal_outcomes: [success, failed, cancelled]
+    invocation_ref: risk_branch_invocation.invocation_id
+    terminal_event:
+      event_type: branch_invocation_terminal
+      invocation_id_must_equal: risk_branch_invocation.invocation_id
+      required_fields: [event_type, branch_id, invocation_id, outcome, receipt_ref, searched_scope, reason]
+    outputs: [risk_branch_settled_receipt]
+
+  - id: collect_o3_branch_receipts
+    stage: 5
+    phase: O3
+    depends_on: [settle_jurisdiction_branch_receipt, settle_risk_branch_receipt]
+    branch_inputs:
+      jurisdiction-auditor: {actions: [load_jurisdiction_packs, detect_jurisdiction_conflict], receipt_node: settle_jurisdiction_branch_receipt, accepts: [success, failed, cancelled]}
+      risk-scanner: {actions: [assess_missing_clauses, benchmark_against_market, check_custom_redlines], receipt_node: settle_risk_branch_receipt, accepts: [success, failed, cancelled]}
+    title: 汇合 O3 两支真实回执与欠账
+    description: fan-out 汇合点同时接收 jurisdiction 与 risk 两支；每支必须是成功回执或明确失败回执，失败不被吞掉也不要求该支伪装成功
+    performed_by: contract-review-lead
+    preconditions:
+      - check: jurisdiction-auditor 与 risk-scanner 各有一条 settled 回执（success/failed/cancelled）；失败或取消须带原因、检索范围和 branch debt
+        severity: severe
+        on_fail: block
+    human_gate: null
+    outputs: [O3_branch_receipt_ledger, limited_scope_for_O4]
+    output_schema:
+      O3_branch_receipt_ledger:
+        required_branches: [jurisdiction-auditor, risk-scanner]
+        per_branch_required: [event_type, branch_id, invocation_id, outcome, receipt_ref, searched_scope, reason]
+        outcome_enum: [success, failed, cancelled]
+        mapping: terminal event is validated once as branch_terminal_record; settled receipt preserves it field-for-field; ledger stores the same record without dropping or renaming fields
+
+  # ---- O4：独立取证（与 O5 是 reporter 的不同隔离调用） --------------------
+
+  - id: verify_candidate_evidence
+    stage: 6
+    phase: O4
+    depends_on: [collect_o3_branch_receipts]
+    title: 独立回原文验证候选与补漏
+    description: 新的 isolated 调用只接收原件、范围、预定清单与净化候选，逐项 confirmed/refuted/unlocatable 并主动记录 additional；不评分、不批准、不排版
+    performed_by: review-reporter
+    invocation_id: independent_evidence_call
+    preconditions:
+      - check: O1 intake_verdict 不为 blocked
+        severity: severe
+        on_fail: block
+      - check: O3 两分支均有真实回执或明确的分支失败欠账
+        severity: severe
+        on_fail: block
+    human_gate: null
+    outputs: [O4_independent_evidence_receipt, verified_evidence, unverified_ledger, coverage_updates]
+    output_constraints:
+      - 阳性证据须逐字可定位；unlocatable/blocked/deferred/unknown 记录真实检索范围和原因，不伪造引文
+      - 不接收上游推理、严重度、评分或建议文本
+
+  # ---- O5：版本对比、评分、报告与交付 --------------------------------------
 
   - id: compare_versions
     stage: 6
+    phase: O5
+    depends_on: [verify_candidate_evidence]
     title: 版本对比
     description: 比对主合同与**每一份附件**的版本与内容摘要，输出差异与风险变化方向
     performed_by: review-reporter
@@ -302,15 +444,19 @@ actions:
         severity: important
         on_fail: mark_not_applicable
     human_gate: null
-    outputs: [diff_result, risk_direction]
+    outputs: [comparison_applicability, diff_result, risk_direction]
     output_constraints:
       - 必须逐份附件比对，禁止「主合同未变即认定案件未变」
       - relations.yaml#DC-004 命中时禁止输出「无差异」，必须点名附件替换
       - risk_direction = up 时，相关动作由「建议优化」升级为「先谈判」
+      - 单版本且未请求比较基线时 comparison_applicability = not_applicable，省略 risk_direction；不得写 flat、undetermined 或虚构差异
+      - 已请求比较基线但冻结或交付范围不足时 comparison_applicability = applicable 且 risk_direction = undetermined
     blueprint_ref: 第九节
 
   - id: declare_version_consistency
     stage: 6
+    phase: O5
+    depends_on: [verify_candidate_evidence]
     title: 声明版本一致
     description: 输出「与基线一致」的结论。这是一个受严格限制的动作
     performed_by: review-reporter
@@ -332,6 +478,8 @@ actions:
 
   - id: compute_score
     stage: 7
+    phase: O5
+    depends_on: [verify_candidate_evidence]
     title: 计算风险评分
     description: 按权重计算总分——条款抽取 20%、风险评估 25%、合规稽核 20%、义务与时序映射 15%、建议生成 20%
     performed_by: review-reporter
@@ -339,9 +487,12 @@ actions:
       - check: 覆盖矩阵每一行 status 非空
         severity: severe
         on_fail: block
-      - check: blank 与 blocked 行已单列且未计入通过率
+      - check: blank / blocked / deferred / unknown / not_applicable 均已单列、说明原因且未计作 pass；分子与分母透明
         severity: severe
         on_fail: reject_output
+      - check: 适用的实体合规维度均为 covered；若 legal_D3 未覆盖则不计算完整五维总分且不重分配权重
+        severity: severe
+        on_fail: emit_partial_dimensions_only
     human_gate: null
     outputs: [score, score_breakdown]
     output_constraints:
@@ -350,9 +501,12 @@ actions:
 
   - id: emit_final_report
     stage: 7
-    title: 输出最终报告
-    description: 条款级 Markdown + 证据索引 + 覆盖矩阵 + 待办清单 + 签核点 + 版本回滚条件
+    phase: O5
+    depends_on: [verify_candidate_evidence]
+    title: 输出评分报告与谈判修订 DOCX
+    description: 条款级 Markdown + 证据索引 + 覆盖矩阵 + 待办清单 + 签核点 + 版本回滚条件，并自主导出或如实记录 DOCX 导出失败
     performed_by: review-reporter
+    invocation_id: report_delivery_call
     preconditions:
       - check: contract.yaml#INV-011 满足（全部非 blank 结论含完整四元组）
         severity: severe
@@ -366,12 +520,20 @@ actions:
       - check: 报告用语未出现定性表述（rules.md#R-060）
         severity: severe
         on_fail: reject_output
+      - check: O4_independent_evidence_receipt 存在、对象身份匹配且 invocation_id 不同于本次 O5
+        severity: severe
+        on_fail: block
     human_gate: null
-    outputs: [report_markdown, coverage_matrix, receipt]
-    notes: 报告可以在 Human Gate 未通过时输出，但其中不得含「可放行」结论
+    outputs: [report_markdown, coverage_matrix, pending_decisions, receipt, redline_docx_or_export_failure]
+    output_constraints:
+      - DOCX 只能记录 ExportRedlineDocument 的真实返回路径与完整摘要；导出失败仍返回报告、回执和具体补救，不伪造文件
+      - 报告和 DOCX 必须落盘后回读；文件存在、内容、修订与分页验收分别留证，不相互替代
+    notes: 报告必须在 Human Gate pending 时仍可先落盘、回读并返回，但不得含「可放行」结论；有限证据报告须显式标注欠账且不得冒充完整评分
 
   - id: release_to_legal
     stage: 7
+    phase: O5
+    depends_on: [emit_final_report]
     title: 放行至法务确认
     description: 蓝本第五节 88-100 分档位的动作。注意它不是「通过」，而是「可以交给法务看」
     performed_by: review-reporter
@@ -404,6 +566,8 @@ actions:
 
   - id: request_negotiation
     stage: 7
+    phase: O5
+    depends_on: [verify_candidate_evidence]
     title: 转为谈判项
     description: 74-87 分档位，或 risk_direction = up 时由「建议优化」升级而来
     performed_by: review-reporter
@@ -416,6 +580,8 @@ actions:
 
   - id: halt_for_human_lead
     stage: 7
+    phase: O5
+    depends_on: [verify_candidate_evidence]
     title: 暂停推进，转人工主导
     description: 48-59 分档位。这是一个终止动作，不得被后续动作覆盖
     performed_by: review-reporter
@@ -425,6 +591,8 @@ actions:
 
   - id: rebuild_and_rerun
     stage: 7
+    phase: O5
+    depends_on: [verify_candidate_evidence]
     title: 重建条款并重跑评审
     description: 0-47 分档位
     performed_by: review-reporter
@@ -432,10 +600,31 @@ actions:
     human_gate: null
     outputs: [rebuild_requirements]
 
+  # ---- 收口：统筹官对账 ----------------------------------------------------
+
+  - id: reconcile_delivery
+    stage: post
+    phase: reconcile
+    depends_on: [emit_final_report]
+    title: 对账并交付真实产物
+    description: 统筹官核对 O4/O5 不同调用回执、覆盖矩阵、待决事项、实际报告与 DOCX/导出失败，不从成员产出反推预定覆盖
+    performed_by: contract-review-lead
+    preconditions:
+      - check: O4 与 O5 invocation_id 不同且 O5 引用有效 O4_independent_evidence_receipt
+        severity: severe
+        on_fail: block
+      - check: 覆盖状态计数、receipt_ref 与实际回执逐行一致
+        severity: severe
+        on_fail: reject_output
+    human_gate: null
+    outputs: [delivery_reconciliation, accessible_artifacts, remaining_debt]
+
   # ---- 跨阶段：治理动作 ------------------------------------------------------
 
   - id: rollback_version
     stage: post
+    phase: post
+    depends_on: [emit_final_report]
     title: 版本回滚
     description: 回到上一个已冻结基线，重跑审查
     performed_by: review-reporter
@@ -451,6 +640,8 @@ actions:
 
   - id: promote_correction_to_rule
     stage: post
+    phase: post
+    depends_on: [emit_final_report]
     title: 把人工纠正固化为规则
     description: 蓝本第十五节「一次纠正，下次自动执行」。写入 custom/redlines.yaml 或 test-cases/
     performed_by: review-reporter
@@ -470,6 +661,8 @@ actions:
 
   - id: emit_data_alignment_advice
     stage: post
+    phase: post
+    depends_on: [register_case]
     title: 输出数据对齐建议
     description: 版本矩阵任一维度不一致时的产出。蓝本第八节：输出对齐建议，而非自动放行
     performed_by: review-reporter
@@ -487,9 +680,9 @@ actions:
 # ============================================================================
 consumers:
   # contract-review-lead（组长）：按 stage 顺序调度并在前置条件不满足时退回重审；不得代为确认 Human Gate
-  contract-review-lead: [policy, action_ordering, human_gates, emit_data_alignment_advice]
-  contract-intake: [register_case, freeze_baseline, run_intake_gate, policy]
+  contract-review-lead: [workflow_contract, policy, action_ordering, human_gates, register_case, collect_o3_branch_receipts, reconcile_delivery, emit_data_alignment_advice]
+  contract-intake: [freeze_baseline, run_intake_gate, policy]
   clause-extractor: [extract_clauses, condition_syntax]
   risk-scanner: [assess_missing_clauses, benchmark_against_market, check_custom_redlines, human_gates.HG-03]
   jurisdiction-auditor: [load_jurisdiction_packs, detect_jurisdiction_conflict, human_gates.HG-02]
-  review-reporter: [compare_versions, declare_version_consistency, compute_score, emit_final_report, release_to_legal, request_negotiation, halt_for_human_lead, rebuild_and_rerun, rollback_version, promote_correction_to_rule, emit_data_alignment_advice, human_gates]
+  review-reporter: [verify_candidate_evidence, compare_versions, declare_version_consistency, compute_score, emit_final_report, release_to_legal, request_negotiation, halt_for_human_lead, rebuild_and_rerun, rollback_version, promote_correction_to_rule, emit_data_alignment_advice, human_gates]

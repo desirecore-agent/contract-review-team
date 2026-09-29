@@ -19,7 +19,8 @@ There is no authorized real customer executed-contract acceptance demonstrated b
 
 ## Catalog
 
-The column records oracle text, not an unconditional current-runtime acceptance promise.
+The column records the current `normative.cases` gate. Historical values remain under
+`history.normative: false` and must never be treated as current answers.
 
 | ID | File | Gate in current oracle |
 |---|---|---|
@@ -27,25 +28,29 @@ The column records oracle text, not an unconditional current-runtime acceptance 
 | C02 | [C02-software-outsourcing.md](C02-software-outsourcing.md) | blocked |
 | C03 | [C03-procurement-framework.md](C03-procurement-framework.md) | conditional |
 | C04 | [C04-labor-contract.md](C04-labor-contract.md) | passed |
-| C05 | [C05-data-processing-agreement.md](C05-data-processing-agreement.md) | conditional |
+| C05 | [C05-data-processing-agreement.md](C05-data-processing-agreement.md) | passed (out of service scope) |
 | C06a | [C06a-saas-v1.md](C06a-saas-v1.md) | passed |
 | C06b | [C06b-saas-v2.md](C06b-saas-v2.md) | passed |
-| C07 | [C07-master-services-agreement.md](C07-master-services-agreement.md) | conditional |
+| C07 | [C07-master-services-agreement.md](C07-master-services-agreement.md) | passed (out of service scope) |
 | C08 | [C08-mutual-nda.md](C08-mutual-nda.md) | blocked |
 | R01 | [R01-govt-purchase-real.md](R01-govt-purchase-real.md) | blocked |
-| R02 | [R02-govt-purchase-executed.md](R02-govt-purchase-executed.md) | legacy pass / conditional |
-| R03 | [R03-govt-purchase-2019.md](R03-govt-purchase-2019.md) | legacy pass / conditional |
+| R02 | [R02-govt-purchase-executed.md](R02-govt-purchase-executed.md) | conditional |
+| R03 | [R03-govt-purchase-2019.md](R03-govt-purchase-2019.md) | conditional |
 
 C01 checks false positives; C02 hard input defects; C03 missing clauses and conditional continuation; C04 employment issues; C05 conflicting jurisdiction/data terms; C06 attachment-aware version comparison; C07 English and out-of-service-scope handling; C08 signature-state handling. R01 tests template intake, R02 downstream analysis, and R03 temporal applicability. Business benchmark values are fixture/pack assumptions, not universal market or legal standards.
 
-## Known oracle limitations
+## Oracle boundaries
 
-- Canonical runtime gate values are passed, conditional and blocked. R02/R03 still contain legacy pass; the intended passing spelling is passed. This documentation update does not modify their oracle.
-- C05 and C07 are conditional in the oracle; the previous README incorrectly said passed.
-- Historical oracle comments about cn-v1 or missing Singapore packs must not override the current CN-only service boundary. Out-of-scope general governance is distinct from a supported-jurisdiction pack error.
-- Signature expectations depend on requested scope: an explicitly established unsigned negotiation draft is not the same as a request to authenticate execution. Record the scenario before judging a gate.
-- The old scratchpad/make-r02.py provenance reference is stale; the generator is in this directory.
-- check:gates skips testdata. A green static check does not reconcile these expectations.
+- Canonical gate values are `passed`, `conditional`, and `blocked`; every current case has one scalar value.
+- An out-of-scope signal alone does not invalidate the intake object. C05/C07 pass intake while requiring referral and forbidding foreign-law substantive conclusions. C08 remains blocked because its original scenario independently requests execution readiness with blank signature fields.
+- `C08_negotiation_draft` is a separate scenario backed by recorded user-request text, `object_designation: negotiation_draft`, and `execution_validation_requested: false`. With no other actual FLG/BLK, blank signature fields stay pending but do not reduce its `passed` intake gate. An unknown or undeclared purpose remains the original execution-readiness review and is blocked.
+- R02/R03 are `conditional` under locked `contract-intake@1.0.6` S7.1 because all three named parties lack a unified social credit code or equivalent registration number. `FLG-PARTY-ID-ABSENT` is carried as a concrete pending item and downstream work continues. Signature text is complete, but authenticity and authority are not verified; date, old-law-name and imprecise-arbitration text facts remain mandatory detections while legal effect/article assertions await professional review.
+- C06 uses `up/down/flat/undetermined`; a single-version review is `comparison.applicability: not_applicable`. The explicit C06a→C06b request records the baseline and client perspective. Only embedded Attachment 2 was delivered; Attachments 1 and 3 were declared but not delivered. Therefore `global_coverage: partial`, global `direction: undetermined`, and local `attachment_direction: up`. Body equality is never whole-contract equality.
+- Every normative case declares stable `must_detect`, `must_not_flag`, coverage, negative-search and applicability/scope targets. Empty discovery-by-output is not a passing oracle. Severity assertions require a named applicable source; unverified legal-effect claims are split from mandatory source-text facts.
+
+The source correction and its locked-rule evidence are recorded in [oracle-source-correction-2026-09-29.md](oracle-source-correction-2026-09-29.md). The earlier independent review is retained unchanged as historical review evidence; its pre-correction R02/R03 conclusion is superseded, not rewritten.
+- R7 (known list, body absent), R9 (authoritative list absent), and an undeclared body reference are separate executable targeted scenarios.
+- Run `node shared/resources/check-oracle-contract.mjs` and `node --test shared/resources/tests/oracle-contract.test.mjs`. These are static preflight checks, not runtime or legal validation.
 
 Resolve disputed expectations in a separately reviewed behavior/oracle change before using them as a release gate. Do not silently translate a mismatch into a passing test.
 

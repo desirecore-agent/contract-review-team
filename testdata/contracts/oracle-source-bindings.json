@@ -1,0 +1,1422 @@
+{
+  "version": 1,
+  "purpose": "Frozen source bindings for current normalized ID-level oracle targets, subject to independent semantic review. No human professional review is claimed. This asset does not prove natural-language or legal entailment.",
+  "cases": {
+    "C01": {
+      "source_file": "C01-saas-subscription.md",
+      "source_sha256": "fb0c1aad49f41d5d6eb892339494a7b4deaad6c11108d6888e56043810bdb035",
+      "targets": {
+        "must_detect:amount-arithmetic-mismatch": {
+          "required": false,
+          "refs": [
+            "c01-total"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-total",
+              "kind": "literal",
+              "quote": "年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:placeholder-unfilled": {
+          "required": true,
+          "refs": [
+            "c01-signature"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-signature",
+              "kind": "literal",
+              "quote": "授权代表签字：陈慕远",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:attachment-missing": {
+          "required": true,
+          "refs": [
+            "c01-manifest"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-manifest",
+              "kind": "literal",
+              "quote": "附件二　《服务水平协议 SLA-v1.2》",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:signature-status-unconfirmed": {
+          "required": true,
+          "refs": [
+            "c01-signature"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-signature",
+              "kind": "literal",
+              "quote": "授权代表签字：陈慕远",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:page-discontinuity": {
+          "required": true,
+          "refs": [
+            "c01-pages"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-pages",
+              "kind": "literal",
+              "quote": "第 9 页 / 共 9 页",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:version-mismatch": {
+          "required": true,
+          "refs": [
+            "c01-manifest"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-manifest",
+              "kind": "literal",
+              "quote": "附件二　《服务水平协议 SLA-v1.2》",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:party-name-inconsistency": {
+          "required": true,
+          "refs": [
+            "c01-parties"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-parties",
+              "kind": "literal",
+              "quote": "**乙方（服务商）：云梯信息技术（示例）有限公司**",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:liability-cap-missing": {
+          "required": true,
+          "refs": [
+            "c01-liability"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-liability",
+              "kind": "literal",
+              "quote": "不超过索赔事件发生前 12 个月内甲方实际支付的服务费用总额",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:dispute-resolution-missing": {
+          "required": true,
+          "refs": [
+            "c01-dispute"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-dispute",
+              "kind": "literal",
+              "quote": "提交上海国际经济贸易仲裁委员会",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:amount-in-words-mismatch": {
+          "required": true,
+          "refs": [
+            "c01-total"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-total",
+              "kind": "literal",
+              "quote": "年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:breach-remedy-present": {
+          "required": true,
+          "refs": [
+            "c01-remedy"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-remedy",
+              "kind": "literal",
+              "quote": "## 第十一条　违约责任与救济",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:grace-period-present": {
+          "required": true,
+          "refs": [
+            "c01-grace"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-grace",
+              "kind": "literal",
+              "quote": "该期间为违约治愈宽限期",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:termination-convenience-present": {
+          "required": true,
+          "refs": [
+            "c01-termination"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-termination",
+              "kind": "literal",
+              "quote": "甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:subcontracting-present": {
+          "required": true,
+          "refs": [
+            "c01-subcontracting"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-subcontracting",
+              "kind": "literal",
+              "quote": "## 第十三条　分包与变更控制",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:audit-right-present": {
+          "required": true,
+          "refs": [
+            "c01-audit"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-audit",
+              "kind": "literal",
+              "quote": "## 第十四条　审计权",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:force-majeure-present": {
+          "required": true,
+          "refs": [
+            "c01-force-majeure"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-force-majeure",
+              "kind": "literal",
+              "quote": "## 第十五条　不可抗力",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:data-export-present": {
+          "required": true,
+          "refs": [
+            "c01-export"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-export",
+              "kind": "literal",
+              "quote": "导出格式为 CSV、JSON 及标准 SQL 转储文件，不收取任何费用",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:renewal-notice-window-reviewed": {
+          "required": true,
+          "refs": [
+            "c01-renewal"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-renewal",
+              "kind": "literal",
+              "quote": "订阅期届满前 90 日以书面形式通知对方不再续约",
+              "source_case": "C01"
+            }
+          ]
+        },
+        "must_not_flag:data-export-prohibition-reviewed": {
+          "required": true,
+          "refs": [
+            "c01-export"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-export",
+              "kind": "literal",
+              "quote": "导出格式为 CSV、JSON 及标准 SQL 转储文件，不收取任何费用",
+              "source_case": "C01"
+            }
+          ]
+        }
+      }
+    },
+    "C02": {
+      "source_file": "C02-software-outsourcing.md",
+      "source_sha256": "5f1c96d116e9df8f064eda569d3c9ff19a99c481a67a3f5f536bd94d8f49f394",
+      "targets": {
+        "must_detect:placeholder-unfilled": {
+          "required": true,
+          "refs": [
+            "c02-placeholder"
+          ],
+          "assertions": [
+            {
+              "ref": "c02-placeholder",
+              "kind": "literal",
+              "quote": "4.1 本合同总价款为人民币 $X 元（大写：【待定】），含 6% 增值税。",
+              "source_case": "C02"
+            }
+          ]
+        },
+        "must_detect:attachment-missing": {
+          "required": true,
+          "refs": [
+            "c02-attachment"
+          ],
+          "assertions": [
+            {
+              "ref": "c02-attachment",
+              "kind": "literal",
+              "quote": "2.3 各里程碑的验收标准依附件三《验收标准》执行",
+              "source_case": "C02"
+            }
+          ]
+        },
+        "must_detect:version-mismatch": {
+          "required": true,
+          "refs": [
+            "c02-version"
+          ],
+          "assertions": [
+            {
+              "ref": "c02-version",
+              "kind": "literal",
+              "quote": "1.2 详细功能规格以附件二《技术规格书 V1.3》为准。",
+              "source_case": "C02"
+            }
+          ]
+        },
+        "must_detect:party-name-inconsistency": {
+          "required": true,
+          "refs": [
+            "c02-party"
+          ],
+          "assertions": [
+            {
+              "ref": "c02-party",
+              "kind": "literal",
+              "quote": "10.4 本合同解除后，乙方应在 10 个工作日内向云梯科技（示例）有限公司移交全部已完成的阶段性成果。",
+              "source_case": "C02"
+            }
+          ]
+        },
+        "must_detect:page-discontinuity": {
+          "required": true,
+          "refs": [
+            "c02-page"
+          ],
+          "assertions": [
+            {
+              "ref": "c02-page",
+              "kind": "literal",
+              "quote": "第 4 页 / 共 8 页",
+              "source_case": "C02"
+            }
+          ]
+        },
+        "must_not_flag:input-ready-for-downstream": {
+          "required": true,
+          "refs": [
+            "c02-placeholder"
+          ],
+          "assertions": [
+            {
+              "ref": "c02-placeholder",
+              "kind": "literal",
+              "quote": "4.1 本合同总价款为人民币 $X 元（大写：【待定】），含 6% 增值税。",
+              "source_case": "C02"
+            }
+          ]
+        }
+      }
+    },
+    "C03": {
+      "source_file": "C03-procurement-framework.md",
+      "source_sha256": "36d9d9437431fe0a4d571e84d9c435714d6bc497ba42401b435c5ac10c3e6420",
+      "targets": {
+        "must_detect:amount-in-words-mismatch": {
+          "required": true,
+          "refs": [
+            "c03-amount"
+          ],
+          "assertions": [
+            {
+              "ref": "c03-amount",
+              "kind": "literal",
+              "quote": "3.2 协议期内首年采购预算总额为人民币壹佰贰拾万元整（¥1,280,000.00），该预算为参考额度，不构成采购承诺。",
+              "source_case": "C03"
+            }
+          ]
+        },
+        "must_detect:liability-cap-missing": {
+          "required": true,
+          "refs": [
+            "c03-no-liability"
+          ],
+          "assertions": [
+            {
+              "ref": "c03-no-liability",
+              "kind": "negative_search",
+              "patterns": [
+                "责任上限",
+                "累计赔偿责任",
+                "赔偿责任总额"
+              ],
+              "scope": "entire delivered document, pages 1-6"
+            }
+          ]
+        },
+        "must_detect:breach-remedy-missing": {
+          "required": true,
+          "refs": [
+            "c03-no-remedy"
+          ],
+          "assertions": [
+            {
+              "ref": "c03-no-remedy",
+              "kind": "negative_search",
+              "patterns": [
+                "违约责任",
+                "违约金",
+                "逾期赔偿"
+              ],
+              "scope": "entire delivered document, pages 1-6; distinguish clause 5.2 return right"
+            }
+          ]
+        },
+        "must_detect:dispute-resolution-missing": {
+          "required": true,
+          "refs": [
+            "c03-no-dispute"
+          ],
+          "assertions": [
+            {
+              "ref": "c03-no-dispute",
+              "kind": "negative_search",
+              "patterns": [
+                "仲裁委员会",
+                "人民法院",
+                "争议解决"
+              ],
+              "scope": "entire delivered document, pages 1-6; governing-law text alone is insufficient"
+            }
+          ]
+        },
+        "must_not_flag:data-export-prohibited": {
+          "required": true,
+          "refs": [
+            "c03-export"
+          ],
+          "assertions": [
+            {
+              "ref": "c03-export",
+              "kind": "literal",
+              "quote": "乙方可在该期间内以 CSV 或 Excel 标准格式导出其历史交易与质量数据",
+              "source_case": "C03"
+            }
+          ]
+        },
+        "must_not_flag:data-export-missing": {
+          "required": true,
+          "refs": [
+            "c03-export"
+          ],
+          "assertions": [
+            {
+              "ref": "c03-export",
+              "kind": "literal",
+              "quote": "乙方可在该期间内以 CSV 或 Excel 标准格式导出其历史交易与质量数据",
+              "source_case": "C03"
+            }
+          ]
+        }
+      }
+    },
+    "C04": {
+      "source_file": "C04-labor-contract.md",
+      "source_sha256": "709e5419e5d16140c50715a754ce79c6a8278071cc5c552144dccae0f5a55ea0",
+      "targets": {
+        "must_detect:five-year-non-compete-text": {
+          "required": true,
+          "refs": [
+            "c04-five-years"
+          ],
+          "assertions": [
+            {
+              "ref": "c04-five-years",
+              "kind": "literal",
+              "quote": "8.1 乙方离职后，在 5 年内不得自营或为他人经营与甲方有竞争关系的业务",
+              "source_case": "C04"
+            }
+          ]
+        },
+        "must_detect:no-economic-compensation-text": {
+          "required": true,
+          "refs": [
+            "c04-no-compensation"
+          ],
+          "assertions": [
+            {
+              "ref": "c04-no-compensation",
+              "kind": "literal",
+              "quote": "甲方在竞业限制期限内无需另行向乙方支付经济补偿",
+              "source_case": "C04"
+            }
+          ]
+        },
+        "must_detect:twelve-month-probation-text": {
+          "required": true,
+          "refs": [
+            "c04-probation"
+          ],
+          "assertions": [
+            {
+              "ref": "c04-probation",
+              "kind": "literal",
+              "quote": "1.2 试用期为 12 个月，自 2026 年 5 月 6 日起至 2027 年 5 月 5 日止。",
+              "source_case": "C04"
+            }
+          ]
+        },
+        "must_not_flag:redaction-as-placeholder": {
+          "required": true,
+          "refs": [
+            "c04-redaction"
+          ],
+          "assertions": [
+            {
+              "ref": "c04-redaction",
+              "kind": "literal",
+              "quote": "居民身份证号码：310115********0417",
+              "source_case": "C04"
+            }
+          ]
+        }
+      }
+    },
+    "C05": {
+      "source_file": "C05-data-processing-agreement.md",
+      "source_sha256": "75be9d27d2f24a4d384a439fe16262cfcf860aa1469aae404eefddd1c366a198",
+      "targets": {
+        "must_detect:governing-law-forum-coexistence": {
+          "required": true,
+          "refs": [
+            "c05-cn-law",
+            "c05-gdpr-dublin",
+            "c05-shenzhen"
+          ],
+          "assertions": [
+            {
+              "ref": "c05-cn-law",
+              "kind": "literal",
+              "quote": "12.1 本协议的订立、效力、解释、履行及争议解决，均适用中华人民共和国法律（不含港澳台地区法律）。",
+              "source_case": "C05"
+            },
+            {
+              "ref": "c05-gdpr-dublin",
+              "kind": "literal",
+              "quote": "应受欧盟《通用数据保护条例》（Regulation (EU) 2016/679, GDPR）管辖并依其规定解释；就该等事项产生的任何争议，双方同意提交爱尔兰共和国都柏林法院专属管辖。",
+              "source_case": "C05"
+            },
+            {
+              "ref": "c05-shenzhen",
+              "kind": "literal",
+              "quote": "任何一方均应提交深圳国际仲裁院按其届时有效的仲裁规则在深圳仲裁",
+              "source_case": "C05"
+            }
+          ]
+        },
+        "must_detect:data-export-prohibited-text": {
+          "required": true,
+          "refs": [
+            "c05-export"
+          ],
+          "assertions": [
+            {
+              "ref": "c05-export",
+              "kind": "literal",
+              "quote": "乙方不得以任何形式向甲方、甲方关联方或任何第三方导出、下载或交付个人数据的批量副本",
+              "source_case": "C05"
+            }
+          ]
+        },
+        "must_detect:professional-referral": {
+          "required": true,
+          "refs": [
+            "c05-cn-law",
+            "c05-gdpr-dublin",
+            "c05-shenzhen"
+          ],
+          "assertions": [
+            {
+              "ref": "c05-cn-law",
+              "kind": "literal",
+              "quote": "12.1 本协议的订立、效力、解释、履行及争议解决，均适用中华人民共和国法律（不含港澳台地区法律）。",
+              "source_case": "C05"
+            },
+            {
+              "ref": "c05-gdpr-dublin",
+              "kind": "literal",
+              "quote": "应受欧盟《通用数据保护条例》（Regulation (EU) 2016/679, GDPR）管辖并依其规定解释；就该等事项产生的任何争议，双方同意提交爱尔兰共和国都柏林法院专属管辖。",
+              "source_case": "C05"
+            },
+            {
+              "ref": "c05-shenzhen",
+              "kind": "literal",
+              "quote": "任何一方均应提交深圳国际仲裁院按其届时有效的仲裁规则在深圳仲裁",
+              "source_case": "C05"
+            }
+          ]
+        },
+        "must_detect:c05-no-grace-period": {
+          "required": true,
+          "refs": [
+            "c05-no-grace-period"
+          ],
+          "assertions": [
+            {
+              "ref": "c05-no-grace-period",
+              "kind": "negative_search",
+              "patterns": [
+                "宽限期",
+                "治愈期"
+              ],
+              "scope": "entire delivered document; immediate cessation in 10.3 is not a cure window"
+            }
+          ]
+        },
+        "must_not_flag:data-export-missing": {
+          "required": true,
+          "refs": [
+            "c05-export"
+          ],
+          "assertions": [
+            {
+              "ref": "c05-export",
+              "kind": "literal",
+              "quote": "乙方不得以任何形式向甲方、甲方关联方或任何第三方导出、下载或交付个人数据的批量副本",
+              "source_case": "C05"
+            }
+          ]
+        },
+        "must_not_flag:audit-right-missing": {
+          "required": true,
+          "refs": [
+            "c05-audit"
+          ],
+          "assertions": [
+            {
+              "ref": "c05-audit",
+              "kind": "literal",
+              "quote": "9.1 甲方有权每 12 个月对乙方履行本协议的情况进行一次审计",
+              "source_case": "C05"
+            }
+          ]
+        },
+        "must_not_flag:liability-cap-missing": {
+          "required": true,
+          "refs": [
+            "c05-liability"
+          ],
+          "assertions": [
+            {
+              "ref": "c05-liability",
+              "kind": "literal",
+              "quote": "不超过索赔事件发生前 12 个月内甲方依《云服务主协议》实际支付服务费用的总额",
+              "source_case": "C05"
+            }
+          ]
+        },
+        "must_not_flag:foreign-law-substantive-approved": {
+          "required": true,
+          "refs": [
+            "c05-cn-law",
+            "c05-gdpr-dublin"
+          ],
+          "assertions": [
+            {
+              "ref": "c05-cn-law",
+              "kind": "literal",
+              "quote": "12.1 本协议的订立、效力、解释、履行及争议解决，均适用中华人民共和国法律（不含港澳台地区法律）。",
+              "source_case": "C05"
+            },
+            {
+              "ref": "c05-gdpr-dublin",
+              "kind": "literal",
+              "quote": "应受欧盟《通用数据保护条例》（Regulation (EU) 2016/679, GDPR）管辖并依其规定解释；就该等事项产生的任何争议，双方同意提交爱尔兰共和国都柏林法院专属管辖。",
+              "source_case": "C05"
+            }
+          ]
+        }
+      }
+    },
+    "C06a": {
+      "source_file": "C06a-saas-v1.md",
+      "source_sha256": "8fc2f1d7c0f4ebb97378ffaa88a70bf866d34faa2c182ad3f66c1ddc146633ac",
+      "targets": {
+        "must_detect:delivered-components-partial": {
+          "required": true,
+          "refs": [
+            "c06a-manifest"
+          ],
+          "assertions": [
+            {
+              "ref": "c06a-manifest",
+              "kind": "literal",
+              "quote": "附件三　《数据处理附录》",
+              "source_case": "C06a"
+            }
+          ]
+        },
+        "must_not_flag:single-version-global-direction": {
+          "required": true,
+          "refs": [
+            "c06a-manifest"
+          ],
+          "assertions": [
+            {
+              "ref": "c06a-manifest",
+              "kind": "literal",
+              "quote": "附件三　《数据处理附录》",
+              "source_case": "C06a"
+            }
+          ]
+        }
+      }
+    },
+    "C06b": {
+      "source_file": "C06b-saas-v2.md",
+      "source_sha256": "059199f50bf77a12737b4836aa08efe33499a3ef9bc7d8ae64e64d50d7bda1d6",
+      "targets": {
+        "must_detect:attachment-version-replaced": {
+          "required": true,
+          "refs": [
+            "c06a-sla-version",
+            "c06b-sla-version"
+          ],
+          "assertions": [
+            {
+              "ref": "c06a-sla-version",
+              "kind": "literal",
+              "quote": "# 附件二　服务水平协议（SLA-v1.2）",
+              "source_case": "C06a"
+            },
+            {
+              "ref": "c06b-sla-version",
+              "kind": "literal",
+              "quote": "# 附件二　服务水平协议（SLA-v2.0）",
+              "source_case": "C06b"
+            }
+          ]
+        },
+        "must_detect:availability-sla-downgrade-text": {
+          "required": true,
+          "refs": [
+            "c06b-availability"
+          ],
+          "assertions": [
+            {
+              "ref": "c06b-availability",
+              "kind": "literal",
+              "quote": "2.1 乙方承诺服务的月度可用性不低于 **99.0%**。",
+              "source_case": "C06b"
+            }
+          ]
+        },
+        "must_detect:liability-cap-three-months-text": {
+          "required": true,
+          "refs": [
+            "c06b-cap"
+          ],
+          "assertions": [
+            {
+              "ref": "c06b-cap",
+              "kind": "literal",
+              "quote": "不超过索赔事件发生前 3 个月内甲方实际支付的服务费用总额",
+              "source_case": "C06b"
+            }
+          ]
+        },
+        "must_detect:partial-global-coverage": {
+          "required": true,
+          "refs": [
+            "c06b-manifest"
+          ],
+          "assertions": [
+            {
+              "ref": "c06b-manifest",
+              "kind": "literal",
+              "quote": "附件三　《数据处理附录》",
+              "source_case": "C06b"
+            }
+          ]
+        },
+        "must_not_flag:global-flat": {
+          "required": true,
+          "refs": [
+            "c06b-manifest"
+          ],
+          "assertions": [
+            {
+              "ref": "c06b-manifest",
+              "kind": "literal",
+              "quote": "附件三　《数据处理附录》",
+              "source_case": "C06b"
+            }
+          ]
+        },
+        "must_not_flag:global-up": {
+          "required": true,
+          "refs": [
+            "c06b-manifest"
+          ],
+          "assertions": [
+            {
+              "ref": "c06b-manifest",
+              "kind": "literal",
+              "quote": "附件三　《数据处理附录》",
+              "source_case": "C06b"
+            }
+          ]
+        }
+      }
+    },
+    "C07": {
+      "source_file": "C07-master-services-agreement.md",
+      "source_sha256": "e6aac24270c0972fa0fc5d2f016a6f4b2b4258760af10dfe15f3f7b5f16a664a",
+      "targets": {
+        "must_detect:singapore-law-text": {
+          "required": true,
+          "refs": [
+            "c07-law"
+          ],
+          "assertions": [
+            {
+              "ref": "c07-law",
+              "kind": "literal",
+              "quote": "12.1 This Agreement shall be governed by and construed in accordance with the laws of the Republic of Singapore.",
+              "source_case": "C07"
+            }
+          ]
+        },
+        "must_detect:audit-right-missing": {
+          "required": true,
+          "refs": [
+            "c07-no-audit"
+          ],
+          "assertions": [
+            {
+              "ref": "c07-no-audit",
+              "kind": "negative_search",
+              "patterns": [
+                "audit",
+                "inspection",
+                "right to examine"
+              ],
+              "scope": "entire delivered document, pages 1-6 including Exhibit list"
+            }
+          ]
+        },
+        "must_detect:professional-referral": {
+          "required": true,
+          "refs": [
+            "c07-law"
+          ],
+          "assertions": [
+            {
+              "ref": "c07-law",
+              "kind": "literal",
+              "quote": "12.1 This Agreement shall be governed by and construed in accordance with the laws of the Republic of Singapore.",
+              "source_case": "C07"
+            }
+          ]
+        },
+        "must_detect:liability-cap-market-effect-pending": {
+          "required": true,
+          "refs": [
+            "c07-liability"
+          ],
+          "assertions": [
+            {
+              "ref": "c07-liability",
+              "kind": "literal",
+              "quote": "during the three (3) months immediately preceding the event giving rise to the claim",
+              "source_case": "C07"
+            }
+          ]
+        },
+        "must_detect:renewal-notice-market-effect-pending": {
+          "required": true,
+          "refs": [
+            "c07-renewal"
+          ],
+          "assertions": [
+            {
+              "ref": "c07-renewal",
+              "kind": "literal",
+              "quote": "no later than thirty (30) days prior to the end of the then-current term",
+              "source_case": "C07"
+            }
+          ]
+        },
+        "must_not_flag:signature-fields-missing": {
+          "required": true,
+          "refs": [
+            "c07-signature"
+          ],
+          "assertions": [
+            {
+              "ref": "c07-signature",
+              "kind": "literal",
+              "quote": "Signature: /s/ Adela Fournier",
+              "source_case": "C07"
+            }
+          ]
+        },
+        "must_not_flag:attachment-missing": {
+          "required": true,
+          "refs": [
+            "c07-exhibits"
+          ],
+          "assertions": [
+            {
+              "ref": "c07-exhibits",
+              "kind": "literal",
+              "quote": "Exhibit C — Information Security Requirements",
+              "source_case": "C07"
+            }
+          ]
+        },
+        "must_not_flag:foreign-law-substantive-approved": {
+          "required": true,
+          "refs": [
+            "c07-law"
+          ],
+          "assertions": [
+            {
+              "ref": "c07-law",
+              "kind": "literal",
+              "quote": "12.1 This Agreement shall be governed by and construed in accordance with the laws of the Republic of Singapore.",
+              "source_case": "C07"
+            }
+          ]
+        },
+        "must_not_flag:subcontracting-text-reviewed": {
+          "required": true,
+          "refs": [
+            "c07-subcontracting"
+          ],
+          "assertions": [
+            {
+              "ref": "c07-subcontracting",
+              "kind": "literal",
+              "quote": "Supplier shall not subcontract any part of the services without Client's prior written consent",
+              "source_case": "C07"
+            }
+          ]
+        }
+      }
+    },
+    "C08": {
+      "source_file": "C08-mutual-nda.md",
+      "source_sha256": "882ff9eae5b54aa8ae3974cdb21bffe7cdb00c171a9a1e936aeff7a973900c64",
+      "targets": {
+        "must_detect:blank-signature-fields": {
+          "required": true,
+          "refs": [
+            "c08-signature"
+          ],
+          "assertions": [
+            {
+              "ref": "c08-signature",
+              "kind": "literal",
+              "quote": "Signature: ______________________________",
+              "source_case": "C08"
+            }
+          ]
+        },
+        "must_detect:singapore-law-text": {
+          "required": true,
+          "refs": [
+            "c08-law"
+          ],
+          "assertions": [
+            {
+              "ref": "c08-law",
+              "kind": "literal",
+              "quote": "8.1 This Agreement shall be governed by and construed in accordance with the laws of the Republic of Singapore.",
+              "source_case": "C08"
+            }
+          ]
+        },
+        "must_not_flag:delaware-governing-law": {
+          "required": true,
+          "refs": [
+            "c08-law"
+          ],
+          "assertions": [
+            {
+              "ref": "c08-law",
+              "kind": "literal",
+              "quote": "8.1 This Agreement shall be governed by and construed in accordance with the laws of the Republic of Singapore.",
+              "source_case": "C08"
+            }
+          ]
+        },
+        "must_not_flag:page-continuity-reviewed": {
+          "required": true,
+          "refs": [
+            "c08-page"
+          ],
+          "assertions": [
+            {
+              "ref": "c08-page",
+              "kind": "literal",
+              "quote": "Page 4 of 4",
+              "source_case": "C08"
+            }
+          ]
+        },
+        "must_not_flag:party-name-consistency-reviewed": {
+          "required": true,
+          "refs": [
+            "c08-parties"
+          ],
+          "assertions": [
+            {
+              "ref": "c08-parties",
+              "kind": "literal",
+              "quote": "Northwind and Blue Harbor are each referred to as a \"Party\" and together as the \"Parties\".",
+              "source_case": "C08"
+            }
+          ]
+        }
+      }
+    },
+    "R01": {
+      "source_file": "R01-govt-purchase-real.md",
+      "source_sha256": "795d5d49f2c58d61a2349458dc5de78c909c8045091fa8539334017b4bcc57ff",
+      "targets": {
+        "must_detect:placeholder-unfilled": {
+          "required": true,
+          "refs": [
+            "r01-dispute"
+          ],
+          "assertions": [
+            {
+              "ref": "r01-dispute",
+              "kind": "literal",
+              "quote": "按以下第（ ）项方式处理：①根据《中华人民共和国仲裁法》的规定向\n           申请仲裁。②向            人民法院起诉。",
+              "source_case": "R01"
+            }
+          ]
+        },
+        "must_detect:dispute-resolution-unselected": {
+          "required": true,
+          "refs": [
+            "r01-dispute"
+          ],
+          "assertions": [
+            {
+              "ref": "r01-dispute",
+              "kind": "literal",
+              "quote": "按以下第（ ）项方式处理：①根据《中华人民共和国仲裁法》的规定向\n           申请仲裁。②向            人民法院起诉。",
+              "source_case": "R01"
+            }
+          ]
+        },
+        "must_detect:old-contract-law-name-text": {
+          "required": true,
+          "refs": [
+            "r01-old-law"
+          ],
+          "assertions": [
+            {
+              "ref": "r01-old-law",
+              "kind": "literal",
+              "quote": "根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定",
+              "source_case": "R01"
+            }
+          ]
+        },
+        "must_detect:signing-time-law-effect-pending": {
+          "required": true,
+          "refs": [
+            "r01-old-law",
+            "r01-dispute"
+          ],
+          "assertions": [
+            {
+              "ref": "r01-old-law",
+              "kind": "literal",
+              "quote": "根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定",
+              "source_case": "R01"
+            },
+            {
+              "ref": "r01-dispute",
+              "kind": "literal",
+              "quote": "按以下第（ ）项方式处理：①根据《中华人民共和国仲裁法》的规定向\n           申请仲裁。②向            人民法院起诉。",
+              "source_case": "R01"
+            }
+          ]
+        },
+        "must_not_flag:executed-or-authenticated-contract": {
+          "required": true,
+          "refs": [
+            "r01-party-placeholders"
+          ],
+          "assertions": [
+            {
+              "ref": "r01-party-placeholders",
+              "kind": "literal",
+              "quote": "买  方：XXXXXXXXXXXX                  电话：XXX-XXXXXX",
+              "source_case": "R01"
+            }
+          ]
+        },
+        "must_not_flag:attachment-missing": {
+          "required": true,
+          "refs": [
+            "r01-constituent-files"
+          ],
+          "assertions": [
+            {
+              "ref": "r01-constituent-files",
+              "kind": "literal",
+              "quote": "2、组成合同的文件",
+              "source_case": "R01"
+            }
+          ]
+        },
+        "must_not_flag:party-name-inconsistency": {
+          "required": true,
+          "refs": [
+            "r01-party-placeholders"
+          ],
+          "assertions": [
+            {
+              "ref": "r01-party-placeholders",
+              "kind": "literal",
+              "quote": "买  方：XXXXXXXXXXXX                  电话：XXX-XXXXXX",
+              "source_case": "R01"
+            }
+          ]
+        }
+      }
+    },
+    "R02": {
+      "source_file": "R02-govt-purchase-executed.md",
+      "source_sha256": "2a5052027408597306beb39644dbce6fa76f109d220cfcf2effc44ea027e41fd",
+      "targets": {
+        "must_detect:party-id-absent": {
+          "required": true,
+          "refs": [
+            "r02-parties",
+            "r02-no-party-id"
+          ],
+          "assertions": [
+            {
+              "ref": "r02-parties",
+              "kind": "literal",
+              "quote": "买  方：安徽建筑大学                  电话：0551-63828001",
+              "source_case": "R02"
+            },
+            {
+              "ref": "r02-no-party-id",
+              "kind": "negative_search",
+              "patterns": [
+                "统一社会信用代码",
+                "注册号"
+              ],
+              "scope": "all three party identification blocks and entire delivered document"
+            }
+          ]
+        },
+        "must_detect:contract-date-2026": {
+          "required": true,
+          "refs": [
+            "r02-date"
+          ],
+          "assertions": [
+            {
+              "ref": "r02-date",
+              "kind": "literal",
+              "quote": "日    期：2026年8月18日              日    期:2026年8月18日",
+              "source_case": "R02"
+            }
+          ]
+        },
+        "must_detect:old-contract-law-name-text": {
+          "required": true,
+          "refs": [
+            "r02-old-law"
+          ],
+          "assertions": [
+            {
+              "ref": "r02-old-law",
+              "kind": "literal",
+              "quote": "根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定",
+              "source_case": "R02"
+            }
+          ]
+        },
+        "must_detect:arbitration-institution-unspecified-text": {
+          "required": true,
+          "refs": [
+            "r02-arbitration"
+          ],
+          "assertions": [
+            {
+              "ref": "r02-arbitration",
+              "kind": "literal",
+              "quote": "按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向\n           买方所在地仲裁机构 申请仲裁。②向            人民法院起诉。",
+              "source_case": "R02"
+            }
+          ]
+        },
+        "must_not_flag:placeholder-unfilled": {
+          "required": true,
+          "refs": [
+            "r02-no-unfilled-placeholder"
+          ],
+          "assertions": [
+            {
+              "ref": "r02-no-unfilled-placeholder",
+              "kind": "negative_search",
+              "patterns": [
+                "\\$X",
+                "TBD",
+                "【待定】",
+                "____________"
+              ],
+              "scope": "entire filled derivative excluding decorative signature separators"
+            }
+          ]
+        },
+        "must_not_flag:signature-fields-missing": {
+          "required": true,
+          "refs": [
+            "r02-date"
+          ],
+          "assertions": [
+            {
+              "ref": "r02-date",
+              "kind": "literal",
+              "quote": "日    期：2026年8月18日              日    期:2026年8月18日",
+              "source_case": "R02"
+            }
+          ]
+        },
+        "must_not_flag:attachment-missing": {
+          "required": true,
+          "refs": [
+            "r02-constituent-files"
+          ],
+          "assertions": [
+            {
+              "ref": "r02-constituent-files",
+              "kind": "literal",
+              "quote": "二、组成合同的文件",
+              "source_case": "R02"
+            }
+          ]
+        }
+      }
+    },
+    "R03": {
+      "source_file": "R03-govt-purchase-2019.md",
+      "source_sha256": "fd15853948848eaa3a1cf7485347d48a25c14c897833ef488c3b96d7affa799d",
+      "targets": {
+        "must_detect:party-id-absent": {
+          "required": true,
+          "refs": [
+            "r03-parties",
+            "r03-no-party-id"
+          ],
+          "assertions": [
+            {
+              "ref": "r03-parties",
+              "kind": "literal",
+              "quote": "买  方：安徽建筑大学                  电话：0551-63828001",
+              "source_case": "R03"
+            },
+            {
+              "ref": "r03-no-party-id",
+              "kind": "negative_search",
+              "patterns": [
+                "统一社会信用代码",
+                "注册号"
+              ],
+              "scope": "all three party identification blocks and entire delivered document"
+            }
+          ]
+        },
+        "must_detect:contract-date-2019": {
+          "required": true,
+          "refs": [
+            "r03-date"
+          ],
+          "assertions": [
+            {
+              "ref": "r03-date",
+              "kind": "literal",
+              "quote": "日    期：2019年6月20日              日    期:2019年6月20日",
+              "source_case": "R03"
+            }
+          ]
+        },
+        "must_detect:old-contract-law-name-text": {
+          "required": true,
+          "refs": [
+            "r03-old-law"
+          ],
+          "assertions": [
+            {
+              "ref": "r03-old-law",
+              "kind": "literal",
+              "quote": "根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定",
+              "source_case": "R03"
+            }
+          ]
+        },
+        "must_detect:arbitration-institution-unspecified-text": {
+          "required": true,
+          "refs": [
+            "r03-arbitration"
+          ],
+          "assertions": [
+            {
+              "ref": "r03-arbitration",
+              "kind": "literal",
+              "quote": "按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向\n           买方所在地仲裁机构 申请仲裁。②向            人民法院起诉。",
+              "source_case": "R03"
+            }
+          ]
+        },
+        "must_detect:arbitration-law-version-out-of-range": {
+          "required": true,
+          "refs": [
+            "r03-date",
+            "r03-arbitration"
+          ],
+          "assertions": [
+            {
+              "ref": "r03-date",
+              "kind": "literal",
+              "quote": "日    期：2019年6月20日              日    期:2019年6月20日",
+              "source_case": "R03"
+            },
+            {
+              "ref": "r03-arbitration",
+              "kind": "literal",
+              "quote": "按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向\n           买方所在地仲裁机构 申请仲裁。②向            人民法院起诉。",
+              "source_case": "R03"
+            }
+          ]
+        },
+        "must_not_flag:contract-law-repealed-at-signing": {
+          "required": true,
+          "refs": [
+            "r03-date",
+            "r03-old-law"
+          ],
+          "assertions": [
+            {
+              "ref": "r03-date",
+              "kind": "literal",
+              "quote": "日    期：2019年6月20日              日    期:2019年6月20日",
+              "source_case": "R03"
+            },
+            {
+              "ref": "r03-old-law",
+              "kind": "literal",
+              "quote": "根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定",
+              "source_case": "R03"
+            }
+          ]
+        },
+        "must_not_flag:signature-fields-missing": {
+          "required": true,
+          "refs": [
+            "r03-date"
+          ],
+          "assertions": [
+            {
+              "ref": "r03-date",
+              "kind": "literal",
+              "quote": "日    期：2019年6月20日              日    期:2019年6月20日",
+              "source_case": "R03"
+            }
+          ]
+        },
+        "must_not_flag:attachment-missing": {
+          "required": true,
+          "refs": [
+            "r03-constituent-files"
+          ],
+          "assertions": [
+            {
+              "ref": "r03-constituent-files",
+              "kind": "literal",
+              "quote": "二、组成合同的文件",
+              "source_case": "R03"
+            }
+          ]
+        },
+        "must_not_flag:r03-no-unfilled-placeholder": {
+          "required": true,
+          "refs": [
+            "r03-no-unfilled-placeholder"
+          ],
+          "assertions": [
+            {
+              "ref": "r03-no-unfilled-placeholder",
+              "kind": "negative_search",
+              "patterns": [
+                "\\$X",
+                "TBD",
+                "【待定】",
+                "____________"
+              ],
+              "scope": "entire filled derivative excluding decorative signature separators and redaction masks"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+id: TC-009
+title: 流程契约漂移导致有限报告、待决交付与范围边界失真
+category: must_detect
+severity: severe
+recorded_at: '2026-09-29'
+blueprint_ref: 第二节 / 第十二节 / 第十四节
+
+what_went_wrong:
+  summary: >-
+    跨文件消费者沿用旧 stage 顺序和旧门禁语义：O3 一支失败后整案结果消失，O4/O5 合并；
+    Human Gate pending 扣住报告；摘要失败被当作相等；域外签署地未进入服务范围判断。
+  observed_output: 未取得人工批准，无法提供报告；两份 unknown 摘要视为相同；合同按中国法完成审查。
+  actual_impact: 欠账、服务边界和独立复核同时失真，用户既拿不到有限报告又得到过度实体结论。
+
+why_missed:
+  root_cause: 动作、对象与关系文件只靠自然语言关键词对齐，没有结构化 phase、回执来源及变异守护
+  failure_chain:
+    - numeric stage 被误当成调用顺序，O3 没有双分支汇合账本
+    - O4 与 O5 使用同一次 reporter 调用，报告隐式自审
+    - pending 被当成 rejected，并阻止 emit_final_report
+    - FileDigest 失败后以 unknown == unknown 宣称对象一致
+    - jurisdiction_clues 未登记签署地与非数据类援引立法
+
+guarded_by:
+  - ref: actions.yaml#workflow_contract
+    how: phase/depends_on 固定 O0-O5，O3 汇合成功或失败回执，O4/O5 使用不同 invocation_id
+  - ref: actions.yaml#human_gate_semantics
+    how: pending 只阻业务批准、签署与放行，先返回报告/待决/回执；模拟批准不算真人决定
+  - ref: contract.yaml#INV-003
+    how: 摘要失败 frozen_without_digest，保留身份绑定继续事实审查但禁止强一致性结论
+  - ref: contract.yaml#INV-008
+    how: 准据法、争议机构/地点、签署地、援引立法任一明确域外即转介，不要求 foreign pack
+  - ref: relations.yaml#DC-002
+    how: has_attachment.delivered 为必填；false 只形成 R7 scope 事实，不生成 PEND-001
+
+expected_behavior:
+  must_output:
+    - O3 两支各有成功或失败回执；单支失败后 O4 可验证已有证据并输出明确受限报告
+    - O4_independent_evidence_receipt 与 O5 report_delivery_call 为不同调用
+    - Human Gate pending 时报告、待决清单和回执可取得，业务放行仍受阻
+    - FileDigest 失败记 frozen_without_digest，不声称摘要相等或版本一致
+    - 域外签署地或援引立法触发 out_of_service_scope、通用治理与专业转介
+  must_not_output:
+    - 把 pending 写成 rejected 或 approved
+    - 因缺 foreign pack 停止通用治理
+    - 单版本 risk_direction = flat
+  scoring_expectation: O3 能力欠账或适用 legal_D3 未 covered 时不出完整五维总分，也不重分配权重
+
+repro_input:
+  intake_verdict: passed
+  o3_receipts: {jurisdiction-auditor: failed_with_scope, risk-scanner: completed}
+  human_gate: pending
+  digest_state: frozen_without_digest
+  jurisdiction_clues: {signing_places: [新加坡], legislation_referenced: []}
+  comparison_applicability: not_applicable

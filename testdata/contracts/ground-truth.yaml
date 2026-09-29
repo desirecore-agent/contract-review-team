@@ -1,1127 +1,3161 @@
-# 多 Agent 合同审查智能体团队 —— 测试语料 Ground Truth
-#
-# 用法：以本文件为唯一判据，逐份合同比对审查产物。
-# 解析约定：合同条目的 key 匹配正则 ^C0\d[ab]?$；以 _ 开头的 key 为元数据与词表，不是合同。
-# 判定规则见同目录 README.md「验收判定规则」一节。
+---
+normative:
+  normative: true
+  oracle_version: 3.0.0
+  last_reviewed: 2026-09-29
+  judgment_commit: e1837f2931ec077b7bf522f5c223c0af5df840cf
+  rules_version: rules-v2 + 2026-09-29 unified decisions
+  service_boundary: mainland China only; out-of-scope matters receive general document governance and referral, never a foreign-law pack
+  case_ids:
+    - C01
+    - C02
+    - C03
+    - C04
+    - C05
+    - C06a
+    - C06b
+    - C07
+    - C08
+    - R01
+    - R02
+    - R03
+  historical_mandatory_policy: Legacy mandatory identities remain frozen in history. Unchanged meanings bind directly; changed service-boundary meanings bind only through audited non-normative provenance scope_change mappings to required current fact/referral targets.
+  cases:
+    C01:
+      expected_gate: passed
+      source:
+        file: C01-saas-subscription.md
+        sha256: fb0c1aad49f41d5d6eb892339494a7b4deaad6c11108d6888e56043810bdb035
+        classification: synthetic
+      service_scope:
+        status: in_scope
+      legal_review:
+        status: not_required
+      comparison:
+        applicability: not_applicable
+      must_detect:
+        - id: amount-arithmetic-mismatch
+          required: false
+          fact_only: true
+          evidence_ref: c01-total
+          optional_reason: Arithmetic consistency is an observation separate from the mandatory prohibition on falsely reporting an amount-in-words mismatch.
+      must_not_flag:
+        - id: placeholder-unfilled
+          required: true
+          evidence_ref: c01-signature
+        - id: attachment-missing
+          required: true
+          evidence_ref: c01-manifest
+        - id: signature-status-unconfirmed
+          required: true
+          evidence_ref: c01-signature
+        - id: page-discontinuity
+          required: true
+          evidence_ref: c01-pages
+        - id: version-mismatch
+          required: true
+          evidence_ref: c01-manifest
+        - id: party-name-inconsistency
+          required: true
+          evidence_ref: c01-parties
+        - id: liability-cap-missing
+          evidence_ref: c01-liability
+          required: true
+        - id: dispute-resolution-missing
+          evidence_ref: c01-dispute
+          required: true
+        - id: amount-in-words-mismatch
+          required: true
+          evidence_ref: c01-total
+          output_rule: forbidden
+          reason: Chinese uppercase and numeric amounts correspond; arithmetic seat-total mismatch is a separate optional finding
+        - id: breach-remedy-present
+          required: true
+          evidence_ref: c01-remedy
+          output_rule: forbidden
+        - id: grace-period-present
+          required: true
+          evidence_ref: c01-grace
+          output_rule: forbidden
+        - id: termination-convenience-present
+          required: true
+          evidence_ref: c01-termination
+          output_rule: forbidden
+        - id: subcontracting-present
+          required: true
+          evidence_ref: c01-subcontracting
+          output_rule: forbidden
+        - id: audit-right-present
+          required: true
+          evidence_ref: c01-audit
+          output_rule: forbidden
+        - id: force-majeure-present
+          required: true
+          evidence_ref: c01-force-majeure
+          output_rule: forbidden
+        - id: data-export-present
+          required: true
+          evidence_ref: c01-export
+          output_rule: forbidden
+        - id: renewal-notice-window-reviewed
+          required: true
+          evidence_ref: c01-renewal
+          output_rule: forbidden
+          reason: 90-day notice meets the historical benchmark
+        - id: data-export-prohibition-reviewed
+          required: true
+          evidence_ref: c01-export
+          output_rule: forbidden
+          reason: standard exports are expressly allowed
+      coverage_targets:
+        - input-integrity
+        - nine-key-clauses
+        - market-rulers
+        - attachments
+        - signature
+        - breach-remedy-present
+        - grace-period-present
+        - termination-convenience-present
+        - subcontracting-present
+        - audit-right-present
+        - force-majeure-present
+        - data-export-present
+        - renewal-notice-window-reviewed
+        - data-export-prohibition-reviewed
+      negative_searches:
+        - id: c01-no-placeholder
+          patterns:
+            - '\$X'
+            - TBD
+            - 【待定】
+            - ____________
+          scope: contract body excluding decorative signature separators
+      scope_targets:
+        - mainland-china
+        - commercial-saas
+      evidence:
+        - id: c01-total
+          kind: literal
+          part: body
+          page: 3
+          clause_no: "4.1"
+          quote: 年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）
+        - id: c01-manifest
+          kind: literal
+          part: body
+          page: 9
+          clause_no: "17.4"
+          quote: 附件二　《服务水平协议 SLA-v1.2》
+        - id: c01-signature
+          kind: literal
+          part: body
+          page: 9
+          clause_no: signature
+          quote: 授权代表签字：陈慕远
+        - id: c01-pages
+          kind: literal
+          part: body
+          page: 9
+          clause_no: page-marker
+          quote: 第 9 页 / 共 9 页
+        - id: c01-parties
+          kind: literal
+          part: body
+          page: 1
+          clause_no: parties
+          quote: "**乙方（服务商）：云梯信息技术（示例）有限公司**"
+        - id: c01-liability
+          kind: literal
+          part: body
+          page: 6
+          clause_no: "10.1"
+          quote: 不超过索赔事件发生前 12 个月内甲方实际支付的服务费用总额
+        - id: c01-dispute
+          kind: literal
+          part: body
+          page: 9
+          clause_no: "16.2"
+          quote: 提交上海国际经济贸易仲裁委员会
+        - id: c01-remedy
+          kind: literal
+          part: body
+          page: 6
+          clause_no: "11"
+          quote: "## 第十一条　违约责任与救济"
+        - id: c01-grace
+          kind: literal
+          part: body
+          page: 6
+          clause_no: "11.1"
+          quote: 该期间为违约治愈宽限期
+        - id: c01-termination
+          kind: literal
+          part: body
+          page: 6
+          clause_no: "12.2"
+          quote: 甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）
+        - id: c01-subcontracting
+          kind: literal
+          part: body
+          page: 7
+          clause_no: "13"
+          quote: "## 第十三条　分包与变更控制"
+        - id: c01-audit
+          kind: literal
+          part: body
+          page: 7
+          clause_no: "14"
+          quote: "## 第十四条　审计权"
+        - id: c01-force-majeure
+          kind: literal
+          part: body
+          page: 8
+          clause_no: "15"
+          quote: "## 第十五条　不可抗力"
+        - id: c01-export
+          kind: literal
+          part: body
+          page: 5
+          clause_no: "7.2"
+          quote: 导出格式为 CSV、JSON 及标准 SQL 转储文件，不收取任何费用
+        - id: c01-renewal
+          kind: literal
+          part: body
+          page: 3
+          clause_no: "3.2"
+          quote: 订阅期届满前 90 日以书面形式通知对方不再续约
+    C02:
+      expected_gate: blocked
+      source:
+        file: C02-software-outsourcing.md
+        sha256: 5f1c96d116e9df8f064eda569d3c9ff19a99c481a67a3f5f536bd94d8f49f394
+        classification: synthetic
+      service_scope:
+        status: in_scope
+      legal_review:
+        status: not_required
+      comparison:
+        applicability: not_applicable
+      must_detect:
+        - id: placeholder-unfilled
+          required: true
+          evidence_ref: c02-placeholder
+          severity: severe
+          severity_source: contract-intake@1.0.6 S3
+        - id: attachment-missing
+          required: true
+          evidence_ref: c02-attachment
+          severity: severe
+          severity_source: contract-intake@1.0.6 S4
+        - id: version-mismatch
+          required: true
+          evidence_ref: c02-version
+          severity: severe
+          severity_source: contract-intake@1.0.6 S5
+        - id: party-name-inconsistency
+          required: true
+          evidence_ref: c02-party
+          severity: severe
+          severity_source: contract-intake@1.0.6 S7.1
+        - id: page-discontinuity
+          required: true
+          evidence_ref: c02-page
+          severity: severe
+          severity_source: contract-intake@1.0.6 S2
+      must_not_flag:
+        - id: input-ready-for-downstream
+          reason: hard blockers require termination at intake
+          required: true
+          evidence_refs:
+            - c02-placeholder
+      coverage_targets:
+        - input-integrity
+        - attachment-manifest
+        - version-consistency
+        - party-consistency
+        - pagination
+      negative_searches:
+        - id: c02-missing-page-3
+          patterns:
+            - 第 3 页 / 共 8 页
+          scope: all delivered page markers
+      scope_targets:
+        - mainland-china
+        - software-outsourcing
+      evidence:
+        - id: c02-placeholder
+          kind: literal
+          part: body
+          page: 2
+          clause_no: "4.1"
+          quote: 4.1 本合同总价款为人民币 $X 元（大写：【待定】），含 6% 增值税。
+        - id: c02-attachment
+          kind: literal
+          part: body
+          page: 1
+          clause_no: "2.3"
+          quote: 2.3 各里程碑的验收标准依附件三《验收标准》执行
+        - id: c02-version
+          kind: literal
+          part: body
+          page: 1
+          clause_no: "1.2"
+          quote: 1.2 详细功能规格以附件二《技术规格书 V1.3》为准。
+        - id: c02-party
+          kind: literal
+          part: body
+          page: 5
+          clause_no: "10.4"
+          quote: 10.4 本合同解除后，乙方应在 10 个工作日内向云梯科技（示例）有限公司移交全部已完成的阶段性成果。
+        - id: c02-page
+          kind: literal
+          part: body
+          page: 4
+          clause_no: page-marker
+          quote: 第 4 页 / 共 8 页
+    C03:
+      expected_gate: conditional
+      source:
+        file: C03-procurement-framework.md
+        sha256: 36d9d9437431fe0a4d571e84d9c435714d6bc497ba42401b435c5ac10c3e6420
+        classification: synthetic
+      service_scope:
+        status: in_scope
+      legal_review:
+        status: not_required
+      comparison:
+        applicability: not_applicable
+      must_detect:
+        - id: amount-in-words-mismatch
+          required: true
+          evidence_ref: c03-amount
+          severity: important
+          severity_source: contract-intake@1.0.6 S7.2
+        - id: liability-cap-missing
+          evidence_ref: c03-no-liability
+          severity: pending
+          severity_source: professional-review-required
+          required: true
+        - id: breach-remedy-missing
+          evidence_ref: c03-no-remedy
+          severity: pending
+          severity_source: professional-review-required
+          required: true
+        - id: dispute-resolution-missing
+          evidence_ref: c03-no-dispute
+          severity: pending
+          severity_source: professional-review-required
+          required: true
+      must_not_flag:
+        - id: data-export-prohibited
+          required: true
+          evidence_ref: c03-export
+          output_rule: forbidden
+        - id: data-export-missing
+          evidence_ref: c03-export
+          required: true
+      coverage_targets:
+        - input-integrity
+        - liability-cap
+        - breach-remedy
+        - dispute-resolution
+        - data-export
+      negative_searches:
+        - id: c03-no-liability
+          patterns:
+            - 责任上限
+            - 累计赔偿责任
+            - 赔偿责任总额
+          scope: entire delivered document, pages 1-6
+        - id: c03-no-remedy
+          patterns:
+            - 违约责任
+            - 违约金
+            - 逾期赔偿
+          scope: entire delivered document, pages 1-6; distinguish clause 5.2 return right
+        - id: c03-no-dispute
+          patterns:
+            - 仲裁委员会
+            - 人民法院
+            - 争议解决
+          scope: entire delivered document, pages 1-6; governing-law text alone is insufficient
+      scope_targets:
+        - mainland-china
+        - procurement-framework
+      evidence:
+        - id: c03-amount
+          kind: literal
+          part: body
+          page: 2
+          clause_no: "3.2"
+          quote: 3.2 协议期内首年采购预算总额为人民币壹佰贰拾万元整（¥1,280,000.00），该预算为参考额度，不构成采购承诺。
+        - id: c03-export
+          kind: literal
+          part: body
+          page: 5
+          clause_no: "11.2"
+          quote: 乙方可在该期间内以 CSV 或 Excel 标准格式导出其历史交易与质量数据
+    C04:
+      expected_gate: passed
+      source:
+        file: C04-labor-contract.md
+        sha256: 709e5419e5d16140c50715a754ce79c6a8278071cc5c552144dccae0f5a55ea0
+        classification: synthetic
+      service_scope:
+        status: in_scope
+      legal_review:
+        status: pending
+        items:
+          - statutory conclusions retained in historical oracle require professional verification
+      comparison:
+        applicability: not_applicable
+      must_detect:
+        - id: five-year-non-compete-text
+          evidence_ref: c04-five-years
+          fact_only: true
+          legal_effect: pending_professional_review
+          required: true
+        - id: no-economic-compensation-text
+          evidence_ref: c04-no-compensation
+          fact_only: true
+          legal_effect: pending_professional_review
+          required: true
+        - id: twelve-month-probation-text
+          evidence_ref: c04-probation
+          fact_only: true
+          legal_effect: pending_professional_review
+          required: true
+      must_not_flag:
+        - id: redaction-as-placeholder
+          evidence_ref: c04-redaction
+          required: true
+      coverage_targets:
+        - employment-term
+        - probation
+        - non-compete-duration
+        - non-compete-compensation
+        - redaction-handling
+      negative_searches:
+        - id: c04-no-compensation-promise
+          patterns:
+            - 按月支付竞业限制经济补偿
+            - 竞业限制补偿金
+          scope: entire delivered document; also capture express no-compensation text
+      scope_targets:
+        - mainland-china
+        - employment
+      evidence:
+        - id: c04-five-years
+          kind: literal
+          part: body
+          page: 3
+          clause_no: "8.1"
+          quote: 8.1 乙方离职后，在 5 年内不得自营或为他人经营与甲方有竞争关系的业务
+        - id: c04-no-compensation
+          kind: literal
+          part: body
+          page: 3
+          clause_no: "8.2"
+          quote: 甲方在竞业限制期限内无需另行向乙方支付经济补偿
+        - id: c04-probation
+          kind: literal
+          part: body
+          page: 1
+          clause_no: "1.2"
+          quote: 1.2 试用期为 12 个月，自 2026 年 5 月 6 日起至 2027 年 5 月 5 日止。
+        - id: c04-redaction
+          kind: literal
+          part: body
+          page: 1
+          clause_no: party-details
+          quote: 居民身份证号码：310115********0417
+    C05:
+      expected_gate: passed
+      source:
+        file: C05-data-processing-agreement.md
+        sha256: 75be9d27d2f24a4d384a439fe16262cfcf860aa1469aae404eefddd1c366a198
+        classification: synthetic
+      service_scope:
+        status: out_of_service_scope
+        intake_object_blocked_by_scope_alone: false
+        general_document_governance_allowed: true
+        referral_required: true
+        foreign_law_substantive_conclusions_allowed: false
+        allowed_observations:
+          - textual conflict among expressed governing-law and forum clauses
+          - base-layer commercial structure
+      legal_review:
+        status: pending
+        items:
+          - effect of China-law, GDPR, Dublin-court and Shenzhen-arbitration language
+          - data return/deletion legal conclusions
+      comparison:
+        applicability: not_applicable
+      must_detect:
+        - id: governing-law-forum-coexistence
+          evidence_refs:
+            - c05-cn-law
+            - c05-gdpr-dublin
+            - c05-shenzhen
+          fact_only: true
+          legal_effect: pending_professional_review
+          required: true
+        - id: data-export-prohibited-text
+          evidence_ref: c05-export
+          fact_only: true
+          legal_effect: pending_professional_review
+          required: true
+        - id: professional-referral
+          required: true
+          fact_only: true
+          legal_effect: pending_professional_review
+          evidence_refs:
+            - c05-cn-law
+            - c05-gdpr-dublin
+            - c05-shenzhen
+        - id: c05-no-grace-period
+          required: true
+          evidence_ref: c05-no-grace-period
+          fact_only: true
+          interpretation: missing
+      must_not_flag:
+        - id: data-export-missing
+          evidence_ref: c05-export
+          required: true
+        - id: audit-right-missing
+          evidence_ref: c05-audit
+          required: true
+        - id: liability-cap-missing
+          evidence_ref: c05-liability
+          required: true
+        - id: foreign-law-substantive-approved
+          reason: foreign-law effect is outside service scope and pending referral
+          required: true
+          evidence_refs:
+            - c05-cn-law
+            - c05-gdpr-dublin
+      coverage_targets:
+        - governing-law-text
+        - forum-text
+        - data-scope
+        - data-export-text
+        - referral
+      negative_searches:
+        - id: c05-no-grace-period
+          patterns:
+            - 宽限期
+            - 治愈期
+          scope: entire delivered document; immediate cessation in 10.3 is not a cure window
+      scope_targets:
+        - out-of-service-scope
+        - general-document-governance-only
+        - professional-referral
+      evidence:
+        - id: c05-cn-law
+          kind: literal
+          part: body
+          page: 5
+          clause_no: "12.1"
+          quote: 12.1 本协议的订立、效力、解释、履行及争议解决，均适用中华人民共和国法律（不含港澳台地区法律）。
+        - id: c05-gdpr-dublin
+          kind: literal
+          part: body
+          page: 5
+          clause_no: "12.2"
+          quote: 应受欧盟《通用数据保护条例》（Regulation (EU) 2016/679, GDPR）管辖并依其规定解释；就该等事项产生的任何争议，双方同意提交爱尔兰共和国都柏林法院专属管辖。
+        - id: c05-shenzhen
+          kind: literal
+          part: body
+          page: 5
+          clause_no: "12.3"
+          quote: 任何一方均应提交深圳国际仲裁院按其届时有效的仲裁规则在深圳仲裁
+        - id: c05-export
+          kind: literal
+          part: body
+          page: 4
+          clause_no: "8.2"
+          quote: 乙方不得以任何形式向甲方、甲方关联方或任何第三方导出、下载或交付个人数据的批量副本
+        - id: c05-audit
+          kind: literal
+          part: body
+          page: 4
+          clause_no: "9.1"
+          quote: 9.1 甲方有权每 12 个月对乙方履行本协议的情况进行一次审计
+        - id: c05-liability
+          kind: literal
+          part: body
+          page: 5
+          clause_no: "10.2"
+          quote: 不超过索赔事件发生前 12 个月内甲方依《云服务主协议》实际支付服务费用的总额
+        - kind: rule_note
+          note: The current result is out-of-service-scope, not a missing-pack diagnosis.
+    C06a:
+      expected_gate: passed
+      source:
+        file: C06a-saas-v1.md
+        sha256: 8fc2f1d7c0f4ebb97378ffaa88a70bf866d34faa2c182ad3f66c1ddc146633ac
+        classification: synthetic
+      service_scope:
+        status: in_scope
+      legal_review:
+        status: not_required
+      comparison:
+        applicability: not_applicable
+      must_detect:
+        - id: delivered-components-partial
+          fact_only: true
+          evidence_ref: c06a-manifest
+          required: true
+      must_not_flag:
+        - id: single-version-global-direction
+          reason: no comparison baseline was requested for this scenario
+          required: true
+          evidence_refs:
+            - c06a-manifest
+      coverage_targets:
+        - body
+        - attachment-two
+        - undelivered-attachment-one
+        - undelivered-attachment-three
+      negative_searches:
+        - id: c06a-undelivered-attachments
+          patterns:
+            - "# 附件一"
+            - "# 附件三"
+          scope: delivered file after attachment manifest
+      scope_targets:
+        - mainland-china
+        - single-version-review
+      evidence:
+        - id: c06a-manifest
+          kind: literal
+          part: body
+          page: 7
+          clause_no: "17.4"
+          quote: 附件三　《数据处理附录》
+    C06b:
+      expected_gate: passed
+      source:
+        file: C06b-saas-v2.md
+        sha256: 059199f50bf77a12737b4836aa08efe33499a3ef9bc7d8ae64e64d50d7bda1d6
+        classification: synthetic
+      service_scope:
+        status: in_scope
+      legal_review:
+        status: not_required
+      comparison:
+        applicability: applicable
+        baseline: C06a
+        direction: undetermined
+        attachment_direction: up
+        global_coverage: partial
+        perspective: client
+        request_baseline: C06a
+        uncovered_components:
+          - 附件一服务规格说明书
+          - 附件三数据处理附录
+        note: C06a→C06b is an explicit client-perspective comparison. Delivered attachment two worsens risk, but attachments one and three are not delivered, so global direction is undetermined.
+      must_detect:
+        - id: attachment-version-replaced
+          evidence_refs:
+            - c06a-sla-version
+            - c06b-sla-version
+          fact_only: true
+          comparison_scope: attachment-two
+          detail: 附件二整体从 SLA-v1.2 替换为 SLA-v2.0；不据此单独断言法律效果
+          required: true
+        - id: availability-sla-downgrade-text
+          evidence_ref: c06b-availability
+          fact_only: true
+          comparison_scope: attachment-two
+          required: true
+        - id: liability-cap-three-months-text
+          evidence_ref: c06b-cap
+          fact_only: true
+          comparison_scope: attachment-two
+          required: true
+        - id: partial-global-coverage
+          evidence_ref: c06b-manifest
+          fact_only: true
+          required: true
+      must_not_flag:
+        - id: global-flat
+          reason: body equality cannot cover absent attachment bodies
+          required: true
+          evidence_refs:
+            - c06b-manifest
+        - id: global-up
+          reason: attachment-one and attachment-three bodies were not delivered
+          required: true
+          evidence_refs:
+            - c06b-manifest
+      coverage_targets:
+        - body
+        - attachment-two
+        - undelivered-attachment-one
+        - undelivered-attachment-three
+      negative_searches:
+        - id: c06b-undelivered-attachments
+          patterns:
+            - "# 附件一"
+            - "# 附件三"
+          scope: delivered file after attachment manifest
+      scope_targets:
+        - mainland-china
+        - explicit-version-comparison
+        - client-perspective
+      evidence:
+        - id: c06a-sla-version
+          kind: literal
+          source_case: C06a
+          part: attachment:附件二
+          page: 1
+          clause_no: title
+          quote: "# 附件二　服务水平协议（SLA-v1.2）"
+        - id: c06b-sla-version
+          kind: literal
+          part: attachment:附件二
+          page: 1
+          clause_no: title
+          quote: "# 附件二　服务水平协议（SLA-v2.0）"
+        - id: c06b-availability
+          kind: literal
+          part: attachment:附件二
+          page: 1
+          clause_no: "2.1"
+          quote: 2.1 乙方承诺服务的月度可用性不低于 **99.0%**。
+        - id: c06b-cap
+          kind: literal
+          part: attachment:附件二
+          page: 2
+          clause_no: "5.1"
+          quote: 不超过索赔事件发生前 3 个月内甲方实际支付的服务费用总额
+        - id: c06b-manifest
+          kind: literal
+          part: body
+          page: 7
+          clause_no: "17.4"
+          quote: 附件三　《数据处理附录》
+    C07:
+      expected_gate: passed
+      source:
+        file: C07-master-services-agreement.md
+        sha256: e6aac24270c0972fa0fc5d2f016a6f4b2b4258760af10dfe15f3f7b5f16a664a
+        classification: synthetic
+      service_scope:
+        status: out_of_service_scope
+        intake_object_blocked_by_scope_alone: false
+        general_document_governance_allowed: true
+        referral_required: true
+        foreign_law_substantive_conclusions_allowed: false
+      signature:
+        fields_textually_complete: true
+        authenticity_verified: false
+      legal_review:
+        status: pending
+        items:
+          - electronic-signature authenticity and authority are not established by /s/ text
+      comparison:
+        applicability: not_applicable
+      must_detect:
+        - id: singapore-law-text
+          evidence_ref: c07-law
+          fact_only: true
+          legal_effect: out_of_service_scope
+          required: true
+        - id: audit-right-missing
+          evidence_ref: c07-no-audit
+          fact_only: true
+          required: true
+        - id: professional-referral
+          required: true
+          fact_only: true
+          legal_effect: out_of_service_scope
+          evidence_refs:
+            - c07-law
+        - id: liability-cap-market-effect-pending
+          required: true
+          evidence_ref: c07-liability
+          fact_only: true
+          legal_effect: pending_professional_review
+        - id: renewal-notice-market-effect-pending
+          required: true
+          evidence_ref: c07-renewal
+          fact_only: true
+          legal_effect: pending_professional_review
+      must_not_flag:
+        - id: signature-fields-missing
+          evidence_ref: c07-signature
+          required: true
+        - id: attachment-missing
+          required: true
+          evidence_ref: c07-exhibits
+        - id: foreign-law-substantive-approved
+          reason: Singapore-law effect requires referral
+          required: true
+          evidence_refs:
+            - c07-law
+        - id: subcontracting-text-reviewed
+          required: true
+          evidence_ref: c07-subcontracting
+          output_rule: forbidden
+          reason: clause 4 expressly covers subcontracting
+      coverage_targets:
+        - general-document-governance
+        - governing-law-text
+        - audit-right-search
+        - exhibit-list
+        - referral
+        - liability-cap-market-effect-pending
+        - renewal-notice-market-effect-pending
+        - subcontracting-text-reviewed
+      negative_searches:
+        - id: c07-no-audit
+          patterns:
+            - audit
+            - inspection
+            - right to examine
+          scope: entire delivered document, pages 1-6 including Exhibit list
+      scope_targets:
+        - out-of-service-scope
+        - general-document-governance-only
+        - professional-referral
+      evidence:
+        - id: c07-law
+          kind: literal
+          part: body
+          page: 5
+          clause_no: "12.1"
+          quote: 12.1 This Agreement shall be governed by and construed in accordance with the laws of the Republic of Singapore.
+        - id: c07-signature
+          kind: literal
+          part: body
+          page: 6
+          clause_no: signature
+          quote: "Signature: /s/ Adela Fournier"
+        - id: c07-exhibits
+          kind: literal
+          part: body
+          page: 6
+          clause_no: "13.5"
+          quote: Exhibit C — Information Security Requirements
+        - id: c07-liability
+          kind: literal
+          part: body
+          page: 4
+          clause_no: "9.2"
+          quote: during the three (3) months immediately preceding the event giving rise to the claim
+        - id: c07-renewal
+          kind: literal
+          part: body
+          page: 2
+          clause_no: "2.2"
+          quote: no later than thirty (30) days prior to the end of the then-current term
+        - id: c07-subcontracting
+          kind: literal
+          part: body
+          page: 2
+          clause_no: "4.2"
+          quote: Supplier shall not subcontract any part of the services without Client's prior written consent
+    C08:
+      expected_gate: blocked
+      source:
+        file: C08-mutual-nda.md
+        sha256: 882ff9eae5b54aa8ae3974cdb21bffe7cdb00c171a9a1e936aeff7a973900c64
+        classification: synthetic
+      scenario:
+        type: execution_readiness_review
+        execution_validation_requested: true
+      service_scope:
+        status: out_of_service_scope
+        intake_object_blocked_by_scope_alone: false
+        general_document_governance_allowed: true
+        referral_required: true
+        foreign_law_substantive_conclusions_allowed: false
+      legal_review:
+        status: not_required
+      comparison:
+        applicability: not_applicable
+      must_detect:
+        - id: blank-signature-fields
+          evidence_ref: c08-signature
+          fact_only: true
+          required: true
+        - id: singapore-law-text
+          evidence_ref: c08-law
+          fact_only: true
+          legal_effect: out_of_service_scope
+          required: true
+      must_not_flag:
+        - id: delaware-governing-law
+          reason: Delaware appears only as an incorporation fact; clause 8.1 selects Singapore law
+          required: true
+          evidence_refs:
+            - c08-law
+        - id: page-continuity-reviewed
+          required: true
+          evidence_ref: c08-page
+          output_rule: forbidden
+        - id: party-name-consistency-reviewed
+          required: true
+          evidence_ref: c08-parties
+          output_rule: forbidden
+      coverage_targets:
+        - request-purpose
+        - execution-readiness
+        - signature-fields
+        - general-document-governance
+        - referral
+        - page-continuity-reviewed
+        - party-name-consistency-reviewed
+      negative_searches:
+        - id: c08-no-completed-signature
+          patterns:
+            - "Signature: /s/"
+            - "Name: [A-Za-z]"
+          scope: both signature blocks
+      scope_targets:
+        - out-of-service-scope
+        - execution-readiness-review
+        - professional-referral
+      evidence:
+        - id: c08-signature
+          kind: literal
+          part: body
+          page: 4
+          clause_no: signature
+          quote: "Signature: ______________________________"
+        - id: c08-law
+          kind: literal
+          part: body
+          page: 3
+          clause_no: "8.1"
+          quote: 8.1 This Agreement shall be governed by and construed in accordance with the laws of the Republic of Singapore.
+        - id: c08-page
+          kind: literal
+          part: body
+          page: 4
+          clause_no: page-marker
+          quote: Page 4 of 4
+        - id: c08-parties
+          kind: literal
+          part: body
+          page: 1
+          clause_no: parties
+          quote: Northwind and Blue Harbor are each referred to as a "Party" and together as the "Parties".
+    R01:
+      expected_gate: blocked
+      source:
+        file: R01-govt-purchase-real.md
+        sha256: 795d5d49f2c58d61a2349458dc5de78c909c8045091fa8539334017b4bcc57ff
+        classification: public_template
+      service_scope:
+        status: in_scope
+      legal_review:
+        status: pending
+        items:
+          - historical statutory-effect assertions
+      comparison:
+        applicability: not_applicable
+      must_detect:
+        - id: placeholder-unfilled
+          required: true
+          evidence_ref: r01-dispute
+          severity: severe
+          severity_source: contract-intake@1.0.6 S3
+        - id: dispute-resolution-unselected
+          required: true
+          evidence_ref: r01-dispute
+          severity: severe
+          severity_source: contract-intake@1.0.6 S3/S6
+        - id: old-contract-law-name-text
+          required: true
+          fact_only: true
+          legal_effect: pending_professional_review
+          evidence_refs:
+            - r01-old-law
+        - id: signing-time-law-effect-pending
+          required: true
+          fact_only: true
+          legal_effect: pending_professional_review
+          evidence_refs:
+            - r01-old-law
+            - r01-dispute
+      must_not_flag:
+        - id: executed-or-authenticated-contract
+          reason: R01 is a public blank template, not an executed customer contract
+          required: true
+          evidence_refs:
+            - r01-party-placeholders
+        - id: attachment-missing
+          required: true
+          evidence_ref: r01-constituent-files
+          reason: Clause 2 is a list of procedural constituent documents, not an attachment-delivery manifest
+        - id: party-name-inconsistency
+          required: true
+          evidence_ref: r01-party-placeholders
+          reason: Buyer, seller and witness use XXXX placeholders; the correct category is placeholder-unfilled, not name inconsistency
+      coverage_targets:
+        - input-integrity
+        - placeholders
+        - dispute-selection
+        - pagination
+      negative_searches:
+        - id: r01-no-selected-forum
+          patterns:
+            - 第（ ① ）项
+            - 第（ ② ）项
+          scope: clause 十二（四）
+      scope_targets:
+        - mainland-china
+        - public-template
+        - signing-time-law-effect-pending
+      evidence:
+        - id: r01-constituent-files
+          kind: literal
+          part: body
+          page: unknown
+          clause_no: "2"
+          quote: 2、组成合同的文件
+        - id: r01-party-placeholders
+          kind: literal
+          part: body
+          page: unknown
+          clause_no: header
+          quote: 买  方：XXXXXXXXXXXX                  电话：XXX-XXXXXX
+        - id: r01-old-law
+          kind: literal
+          part: body
+          page: unknown
+          clause_no: preamble
+          quote: 根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定
+        - id: r01-dispute
+          kind: literal
+          part: body
+          page: unknown
+          clause_no: 十二（四）
+          quote: |-
+            按以下第（ ）项方式处理：①根据《中华人民共和国仲裁法》的规定向
+                       申请仲裁。②向            人民法院起诉。
+    R02:
+      expected_gate: conditional
+      source:
+        file: R02-govt-purchase-executed.md
+        sha256: 2a5052027408597306beb39644dbce6fa76f109d220cfcf2effc44ea027e41fd
+        classification: synthetic_derivative
+        generator: testdata/contracts/make-r02.py
+      signature:
+        fields_textually_complete: true
+        authenticity_verified: false
+        execution_status_claim: simulated
+      service_scope:
+        status: in_scope
+      legal_review:
+        status: pending
+        items:
+          - arbitration wording effect and article number
+          - signature authenticity and authority
+      comparison:
+        applicability: not_applicable
+      gate_reason:
+        code: FLG-PARTY-ID-ABSENT
+        source: contract-intake@1.0.6 S7.1
+        missing_for:
+          - 买方安徽建筑大学
+          - 卖方合肥中鼎智能科技有限公司
+        role_clarification_for:
+          - 见证方安徽公信招标咨询有限公司
+        downstream: continue
+        pending: 补充并核验买方、卖方的统一社会信用代码或等价注册号；见证方的核验角色适用性保持 unknown，先澄清其是否属于本轮身份核验目标，不因字段缺失推定。
+      party_identifier_expectations:
+        - party: 安徽建筑大学
+          party_role: buyer
+          identifier_applicability: required
+          expected_when_absent: FLG-PARTY-ID-ABSENT
+          basis: 原文称买方且买卖双方协商签订本合同
+        - party: 合肥中鼎智能科技有限公司
+          party_role: seller
+          identifier_applicability: required
+          expected_when_absent: FLG-PARTY-ID-ABSENT
+          basis: 原文称卖方且买卖双方协商签订本合同
+        - party: 安徽公信招标咨询有限公司
+          party_role: witness
+          identifier_applicability: unknown
+          expected_when_absent: role_clarification
+          basis: 原文明确称见证方；是否属于本轮主体身份核验目标未由源文确定
+      must_detect:
+        - id: party-id-absent
+          evidence_refs:
+            - r02-parties
+            - r02-no-party-id
+          fact_only: true
+          required: true
+        - id: contract-date-2026
+          evidence_ref: r02-date
+          fact_only: true
+          required: true
+        - id: old-contract-law-name-text
+          fact_only: true
+          legal_effect: pending_professional_review
+          required: true
+          evidence_refs:
+            - r02-old-law
+        - id: arbitration-institution-unspecified-text
+          fact_only: true
+          legal_effect: pending_professional_review
+          required: true
+          evidence_refs:
+            - r02-arbitration
+      must_not_flag:
+        - id: placeholder-unfilled
+          required: true
+          evidence_ref: r02-no-unfilled-placeholder
+          scope: ordinary filled fields; arbitration institution ambiguity remains a finding
+        - id: signature-fields-missing
+          evidence_ref: r02-date
+          required: true
+        - id: attachment-missing
+          required: true
+          evidence_ref: r02-constituent-files
+          reason: document describes component files, not an authoritative attachment-body delivery manifest
+      coverage_targets:
+        - party-identifiers
+        - contract-date
+        - cited-law-name
+        - arbitration-wording
+        - signature-text
+      negative_searches:
+        - id: r02-no-party-id
+          patterns:
+            - 统一社会信用代码
+            - 注册号
+          scope: all three party identification blocks and entire delivered document
+        - id: r02-no-unfilled-placeholder
+          patterns:
+            - '\$X'
+            - TBD
+            - 【待定】
+            - ____________
+          scope: entire filled derivative excluding decorative signature separators
+      scope_targets:
+        - mainland-china
+        - synthetic-derivative
+        - professional-review-for-legal-effect
+      evidence:
+        - id: r02-parties
+          kind: literal
+          part: body
+          page: 1
+          clause_no: parties
+          quote: 买  方：安徽建筑大学                  电话：0551-63828001
+        - id: r02-date
+          kind: literal
+          part: body
+          page: 3
+          clause_no: signature
+          quote: 日    期：2026年8月18日              日    期:2026年8月18日
+        - id: r02-old-law
+          kind: literal
+          part: body
+          page: 1
+          clause_no: preamble
+          quote: 根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定
+        - id: r02-constituent-files
+          kind: literal
+          part: body
+          page: 1
+          clause_no: 二
+          quote: 二、组成合同的文件
+        - id: r02-arbitration
+          kind: literal
+          part: body
+          page: 3
+          clause_no: 十二（四）
+          quote: |-
+            按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向
+                       买方所在地仲裁机构 申请仲裁。②向            人民法院起诉。
+    R03:
+      expected_gate: conditional
+      source:
+        file: R03-govt-purchase-2019.md
+        sha256: fd15853948848eaa3a1cf7485347d48a25c14c897833ef488c3b96d7affa799d
+        classification: temporal_derivative
+        generator: testdata/contracts/make-r03.py
+      signature:
+        fields_textually_complete: true
+        authenticity_verified: false
+        execution_status_claim: simulated
+      service_scope:
+        status: in_scope
+      legal_review:
+        status: pending
+        items:
+          - applicable historical arbitration-law version and article
+          - transition/continuing-fact analysis
+          - signature authenticity and authority
+      comparison:
+        applicability: applicable
+        baseline: R02
+        direction: undetermined
+        difference_scope: dates and reference years only; legal effect pending professional review
+      gate_reason:
+        code: FLG-PARTY-ID-ABSENT
+        source: contract-intake@1.0.6 S7.1
+        missing_for:
+          - 买方安徽建筑大学
+          - 卖方合肥中鼎智能科技有限公司
+        role_clarification_for:
+          - 见证方安徽公信招标咨询有限公司
+        downstream: continue
+        pending: 补充并核验买方、卖方的统一社会信用代码或等价注册号；见证方的核验角色适用性保持 unknown，先澄清其是否属于本轮身份核验目标，不因字段缺失推定。
+      party_identifier_expectations:
+        - party: 安徽建筑大学
+          party_role: buyer
+          identifier_applicability: required
+          expected_when_absent: FLG-PARTY-ID-ABSENT
+          basis: 原文称买方且买卖双方协商签订本合同
+        - party: 合肥中鼎智能科技有限公司
+          party_role: seller
+          identifier_applicability: required
+          expected_when_absent: FLG-PARTY-ID-ABSENT
+          basis: 原文称卖方且买卖双方协商签订本合同
+        - party: 安徽公信招标咨询有限公司
+          party_role: witness
+          identifier_applicability: unknown
+          expected_when_absent: role_clarification
+          basis: 原文明确称见证方；是否属于本轮主体身份核验目标未由源文确定
+      must_detect:
+        - id: party-id-absent
+          evidence_refs:
+            - r03-parties
+            - r03-no-party-id
+          fact_only: true
+          required: true
+        - id: contract-date-2019
+          fact_only: true
+          required: true
+          evidence_refs:
+            - r03-date
+        - id: old-contract-law-name-text
+          fact_only: true
+          legal_effect: pending_professional_review
+          required: true
+          evidence_refs:
+            - r03-old-law
+        - id: arbitration-institution-unspecified-text
+          evidence_ref: r03-arbitration
+          fact_only: true
+          legal_effect: pending_professional_review
+          required: true
+        - id: arbitration-law-version-out-of-range
+          required: true
+          evidence_refs:
+            - r03-date
+            - r03-arbitration
+          fact_only: true
+          available_library_version: 2025 revision / effective 2026
+          contract_time: 2019-06-20
+          legal_effect: pending_professional_review
+          capability_debt: 库内无合同签订时点版本全文；不得套用 2025/2026 版作具体法律效力结论
+      must_not_flag:
+        - id: contract-law-repealed-at-signing
+          reason: 2019 text fact does not establish later repeal at signing; effect requires professional review
+          required: true
+          evidence_refs:
+            - r03-date
+            - r03-old-law
+        - id: signature-fields-missing
+          evidence_ref: r03-date
+          required: true
+        - id: attachment-missing
+          required: true
+          evidence_ref: r03-constituent-files
+          reason: document describes component files, not an authoritative attachment-body delivery manifest
+        - id: r03-no-unfilled-placeholder
+          required: true
+          evidence_ref: r03-no-unfilled-placeholder
+          output_rule: forbidden
+      coverage_targets:
+        - party-identifiers
+        - contract-date
+        - cited-law-name
+        - arbitration-wording
+        - temporal-comparison
+      negative_searches:
+        - id: r03-no-party-id
+          patterns:
+            - 统一社会信用代码
+            - 注册号
+          scope: all three party identification blocks and entire delivered document
+        - id: r03-no-unfilled-placeholder
+          patterns:
+            - '\$X'
+            - TBD
+            - 【待定】
+            - ____________
+          scope: entire filled derivative excluding decorative signature separators and redaction masks
+      scope_targets:
+        - mainland-china
+        - temporal-derivative
+        - professional-review-for-legal-effect
+      evidence:
+        - id: r03-parties
+          kind: literal
+          part: body
+          page: 1
+          clause_no: parties
+          quote: 买  方：安徽建筑大学                  电话：0551-63828001
+        - id: r03-date
+          kind: literal
+          part: body
+          page: 3
+          clause_no: signature
+          quote: 日    期：2019年6月20日              日    期:2019年6月20日
+        - id: r03-old-law
+          kind: literal
+          part: body
+          page: 1
+          clause_no: preamble
+          quote: 根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定
+        - id: r03-constituent-files
+          kind: literal
+          part: body
+          page: 1
+          clause_no: 二
+          quote: 二、组成合同的文件
+        - id: r03-arbitration
+          kind: literal
+          part: body
+          page: 3
+          clause_no: 十二（四）
+          quote: |-
+            按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向
+                       买方所在地仲裁机构 申请仲裁。②向            人民法院起诉。
+  scenarios:
+    C08_negotiation_draft:
+      base_case: C08
+      user_request_text: 请将本轮对象作为 negotiation_draft 做文本审查；不请求签署完成或生效验证。
+      request:
+        object_designation: negotiation_draft
+        type: negotiation_draft
+        execution_validation_requested: false
+      expected_gate: passed
+      signature_pending: true
+      gate_policy: Blank signature fields alone do not reduce the gate. Other actual FLG/BLK evidence must be stated specifically.
+      constraints:
+        - do not claim executed or effective
+        - perform only general document governance
+        - refer foreign-law substance
+        - retain signature pending outside the intake gate
+  targeted_scenarios:
+    party_identifier_required_cn_party:
+      party_role: seller
+      identifier_applicability: required
+      identifier_present: false
+      expected_outcome: FLG-PARTY-ID-ABSENT
+      basis: 中国法人卖方是主合同当事人
+    party_identifier_not_applicable_witness:
+      party_role: witness
+      identifier_applicability: not_applicable
+      identifier_present: false
+      expected_outcome: no_identifier_gate
+      basis: 假设场景已由审查请求明确排除仅见证方的主体身份核验
+    party_identifier_unknown_role:
+      party_role: unknown
+      identifier_applicability: unknown
+      identifier_present: false
+      expected_outcome: role_clarification
+      basis: 源文角色不足，不从字段缺失推定角色
+    R7_known_manifest_body_absent:
+      expected_gate: passed
+      fact: authoritative list is known; one listed attachment body was not delivered
+      pend_001_allowed: false
+      downstream_status: not_covered
+    R9_authoritative_manifest_absent:
+      expected_gate: conditional
+      fact: body points to an authoritative formal attachment list, but that list was not delivered
+      required_pending_id: PEND-001
+      downstream_status: not_covered
+    body_reference_not_in_manifest:
+      expected_gate: blocked
+      fact: body references an attachment that is absent from the delivered authoritative list
+provenance:
+  normative: false
+  purpose: Audit-only legacy scope-change ledger; it is not a second business-output schema.
+  history_target_dispositions:
+    C01:must_not_flag:amount-in-words-mismatch:
+      status: reframed
+      reason: Current oracle retains the amount fact but does not assume the historical label direction.
+      semantic:
+        category: amount-in-words-mismatch
+        polarity: must_not_flag
+        fact_constraint: Current oracle retains the amount fact but does not assume the historical label direction.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C01:must_not_flag:amount-in-words-mismatch
+      targets:
+        - kind: must_not_flag
+          id: amount-in-words-mismatch
+    C01:must_not_flag:liability-cap:
+      status: reframed
+      reason: Presence is now expressed as a false-positive prohibition on missingness.
+      semantic:
+        category: liability-cap
+        polarity: must_not_flag
+        fact_constraint: Presence is now expressed as a false-positive prohibition on missingness.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C01:must_not_flag:liability-cap
+      targets:
+        - kind: must_not_flag
+          id: liability-cap-missing
+    C01:must_not_flag:breach-remedy:
+      status: reframed
+      reason: The sourced presence check remains a concrete coverage target.
+      semantic:
+        category: breach-remedy
+        polarity: must_not_flag
+        fact_constraint: The sourced presence check remains a concrete coverage target.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C01:must_not_flag:breach-remedy
+      targets:
+        - kind: must_not_flag
+          id: breach-remedy-present
+    C01:must_not_flag:grace-period:
+      status: reframed
+      reason: The sourced cure-window presence check remains a concrete coverage target.
+      semantic:
+        category: grace-period
+        polarity: must_not_flag
+        fact_constraint: The sourced cure-window presence check remains a concrete coverage target.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C01:must_not_flag:grace-period
+      targets:
+        - kind: must_not_flag
+          id: grace-period-present
+    C01:must_not_flag:termination-convenience:
+      status: reframed
+      reason: The termination-right presence check remains independently addressable.
+      semantic:
+        category: termination-convenience
+        polarity: must_not_flag
+        fact_constraint: The termination-right presence check remains independently addressable.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C01:must_not_flag:termination-convenience
+      targets:
+        - kind: must_not_flag
+          id: termination-convenience-present
+    C01:must_not_flag:subcontracting:
+      status: reframed
+      reason: The subcontracting-clause presence check remains independently addressable.
+      semantic:
+        category: subcontracting
+        polarity: must_not_flag
+        fact_constraint: The subcontracting-clause presence check remains independently addressable.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C01:must_not_flag:subcontracting
+      targets:
+        - kind: must_not_flag
+          id: subcontracting-present
+    C01:must_not_flag:audit-right:
+      status: reframed
+      reason: The audit-right presence check remains independently addressable.
+      semantic:
+        category: audit-right
+        polarity: must_not_flag
+        fact_constraint: The audit-right presence check remains independently addressable.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C01:must_not_flag:audit-right
+      targets:
+        - kind: must_not_flag
+          id: audit-right-present
+    C01:must_not_flag:dispute-resolution:
+      status: reframed
+      reason: Presence is now expressed as a false-positive prohibition on missingness.
+      semantic:
+        category: dispute-resolution
+        polarity: must_not_flag
+        fact_constraint: Presence is now expressed as a false-positive prohibition on missingness.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C01:must_not_flag:dispute-resolution
+      targets:
+        - kind: must_not_flag
+          id: dispute-resolution-missing
+    C01:must_not_flag:force-majeure:
+      status: reframed
+      reason: The force-majeure presence check remains independently addressable.
+      semantic:
+        category: force-majeure
+        polarity: must_not_flag
+        fact_constraint: The force-majeure presence check remains independently addressable.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C01:must_not_flag:force-majeure
+      targets:
+        - kind: must_not_flag
+          id: force-majeure-present
+    C01:must_not_flag:data-export:
+      status: reframed
+      reason: The data-export presence check remains independently addressable.
+      semantic:
+        category: data-export
+        polarity: must_not_flag
+        fact_constraint: The data-export presence check remains independently addressable.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C01:must_not_flag:data-export
+      targets:
+        - kind: must_not_flag
+          id: data-export-present
+    C01:must_not_flag:liability-cap-below-market:
+      status: reframed
+      reason: Source fact is retained without freezing the historical market-effect label.
+      semantic:
+        category: liability-cap-below-market
+        polarity: must_not_flag
+        fact_constraint: Source fact is retained without freezing the historical market-effect label.
+      shared_target_basis: The same present liability-cap text supports both missingness and market-label false-positive checks; the distinct category remains explicit here.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C01:must_not_flag:liability-cap-below-market
+      targets:
+        - kind: must_not_flag
+          id: liability-cap-missing
+    C01:must_not_flag:renewal-notice-window-too-short:
+      status: reframed
+      reason: The notice-window comparison remains a concrete target without pre-approving its market effect.
+      semantic:
+        category: renewal-notice-window-too-short
+        polarity: must_not_flag
+        fact_constraint: The notice-window comparison remains a concrete target without pre-approving its market effect.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C01:must_not_flag:renewal-notice-window-too-short
+      targets:
+        - kind: must_not_flag
+          id: renewal-notice-window-reviewed
+    C01:must_not_flag:data-export-prohibited:
+      status: reframed
+      reason: The prohibition polarity remains a concrete text target without pre-approving legal effect.
+      semantic:
+        category: data-export-prohibited
+        polarity: must_not_flag
+        fact_constraint: The prohibition polarity remains a concrete text target without pre-approving legal effect.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C01:must_not_flag:data-export-prohibited
+      targets:
+        - kind: must_not_flag
+          id: data-export-prohibition-reviewed
+    C03:must_detect:liability-cap:
+      status: reframed
+      reason: Stable current id states the detected absence.
+      semantic:
+        category: liability-cap
+        polarity: must_detect
+        fact_constraint: Stable current id states the detected absence.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C03:must_detect:liability-cap
+      targets:
+        - kind: must_detect
+          id: liability-cap-missing
+    C03:must_detect:breach-remedy:
+      status: reframed
+      reason: Stable current id states the detected absence.
+      semantic:
+        category: breach-remedy
+        polarity: must_detect
+        fact_constraint: Stable current id states the detected absence.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C03:must_detect:breach-remedy
+      targets:
+        - kind: must_detect
+          id: breach-remedy-missing
+    C03:must_detect:dispute-resolution:
+      status: reframed
+      reason: Stable current id states the detected absence.
+      semantic:
+        category: dispute-resolution
+        polarity: must_detect
+        fact_constraint: Stable current id states the detected absence.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C03:must_detect:dispute-resolution
+      targets:
+        - kind: must_detect
+          id: dispute-resolution-missing
+    C03:must_not_flag:data-export:
+      status: reframed
+      reason: Presence is expressed as a false-positive prohibition on missingness.
+      semantic:
+        category: data-export
+        polarity: must_not_flag
+        fact_constraint: Presence is expressed as a false-positive prohibition on missingness.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C03:must_not_flag:data-export
+      targets:
+        - kind: must_not_flag
+          id: data-export-missing
+    C04:must_detect:non-compete-term-excessive:
+      status: reframed
+      reason: Text fact retained; legal characterization remains pending professional review.
+      semantic:
+        category: non-compete-term-excessive
+        polarity: must_detect
+        fact_constraint: Text fact retained; legal characterization remains pending professional review.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C04:must_detect:non-compete-term-excessive
+      targets:
+        - kind: must_detect
+          id: five-year-non-compete-text
+    C04:must_detect:non-compete-without-compensation:
+      status: reframed
+      reason: Text fact retained; legal characterization remains pending professional review.
+      semantic:
+        category: non-compete-without-compensation
+        polarity: must_detect
+        fact_constraint: Text fact retained; legal characterization remains pending professional review.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C04:must_detect:non-compete-without-compensation
+      targets:
+        - kind: must_detect
+          id: no-economic-compensation-text
+    C04:must_detect:probation-exceeds-statutory-limit:
+      status: reframed
+      reason: Text fact retained; legal characterization remains pending professional review.
+      semantic:
+        category: probation-exceeds-statutory-limit
+        polarity: must_detect
+        fact_constraint: Text fact retained; legal characterization remains pending professional review.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C04:must_detect:probation-exceeds-statutory-limit
+      targets:
+        - kind: must_detect
+          id: twelve-month-probation-text
+    C04:must_not_flag:placeholder-unfilled:
+      status: reframed
+      reason: Current prohibition distinguishes source redaction from an unfilled placeholder.
+      semantic:
+        category: placeholder-unfilled
+        polarity: must_not_flag
+        fact_constraint: Current prohibition distinguishes source redaction from an unfilled placeholder.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C04:must_not_flag:placeholder-unfilled
+      targets:
+        - kind: must_not_flag
+          id: redaction-as-placeholder
+    C05:must_detect:jurisdiction-rulepack-unavailable:
+      status: reframed
+      reason: The old missing-pack effect is replaced by the concrete professional-referral target without removing scope checking.
+      semantic:
+        category: jurisdiction-rulepack-unavailable
+        polarity: must_detect
+        fact_constraint: The old missing-pack effect is replaced by the concrete professional-referral target without removing scope checking.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C05:must_detect:jurisdiction-rulepack-unavailable
+      targets:
+        - kind: must_detect
+          id: professional-referral
+    C05:must_detect:grace-period:
+      status: reframed
+      reason: Retained as the concrete negative-search fact rather than an ungrounded legal effect.
+      semantic:
+        category: grace-period
+        polarity: must_detect
+        fact_constraint: Retained as the concrete negative-search fact rather than an ungrounded legal effect.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C05:must_detect:grace-period
+      targets:
+        - kind: must_detect
+          id: c05-no-grace-period
+    C05:must_detect:governing-law-conflict:
+      status: reframed
+      reason: Coexisting source text is retained; substantive conflict is not asserted outside scope.
+      semantic:
+        category: governing-law-conflict
+        polarity: must_detect
+        fact_constraint: Coexisting source text is retained; substantive conflict is not asserted outside scope.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C05:must_detect:governing-law-conflict
+      targets:
+        - kind: must_detect
+          id: governing-law-forum-coexistence
+    C05:must_detect:data-export-prohibited:
+      status: reframed
+      reason: Text fact retained without foreign-law effect conclusion.
+      semantic:
+        category: data-export-prohibited
+        polarity: must_detect
+        fact_constraint: Text fact retained without foreign-law effect conclusion.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C05:must_detect:data-export-prohibited
+      targets:
+        - kind: must_detect
+          id: data-export-prohibited-text
+    C05:must_not_flag:data-export:
+      status: reframed
+      reason: Presence is expressed as a missingness false-positive prohibition.
+      semantic:
+        category: data-export
+        polarity: must_not_flag
+        fact_constraint: Presence is expressed as a missingness false-positive prohibition.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C05:must_not_flag:data-export
+      targets:
+        - kind: must_not_flag
+          id: data-export-missing
+    C05:must_not_flag:audit-right:
+      status: reframed
+      reason: Presence is expressed as a missingness false-positive prohibition.
+      semantic:
+        category: audit-right
+        polarity: must_not_flag
+        fact_constraint: Presence is expressed as a missingness false-positive prohibition.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C05:must_not_flag:audit-right
+      targets:
+        - kind: must_not_flag
+          id: audit-right-missing
+    C05:must_not_flag:liability-cap:
+      status: reframed
+      reason: Presence is expressed as a missingness false-positive prohibition.
+      semantic:
+        category: liability-cap
+        polarity: must_not_flag
+        fact_constraint: Presence is expressed as a missingness false-positive prohibition.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C05:must_not_flag:liability-cap
+      targets:
+        - kind: must_not_flag
+          id: liability-cap-missing
+    C05:must_not_flag:liability-cap-below-market:
+      status: reframed
+      reason: Source fact retained; market-effect label is not approved outside service scope.
+      semantic:
+        category: liability-cap-below-market
+        polarity: must_not_flag
+        fact_constraint: Source fact retained; market-effect label is not approved outside service scope.
+      shared_target_basis: The same present liability-cap text supports both missingness and market-label false-positive checks; the distinct category remains explicit here.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C05:must_not_flag:liability-cap-below-market
+      targets:
+        - kind: must_not_flag
+          id: liability-cap-missing
+    C06b:must_detect:liability-cap-below-market:
+      status: reframed
+      reason: Three-month text fact retained; market effect stays separate.
+      semantic:
+        category: liability-cap-below-market
+        polarity: must_detect
+        fact_constraint: Three-month text fact retained; market effect stays separate.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C06b:must_detect:liability-cap-below-market
+      targets:
+        - kind: must_detect
+          id: liability-cap-three-months-text
+    C06b:must_detect:availability-sla-downgrade:
+      status: reframed
+      reason: Availability change retained as a sourced text comparison.
+      semantic:
+        category: availability-sla-downgrade
+        polarity: must_detect
+        fact_constraint: Availability change retained as a sourced text comparison.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C06b:must_detect:availability-sla-downgrade
+      targets:
+        - kind: must_detect
+          id: availability-sla-downgrade-text
+    C07:must_detect:jurisdiction-rulepack-unavailable:
+      status: reframed
+      reason: The old missing-pack effect is replaced by the concrete professional-referral target without removing scope checking.
+      semantic:
+        category: jurisdiction-rulepack-unavailable
+        polarity: must_detect
+        fact_constraint: The old missing-pack effect is replaced by the concrete professional-referral target without removing scope checking.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C07:must_detect:jurisdiction-rulepack-unavailable
+      targets:
+        - kind: must_detect
+          id: professional-referral
+    C07:must_detect:audit-right:
+      status: reframed
+      reason: Stable current id states the negative-search result.
+      semantic:
+        category: audit-right
+        polarity: must_detect
+        fact_constraint: Stable current id states the negative-search result.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C07:must_detect:audit-right
+      targets:
+        - kind: must_detect
+          id: audit-right-missing
+    C07:must_detect:liability-cap-below-market:
+      status: reframed
+      reason: The clause comparison remains checked while foreign-law market effect stays pending.
+      semantic:
+        category: liability-cap-below-market
+        polarity: must_detect
+        fact_constraint: The clause comparison remains checked while foreign-law market effect stays pending.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C07:must_detect:liability-cap-below-market
+      targets:
+        - kind: must_detect
+          id: liability-cap-market-effect-pending
+    C07:must_detect:renewal-notice-window-too-short:
+      status: reframed
+      reason: The notice-window comparison remains checked while foreign-law market effect stays pending.
+      semantic:
+        category: renewal-notice-window-too-short
+        polarity: must_detect
+        fact_constraint: The notice-window comparison remains checked while foreign-law market effect stays pending.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C07:must_detect:renewal-notice-window-too-short
+      targets:
+        - kind: must_detect
+          id: renewal-notice-market-effect-pending
+    C07:must_not_flag:signature-status-unconfirmed:
+      status: reframed
+      reason: Textual completeness is separate from authenticity verification.
+      semantic:
+        category: signature-status-unconfirmed
+        polarity: must_not_flag
+        fact_constraint: Textual completeness is separate from authenticity verification.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C07:must_not_flag:signature-status-unconfirmed
+      targets:
+        - kind: must_not_flag
+          id: signature-fields-missing
+    C07:must_not_flag:subcontracting:
+      status: reframed
+      reason: The subcontracting text remains an explicit general-governance target.
+      semantic:
+        category: subcontracting
+        polarity: must_not_flag
+        fact_constraint: The subcontracting text remains an explicit general-governance target.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C07:must_not_flag:subcontracting
+      targets:
+        - kind: must_not_flag
+          id: subcontracting-text-reviewed
+    C08:must_detect:signature-status-unconfirmed:
+      status: reframed
+      reason: Current id anchors the actual blank signature text.
+      semantic:
+        category: signature-status-unconfirmed
+        polarity: must_detect
+        fact_constraint: Current id anchors the actual blank signature text.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C08:must_detect:signature-status-unconfirmed
+      targets:
+        - kind: must_detect
+          id: blank-signature-fields
+    C08:must_not_flag:page-discontinuity:
+      status: reframed
+      reason: The page-continuity false-positive check remains explicit.
+      semantic:
+        category: page-discontinuity
+        polarity: must_not_flag
+        fact_constraint: The page-continuity false-positive check remains explicit.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C08:must_not_flag:page-discontinuity
+      targets:
+        - kind: must_not_flag
+          id: page-continuity-reviewed
+    C08:must_not_flag:party-name-inconsistency:
+      status: reframed
+      reason: The party-name false-positive check remains explicit.
+      semantic:
+        category: party-name-inconsistency
+        polarity: must_not_flag
+        fact_constraint: The party-name false-positive check remains explicit.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: C08:must_not_flag:party-name-inconsistency
+      targets:
+        - kind: must_not_flag
+          id: party-name-consistency-reviewed
+    R01:must_detect:repealed-law-citation:
+      status: reframed
+      reason: The citation check remains pending because the blank template has no signing time; the check is not removed.
+      semantic:
+        category: repealed-law-citation
+        polarity: must_detect
+        fact_constraint: The citation check remains pending because the blank template has no signing time; the check is not removed.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: R01:must_detect:repealed-law-citation
+      targets:
+        - kind: must_detect
+          id: old-contract-law-name-text
+        - kind: must_detect
+          id: signing-time-law-effect-pending
+    R01:must_not_flag:attachment-missing:
+      status: reframed
+      reason: Clause 2 lists procedural constituent documents, not an attachment-delivery manifest; do not report missing attachments from that list.
+      semantic:
+        category: attachment-missing
+        polarity: must_not_flag
+        fact_constraint: Clause 2 lists procedural constituent documents, not an attachment-delivery manifest; do not report missing attachments from that list.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: R01:must_not_flag:attachment-missing
+      targets:
+        - kind: must_not_flag
+          id: attachment-missing
+    R01:must_not_flag:party-name-inconsistency:
+      status: reframed
+      reason: The buyer, seller and witness names are XXXX placeholders; classify them as unfilled placeholders, not inconsistent names.
+      semantic:
+        category: party-name-inconsistency
+        polarity: must_not_flag
+        fact_constraint: The buyer, seller and witness names are XXXX placeholders; classify them as unfilled placeholders, not inconsistent names.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: R01:must_not_flag:party-name-inconsistency
+      targets:
+        - kind: must_not_flag
+          id: party-name-inconsistency
+    R02:must_detect:repealed-law-citation:
+      status: reframed
+      reason: Old law name is retained; legal effect remains pending professional review.
+      semantic:
+        category: repealed-law-citation
+        polarity: must_detect
+        fact_constraint: Old law name is retained; legal effect remains pending professional review.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: R02:must_detect:repealed-law-citation
+      targets:
+        - kind: must_detect
+          id: old-contract-law-name-text
+    R02:must_detect:arbitration-institution-unspecified:
+      status: reframed
+      reason: Text fact retained; legal effect remains pending professional review.
+      semantic:
+        category: arbitration-institution-unspecified
+        polarity: must_detect
+        fact_constraint: Text fact retained; legal effect remains pending professional review.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: R02:must_detect:arbitration-institution-unspecified
+      targets:
+        - kind: must_detect
+          id: arbitration-institution-unspecified-text
+    R02:must_not_flag:signature-incomplete:
+      status: reframed
+      reason: Textual completeness is separate from authenticity verification.
+      semantic:
+        category: signature-incomplete
+        polarity: must_not_flag
+        fact_constraint: Textual completeness is separate from authenticity verification.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: R02:must_not_flag:signature-incomplete
+      targets:
+        - kind: must_not_flag
+          id: signature-fields-missing
+    R03:must_not_flag:repealed-law-citation:
+      status: reframed
+      reason: Current id makes the signing-time limitation explicit.
+      semantic:
+        category: repealed-law-citation
+        polarity: must_not_flag
+        fact_constraint: Current id makes the signing-time limitation explicit.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: R03:must_not_flag:repealed-law-citation
+      targets:
+        - kind: must_detect
+          id: contract-date-2019
+        - kind: must_detect
+          id: old-contract-law-name-text
+        - kind: must_not_flag
+          id: contract-law-repealed-at-signing
+    R03:must_not_flag:placeholder-unfilled:
+      status: reframed
+      reason: The filled-template fact remains a concrete negative-search target.
+      semantic:
+        category: placeholder-unfilled
+        polarity: must_not_flag
+        fact_constraint: The filled-template fact remains a concrete negative-search target.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: R03:must_not_flag:placeholder-unfilled
+      targets:
+        - kind: must_not_flag
+          id: r03-no-unfilled-placeholder
+    R03:must_not_flag:signature-incomplete:
+      status: reframed
+      reason: Textual completeness is separate from authenticity verification.
+      semantic:
+        category: signature-incomplete
+        polarity: must_not_flag
+        fact_constraint: Textual completeness is separate from authenticity verification.
+      review_source: locked-oracle-source-review-2026-09-29
+      mapping_type: scope_change
+      source_history_key: R03:must_not_flag:signature-incomplete
+      targets:
+        - kind: must_not_flag
+          id: signature-fields-missing
+history:
+  normative: false
+  purpose: "Exact pre-2026-09-29 oracle and measured baselines retained below for audit; never a current expected answer."
+  legacy_oracle:
+    # 多 Agent 合同审查智能体团队 —— 测试语料 Ground Truth
+    #
+    # 用法：以本文件为唯一判据，逐份合同比对审查产物。
+    # 解析约定：合同条目的 key 匹配正则 ^C0\d[ab]?$；以 _ 开头的 key 为元数据与词表，不是合同。
+    # 判定规则见同目录 README.md「验收判定规则」一节。
 
-_meta:
-  schema_version: 1
-  corpus_name: contract-review-agent-fixtures
-  generated_on: "2026-08-31"
-  contract_key_pattern: "^C0\\d[ab]?$"
-  design_source: "轶哥《用多 Agent 搭建更可靠的合同审查智能体》——输入治理前置、关键条款清单、市场标尺三段式"
-  evidence_contract: "每条 evidence 必须能在对应 .md 文件中原文 grep 到（固定字符串匹配，非正则）"
-  scoring_summary: "漏检任一 must_detect: true 条目即判失败；命中任一 must_not_flag 条目即判失败（误报同样是失败）"
+    _meta:
+      schema_version: 1
+      corpus_name: contract-review-agent-fixtures
+      generated_on: "2026-08-31"
+      contract_key_pattern: "^C0\\d[ab]?$"
+      design_source: "轶哥《用多 Agent 搭建更可靠的合同审查智能体》——输入治理前置、关键条款清单、市场标尺三段式"
+      evidence_contract: "每条 evidence 必须能在对应 .md 文件中原文 grep 到（固定字符串匹配，非正则）"
+      scoring_summary: "漏检任一 must_detect: true 条目即判失败；命中任一 must_not_flag 条目即判失败（误报同样是失败）"
 
-_taxonomy:
-  expected_gate:
-    passed: "输入治理阶段无阻断项，可进入条款抽取与风险评估"
-    conditional: "存在需人工确认但不足以阻断的问题，流水线应带标继续，不得就此终止"
-    blocked: "命中硬校验项，必须在输入治理阶段阻断，不得进入条款抽取，不得输出「注意风险后继续」"
+    _taxonomy:
+      expected_gate:
+        passed: "输入治理阶段无阻断项，可进入条款抽取与风险评估"
+        conditional: "存在需人工确认但不足以阻断的问题，流水线应带标继续，不得就此终止"
+        blocked: "命中硬校验项，必须在输入治理阶段阻断，不得进入条款抽取，不得输出「注意风险后继续」"
 
-  gate_reason_ids:
-    placeholder-unfilled:
-      blocking: true
-      description: "正文存在未填充占位符（$X / TBD / [金额] / ____ / 【待定】等）"
-    attachment-missing:
-      blocking: true
-      description: "正文引用了某份附件，但附件清单中不存在该附件"
-    signature-status-unconfirmed:
-      blocking: true
-      description: "签署状态无法确认：签名区留空、缺签署日期、缺签署人职务"
-    page-discontinuity:
-      blocking: true
-      description: "页码序列不连续，存在缺页"
-    version-mismatch:
-      blocking: true
-      description: "主合同正文引用的文件版本与附件清单登记的版本不一致"
-    party-name-inconsistency:
-      blocking: true
-      description: "甲方或乙方名称在文档前后不一致"
-    amount-in-words-mismatch:
-      blocking: false
-      description: "金额中文大写与阿拉伯数字小写不一致，需人工核对，但不阻断流水线"
+      gate_reason_ids:
+        placeholder-unfilled:
+          blocking: true
+          description: "正文存在未填充占位符（$X / TBD / [金额] / ____ / 【待定】等）"
+        attachment-missing:
+          blocking: true
+          description: "正文引用了某份附件，但附件清单中不存在该附件"
+        signature-status-unconfirmed:
+          blocking: true
+          description: "签署状态无法确认：签名区留空、缺签署日期、缺签署人职务"
+        page-discontinuity:
+          blocking: true
+          description: "页码序列不连续，存在缺页"
+        version-mismatch:
+          blocking: true
+          description: "主合同正文引用的文件版本与附件清单登记的版本不一致"
+        party-name-inconsistency:
+          blocking: true
+          description: "甲方或乙方名称在文档前后不一致"
+        amount-in-words-mismatch:
+          blocking: false
+          description: "金额中文大写与阿拉伯数字小写不一致，需人工核对，但不阻断流水线"
 
-  clause_slugs:
-    liability-cap: "责任上限"
-    breach-remedy: "违约责任"
-    grace-period: "宽限期 / 违约治愈期"
-    termination-convenience: "终止便利性（无理由终止权）"
-    subcontracting: "分包与变更控制"
-    audit-right: "审计权"
-    dispute-resolution: "争议解决（须包含明确的争议解决机制或管辖 / 仲裁机构）"
-    force-majeure: "不可抗力"
-    data-export: "数据导出"
+      clause_slugs:
+        liability-cap: "责任上限"
+        breach-remedy: "违约责任"
+        grace-period: "宽限期 / 违约治愈期"
+        termination-convenience: "终止便利性（无理由终止权）"
+        subcontracting: "分包与变更控制"
+        audit-right: "审计权"
+        dispute-resolution: "争议解决（须包含明确的争议解决机制或管辖 / 仲裁机构）"
+        force-majeure: "不可抗力"
+        data-export: "数据导出"
 
-  market_rulers:
-    liability-cap:
-      reference: "12 个月费用"
-      high_risk_below: "6 个月费用"
-    renewal-notice-window:
-      reference: ">= 90 天"
-      elevated_range: "60-89 天"
-      high_risk_below: "60 天"
-    non-compete-term:
-      reference: "1-2 年"
-      high_risk_above: "5 年（显著放大谈判阻力，且中国法下超过 2 年部分不受保护）"
-    data-export:
-      reference: "终止后 90 天内以标准格式导出"
-      high_risk: "完全禁止导出"
+      market_rulers:
+        liability-cap:
+          reference: "12 个月费用"
+          high_risk_below: "6 个月费用"
+        renewal-notice-window:
+          reference: ">= 90 天"
+          elevated_range: "60-89 天"
+          high_risk_below: "60 天"
+        non-compete-term:
+          reference: "1-2 年"
+          high_risk_above: "5 年（显著放大谈判阻力，且中国法下超过 2 年部分不受保护）"
+        data-export:
+          reference: "终止后 90 天内以标准格式导出"
+          high_risk: "完全禁止导出"
 
-  risk_ids:
-    liability-cap-below-market: "责任上限低于市场标尺（低于 6 个月费用为高风险）"
-    renewal-notice-window-too-short: "续约不续约通知窗口短于市场标尺"
-    non-compete-term-excessive: "竞业限制期限超出市场标尺"
-    non-compete-without-compensation: "竞业限制未约定经济补偿"
-    probation-exceeds-statutory-limit: "试用期超出法定上限"
-    data-export-prohibited: "完全禁止数据导出"
-    data-export-window-short: "数据导出窗口短于市场标尺"
-    data-export-charged: "数据导出附加收费条件"
-    governing-law-conflict: "同一文本声明了相互冲突的适用法律或排他管辖"
-    cross-border-transfer-mechanism-absent: "声明适用 GDPR 但未约定任何跨境传输合法性机制"
-    availability-sla-downgrade: "服务可用性承诺相对前一版本下调"
-    service-credit-downgrade: "服务信用补偿标准相对前一版本下调"
-    confidentiality-term-perpetual: "保密期限为永久且无任何终止机制"
-    unilateral-price-adjustment: "对方可单方调价且以沉默视为接受"
-    no-minimum-commitment-with-exclusivity: "无最低采购承诺但施加排他性约束"
+      risk_ids:
+        liability-cap-below-market: "责任上限低于市场标尺（低于 6 个月费用为高风险）"
+        renewal-notice-window-too-short: "续约不续约通知窗口短于市场标尺"
+        non-compete-term-excessive: "竞业限制期限超出市场标尺"
+        non-compete-without-compensation: "竞业限制未约定经济补偿"
+        probation-exceeds-statutory-limit: "试用期超出法定上限"
+        data-export-prohibited: "完全禁止数据导出"
+        data-export-window-short: "数据导出窗口短于市场标尺"
+        data-export-charged: "数据导出附加收费条件"
+        governing-law-conflict: "同一文本声明了相互冲突的适用法律或排他管辖"
+        cross-border-transfer-mechanism-absent: "声明适用 GDPR 但未约定任何跨境传输合法性机制"
+        availability-sla-downgrade: "服务可用性承诺相对前一版本下调"
+        service-credit-downgrade: "服务信用补偿标准相对前一版本下调"
+        confidentiality-term-perpetual: "保密期限为永久且无任何终止机制"
+        unilateral-price-adjustment: "对方可单方调价且以沉默视为接受"
+        no-minimum-commitment-with-exclusivity: "无最低采购承诺但施加排他性约束"
 
-  severity: [critical, high, medium, low]
+      severity: [critical, high, medium, low]
 
-# ============================================================================
+    # ============================================================================
 
-C01:
-  file: C01-saas-subscription.md
-  title: "软件即服务（SaaS）订阅服务协议"
-  language: zh
-  design_intent: "干净基线：9 项关键条款齐全、全部市场标尺达标、输入治理无缺陷。用于验证「不误报」。"
-  expected_gate: passed
-  gate_reasons: []
-  expected_missing_clauses: []
-  not_applicable_clauses: []
-  # ── 2026-08-31 真机验收修正 ──
-  # 这条不是原作者设计的，是 review-reporter 在 C01 上用 MathCalc 独立算出来的。
-  # C01 号称「干净基线」，实则埋了一处作者自己未察觉的算术不一致。
-  # 记在这里，避免后续把「正确报出这条」误判成误报。
-  expected_risks:
-    - id: amount-arithmetic-mismatch
-      severity: important
-      # 不设为 must_detect：A3 与 A4 均明确声明不做算术一致性检查，
-      # 该项属超出设计预期的加分项，由复核环节的 MathCalc 兜住。
-      must_detect: false
-      evidence: "年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）"
-      detail: >-
-        第 2.1 条约定 500 标准席位 + 20 管理员席位 = 520 席位；第 4.1 条单价 ¥2,400/席位/年。
-        520 × 2400 = ¥1,248,000，而合同写 ¥1,250,000，差 ¥2,000；三年合计差 ¥6,000。
-      discovered_by: "review-reporter RV-026 / FND-001（2026-08-31 真机验收）"
-      verified_independently: true
-  clause_presence_evidence:
-    liability-cap: "不超过索赔事件发生前 12 个月内甲方实际支付的服务费用总额"
-    breach-remedy: "## 第十一条　违约责任与救济"
-    grace-period: "该期间为违约治愈宽限期"
-    termination-convenience: "甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）"
-    subcontracting: "## 第十三条　分包与变更控制"
-    audit-right: "## 第十四条　审计权"
-    dispute-resolution: "提交上海国际经济贸易仲裁委员会"
-    force-majeure: "## 第十五条　不可抗力"
-    data-export: "乙方应继续为甲方保留数据导出通道 90 日"
-  market_ruler_compliance:
-    liability-cap: "12 个月费用，等于参考值，不应报风险"
-    renewal-notice-window: "90 日，达到参考值，不应报风险"
-    data-export: "终止后 90 日 + CSV/JSON/SQL 标准格式，达到参考值，不应报风险"
-  must_not_flag:
-    - id: placeholder-unfilled
-      reason: "全文无任何占位符，签署栏已完整填写"
-    - id: attachment-missing
-      reason: "正文引用的附件一、附件二、附件三均在第 17.4 款附件清单中登记"
-    - id: signature-status-unconfirmed
-      reason: "双方签字人、职务、日期、公章齐备"
-    - id: page-discontinuity
-      reason: "第 1 页至第 9 页连续无缺页"
-    - id: version-mismatch
-      reason: "正文引用的《服务规格说明书 V1.0》《服务水平协议 SLA-v1.2》与附件清单登记版本一致"
-    - id: party-name-inconsistency
-      reason: "全文甲方恒为「星海科技（示例）有限公司」，乙方恒为「云梯信息技术（示例）有限公司」"
-    - id: amount-in-words-mismatch
-      reason: "第 4.1 款大写与小写金额一一对应"
-    - slug: liability-cap
-      reason: "第 10.1 款已明确约定责任上限，不得报缺失"
-    - slug: breach-remedy
-      reason: "第十一条为完整违约责任条款，不得报缺失"
-    - slug: grace-period
-      reason: "第 4.4 款与第 11.1 款均有宽限期，不得报缺失"
-    - slug: termination-convenience
-      reason: "第 12.2 款为便利终止权，不得报缺失"
-    - slug: subcontracting
-      reason: "第十三条为分包与变更控制，不得报缺失"
-    - slug: audit-right
-      reason: "第十四条为审计权，不得报缺失"
-    - slug: dispute-resolution
-      reason: "第 16.2 款约定上海国际经济贸易仲裁委员会仲裁，不得报缺失"
-    - slug: force-majeure
-      reason: "第十五条为不可抗力，不得报缺失"
-    - slug: data-export
-      reason: "第 7.2、7.3 款为数据导出条款，不得报缺失"
-    - id: liability-cap-below-market
-      reason: "12 个月费用达到市场参考值，不构成偏离"
-    - id: renewal-notice-window-too-short
-      reason: "90 日达到市场参考值，不构成偏离"
-    - id: data-export-prohibited
-      reason: "本合同明确允许自助导出且免费，与「禁止导出」相反"
-  notes: >-
-    这是唯一的负样本基线。任何在 C01 上产生的关键条款缺失告警或市场标尺风险告警，
-    都应判定为误报（测试失败）。允许输出的是中性描述（例如「责任上限为 12 个月费用，符合市场惯例」），
-    不允许把它计入风险清单。
+    C01:
+      file: C01-saas-subscription.md
+      title: "软件即服务（SaaS）订阅服务协议"
+      language: zh
+      design_intent: "干净基线：9 项关键条款齐全、全部市场标尺达标、输入治理无缺陷。用于验证「不误报」。"
+      expected_gate: passed
+      gate_reasons: []
+      expected_missing_clauses: []
+      not_applicable_clauses: []
+      # ── 2026-08-31 真机验收修正 ──
+      # 这条不是原作者设计的，是 review-reporter 在 C01 上用 MathCalc 独立算出来的。
+      # C01 号称「干净基线」，实则埋了一处作者自己未察觉的算术不一致。
+      # 记在这里，避免后续把「正确报出这条」误判成误报。
+      expected_risks:
+        - id: amount-arithmetic-mismatch
+          severity: important
+          # 不设为 must_detect：A3 与 A4 均明确声明不做算术一致性检查，
+          # 该项属超出设计预期的加分项，由复核环节的 MathCalc 兜住。
+          must_detect: false
+          evidence: "年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）"
+          detail: >-
+            第 2.1 条约定 500 标准席位 + 20 管理员席位 = 520 席位；第 4.1 条单价 ¥2,400/席位/年。
+            520 × 2400 = ¥1,248,000，而合同写 ¥1,250,000，差 ¥2,000；三年合计差 ¥6,000。
+          discovered_by: "review-reporter RV-026 / FND-001（2026-08-31 真机验收）"
+          verified_independently: true
+      clause_presence_evidence:
+        liability-cap: "不超过索赔事件发生前 12 个月内甲方实际支付的服务费用总额"
+        breach-remedy: "## 第十一条　违约责任与救济"
+        grace-period: "该期间为违约治愈宽限期"
+        termination-convenience: "甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）"
+        subcontracting: "## 第十三条　分包与变更控制"
+        audit-right: "## 第十四条　审计权"
+        dispute-resolution: "提交上海国际经济贸易仲裁委员会"
+        force-majeure: "## 第十五条　不可抗力"
+        data-export: "乙方应继续为甲方保留数据导出通道 90 日"
+      market_ruler_compliance:
+        liability-cap: "12 个月费用，等于参考值，不应报风险"
+        renewal-notice-window: "90 日，达到参考值，不应报风险"
+        data-export: "终止后 90 日 + CSV/JSON/SQL 标准格式，达到参考值，不应报风险"
+      must_not_flag:
+        - id: placeholder-unfilled
+          reason: "全文无任何占位符，签署栏已完整填写"
+        - id: attachment-missing
+          reason: "正文引用的附件一、附件二、附件三均在第 17.4 款附件清单中登记"
+        - id: signature-status-unconfirmed
+          reason: "双方签字人、职务、日期、公章齐备"
+        - id: page-discontinuity
+          reason: "第 1 页至第 9 页连续无缺页"
+        - id: version-mismatch
+          reason: "正文引用的《服务规格说明书 V1.0》《服务水平协议 SLA-v1.2》与附件清单登记版本一致"
+        - id: party-name-inconsistency
+          reason: "全文甲方恒为「星海科技（示例）有限公司」，乙方恒为「云梯信息技术（示例）有限公司」"
+        - id: amount-in-words-mismatch
+          reason: "第 4.1 款大写与小写金额一一对应"
+        - slug: liability-cap
+          reason: "第 10.1 款已明确约定责任上限，不得报缺失"
+        - slug: breach-remedy
+          reason: "第十一条为完整违约责任条款，不得报缺失"
+        - slug: grace-period
+          reason: "第 4.4 款与第 11.1 款均有宽限期，不得报缺失"
+        - slug: termination-convenience
+          reason: "第 12.2 款为便利终止权，不得报缺失"
+        - slug: subcontracting
+          reason: "第十三条为分包与变更控制，不得报缺失"
+        - slug: audit-right
+          reason: "第十四条为审计权，不得报缺失"
+        - slug: dispute-resolution
+          reason: "第 16.2 款约定上海国际经济贸易仲裁委员会仲裁，不得报缺失"
+        - slug: force-majeure
+          reason: "第十五条为不可抗力，不得报缺失"
+        - slug: data-export
+          reason: "第 7.2、7.3 款为数据导出条款，不得报缺失"
+        - id: liability-cap-below-market
+          reason: "12 个月费用达到市场参考值，不构成偏离"
+        - id: renewal-notice-window-too-short
+          reason: "90 日达到市场参考值，不构成偏离"
+        - id: data-export-prohibited
+          reason: "本合同明确允许自助导出且免费，与「禁止导出」相反"
+      notes: >-
+        这是唯一的负样本基线。任何在 C01 上产生的关键条款缺失告警或市场标尺风险告警，
+        都应判定为误报（测试失败）。允许输出的是中性描述（例如「责任上限为 12 个月费用，符合市场惯例」），
+        不允许把它计入风险清单。
 
-C02:
-  file: C02-software-outsourcing.md
-  title: "软件开发外包合同"
-  language: zh
-  design_intent: "输入治理必须阻断：一份未定稿即进入审查流程的草案，同时命中 5 类硬校验项。"
-  expected_gate: blocked
-  gate_reasons:
-    - id: placeholder-unfilled
-      severity: critical
-      evidence: "4.1 本合同总价款为人民币 $X 元（大写：【待定】），含 6% 增值税。"
-      additional_evidence:
-        - "4.3 需求变更导致工作量增加的，按人天单价 [金额] 元结算，人天口径为 8 小时。"
-        - "2.4 因甲方需求变更导致的工期顺延，双方另行签署变更单确认，顺延天数 TBD。"
-        - "7.3 保修期内因乙方代码缺陷导致甲方生产环境故障的，乙方应承担相应责任，赔偿标准 TBD。"
-        - "8.3 乙方违反保密义务的，应向甲方支付违约金人民币 $X 元，并赔偿甲方全部实际损失。"
-        - "6.2 源码移交采用甲方指定的代码仓库推送方式，交付地点：____________。"
-      must_detect: true
-    - id: attachment-missing
-      severity: critical
-      evidence: "2.3 各里程碑的验收标准依附件三《验收标准》执行"
-      additional_evidence:
-        - "6.3 乙方应保证移交源码可在甲方环境下完整构建并通过附件三《验收标准》中约定的冒烟测试。"
-        - "13.3 本合同附件清单如下："
-      must_detect: true
-      detail: "正文第 2.3、6.3 款两次引用「附件三《验收标准》」，但第 13.3 款附件清单仅登记附件一《接口对接清单》与附件二《技术规格书 V1.1》"
-    - id: version-mismatch
-      severity: high
-      evidence: "1.2 详细功能规格以附件二《技术规格书 V1.3》为准。"
-      additional_evidence:
-        - "　　附件二　《技术规格书 V1.1》"
-      must_detect: true
-      detail: "正文引用 V1.3，附件清单登记 V1.1"
-    - id: party-name-inconsistency
-      severity: high
-      evidence: "10.4 本合同解除后，乙方应在 10 个工作日内向云梯科技（示例）有限公司移交全部已完成的阶段性成果。"
-      must_detect: true
-      detail: "首部甲方为「云梯信息技术（示例）有限公司」，第 10.4 款变为「云梯科技（示例）有限公司」"
-    - id: page-discontinuity
-      severity: high
-      evidence: "第 4 页 / 共 8 页"
-      must_detect: true
-      detail: "页码序列为 1、2、4、5、6、7、8，缺第 3 页"
-  expected_missing_clauses: []
-  not_applicable_clauses: []
-  expected_risks: []
-  notes: >-
-    输入治理阶段就应阻断，不应进入条款抽取与风险评估阶段。
-    expected_missing_clauses 与 expected_risks 刻意留空：即使模型对第 9.3 款责任上限等有意见，
-    在被阻断的前提下也不应把它们作为结论输出。若产物给出「注意上述风险后继续审查」并输出了完整
-    条款/风险清单，即判定失败——这正是本语料要抓的行为。
+    C02:
+      file: C02-software-outsourcing.md
+      title: "软件开发外包合同"
+      language: zh
+      design_intent: "输入治理必须阻断：一份未定稿即进入审查流程的草案，同时命中 5 类硬校验项。"
+      expected_gate: blocked
+      gate_reasons:
+        - id: placeholder-unfilled
+          severity: critical
+          evidence: "4.1 本合同总价款为人民币 $X 元（大写：【待定】），含 6% 增值税。"
+          additional_evidence:
+            - "4.3 需求变更导致工作量增加的，按人天单价 [金额] 元结算，人天口径为 8 小时。"
+            - "2.4 因甲方需求变更导致的工期顺延，双方另行签署变更单确认，顺延天数 TBD。"
+            - "7.3 保修期内因乙方代码缺陷导致甲方生产环境故障的，乙方应承担相应责任，赔偿标准 TBD。"
+            - "8.3 乙方违反保密义务的，应向甲方支付违约金人民币 $X 元，并赔偿甲方全部实际损失。"
+            - "6.2 源码移交采用甲方指定的代码仓库推送方式，交付地点：____________。"
+          must_detect: true
+        - id: attachment-missing
+          severity: critical
+          evidence: "2.3 各里程碑的验收标准依附件三《验收标准》执行"
+          additional_evidence:
+            - "6.3 乙方应保证移交源码可在甲方环境下完整构建并通过附件三《验收标准》中约定的冒烟测试。"
+            - "13.3 本合同附件清单如下："
+          must_detect: true
+          detail: "正文第 2.3、6.3 款两次引用「附件三《验收标准》」，但第 13.3 款附件清单仅登记附件一《接口对接清单》与附件二《技术规格书 V1.1》"
+        - id: version-mismatch
+          severity: high
+          evidence: "1.2 详细功能规格以附件二《技术规格书 V1.3》为准。"
+          additional_evidence:
+            - "　　附件二　《技术规格书 V1.1》"
+          must_detect: true
+          detail: "正文引用 V1.3，附件清单登记 V1.1"
+        - id: party-name-inconsistency
+          severity: high
+          evidence: "10.4 本合同解除后，乙方应在 10 个工作日内向云梯科技（示例）有限公司移交全部已完成的阶段性成果。"
+          must_detect: true
+          detail: "首部甲方为「云梯信息技术（示例）有限公司」，第 10.4 款变为「云梯科技（示例）有限公司」"
+        - id: page-discontinuity
+          severity: high
+          evidence: "第 4 页 / 共 8 页"
+          must_detect: true
+          detail: "页码序列为 1、2、4、5、6、7、8，缺第 3 页"
+      expected_missing_clauses: []
+      not_applicable_clauses: []
+      expected_risks: []
+      notes: >-
+        输入治理阶段就应阻断，不应进入条款抽取与风险评估阶段。
+        expected_missing_clauses 与 expected_risks 刻意留空：即使模型对第 9.3 款责任上限等有意见，
+        在被阻断的前提下也不应把它们作为结论输出。若产物给出「注意上述风险后继续审查」并输出了完整
+        条款/风险清单，即判定失败——这正是本语料要抓的行为。
 
-C03:
-  file: C03-procurement-framework.md
-  title: "采购框架协议"
-  language: zh
-  design_intent: "关键条款缺失：无责任上限、无违约责任、无争议解决机制。同时用一处金额大小写不一致验证 conditional 不阻断流水线。"
-  expected_gate: conditional
-  gate_reasons:
-    - id: amount-in-words-mismatch
-      severity: medium
-      evidence: "3.2 协议期内首年采购预算总额为人民币壹佰贰拾万元整（¥1,280,000.00），该预算为参考额度，不构成采购承诺。"
-      must_detect: true
-      detail: "大写「壹佰贰拾万元整」= 1,200,000，小写为 1,280,000，差额 80,000"
-      blocking: false
-  expected_missing_clauses:
-    - slug: liability-cap
-      severity: critical
-      must_detect: true
-      detail: "全文无任何形式的赔偿责任总额上限约定"
-    - slug: breach-remedy
-      severity: critical
-      must_detect: true
-      detail: "全文无违约责任条款，无违约金、无逾期赔偿标准；第 5.2 款仅为退货权，不构成违约责任条款"
-    - slug: dispute-resolution
-      severity: critical
-      must_detect: true
-      detail: "第十四条仅约定适用中华人民共和国法律，未约定任何仲裁机构或管辖法院。「有适用法律」不等于「有争议解决机制」"
-  not_applicable_clauses: []
-  clause_presence_evidence:
-    grace-period: "4.4 乙方逾期交付的，自约定交付日起享有 5 个自然日的宽限期。"
-    termination-convenience: "12.2 任何一方均有权提前 60 日书面通知对方无理由终止本协议"
-    subcontracting: "## 第七条　分包与变更控制"
-    audit-right: "## 第八条　审计权"
-    force-majeure: "## 第十三条　不可抗力"
-    data-export: "乙方可在该期间内以 CSV 或 Excel 标准格式导出其历史交易与质量数据"
-  expected_risks:
-    - id: unilateral-price-adjustment
-      severity: medium
-      evidence: "甲方未在通知送达后 10 日内提出书面异议的，视为接受新价格并自下一自然月起执行。"
-      must_detect: false
-      detail: "以甲方沉默视为接受调价，属于次要风险；检出加分，漏检不判失败"
-  must_not_flag:
-    - slug: data-export
-      reason: "第十一条已约定 90 日导出通道与标准格式，不得报缺失"
-    - id: data-export-prohibited
-      reason: "第 11.2 款明确允许导出，与「禁止导出」相反"
-  notes: >-
-    本份的核心判据是「三项关键条款缺失必须全部检出」。
-    conditional 门禁用于验证：非阻断性问题不得中断流水线——若产物因金额大小写不一致而停在输入治理阶段、
-    未输出条款缺失清单，同样判定失败。
+    C03:
+      file: C03-procurement-framework.md
+      title: "采购框架协议"
+      language: zh
+      design_intent: "关键条款缺失：无责任上限、无违约责任、无争议解决机制。同时用一处金额大小写不一致验证 conditional 不阻断流水线。"
+      expected_gate: conditional
+      gate_reasons:
+        - id: amount-in-words-mismatch
+          severity: medium
+          evidence: "3.2 协议期内首年采购预算总额为人民币壹佰贰拾万元整（¥1,280,000.00），该预算为参考额度，不构成采购承诺。"
+          must_detect: true
+          detail: "大写「壹佰贰拾万元整」= 1,200,000，小写为 1,280,000，差额 80,000"
+          blocking: false
+      expected_missing_clauses:
+        - slug: liability-cap
+          severity: critical
+          must_detect: true
+          detail: "全文无任何形式的赔偿责任总额上限约定"
+        - slug: breach-remedy
+          severity: critical
+          must_detect: true
+          detail: "全文无违约责任条款，无违约金、无逾期赔偿标准；第 5.2 款仅为退货权，不构成违约责任条款"
+        - slug: dispute-resolution
+          severity: critical
+          must_detect: true
+          detail: "第十四条仅约定适用中华人民共和国法律，未约定任何仲裁机构或管辖法院。「有适用法律」不等于「有争议解决机制」"
+      not_applicable_clauses: []
+      clause_presence_evidence:
+        grace-period: "4.4 乙方逾期交付的，自约定交付日起享有 5 个自然日的宽限期。"
+        termination-convenience: "12.2 任何一方均有权提前 60 日书面通知对方无理由终止本协议"
+        subcontracting: "## 第七条　分包与变更控制"
+        audit-right: "## 第八条　审计权"
+        force-majeure: "## 第十三条　不可抗力"
+        data-export: "乙方可在该期间内以 CSV 或 Excel 标准格式导出其历史交易与质量数据"
+      expected_risks:
+        - id: unilateral-price-adjustment
+          severity: medium
+          evidence: "甲方未在通知送达后 10 日内提出书面异议的，视为接受新价格并自下一自然月起执行。"
+          must_detect: false
+          detail: "以甲方沉默视为接受调价，属于次要风险；检出加分，漏检不判失败"
+      must_not_flag:
+        - slug: data-export
+          reason: "第十一条已约定 90 日导出通道与标准格式，不得报缺失"
+        - id: data-export-prohibited
+          reason: "第 11.2 款明确允许导出，与「禁止导出」相反"
+      notes: >-
+        本份的核心判据是「三项关键条款缺失必须全部检出」。
+        conditional 门禁用于验证：非阻断性问题不得中断流水线——若产物因金额大小写不一致而停在输入治理阶段、
+        未输出条款缺失清单，同样判定失败。
 
-C04:
-  file: C04-labor-contract.md
-  title: "劳动合同书"
-  language: zh
-  design_intent: "市场标尺与法定上限越界：竞业限制 5 年、无经济补偿、试用期 12 个月超法定上限。"
-  expected_gate: passed
-  gate_reasons: []
-  expected_missing_clauses: []
-  not_applicable_clauses:
-    - liability-cap
-    - audit-right
-    - subcontracting
-    - data-export
-    - termination-convenience
-    - force-majeure
-  not_applicable_rationale: >-
-    劳动合同不适用商事合同的责任上限、审计权、分包、数据导出与便利终止框架；
-    劳动合同一般也不设不可抗力条款。对上述 slug 报「缺失」不计为失败，但也不计为得分；
-    若产物能识别出「该条款类型在劳动合同语境下不适用」，属于加分项。
-  expected_risks:
-    - id: non-compete-term-excessive
-      severity: critical
-      ruler: non-compete-term
-      evidence: "8.1 乙方离职后，在 5 年内不得自营或为他人经营与甲方有竞争关系的业务"
-      must_detect: true
-      detail: "市场标尺 1-2 年；5 年超出参考区间，且中国法下竞业限制期限不得超过 2 年，超出部分无效"
-    - id: non-compete-without-compensation
-      severity: critical
-      ruler: non-compete-term
-      evidence: "甲方在竞业限制期限内无需另行向乙方支付经济补偿"
-      must_detect: true
-      detail: "未按月支付经济补偿的竞业限制条款对劳动者不具约束力，条款存在但实际不可执行"
-    - id: probation-exceeds-statutory-limit
-      severity: critical
-      evidence: "1.2 试用期为 12 个月，自 2026 年 5 月 6 日起至 2027 年 5 月 5 日止。"
-      must_detect: true
-      detail: "3 年期固定期限劳动合同试用期法定上限为 6 个月，12 个月超限一倍"
-    - id: probation-exceeds-statutory-limit
-      severity: high
-      evidence: "考核不合格的，甲方可延长试用期 3 个月或解除本合同"
-      must_detect: false
-      detail: "延长试用期的约定进一步突破法定上限，属同一风险的次级证据"
-  clause_presence_evidence:
-    breach-remedy: "## 第十一条　违约责任"
-    dispute-resolution: "可向甲方所在地劳动人事争议仲裁委员会申请仲裁"
-  must_not_flag:
-    - id: placeholder-unfilled
-      reason: "身份证号与手机号的星号为个人信息脱敏，不是未填充占位符；把脱敏掩码判为占位符并阻断，判定失败"
-  notes: >-
-    本份验证市场标尺与法定上限的越界识别。三条 must_detect 风险必须全部命中。
-    另需注意脱敏掩码（310115********0417、138****6620）不得被误判为占位符——
-    这是输入治理阶段最典型的误报来源。
+    C04:
+      file: C04-labor-contract.md
+      title: "劳动合同书"
+      language: zh
+      design_intent: "市场标尺与法定上限越界：竞业限制 5 年、无经济补偿、试用期 12 个月超法定上限。"
+      expected_gate: passed
+      gate_reasons: []
+      expected_missing_clauses: []
+      not_applicable_clauses:
+        - liability-cap
+        - audit-right
+        - subcontracting
+        - data-export
+        - termination-convenience
+        - force-majeure
+      not_applicable_rationale: >-
+        劳动合同不适用商事合同的责任上限、审计权、分包、数据导出与便利终止框架；
+        劳动合同一般也不设不可抗力条款。对上述 slug 报「缺失」不计为失败，但也不计为得分；
+        若产物能识别出「该条款类型在劳动合同语境下不适用」，属于加分项。
+      expected_risks:
+        - id: non-compete-term-excessive
+          severity: critical
+          ruler: non-compete-term
+          evidence: "8.1 乙方离职后，在 5 年内不得自营或为他人经营与甲方有竞争关系的业务"
+          must_detect: true
+          detail: "市场标尺 1-2 年；5 年超出参考区间，且中国法下竞业限制期限不得超过 2 年，超出部分无效"
+        - id: non-compete-without-compensation
+          severity: critical
+          ruler: non-compete-term
+          evidence: "甲方在竞业限制期限内无需另行向乙方支付经济补偿"
+          must_detect: true
+          detail: "未按月支付经济补偿的竞业限制条款对劳动者不具约束力，条款存在但实际不可执行"
+        - id: probation-exceeds-statutory-limit
+          severity: critical
+          evidence: "1.2 试用期为 12 个月，自 2026 年 5 月 6 日起至 2027 年 5 月 5 日止。"
+          must_detect: true
+          detail: "3 年期固定期限劳动合同试用期法定上限为 6 个月，12 个月超限一倍"
+        - id: probation-exceeds-statutory-limit
+          severity: high
+          evidence: "考核不合格的，甲方可延长试用期 3 个月或解除本合同"
+          must_detect: false
+          detail: "延长试用期的约定进一步突破法定上限，属同一风险的次级证据"
+      clause_presence_evidence:
+        breach-remedy: "## 第十一条　违约责任"
+        dispute-resolution: "可向甲方所在地劳动人事争议仲裁委员会申请仲裁"
+      must_not_flag:
+        - id: placeholder-unfilled
+          reason: "身份证号与手机号的星号为个人信息脱敏，不是未填充占位符；把脱敏掩码判为占位符并阻断，判定失败"
+      notes: >-
+        本份验证市场标尺与法定上限的越界识别。三条 must_detect 风险必须全部命中。
+        另需注意脱敏掩码（310115********0417、138****6620）不得被误判为占位符——
+        这是输入治理阶段最典型的误报来源。
 
-C05:
-  file: C05-data-processing-agreement.md
-  title: "数据处理协议（DPA）"
-  language: zh
-  design_intent: "法域冲突：同一文本同时声明适用中国法与 GDPR 并给出两个互斥的排他管辖；同时完全禁止数据导出。"
-  # 实测修正（2026-09-02）：原写 passed 是设计时的疏漏——它假设了团队具备全法域知识包，
-  # 但交付的团队只装 base-v1 + cn-v1，遇到 GDPR（欧盟法域）时会诚实标记「法域规则包未提供」。
-  # 那是正确行为（不拿中国法标尺去评欧盟法域），不是缺陷，所以期望值改为 conditional。
-  # 补齐 EU/GDPR 知识包后应回到 passed。
-  expected_gate: conditional
-  gate_reasons:
-    - id: jurisdiction-rulepack-unavailable
-      severity: medium
-      must_detect: true
-      detail: "GDPR 属欧盟法域，团队知识包只覆盖 base-v1 + cn-v1；必须标记法域待确认而非套用中国法标尺"
-      blocking: false
-  expected_missing_clauses:
-    - slug: grace-period
-      severity: medium
-      must_detect: true
-      detail: "全文无任何违约治愈期或宽限期约定；第 10.3 款要求「立即停止违约行为」，不提供治愈窗口"
-  not_applicable_clauses:
-    - termination-convenience
-  not_applicable_rationale: "DPA 作为主协议附属协议，与主协议同期终止（第 13.1 款），不单独设便利终止权"
-  expected_risks:
-    - id: governing-law-conflict
-      severity: critical
-      evidence: "12.1 本协议的订立、效力、解释、履行及争议解决，均适用中华人民共和国法律（不含港澳台地区法律）。"
-      additional_evidence:
-        - "应受欧盟《通用数据保护条例》（Regulation (EU) 2016/679, GDPR）管辖并依其规定解释；就该等事项产生的任何争议，双方同意提交爱尔兰共和国都柏林法院专属管辖。"
-        - "任何一方均应提交深圳国际仲裁院按其届时有效的仲裁规则在深圳仲裁"
-      must_detect: true
-      detail: >-
-        第 12.1、12.2、12.3 款构成双重冲突：(a) 适用法律同时为中国法与 GDPR；
-        (b) 争议解决同时为都柏林法院专属管辖与深圳国际仲裁院仲裁，两个排他机制不可并存。
-        仅指出「适用法律有两个」而未指出两个排他管辖并存的，算部分命中，仍需在报告中体现管辖冲突。
-    - id: data-export-prohibited
-      severity: critical
-      ruler: data-export
-      evidence: "8.2 乙方不得以任何形式向甲方、甲方关联方或任何第三方导出、下载或交付个人数据的批量副本"
-      additional_evidence:
-        - "8.4 本协议终止或解除后，乙方应在 30 日内彻底删除全部个人数据及其备份，并出具书面删除证明。乙方不提供任何形式的数据返还或导出。"
-        - "单次查询结果不得超过 200 条记录，且不提供导出功能"
-      must_detect: true
-      detail: >-
-        市场标尺为「终止后 90 天内以标准格式导出」，本合同为完全禁止，属最严重的短板。
-        叠加效应：控制者无法取回数据将直接导致其无法履行 GDPR 第 20 条可携带权与第 15 条查阅权义务，
-        与第 6.2 款「协助响应可携带权请求」自相矛盾。
-    - id: cross-border-transfer-mechanism-absent
-      severity: high
-      evidence: "8.1 本协议项下的全部个人数据仅存储于乙方位于中华人民共和国境内的数据中心，不得跨境传输。"
-      must_detect: false
-      detail: "声明适用 GDPR 却全部数据存于中国境内且无 SCC / 充分性认定 / BCR 等任何传输机制；检出加分，漏检不判失败"
-  clause_presence_evidence:
-    liability-cap: "不超过索赔事件发生前 12 个月内甲方依《云服务主协议》实际支付服务费用的总额"
-    breach-remedy: "## 第十条　责任与赔偿"
-    subcontracting: "## 第五条　次级处理者"
-    audit-right: "## 第九条　审计权"
-    dispute-resolution: "## 第十二条　适用法律与争议解决"
-    force-majeure: "## 第十一条　不可抗力"
-    data-export: "## 第八条　数据本地化与数据导出限制"
-  must_not_flag:
-    - slug: data-export
-      reason: "第八条存在数据导出条款（内容为禁止性），应报为「条款存在但方向不利」的风险，不得报为「条款缺失」"
-    - slug: audit-right
-      reason: "第九条为完整审计权条款，不得报缺失"
-    - slug: liability-cap
-      reason: "第 10.2 款已约定 12 个月费用上限，不得报缺失"
-    - id: liability-cap-below-market
-      reason: "12 个月费用达到市场参考值，不构成偏离"
-  notes: >-
-    本份考察两件事：(1) 能否识别同一文本内部的法域与管辖互斥；
-    (2) 能否区分「条款缺失」与「条款存在但内容不利」——第八条是典型的后者，
-    把它归入 expected_missing_clauses 属于分类错误。
+    C05:
+      file: C05-data-processing-agreement.md
+      title: "数据处理协议（DPA）"
+      language: zh
+      design_intent: "法域冲突：同一文本同时声明适用中国法与 GDPR 并给出两个互斥的排他管辖；同时完全禁止数据导出。"
+      # 实测修正（2026-09-02）：原写 passed 是设计时的疏漏——它假设了团队具备全法域知识包，
+      # 但交付的团队只装 base-v1 + cn-v1，遇到 GDPR（欧盟法域）时会诚实标记「法域规则包未提供」。
+      # 那是正确行为（不拿中国法标尺去评欧盟法域），不是缺陷，所以期望值改为 conditional。
+      # 补齐 EU/GDPR 知识包后应回到 passed。
+      expected_gate: conditional
+      gate_reasons:
+        - id: jurisdiction-rulepack-unavailable
+          severity: medium
+          must_detect: true
+          detail: "GDPR 属欧盟法域，团队知识包只覆盖 base-v1 + cn-v1；必须标记法域待确认而非套用中国法标尺"
+          blocking: false
+      expected_missing_clauses:
+        - slug: grace-period
+          severity: medium
+          must_detect: true
+          detail: "全文无任何违约治愈期或宽限期约定；第 10.3 款要求「立即停止违约行为」，不提供治愈窗口"
+      not_applicable_clauses:
+        - termination-convenience
+      not_applicable_rationale: "DPA 作为主协议附属协议，与主协议同期终止（第 13.1 款），不单独设便利终止权"
+      expected_risks:
+        - id: governing-law-conflict
+          severity: critical
+          evidence: "12.1 本协议的订立、效力、解释、履行及争议解决，均适用中华人民共和国法律（不含港澳台地区法律）。"
+          additional_evidence:
+            - "应受欧盟《通用数据保护条例》（Regulation (EU) 2016/679, GDPR）管辖并依其规定解释；就该等事项产生的任何争议，双方同意提交爱尔兰共和国都柏林法院专属管辖。"
+            - "任何一方均应提交深圳国际仲裁院按其届时有效的仲裁规则在深圳仲裁"
+          must_detect: true
+          detail: >-
+            第 12.1、12.2、12.3 款构成双重冲突：(a) 适用法律同时为中国法与 GDPR；
+            (b) 争议解决同时为都柏林法院专属管辖与深圳国际仲裁院仲裁，两个排他机制不可并存。
+            仅指出「适用法律有两个」而未指出两个排他管辖并存的，算部分命中，仍需在报告中体现管辖冲突。
+        - id: data-export-prohibited
+          severity: critical
+          ruler: data-export
+          evidence: "8.2 乙方不得以任何形式向甲方、甲方关联方或任何第三方导出、下载或交付个人数据的批量副本"
+          additional_evidence:
+            - "8.4 本协议终止或解除后，乙方应在 30 日内彻底删除全部个人数据及其备份，并出具书面删除证明。乙方不提供任何形式的数据返还或导出。"
+            - "单次查询结果不得超过 200 条记录，且不提供导出功能"
+          must_detect: true
+          detail: >-
+            市场标尺为「终止后 90 天内以标准格式导出」，本合同为完全禁止，属最严重的短板。
+            叠加效应：控制者无法取回数据将直接导致其无法履行 GDPR 第 20 条可携带权与第 15 条查阅权义务，
+            与第 6.2 款「协助响应可携带权请求」自相矛盾。
+        - id: cross-border-transfer-mechanism-absent
+          severity: high
+          evidence: "8.1 本协议项下的全部个人数据仅存储于乙方位于中华人民共和国境内的数据中心，不得跨境传输。"
+          must_detect: false
+          detail: "声明适用 GDPR 却全部数据存于中国境内且无 SCC / 充分性认定 / BCR 等任何传输机制；检出加分，漏检不判失败"
+      clause_presence_evidence:
+        liability-cap: "不超过索赔事件发生前 12 个月内甲方依《云服务主协议》实际支付服务费用的总额"
+        breach-remedy: "## 第十条　责任与赔偿"
+        subcontracting: "## 第五条　次级处理者"
+        audit-right: "## 第九条　审计权"
+        dispute-resolution: "## 第十二条　适用法律与争议解决"
+        force-majeure: "## 第十一条　不可抗力"
+        data-export: "## 第八条　数据本地化与数据导出限制"
+      must_not_flag:
+        - slug: data-export
+          reason: "第八条存在数据导出条款（内容为禁止性），应报为「条款存在但方向不利」的风险，不得报为「条款缺失」"
+        - slug: audit-right
+          reason: "第九条为完整审计权条款，不得报缺失"
+        - slug: liability-cap
+          reason: "第 10.2 款已约定 12 个月费用上限，不得报缺失"
+        - id: liability-cap-below-market
+          reason: "12 个月费用达到市场参考值，不构成偏离"
+      notes: >-
+        本份考察两件事：(1) 能否识别同一文本内部的法域与管辖互斥；
+        (2) 能否区分「条款缺失」与「条款存在但内容不利」——第八条是典型的后者，
+        把它归入 expected_missing_clauses 属于分类错误。
 
-C06a:
-  file: C06a-saas-v1.md
-  title: "软件即服务（SaaS）订阅服务协议（附件二 SLA-v1.2）"
-  language: zh
-  design_intent: "版本对比基线版。与 C06b 主合同正文逐字相同，差异全部落在附件二。"
-  expected_gate: passed
-  gate_reasons: []
-  expected_missing_clauses: []
-  not_applicable_clauses: []
-  expected_risks: []
-  clause_presence_evidence:
-    liability-cap: "不超过索赔事件发生前 12 个月内甲方实际支付的服务费用总额"
-    breach-remedy: "## 第十一条　违约责任与救济"
-    grace-period: "该期间为违约治愈宽限期"
-    termination-convenience: "甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）"
-    subcontracting: "## 第十三条　分包与变更控制"
-    audit-right: "## 第十四条　审计权"
-    dispute-resolution: "提交上海国际经济贸易仲裁委员会"
-    force-majeure: "## 第十五条　不可抗力"
-    data-export: "乙方应继续为甲方保留数据导出通道 90 日"
-  notes: "作为 C06b 的对照基线，本份单独审查时应与 C01 一样不产生关键条款缺失或市场标尺风险。"
+    C06a:
+      file: C06a-saas-v1.md
+      title: "软件即服务（SaaS）订阅服务协议（附件二 SLA-v1.2）"
+      language: zh
+      design_intent: "版本对比基线版。与 C06b 主合同正文逐字相同，差异全部落在附件二。"
+      expected_gate: passed
+      gate_reasons: []
+      expected_missing_clauses: []
+      not_applicable_clauses: []
+      expected_risks: []
+      clause_presence_evidence:
+        liability-cap: "不超过索赔事件发生前 12 个月内甲方实际支付的服务费用总额"
+        breach-remedy: "## 第十一条　违约责任与救济"
+        grace-period: "该期间为违约治愈宽限期"
+        termination-convenience: "甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）"
+        subcontracting: "## 第十三条　分包与变更控制"
+        audit-right: "## 第十四条　审计权"
+        dispute-resolution: "提交上海国际经济贸易仲裁委员会"
+        force-majeure: "## 第十五条　不可抗力"
+        data-export: "乙方应继续为甲方保留数据导出通道 90 日"
+      notes: "作为 C06b 的对照基线，本份单独审查时应与 C01 一样不产生关键条款缺失或市场标尺风险。"
 
-C06b:
-  file: C06b-saas-v2.md
-  title: "软件即服务（SaaS）订阅服务协议（附件二 SLA-v2.0）"
-  language: zh
-  design_intent: "版本对比陷阱：主合同正文与 C06a 逐字节相同，仅附件二从 SLA-v1.2 换成 SLA-v2.0，实质权益显著下降。"
-  expected_gate: passed
-  gate_reasons: []
-  expected_missing_clauses: []
-  not_applicable_clauses: []
-  expected_risks:
-    - id: liability-cap-below-market
-      severity: critical
-      ruler: liability-cap
-      evidence: "不超过索赔事件发生前 3 个月内甲方实际支付的服务费用总额"
-      must_detect: true
-      detail: "市场标尺 12 个月，低于 6 个月为高风险；本份为 3 个月。责任上限位于附件二第 5.1 条，主合同第 10.1 款仅作指向"
-    - id: availability-sla-downgrade
-      severity: high
-      evidence: "2.1 乙方承诺服务的月度可用性不低于 **99.0%**。"
-      must_detect: true
-      detail: "相对 SLA-v1.2 的 99.9% 下调一个数量级，月度允许不可用时长由约 43 分钟增至约 7.3 小时"
-    - id: service-credit-downgrade
-      severity: medium
-      evidence: "| 低于 98.0% | 20% |"
-      must_detect: false
-      detail: "补偿档位由 10%/25%/50% 降至 5%/10%/20%，申请窗口由 30 日缩短至 15 日；检出加分，漏检不判失败"
-  version_diff_expectation:
-    baseline: C06a
-    target: C06b
-    body_text_diff: empty
-    body_extraction_rule: "自文件首行起至首个包含「以下无正文」的行（含该行）为主合同正文；该区间在两份文件中逐字节相同"
-    verify_command: "diff <(sed -n '1,/以下无正文/p' C06a-saas-v1.md) <(sed -n '1,/以下无正文/p' C06b-saas-v2.md)"
-    verified_empty: true
-    attachment_changed:
-      from: "附件二　服务水平协议（SLA-v1.2）　文档编号 YCIT-DOC-SLA-v1.2"
-      to: "附件二　服务水平协议（SLA-v2.0）　文档编号 YCIT-DOC-SLA-v2.0"
-    risk_direction: rising
-    must_detect:
-      - id: attachment-version-replaced
-        detail: "必须明确指出附件二被整体替换（SLA-v1.2 → SLA-v2.0），而不是笼统说「有更新」"
-      - id: availability-sla-downgrade
-        detail: "99.9% → 99.0%"
-      - id: liability-cap-below-market
-        detail: "12 个月费用 → 3 个月费用"
-    failure_modes:
-      - "只比对主合同正文，得出「两版无差异」或「风险无变化」的结论 —— 判定失败"
-      - "指出附件版本号变化，但未指出可用性与责任上限两处实质下调 —— 判定失败"
-      - "把风险方向判为「下降」或「持平」 —— 判定失败"
-    notes: >-
-      这是「差异为 0 的陷阱」。逐字节 diff 主合同正文得到空结果是正确的技术事实，
-      但把它当作业务结论输出即为失败。正确行为是把附件纳入比对范围，
-      并按附件承载的实质条款（可用性、责任上限）判定风险方向为上升。
+    C06b:
+      file: C06b-saas-v2.md
+      title: "软件即服务（SaaS）订阅服务协议（附件二 SLA-v2.0）"
+      language: zh
+      design_intent: "版本对比陷阱：主合同正文与 C06a 逐字节相同，仅附件二从 SLA-v1.2 换成 SLA-v2.0，实质权益显著下降。"
+      expected_gate: passed
+      gate_reasons: []
+      expected_missing_clauses: []
+      not_applicable_clauses: []
+      expected_risks:
+        - id: liability-cap-below-market
+          severity: critical
+          ruler: liability-cap
+          evidence: "不超过索赔事件发生前 3 个月内甲方实际支付的服务费用总额"
+          must_detect: true
+          detail: "市场标尺 12 个月，低于 6 个月为高风险；本份为 3 个月。责任上限位于附件二第 5.1 条，主合同第 10.1 款仅作指向"
+        - id: availability-sla-downgrade
+          severity: high
+          evidence: "2.1 乙方承诺服务的月度可用性不低于 **99.0%**。"
+          must_detect: true
+          detail: "相对 SLA-v1.2 的 99.9% 下调一个数量级，月度允许不可用时长由约 43 分钟增至约 7.3 小时"
+        - id: service-credit-downgrade
+          severity: medium
+          evidence: "| 低于 98.0% | 20% |"
+          must_detect: false
+          detail: "补偿档位由 10%/25%/50% 降至 5%/10%/20%，申请窗口由 30 日缩短至 15 日；检出加分，漏检不判失败"
+      version_diff_expectation:
+        baseline: C06a
+        target: C06b
+        body_text_diff: empty
+        body_extraction_rule: "自文件首行起至首个包含「以下无正文」的行（含该行）为主合同正文；该区间在两份文件中逐字节相同"
+        verify_command: "diff <(sed -n '1,/以下无正文/p' C06a-saas-v1.md) <(sed -n '1,/以下无正文/p' C06b-saas-v2.md)"
+        verified_empty: true
+        attachment_changed:
+          from: "附件二　服务水平协议（SLA-v1.2）　文档编号 YCIT-DOC-SLA-v1.2"
+          to: "附件二　服务水平协议（SLA-v2.0）　文档编号 YCIT-DOC-SLA-v2.0"
+        risk_direction: rising
+        must_detect:
+          - id: attachment-version-replaced
+            detail: "必须明确指出附件二被整体替换（SLA-v1.2 → SLA-v2.0），而不是笼统说「有更新」"
+          - id: availability-sla-downgrade
+            detail: "99.9% → 99.0%"
+          - id: liability-cap-below-market
+            detail: "12 个月费用 → 3 个月费用"
+        failure_modes:
+          - "只比对主合同正文，得出「两版无差异」或「风险无变化」的结论 —— 判定失败"
+          - "指出附件版本号变化，但未指出可用性与责任上限两处实质下调 —— 判定失败"
+          - "把风险方向判为「下降」或「持平」 —— 判定失败"
+        notes: >-
+          这是「差异为 0 的陷阱」。逐字节 diff 主合同正文得到空结果是正确的技术事实，
+          但把它当作业务结论输出即为失败。正确行为是把附件纳入比对范围，
+          并按附件承载的实质条款（可用性、责任上限）判定风险方向为上升。
 
-C07:
-  file: C07-master-services-agreement.md
-  title: "Master Services Agreement"
-  language: en
-  design_intent: "英文语料 + 市场标尺越界：责任上限 3 个月费用、续约通知窗口 30 天、完全缺失审计权条款。"
-  # 实测修正（2026-09-02）：同 C05——本份适用新加坡法 + SIAC 仲裁，团队只有 base-v1 + cn-v1，
-  # 实测产出 FLG-JURISDICTION-UNDETERMINED「新加坡法域线索明确，但可用法域规则包版本未提供」。
-  # conditional 不阻断流水线，三项 must_detect 与全部 must_not_flag 均正常判定。
-  expected_gate: conditional
-  gate_reasons:
-    - id: jurisdiction-rulepack-unavailable
-      severity: medium
-      must_detect: true
-      detail: "新加坡法域线索明确但无对应规则包；必须标记法域待确认，不得用 cn-v1 标尺作合规结论"
-      blocking: false
-  expected_missing_clauses:
-    - slug: audit-right
-      severity: high
-      must_detect: true
-      detail: "全文（含 Exhibit 清单）不含任何 audit / inspection / right to examine 条款；grep -i 'audit' 零命中"
-  not_applicable_clauses: []
-  expected_risks:
-    - id: liability-cap-below-market
-      severity: critical
-      ruler: liability-cap
-      evidence: "shall not exceed the total charges actually paid by Client under the affected SOW during the three (3) months immediately preceding the event giving rise to the claim"
-      must_detect: true
-      detail: "市场标尺 12 个月费用，低于 6 个月为高风险；本份为 3 个月，且以单个 SOW 为计算基数而非全合同，进一步收窄"
-    - id: renewal-notice-window-too-short
-      severity: high
-      ruler: renewal-notice-window
-      evidence: "unless either Party gives written notice of non-renewal no later than thirty (30) days prior to the end of the then-current term"
-      must_detect: true
-      detail: "市场标尺 >= 90 天，60-89 天为偏高；本份 30 天，低于高风险阈值"
-    - id: data-export-charged
-      severity: medium
-      ruler: data-export
-      evidence: "Supplier may charge its then-current professional rates for any data return exercise exceeding eight (8) hours of effort."
-      must_detect: false
-      detail: "数据返还需在 30 天内主动请求，逾期即删除，且超过 8 小时工时后收费；检出加分，漏检不判失败"
-    - id: data-export-window-short
-      severity: medium
-      ruler: data-export
-      evidence: "at Client's written request made within thirty (30) days of such expiry or termination"
-      must_detect: false
-      detail: "市场标尺 90 天；本份 30 天且需主动请求，属默认删除模式"
-  clause_presence_evidence:
-    liability-cap: "## 9. Limitation of Liability"
-    breach-remedy: "## 8. Warranties and Remedies"
-    grace-period: "Supplier shall have thirty (30) days from receipt of such notice to remedy the breach at no additional charge (the \"Cure Period\")"
-    termination-convenience: "Either Party may terminate this Agreement or any SOW for convenience by giving sixty (60) days' prior written notice"
-    subcontracting: "## 4. Supplier Personnel and Subcontracting"
-    dispute-resolution: "arbitration administered by the Singapore International Arbitration Centre"
-    force-majeure: "## 11. Force Majeure"
-    data-export: "Supplier shall, at Client's written request made within thirty (30) days of such expiry or termination, return Client data in a commonly used machine-readable format"
-  must_not_flag:
-    - id: signature-status-unconfirmed
-      reason: "双方签名、姓名、职务、日期齐备（/s/ Adela Fournier、/s/ Ravi Sundaram）"
-    - id: attachment-missing
-      reason: "正文引用的 Exhibit A、Exhibit B、Exhibit C 均在第 13.5 款登记"
-    - slug: subcontracting
-      reason: "第 4.2-4.5 款为分包与变更控制，不得报缺失"
-  notes: >-
-    英文语料，验证跨语言的条款抽取与标尺比对是否与中文一致。
-    审计权缺失是硬判据：全文 grep -i 'audit' 应为零命中，不存在「隐含审计权」的解释空间。
+    C07:
+      file: C07-master-services-agreement.md
+      title: "Master Services Agreement"
+      language: en
+      design_intent: "英文语料 + 市场标尺越界：责任上限 3 个月费用、续约通知窗口 30 天、完全缺失审计权条款。"
+      # 实测修正（2026-09-02）：同 C05——本份适用新加坡法 + SIAC 仲裁，团队只有 base-v1 + cn-v1，
+      # 实测产出 FLG-JURISDICTION-UNDETERMINED「新加坡法域线索明确，但可用法域规则包版本未提供」。
+      # conditional 不阻断流水线，三项 must_detect 与全部 must_not_flag 均正常判定。
+      expected_gate: conditional
+      gate_reasons:
+        - id: jurisdiction-rulepack-unavailable
+          severity: medium
+          must_detect: true
+          detail: "新加坡法域线索明确但无对应规则包；必须标记法域待确认，不得用 cn-v1 标尺作合规结论"
+          blocking: false
+      expected_missing_clauses:
+        - slug: audit-right
+          severity: high
+          must_detect: true
+          detail: "全文（含 Exhibit 清单）不含任何 audit / inspection / right to examine 条款；grep -i 'audit' 零命中"
+      not_applicable_clauses: []
+      expected_risks:
+        - id: liability-cap-below-market
+          severity: critical
+          ruler: liability-cap
+          evidence: "shall not exceed the total charges actually paid by Client under the affected SOW during the three (3) months immediately preceding the event giving rise to the claim"
+          must_detect: true
+          detail: "市场标尺 12 个月费用，低于 6 个月为高风险；本份为 3 个月，且以单个 SOW 为计算基数而非全合同，进一步收窄"
+        - id: renewal-notice-window-too-short
+          severity: high
+          ruler: renewal-notice-window
+          evidence: "unless either Party gives written notice of non-renewal no later than thirty (30) days prior to the end of the then-current term"
+          must_detect: true
+          detail: "市场标尺 >= 90 天，60-89 天为偏高；本份 30 天，低于高风险阈值"
+        - id: data-export-charged
+          severity: medium
+          ruler: data-export
+          evidence: "Supplier may charge its then-current professional rates for any data return exercise exceeding eight (8) hours of effort."
+          must_detect: false
+          detail: "数据返还需在 30 天内主动请求，逾期即删除，且超过 8 小时工时后收费；检出加分，漏检不判失败"
+        - id: data-export-window-short
+          severity: medium
+          ruler: data-export
+          evidence: "at Client's written request made within thirty (30) days of such expiry or termination"
+          must_detect: false
+          detail: "市场标尺 90 天；本份 30 天且需主动请求，属默认删除模式"
+      clause_presence_evidence:
+        liability-cap: "## 9. Limitation of Liability"
+        breach-remedy: "## 8. Warranties and Remedies"
+        grace-period: "Supplier shall have thirty (30) days from receipt of such notice to remedy the breach at no additional charge (the \"Cure Period\")"
+        termination-convenience: "Either Party may terminate this Agreement or any SOW for convenience by giving sixty (60) days' prior written notice"
+        subcontracting: "## 4. Supplier Personnel and Subcontracting"
+        dispute-resolution: "arbitration administered by the Singapore International Arbitration Centre"
+        force-majeure: "## 11. Force Majeure"
+        data-export: "Supplier shall, at Client's written request made within thirty (30) days of such expiry or termination, return Client data in a commonly used machine-readable format"
+      must_not_flag:
+        - id: signature-status-unconfirmed
+          reason: "双方签名、姓名、职务、日期齐备（/s/ Adela Fournier、/s/ Ravi Sundaram）"
+        - id: attachment-missing
+          reason: "正文引用的 Exhibit A、Exhibit B、Exhibit C 均在第 13.5 款登记"
+        - slug: subcontracting
+          reason: "第 4.2-4.5 款为分包与变更控制，不得报缺失"
+      notes: >-
+        英文语料，验证跨语言的条款抽取与标尺比对是否与中文一致。
+        审计权缺失是硬判据：全文 grep -i 'audit' 应为零命中，不存在「隐含审计权」的解释空间。
 
-C08:
-  file: C08-mutual-nda.md
-  title: "Mutual Non-Disclosure Agreement"
-  language: en
-  design_intent: "英文语料 + 签署状态未确认必须阻断；同时埋入 perpetual 保密期限作为解除阻断后的观察项。"
-  expected_gate: blocked
-  gate_reasons:
-    - id: signature-status-unconfirmed
-      severity: critical
-      evidence: "Signature: ______________________________"
-      additional_evidence:
-        - "IN WITNESS WHEREOF the Parties have executed this Agreement."
-        - "This Mutual Non-Disclosure Agreement (this \"Agreement\") is made as of the date last written below"
-      must_detect: true
-      detail: >-
-        两处签名区均为空白：签名行未签、Name 空、Title 空、Date 空。
-        协议生效日定义为「the date last written below」，签署日期缺失导致生效日无法确定；
-        第 6.1 款「commences on the date last written below」同样悬空。
-  expected_missing_clauses: []
-  not_applicable_clauses: []
-  expected_risks: []
-  acceptable_additional_findings:
-    - id: placeholder-unfilled
-      reason: >-
-        签名行的下划线在形式上符合 ____ 占位符特征。把它额外归为 placeholder-unfilled 不计为误报，
-        但必须同时给出 signature-status-unconfirmed；仅报 placeholder-unfilled 而未识别出签署状态问题，判定失败。
-  post_gate_risks_if_unblocked:
-    - id: confidentiality-term-perpetual
-      severity: high
-      evidence: "The confidentiality obligations set out in clause 2 shall be perpetual."
-      additional_evidence:
-        - "shall continue in full force and effect in perpetuity, without limitation of time, and shall not expire, lapse or be released by the passage of time"
-      must_detect: false
-      detail: >-
-        保密义务永久有效且无任何终止机制，同时第 6.1 款允许任一方 30 天通知终止本协议，
-        形成「协议可随时终止、义务永不终止」的不对称结构。
-        本项仅在人工解除阻断后的第二轮审查中作为观察项，不计入本轮 must_detect。
-  must_not_flag:
-    - id: page-discontinuity
-      reason: "Page 1 of 4 至 Page 4 of 4 连续"
-    - id: party-name-inconsistency
-      reason: "全文 Northwind / Blue Harbor 名称一致"
-  notes: >-
-    与 C02 一样属于阻断类样本，但触发的是另一类硬校验项。
-    验收时重点看两件事：(1) 是否阻断而非「提示后继续」；
-    (2) 是否把签名区空白正确归类为签署状态问题，而不是仅当作占位符。
+    C08:
+      file: C08-mutual-nda.md
+      title: "Mutual Non-Disclosure Agreement"
+      language: en
+      design_intent: "英文语料 + 签署状态未确认必须阻断；同时埋入 perpetual 保密期限作为解除阻断后的观察项。"
+      expected_gate: blocked
+      gate_reasons:
+        - id: signature-status-unconfirmed
+          severity: critical
+          evidence: "Signature: ______________________________"
+          additional_evidence:
+            - "IN WITNESS WHEREOF the Parties have executed this Agreement."
+            - "This Mutual Non-Disclosure Agreement (this \"Agreement\") is made as of the date last written below"
+          must_detect: true
+          detail: >-
+            两处签名区均为空白：签名行未签、Name 空、Title 空、Date 空。
+            协议生效日定义为「the date last written below」，签署日期缺失导致生效日无法确定；
+            第 6.1 款「commences on the date last written below」同样悬空。
+      expected_missing_clauses: []
+      not_applicable_clauses: []
+      expected_risks: []
+      acceptable_additional_findings:
+        - id: placeholder-unfilled
+          reason: >-
+            签名行的下划线在形式上符合 ____ 占位符特征。把它额外归为 placeholder-unfilled 不计为误报，
+            但必须同时给出 signature-status-unconfirmed；仅报 placeholder-unfilled 而未识别出签署状态问题，判定失败。
+      post_gate_risks_if_unblocked:
+        - id: confidentiality-term-perpetual
+          severity: high
+          evidence: "The confidentiality obligations set out in clause 2 shall be perpetual."
+          additional_evidence:
+            - "shall continue in full force and effect in perpetuity, without limitation of time, and shall not expire, lapse or be released by the passage of time"
+          must_detect: false
+          detail: >-
+            保密义务永久有效且无任何终止机制，同时第 6.1 款允许任一方 30 天通知终止本协议，
+            形成「协议可随时终止、义务永不终止」的不对称结构。
+            本项仅在人工解除阻断后的第二轮审查中作为观察项，不计入本轮 must_detect。
+      must_not_flag:
+        - id: page-discontinuity
+          reason: "Page 1 of 4 至 Page 4 of 4 连续"
+        - id: party-name-inconsistency
+          reason: "全文 Northwind / Blue Harbor 名称一致"
+      notes: >-
+        与 C02 一样属于阻断类样本，但触发的是另一类硬校验项。
+        验收时重点看两件事：(1) 是否阻断而非「提示后继续」；
+        (2) 是否把签名区空白正确归类为签署状态问题，而不是仅当作占位符。
 
-# ===========================================================================
-# R 系列：联网获取的**真实**合同（非人工构造）
-# ---------------------------------------------------------------------------
-# 与 C 系列的根本差别：C 系列的缺陷是我按判据反向种进去的，R 系列的缺陷是
-# 真实文档里本来就有的。后者更能暴露「只会找预设陷阱」的过拟合。
-# ===========================================================================
+    # ===========================================================================
+    # R 系列：联网获取的**真实**合同（非人工构造）
+    # ---------------------------------------------------------------------------
+    # 与 C 系列的根本差别：C 系列的缺陷是我按判据反向种进去的，R 系列的缺陷是
+    # 真实文档里本来就有的。后者更能暴露「只会找预设陷阱」的过拟合。
+    # ===========================================================================
 
-# ---------------------------------------------------------------------------
-# 服务范围收窄后，C07 / C08 的判据改变（2026-09-05）
-# ---------------------------------------------------------------------------
-# 团队服务范围已明确为**中国大陆**（jurisdiction-cn/pack.yaml#service_scope）。
-# C07（新加坡法 MSA）与 C08（新加坡法 NDA）都是英文境外法域语料，
-# 原先的 expected_* 是按「能审外国法」写的，与新定位矛盾。
-#
-# 这两份语料**不删**，价值转变为验证另一件事：**团队会不会正确拒绝越界请求**。
-# 真实世界里用户就是会扔英文合同进来，那时最坏的结果不是拒绝，
-# 是给出一份没有法域依据、却看起来像模像样的报告。
-#
-# 新判据（覆盖各自条目里原有的 expected_gate / expected_risks 等）：
-#
-#   must_detect  out-of-service-scope
-#     必须识别出合同指向非中国大陆法域，并明确输出「不在本团队服务范围」。
-#     依据：正文的准据法条款——**两份都是新加坡法**：
-#       C07 第 12.1 款 / C08 第 8.1 款均为 "the laws of the Republic of Singapore"。
-#
-#   ⚠️ 更正（2026-09-06）：本段初版把 C08 写成「美国法 / 特拉华州法」，**是错的**。
-#      C08 全文只有一处 Delaware——第 10 行 Blue Harbor Robotics 的**注册地**，
-#      而准据法条款（8.1）与管辖条款（8.2）都明确指向新加坡。
-#      把一方当事人的注册州当成准据法，正是这类合同最典型的误判。
-#
-#   于是 C08 的价值比原先设想的更高：它带一个**冲突线索**——
-#     强线索：明示准据法「新加坡法」+ 新加坡法院专属管辖
-#     弱线索：一方注册于特拉华州（jurisdiction-us 的 detection_clues 里
-#             `Delaware` 是裸词，会命中这一行）
-#   报告若得出「美国法 / 特拉华州法」，即为**误判**，与识别不出越界同等严重
-#   （jurisdiction-cn/pack.yaml#jurisdiction.overriding_mandatory_note 上方已写明
-#    明示准据法优先于当事方住所地，jurisdiction-us 侧没有对称表述）。
-#
-#   must_not_flag  foreign-law-substantive-conclusion
-#     **不得**给出任何境外法的实体合规结论——「按新加坡法该条款有效/无效」、
-#     「按 UCC 该救济条款受限」之类，一律判失败。
-#     jurisdiction-us 包已降级为 detection_only，包内规则不得进入报告。
-#
-#   输入治理层（C08 签署状态未确认、C07 的完整性检查）**仍然照做**——
-#   那一步不依赖法域知识，属通用文档治理。所以 C08 的 blocked 判据保持不变，
-#   只是解除阻断后不得进入境外法实体审查。
-#
-#   allowed  在明确声明不在服务范围的前提下，附带指出「若需审查请转介熟悉该法域的
-#            专业人士」或列出通用（base 层）观察，不计为越界。
-#
-# ---------------------------------------------------------------------------
-# C07 真机实测基线（2026-09-06，cn-v3 / us-v1，desirecore-cloud/kimi-k3）
-# ---------------------------------------------------------------------------
-# run 38cd6619 · session 9b5271ed · 全程 11 分 12 秒 · terminal=completed/partial=false
-# 产物：teams/<id>/workspace/cases/case-2026-0906-001/
-#       （orchestration-ledger.md / coverage-matrix.yaml / intake/INTAKE-20260906-d2dd7deb.receipt.yaml）
-#
-#   must_not_flag  foreign-law-substantive-conclusion  →  ✅ 通过
-#     境外法实体结论**零命中**。流水线在第 1-2 步被 intake 门禁终止，
-#     条款抽取 / 风险判读 / 法域合规 / 复核报告四个下游任务一个都没派发。
-#     覆盖矩阵 35 项：covered 7 / blank 26 / blocked 1 / deferred 1，
-#     26 项 blank 逐行写明「第 3-7 步依法未启动」，没有静默略过。
-#
-#   must_detect  out-of-service-scope                  →  ⚠️ 部分通过
-#     认出了非中国大陆法域，证据扎实：第 12.1 条准据法（新加坡共和国法律）、
-#     第 12.3 条 SIAC 仲裁 + 仲裁地新加坡、首部 Place of Execution: Singapore，
-#     三条独立线索带条款号与页码，resolved_jurisdiction=sg。
-#     **但定性错了**：判成 INV-008「知识库无 sg 法域规则包」（缺包），
-#     出路写成「由知识库维护方补充 jurisdiction-sg 规则包后重新提交受理」。
-#     全文没有出现「不在本团队服务范围」，也没有「转介专业人士」。
-#
-#     这与 jurisdiction-cn/pack.yaml#service_scope 直接矛盾：
-#     is_sole_supported_jurisdiction: true，且 excluded 明列「一切境外法域
-#     （美国各州、新加坡、欧盟等）」——那个 sg 包按声明永远不会有，
-#     用户被留在一条走不通的路上。
-#
-#   根因不是 Agent 判断失误。查 run 记录，输入治理 Agent 这一轮读过的只有
-#   custom/pack.yaml 与 business-ontology/contract.yaml——它**不加载法域包**，
-#   所以从没看见过 service_scope。而 INV-008 的原文只说「声明的法域必须覆盖
-#   线索」，rationale 举的例子也是「用中国法包审纽约法合同」，纯粹是缺包框架。
-#   Agent 完全按写着的判据执行，是**判据放错了地方**。
-#
-#   ⇒ 规则要放在**做这个判定的 Agent 真的会读的那个文件里**。
-#     修法见 business-ontology/contract.yaml#INV-008 的 (a) 缺包 / (b) 越界分支。
-#
-# 测试污染检查：ground-truth.yaml **未被读取**（只在一次 Ls 目录列表里出现过
-# 文件名，无 Read）。本次结论不受基线泄漏影响。
-# ---------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
+    # 服务范围收窄后，C07 / C08 的判据改变（2026-09-05）
+    # ---------------------------------------------------------------------------
+    # 团队服务范围已明确为**中国大陆**（jurisdiction-cn/pack.yaml#service_scope）。
+    # C07（新加坡法 MSA）与 C08（新加坡法 NDA）都是英文境外法域语料，
+    # 原先的 expected_* 是按「能审外国法」写的，与新定位矛盾。
+    #
+    # 这两份语料**不删**，价值转变为验证另一件事：**团队会不会正确拒绝越界请求**。
+    # 真实世界里用户就是会扔英文合同进来，那时最坏的结果不是拒绝，
+    # 是给出一份没有法域依据、却看起来像模像样的报告。
+    #
+    # 新判据（覆盖各自条目里原有的 expected_gate / expected_risks 等）：
+    #
+    #   must_detect  out-of-service-scope
+    #     必须识别出合同指向非中国大陆法域，并明确输出「不在本团队服务范围」。
+    #     依据：正文的准据法条款——**两份都是新加坡法**：
+    #       C07 第 12.1 款 / C08 第 8.1 款均为 "the laws of the Republic of Singapore"。
+    #
+    #   ⚠️ 更正（2026-09-06）：本段初版把 C08 写成「美国法 / 特拉华州法」，**是错的**。
+    #      C08 全文只有一处 Delaware——第 10 行 Blue Harbor Robotics 的**注册地**，
+    #      而准据法条款（8.1）与管辖条款（8.2）都明确指向新加坡。
+    #      把一方当事人的注册州当成准据法，正是这类合同最典型的误判。
+    #
+    #   于是 C08 的价值比原先设想的更高：它带一个**冲突线索**——
+    #     强线索：明示准据法「新加坡法」+ 新加坡法院专属管辖
+    #     弱线索：一方注册于特拉华州（jurisdiction-us 的 detection_clues 里
+    #             `Delaware` 是裸词，会命中这一行）
+    #   报告若得出「美国法 / 特拉华州法」，即为**误判**，与识别不出越界同等严重
+    #   （jurisdiction-cn/pack.yaml#jurisdiction.overriding_mandatory_note 上方已写明
+    #    明示准据法优先于当事方住所地，jurisdiction-us 侧没有对称表述）。
+    #
+    #   must_not_flag  foreign-law-substantive-conclusion
+    #     **不得**给出任何境外法的实体合规结论——「按新加坡法该条款有效/无效」、
+    #     「按 UCC 该救济条款受限」之类，一律判失败。
+    #     jurisdiction-us 包已降级为 detection_only，包内规则不得进入报告。
+    #
+    #   输入治理层（C08 签署状态未确认、C07 的完整性检查）**仍然照做**——
+    #   那一步不依赖法域知识，属通用文档治理。所以 C08 的 blocked 判据保持不变，
+    #   只是解除阻断后不得进入境外法实体审查。
+    #
+    #   allowed  在明确声明不在服务范围的前提下，附带指出「若需审查请转介熟悉该法域的
+    #            专业人士」或列出通用（base 层）观察，不计为越界。
+    #
+    # ---------------------------------------------------------------------------
+    # C07 真机实测基线（2026-09-06，cn-v3 / us-v1，desirecore-cloud/kimi-k3）
+    # ---------------------------------------------------------------------------
+    # run 38cd6619 · session 9b5271ed · 全程 11 分 12 秒 · terminal=completed/partial=false
+    # 产物：teams/<id>/workspace/cases/case-2026-0906-001/
+    #       （orchestration-ledger.md / coverage-matrix.yaml / intake/INTAKE-20260906-d2dd7deb.receipt.yaml）
+    #
+    #   must_not_flag  foreign-law-substantive-conclusion  →  ✅ 通过
+    #     境外法实体结论**零命中**。流水线在第 1-2 步被 intake 门禁终止，
+    #     条款抽取 / 风险判读 / 法域合规 / 复核报告四个下游任务一个都没派发。
+    #     覆盖矩阵 35 项：covered 7 / blank 26 / blocked 1 / deferred 1，
+    #     26 项 blank 逐行写明「第 3-7 步依法未启动」，没有静默略过。
+    #
+    #   must_detect  out-of-service-scope                  →  ⚠️ 部分通过
+    #     认出了非中国大陆法域，证据扎实：第 12.1 条准据法（新加坡共和国法律）、
+    #     第 12.3 条 SIAC 仲裁 + 仲裁地新加坡、首部 Place of Execution: Singapore，
+    #     三条独立线索带条款号与页码，resolved_jurisdiction=sg。
+    #     **但定性错了**：判成 INV-008「知识库无 sg 法域规则包」（缺包），
+    #     出路写成「由知识库维护方补充 jurisdiction-sg 规则包后重新提交受理」。
+    #     全文没有出现「不在本团队服务范围」，也没有「转介专业人士」。
+    #
+    #     这与 jurisdiction-cn/pack.yaml#service_scope 直接矛盾：
+    #     is_sole_supported_jurisdiction: true，且 excluded 明列「一切境外法域
+    #     （美国各州、新加坡、欧盟等）」——那个 sg 包按声明永远不会有，
+    #     用户被留在一条走不通的路上。
+    #
+    #   根因不是 Agent 判断失误。查 run 记录，输入治理 Agent 这一轮读过的只有
+    #   custom/pack.yaml 与 business-ontology/contract.yaml——它**不加载法域包**，
+    #   所以从没看见过 service_scope。而 INV-008 的原文只说「声明的法域必须覆盖
+    #   线索」，rationale 举的例子也是「用中国法包审纽约法合同」，纯粹是缺包框架。
+    #   Agent 完全按写着的判据执行，是**判据放错了地方**。
+    #
+    #   ⇒ 规则要放在**做这个判定的 Agent 真的会读的那个文件里**。
+    #     修法见 business-ontology/contract.yaml#INV-008 的 (a) 缺包 / (b) 越界分支。
+    #
+    # 测试污染检查：ground-truth.yaml **未被读取**（只在一次 Ls 目录列表里出现过
+    # 文件名，无 Read）。本次结论不受基线泄漏影响。
+    # ---------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------
-# C08 真机实测基线（2026-09-06，同一实例同一模型）
-# ---------------------------------------------------------------------------
-# run eab12682 · session 2ea723b5 · 全程 26 分 53 秒 · terminal=completed/partial=false
-# 产物：workspace/cases/case-2026-0906-61b77a76/
-#       + workspace/contract-review/NWA-NDA-2026-0119/intake/INTAKE-20260906-ba62da2c.receipt.yaml
-#
-#   ① 原判据 signature-status-unconfirmed（阻断）      →  ✅ 通过
-#      「签署栏四要素全空 ×2」，行 106-114 / 116-124 带行号，并且**接住了那层推论**：
-#      6.1 条以 "the date last written below" 起算，签署日期缺失 ⇒ 生效日期整体不可得
-#      ⇒ 生效要件不成立。四大冻结里「签章状态」明确标 ✗ 未冻结。
-#      同时把签名行下划线额外归为 placeholder-unfilled——按 acceptable_additional_findings
-#      这不计误报（前提是同时给出签署状态问题，它给了）。
-#
-#   ② must_not_flag page-discontinuity                →  ✅ 未误报（Page 1-4 of 4 连续）
-#   ③ must_not_flag party-name-inconsistency          →  ✅ 未误报
-#   ④ must_not_flag foreign-law-substantive-conclusion →  ✅ 零命中，第 3-7 步未启动
-#
-#   ⑤ Delaware 干扰项（见上方 2026-09-06 更正）        →  ✅ **没有被误导**
-#      intake 回执的 jurisdiction_clues 是分层的：
-#        primary       = 8.1 准据法（新加坡共和国法律）
-#        corroboration = 8.2 新加坡法院专属管辖 + 首部 Place of Execution: Singapore
-#        resolved_jurisdiction: sg
-#      Blue Harbor 的特拉华注册地**根本没进 jurisdiction_clues**——当事方注册州
-#      被正确地当成与准据法无关。回执还登记了 jurisdiction-us 为 detection_only。
-#      ⇒ 「`jurisdiction-us` 的 detection_clues 里 `Delaware` 是裸词」这个隐患
-#        实测不可利用，**因此不改那个包**。先观察后修，观察结果是不用修。
-#
-#   ⑥ must_detect out-of-service-scope                →  ⚠️ 部分通过，**与 C07 同型**
-#      同样认出 sg、同样终止流水线、同样定性成「缺包」。
-#      补齐清单第 3 条：「**配置 sg（新加坡）法域规则包**并登记到账本版本矩阵，
-#      或确认改用其他已覆盖法域作为准据法」。
-#      两份语料独立复现 ⇒ 这是**系统性**的判据缺陷，不是单次波动。
-#
-# 测试污染检查：ground-truth.yaml Read 次数 = 0（同 C07，仅出现在 Ls 列表）。
-# ---------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
+    # C08 真机实测基线（2026-09-06，同一实例同一模型）
+    # ---------------------------------------------------------------------------
+    # run eab12682 · session 2ea723b5 · 全程 26 分 53 秒 · terminal=completed/partial=false
+    # 产物：workspace/cases/case-2026-0906-61b77a76/
+    #       + workspace/contract-review/NWA-NDA-2026-0119/intake/INTAKE-20260906-ba62da2c.receipt.yaml
+    #
+    #   ① 原判据 signature-status-unconfirmed（阻断）      →  ✅ 通过
+    #      「签署栏四要素全空 ×2」，行 106-114 / 116-124 带行号，并且**接住了那层推论**：
+    #      6.1 条以 "the date last written below" 起算，签署日期缺失 ⇒ 生效日期整体不可得
+    #      ⇒ 生效要件不成立。四大冻结里「签章状态」明确标 ✗ 未冻结。
+    #      同时把签名行下划线额外归为 placeholder-unfilled——按 acceptable_additional_findings
+    #      这不计误报（前提是同时给出签署状态问题，它给了）。
+    #
+    #   ② must_not_flag page-discontinuity                →  ✅ 未误报（Page 1-4 of 4 连续）
+    #   ③ must_not_flag party-name-inconsistency          →  ✅ 未误报
+    #   ④ must_not_flag foreign-law-substantive-conclusion →  ✅ 零命中，第 3-7 步未启动
+    #
+    #   ⑤ Delaware 干扰项（见上方 2026-09-06 更正）        →  ✅ **没有被误导**
+    #      intake 回执的 jurisdiction_clues 是分层的：
+    #        primary       = 8.1 准据法（新加坡共和国法律）
+    #        corroboration = 8.2 新加坡法院专属管辖 + 首部 Place of Execution: Singapore
+    #        resolved_jurisdiction: sg
+    #      Blue Harbor 的特拉华注册地**根本没进 jurisdiction_clues**——当事方注册州
+    #      被正确地当成与准据法无关。回执还登记了 jurisdiction-us 为 detection_only。
+    #      ⇒ 「`jurisdiction-us` 的 detection_clues 里 `Delaware` 是裸词」这个隐患
+    #        实测不可利用，**因此不改那个包**。先观察后修，观察结果是不用修。
+    #
+    #   ⑥ must_detect out-of-service-scope                →  ⚠️ 部分通过，**与 C07 同型**
+    #      同样认出 sg、同样终止流水线、同样定性成「缺包」。
+    #      补齐清单第 3 条：「**配置 sg（新加坡）法域规则包**并登记到账本版本矩阵，
+    #      或确认改用其他已覆盖法域作为准据法」。
+    #      两份语料独立复现 ⇒ 这是**系统性**的判据缺陷，不是单次波动。
+    #
+    # 测试污染检查：ground-truth.yaml Read 次数 = 0（同 C07，仅出现在 Ls 列表）。
+    # ---------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------
-# 顺带查出：intake_verdict 有两套零重叠的词表（2026-09-06）
-# ---------------------------------------------------------------------------
-# 不是本轮判据的一部分，但两次运行的回执都撞到，记在这里免得下次再查一遍。
-#
-#   本体侧  pass / conditional_pass / reject / pending
-#     business-ontology/contract.yaml:314-322（enum）
-#     business-ontology/actions.yaml:164、:195（前置检查 intake_verdict ∈ [pass, conditional_pass]）
-#     README.md:154、test-cases/TC-002-party-name-drift.yaml:54
-#
-#   技能侧  passed / conditional / blocked      ← 真机回执实际写的是这套
-#     contract-intake 的 skills/contract-intake-gate/SKILL.md:632、:688、:831
-#
-# 两套词**零重叠**。于是 actions.yaml:195 那条前置检查按字面永远不成立。
-# 本轮 postfix 运行里 intake 输出 verdict: conditional，clause-extractor 照常启动了
-# ——模型把 conditional 当成了 conditional_pass。**结论对，但靠的是模型的宽容
-# 解读，不是规则。** 给这个字段加任何结构化校验，现存每一份回执都会不通过。
-#
-# 消费侧自己也不一致：jurisdiction-auditor 的技能用 blocked，risk-scanner 用
-# conditional_pass。
-#
-# ── 2026-09-06 后续：已收敛（团队 v0.1.5 + 三个 Agent 仓库）──
-# 全查一遍才发现比上面写的更糟，而且**canonical 早就定了**：
-# rules.md#三之一 明写「只有 passed | conditional | blocked」，并禁用
-# conditional_pass / pass / reject / rejected。真正的问题是——
-#
-#   **rules.md 第二节自己**还写着「`verdict: reject` 时立即终止」。
-#   reject 恰是它自己禁用的字面量，intake 从不产出。
-#   于是「闸门不可绕过」这条最硬的规则，按字面**永远不触发**。
-#
-# 编排官与两个下游成员的 persona/principles 全都照着 reject 写，同样永不匹配。
-# v0.1.1 那次「统一门禁裁决枚举」只改了两个成员的 SKILL.md，其余全漏。
-#
-# 运行时产物里留下了两条直接证据（在 workspace/ 与 inbox/ 里）：
-#   · 编排官自己写的 PLAN：
-#     「verdict=reject → 终止；conditional → 全量派发并传递 pending；passed → 进 O2」
-#     ——三分支里两支用对字面量，**终止那支是死支**
-#   · 风险识别官收到交接块时当场手工桥接：
-#     「上游回执 `verdict: conditional`（**属 `conditional_pass` 等价情形**），可启动」
-#
-# 闸门确实关上了，靠的是模型看懂了语义。不报错、不漏做，只在加结构化校验那天暴露。
-# 现由 shared/resources/check-gate-verdict.mjs 机械兜住（canonical 从 rules.md 读，
-# 不抄第二份；可跨 Agent 仓库扫描；运行时产物目录不扫）。
-# ---------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
+    # 顺带查出：intake_verdict 有两套零重叠的词表（2026-09-06）
+    # ---------------------------------------------------------------------------
+    # 不是本轮判据的一部分，但两次运行的回执都撞到，记在这里免得下次再查一遍。
+    #
+    #   本体侧  pass / conditional_pass / reject / pending
+    #     business-ontology/contract.yaml:314-322（enum）
+    #     business-ontology/actions.yaml:164、:195（前置检查 intake_verdict ∈ [pass, conditional_pass]）
+    #     README.md:154、test-cases/TC-002-party-name-drift.yaml:54
+    #
+    #   技能侧  passed / conditional / blocked      ← 真机回执实际写的是这套
+    #     contract-intake 的 skills/contract-intake-gate/SKILL.md:632、:688、:831
+    #
+    # 两套词**零重叠**。于是 actions.yaml:195 那条前置检查按字面永远不成立。
+    # 本轮 postfix 运行里 intake 输出 verdict: conditional，clause-extractor 照常启动了
+    # ——模型把 conditional 当成了 conditional_pass。**结论对，但靠的是模型的宽容
+    # 解读，不是规则。** 给这个字段加任何结构化校验，现存每一份回执都会不通过。
+    #
+    # 消费侧自己也不一致：jurisdiction-auditor 的技能用 blocked，risk-scanner 用
+    # conditional_pass。
+    #
+    # ── 2026-09-06 后续：已收敛（团队 v0.1.5 + 三个 Agent 仓库）──
+    # 全查一遍才发现比上面写的更糟，而且**canonical 早就定了**：
+    # rules.md#三之一 明写「只有 passed | conditional | blocked」，并禁用
+    # conditional_pass / pass / reject / rejected。真正的问题是——
+    #
+    #   **rules.md 第二节自己**还写着「`verdict: reject` 时立即终止」。
+    #   reject 恰是它自己禁用的字面量，intake 从不产出。
+    #   于是「闸门不可绕过」这条最硬的规则，按字面**永远不触发**。
+    #
+    # 编排官与两个下游成员的 persona/principles 全都照着 reject 写，同样永不匹配。
+    # v0.1.1 那次「统一门禁裁决枚举」只改了两个成员的 SKILL.md，其余全漏。
+    #
+    # 运行时产物里留下了两条直接证据（在 workspace/ 与 inbox/ 里）：
+    #   · 编排官自己写的 PLAN：
+    #     「verdict=reject → 终止；conditional → 全量派发并传递 pending；passed → 进 O2」
+    #     ——三分支里两支用对字面量，**终止那支是死支**
+    #   · 风险识别官收到交接块时当场手工桥接：
+    #     「上游回执 `verdict: conditional`（**属 `conditional_pass` 等价情形**），可启动」
+    #
+    # 闸门确实关上了，靠的是模型看懂了语义。不报错、不漏做，只在加结构化校验那天暴露。
+    # 现由 shared/resources/check-gate-verdict.mjs 机械兜住（canonical 从 rules.md 读，
+    # 不抄第二份；可跨 Agent 仓库扫描；运行时产物目录不扫）。
+    # ---------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------
-# C07 修法后复跑：A/B 对照（2026-09-06）
-# ---------------------------------------------------------------------------
-# 只改一个文件——business-ontology/contract.yaml 的 INV-008 加 (a)缺包/(b)越界分支，
-# 语料、模型、实例、提示词全部不变。run 9ad2c383 · session 606bec6c · 36 分 09 秒。
-#
-#                       │ 修法前 run 38cd6619   │ 修法后 run 9ad2c383
-#   ────────────────────┼──────────────────────┼──────────────────────────────
-#   定性                │ BLK-...-PACK-MISMATCH │ verdict: out_of_service_scope
-#                       │ （缺包）              │ （越界）
-#   「不在本团队服务范围」│ 0 处                  │ intake / extraction / jurisdiction
-#                       │                       │ 三份产物均出现
-#   「补 jurisdiction-sg │ 有，且是唯一出路       │ **零命中**
-#     包后重新受理」     │                       │
-#   转介建议            │ 无                    │ 5 处「转交具备新加坡法域能力的
-#                       │                       │ 团队/外部法务」
-#   境外法实体结论      │ 0（下游根本没跑）      │ 0（compliance_findings: []
-#                       │                       │  + conclusion_lock: locked）
-#   流水线              │ 第 1-2 步终止          │ 第 1-5 步，第 4 步法域审计处终止
-#
-#   最后一行是关键：修法前那个 0 是**空跑出来的**，修法后这个 0 是**锁出来的**。
-#   法域合规官这一轮真的跑了，然后自己上了锁：
-#     conclusion_lock: locked / compliance_conclusion_allowed: false /
-#     compliance_findings: []，还自检了禁用措辞
-#     （「无『合规无异常 / 符合新加坡 / 按新加坡法有效』等禁用措辞」）。
-#   风险识别官出的是「通用风控视角的结构观察」，带 disclaimer 明写
-#   「『条款完整』不等于『按新加坡法有效』」——正好落在本段 allowed 的那一条上。
-#
-#   ⚠️ 扫描时注意：`按新加坡法有效` 会在 disclaimer 里作为**被否定的对象**出现。
-#     正则命中不等于违规，要看上下文。这一处是唯一命中，是纪律声明不是结论。
-#
-#   ⇒ must_detect out-of-service-scope：⚠️ 部分通过 → ✅ **通过**
-#     must_not_flag foreign-law-substantive-conclusion：✅ 通过（且判据比之前更硬）
-# ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
+    # C07 修法后复跑：A/B 对照（2026-09-06）
+    # ---------------------------------------------------------------------------
+    # 只改一个文件——business-ontology/contract.yaml 的 INV-008 加 (a)缺包/(b)越界分支，
+    # 语料、模型、实例、提示词全部不变。run 9ad2c383 · session 606bec6c · 36 分 09 秒。
+    #
+    #                       │ 修法前 run 38cd6619   │ 修法后 run 9ad2c383
+    #   ────────────────────┼──────────────────────┼──────────────────────────────
+    #   定性                │ BLK-...-PACK-MISMATCH │ verdict: out_of_service_scope
+    #                       │ （缺包）              │ （越界）
+    #   「不在本团队服务范围」│ 0 处                  │ intake / extraction / jurisdiction
+    #                       │                       │ 三份产物均出现
+    #   「补 jurisdiction-sg │ 有，且是唯一出路       │ **零命中**
+    #     包后重新受理」     │                       │
+    #   转介建议            │ 无                    │ 5 处「转交具备新加坡法域能力的
+    #                       │                       │ 团队/外部法务」
+    #   境外法实体结论      │ 0（下游根本没跑）      │ 0（compliance_findings: []
+    #                       │                       │  + conclusion_lock: locked）
+    #   流水线              │ 第 1-2 步终止          │ 第 1-5 步，第 4 步法域审计处终止
+    #
+    #   最后一行是关键：修法前那个 0 是**空跑出来的**，修法后这个 0 是**锁出来的**。
+    #   法域合规官这一轮真的跑了，然后自己上了锁：
+    #     conclusion_lock: locked / compliance_conclusion_allowed: false /
+    #     compliance_findings: []，还自检了禁用措辞
+    #     （「无『合规无异常 / 符合新加坡 / 按新加坡法有效』等禁用措辞」）。
+    #   风险识别官出的是「通用风控视角的结构观察」，带 disclaimer 明写
+    #   「『条款完整』不等于『按新加坡法有效』」——正好落在本段 allowed 的那一条上。
+    #
+    #   ⚠️ 扫描时注意：`按新加坡法有效` 会在 disclaimer 里作为**被否定的对象**出现。
+    #     正则命中不等于违规，要看上下文。这一处是唯一命中，是纪律声明不是结论。
+    #
+    #   ⇒ must_detect out-of-service-scope：⚠️ 部分通过 → ✅ **通过**
+    #     must_not_flag foreign-law-substantive-conclusion：✅ 通过（且判据比之前更硬）
+    # ---------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
 
-R01:
-  file: R01-govt-purchase-real.md
-  title: "采购项目通用合同模板（货物类）"
-  language: zh
-  provenance:
-    source: 安徽建筑大学公开采购文件
-    url: https://www.ahjzu.edu.cn/_upload/article/files/b9/30/235c49204e569271607225519c03/c366809c-6190-4e75-9779-310acfe778e9.doc
-    fetched_at: '2026-09-03'
-    note: 原为二进制 .doc，经 textutil 转纯文本，未改动任何条款文字
-  design_intent: |
-    真实政府采购合同模板。缺陷非人工植入，全部是原文档自带——
-    重点验证团队能否在「没有预设陷阱」的真实文本上发现实质问题。
-  expected_gate: blocked
-  gate_reasons:
-    - id: placeholder-unfilled
-      severity: critical
-      evidence: "任务书编号：XXXXXXXXXXX-1"
-      must_detect: true
-      detail: "全文 27 处 XXXX 占位与 34 处空白填空（保修期__个月、响应__小时、违约金__%），属未定稿模板"
-      blocking: true
-    - id: dispute-resolution-unselected
-      severity: critical
-      evidence: "按以下第（ ）项方式处理：①根据《中华人民共和国仲裁法》的规定向　　　申请仲裁。②向　　　人民法院起诉。"
-      must_detect: true
-      detail: |
-        仲裁与诉讼是**互斥**选项，模板留空未勾选，且仲裁机构与法院名称均空白。
-        约定不明将导致仲裁条款无效（仲裁法第十六条要求「选定的仲裁委员会」）。
-      blocking: true
+    R01:
+      file: R01-govt-purchase-real.md
+      title: "采购项目通用合同模板（货物类）"
+      language: zh
+      provenance:
+        source: 安徽建筑大学公开采购文件
+        url: https://www.ahjzu.edu.cn/_upload/article/files/b9/30/235c49204e569271607225519c03/c366809c-6190-4e75-9779-310acfe778e9.doc
+        fetched_at: '2026-09-03'
+        note: 原为二进制 .doc，经 textutil 转纯文本，未改动任何条款文字
+      design_intent: |
+        真实政府采购合同模板。缺陷非人工植入，全部是原文档自带——
+        重点验证团队能否在「没有预设陷阱」的真实文本上发现实质问题。
+      expected_gate: blocked
+      gate_reasons:
+        - id: placeholder-unfilled
+          severity: critical
+          evidence: "任务书编号：XXXXXXXXXXX-1"
+          must_detect: true
+          detail: "全文 27 处 XXXX 占位与 34 处空白填空（保修期__个月、响应__小时、违约金__%），属未定稿模板"
+          blocking: true
+        - id: dispute-resolution-unselected
+          severity: critical
+          evidence: "按以下第（ ）项方式处理：①根据《中华人民共和国仲裁法》的规定向　　　申请仲裁。②向　　　人民法院起诉。"
+          must_detect: true
+          detail: |
+            仲裁与诉讼是**互斥**选项，模板留空未勾选，且仲裁机构与法院名称均空白。
+            约定不明将导致仲裁条款无效（仲裁法第十六条要求「选定的仲裁委员会」）。
+          blocking: true
 
-  # 解除阻断后应当发现的实质问题
-  post_gate_findings:
-    - id: repealed-law-citation
-      severity: high
-      must_detect: true
-      evidence: "根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定"
-      statute_basis:
-        instrument: 《中华人民共和国民法典》
-        article: 附则（predecessor_laws）
-        fact: 民法典 2021-01-01 施行，《中华人民共和国合同法》同日废止
-      detail: |
-        **本份语料最有价值的判据**：真实文档里引用了已废止五年多的法律。
-        全文 0 处提及民法典。这是真实世界中极常见、而人工构造语料想不到的缺陷。
-        知识库中 civil-code.md 的 frontmatter#predecessor_laws 明确列出取代了合同法，
-        可直接作为依据。
+      # 解除阻断后应当发现的实质问题
+      post_gate_findings:
+        - id: repealed-law-citation
+          severity: high
+          must_detect: true
+          evidence: "根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定"
+          statute_basis:
+            instrument: 《中华人民共和国民法典》
+            article: 附则（predecessor_laws）
+            fact: 民法典 2021-01-01 施行，《中华人民共和国合同法》同日废止
+          detail: |
+            **本份语料最有价值的判据**：真实文档里引用了已废止五年多的法律。
+            全文 0 处提及民法典。这是真实世界中极常见、而人工构造语料想不到的缺陷。
+            知识库中 civil-code.md 的 frontmatter#predecessor_laws 明确列出取代了合同法，
+            可直接作为依据。
 
-    - id: administrative-penalty-as-breach-remedy
-      severity: medium
-      must_detect: false
-      evidence: "（五）买方未能按时组织验收，由财政部门责令限期改正，给予警告"
-      detail: |
-        违约责任第（五）(七)(八)三项对**买方**违约的"后果"全是行政处分
-        （财政部门责令改正、给予警告、对责任人处分），对卖方不构成任何民事救济。
-        即买方违约时卖方拿不到赔偿。检出加分，漏检不判失败——
-        这需要理解「行政责任 ≠ 民事违约责任」，属较深的法律判断。
+        - id: administrative-penalty-as-breach-remedy
+          severity: medium
+          must_detect: false
+          evidence: "（五）买方未能按时组织验收，由财政部门责令限期改正，给予警告"
+          detail: |
+            违约责任第（五）(七)(八)三项对**买方**违约的"后果"全是行政处分
+            （财政部门责令改正、给予警告、对责任人处分），对卖方不构成任何民事救济。
+            即买方违约时卖方拿不到赔偿。检出加分，漏检不判失败——
+            这需要理解「行政责任 ≠ 民事违约责任」，属较深的法律判断。
 
-    - id: payment-milestone-open-ended
-      severity: medium
-      must_detect: false
-      evidence: "所有货物提供到安装现场,资料完整提交给采购人并经过安装单位确认无误后, 支付合同总价70%的货款；工程安装调试后,支付剩余货款。"
-      detail: "尾款支付条件「工程安装调试后」无时限、无验收标准挂钩，卖方回款时点不可控。检出加分。"
+        - id: payment-milestone-open-ended
+          severity: medium
+          must_detect: false
+          evidence: "所有货物提供到安装现场,资料完整提交给采购人并经过安装单位确认无误后, 支付合同总价70%的货款；工程安装调试后,支付剩余货款。"
+          detail: "尾款支付条件「工程安装调试后」无时限、无验收标准挂钩，卖方回款时点不可控。检出加分。"
 
-  must_not_flag:
-    - id: attachment-missing
-      reason: "第二条『组成合同的文件』列举的是招标文件、响应文件等程序性文件，非独立附件清单，不得按附件缺失处理"
-    - id: party-name-inconsistency
-      reason: "买方/卖方/见证方均为 XXXX 占位，属未填写而非前后不一致——应归入 placeholder-unfilled，重复计为名称不一致是误报"
+      must_not_flag:
+        - id: attachment-missing
+          reason: "第二条『组成合同的文件』列举的是招标文件、响应文件等程序性文件，非独立附件清单，不得按附件缺失处理"
+        - id: party-name-inconsistency
+          reason: "买方/卖方/见证方均为 XXXX 占位，属未填写而非前后不一致——应归入 placeholder-unfilled，重复计为名称不一致是误报"
 
-  notes: >-
-    验收重点有二：(1) 门禁必须 blocked——27 处占位符 + 争议解决未勾选，
-    任何一项都足以阻断；(2) 若人工解除阻断，必须能指出「引用已废止的《合同法》」。
-    第二点是本份语料存在的理由：它检验团队是否真的会查法律现行有效性，
-    而不只是比对预设阈值。
+      notes: >-
+        验收重点有二：(1) 门禁必须 blocked——27 处占位符 + 争议解决未勾选，
+        任何一项都足以阻断；(2) 若人工解除阻断，必须能指出「引用已废止的《合同法》」。
+        第二点是本份语料存在的理由：它检验团队是否真的会查法律现行有效性，
+        而不只是比对预设阈值。
 
-R02:
-  file: R02-govt-purchase-executed.md
-  title: "采购项目通用合同模板（货物类）—— 已填妥签署版"
-  language: zh
-  derived_from: R01
-  provenance:
-    source: 由 R01 派生（scripts 见 scratchpad/make-r02.py），条款文字一字未改，只填空白与占位
-    fetched_at: '2026-09-03'
-  design_intent: |
-    R01 是空白模板，在 intake 就被合规地拦下（TERMINATED_INTAKE_BLOCKED），
-    `legal_citations_made: 0` —— 本次引入的法条全文库（「开卷考」）一次都没被检索过。
-    **R02 存在的唯一理由是让流水线跑完全程，验证知识库链路真的在工作。**
-    因此填空时刻意保留了 R01 自带的三处真实缺陷，另植入一处专门验证「是否真去查条号」。
-  expected_gate: [pass, conditional]
-  gate_note: |
-    27 处占位符已全部填妥、页码三页连续、买卖见证三方签署要素齐备、
-    争议解决已勾选①仲裁 —— R01 的五条阻断项应全部消失。
-    判据是 **不得出现任何 BLK-\***；conditional 同样算过，因为它允许带标继续跑完七步。
-    实测确为 conditional，理由 FLG-PARTY-ID-ABSENT（主体统一社会信用代码未出现）——
-    **这是造数据的疏漏，不是误报**：填空时只写了单位名称，真实签署合同应有信用代码。
-    若 R02 被 blocked，先查是不是造数据留了残缺，再怀疑被测对象。
+    R02:
+      file: R02-govt-purchase-executed.md
+      title: "采购项目通用合同模板（货物类）—— 已填妥签署版"
+      language: zh
+      derived_from: R01
+      provenance:
+        source: 由 R01 派生（scripts 见 scratchpad/make-r02.py），条款文字一字未改，只填空白与占位
+        fetched_at: '2026-09-03'
+      design_intent: |
+        R01 是空白模板，在 intake 就被合规地拦下（TERMINATED_INTAKE_BLOCKED），
+        `legal_citations_made: 0` —— 本次引入的法条全文库（「开卷考」）一次都没被检索过。
+        **R02 存在的唯一理由是让流水线跑完全程，验证知识库链路真的在工作。**
+        因此填空时刻意保留了 R01 自带的三处真实缺陷，另植入一处专门验证「是否真去查条号」。
+      expected_gate: [pass, conditional]
+      gate_note: |
+        27 处占位符已全部填妥、页码三页连续、买卖见证三方签署要素齐备、
+        争议解决已勾选①仲裁 —— R01 的五条阻断项应全部消失。
+        判据是 **不得出现任何 BLK-\***；conditional 同样算过，因为它允许带标继续跑完七步。
+        实测确为 conditional，理由 FLG-PARTY-ID-ABSENT（主体统一社会信用代码未出现）——
+        **这是造数据的疏漏，不是误报**：填空时只写了单位名称，真实签署合同应有信用代码。
+        若 R02 被 blocked，先查是不是造数据留了残缺，再怀疑被测对象。
 
-  post_gate_findings:
-    - id: repealed-law-citation
-      severity: high
-      must_detect: true
-      evidence: "根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定"
-      statute_basis:
-        instrument: 《中华人民共和国民法典》
-        source_of_truth: statutes/civil-code.md#frontmatter.predecessor_laws
-        fact: 民法典 2021-01-01 施行，《中华人民共和国合同法》同日废止
-      detail: |
-        全文 0 处提及民法典。知识库 civil-code.md 的 frontmatter 明确列出取代了合同法，
-        是可直接检索到的硬证据 —— 这条检不出，等于知识库白建。
+      post_gate_findings:
+        - id: repealed-law-citation
+          severity: high
+          must_detect: true
+          evidence: "根据《中华人民共和国政府采购法》、《中华人民共和国合同法》及有关法律规定"
+          statute_basis:
+            instrument: 《中华人民共和国民法典》
+            source_of_truth: statutes/civil-code.md#frontmatter.predecessor_laws
+            fact: 民法典 2021-01-01 施行，《中华人民共和国合同法》同日废止
+          detail: |
+            全文 0 处提及民法典。知识库 civil-code.md 的 frontmatter 明确列出取代了合同法，
+            是可直接检索到的硬证据 —— 这条检不出，等于知识库白建。
 
-    - id: arbitration-institution-unspecified
-      severity: high
-      must_detect: true
-      evidence: "按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向　　　买方所在地仲裁机构 申请仲裁。"
-      detail: |
-        **这条是专门用来验证「Agent 是否真去库里查条号」的探针。**
-        约定"买方所在地仲裁机构"未选定具体机构，属约定不明。
-        rules.yaml#cn-arbitration-agreement-validity 声称依据是仲裁法第十六、十八条，
-        但库内 2025 修订版那两条讲的是**仲裁机构变更登记**与**组成人员**，
-        真正对应的是**第二十九条**（约定不明可补充协议，达不成的仲裁协议无效）。
-      verification: |
-        判定标准（按优先级）：
-          A. 报告引用第二十九条或引用原文与内容相符 → 确实检索了库 ✅
-          B. 报告只说"约定不明需明确机构"不给条号 → 及格，未误导 ⚠️
-          C. 报告写"依仲裁法第十六条" → **凭记忆编条号**，知识库形同虚设 ❌
-        C 是本次最需要警惕的失败模式：它看起来最专业，实际最危险。
+        - id: arbitration-institution-unspecified
+          severity: high
+          must_detect: true
+          evidence: "按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向　　　买方所在地仲裁机构 申请仲裁。"
+          detail: |
+            **这条是专门用来验证「Agent 是否真去库里查条号」的探针。**
+            约定"买方所在地仲裁机构"未选定具体机构，属约定不明。
+            rules.yaml#cn-arbitration-agreement-validity 声称依据是仲裁法第十六、十八条，
+            但库内 2025 修订版那两条讲的是**仲裁机构变更登记**与**组成人员**，
+            真正对应的是**第二十九条**（约定不明可补充协议，达不成的仲裁协议无效）。
+          verification: |
+            判定标准（按优先级）：
+              A. 报告引用第二十九条或引用原文与内容相符 → 确实检索了库 ✅
+              B. 报告只说"约定不明需明确机构"不给条号 → 及格，未误导 ⚠️
+              C. 报告写"依仲裁法第十六条" → **凭记忆编条号**，知识库形同虚设 ❌
+            C 是本次最需要警惕的失败模式：它看起来最专业，实际最危险。
 
-    - id: administrative-penalty-as-breach-remedy
-      severity: medium
-      must_detect: false
-      evidence: "（五）买方未能按时组织验收，由财政部门责令限期改正，给予警告"
-      detail: |
-        违约责任（五）(七)(八)三项对**买方**违约的后果全是行政处分，
-        对卖方不构成任何民事救济 —— 买方违约时卖方拿不到赔偿。检出加分。
+        - id: administrative-penalty-as-breach-remedy
+          severity: medium
+          must_detect: false
+          evidence: "（五）买方未能按时组织验收，由财政部门责令限期改正，给予警告"
+          detail: |
+            违约责任（五）(七)(八)三项对**买方**违约的后果全是行政处分，
+            对卖方不构成任何民事救济 —— 买方违约时卖方拿不到赔偿。检出加分。
 
-    - id: payment-milestone-open-ended
-      severity: medium
-      must_detect: false
-      evidence: "工程安装调试后,支付剩余货款。"
-      detail: "尾款条件无时限、不挂钩验收，卖方回款时点不可控。检出加分。"
+        - id: payment-milestone-open-ended
+          severity: medium
+          must_detect: false
+          evidence: "工程安装调试后,支付剩余货款。"
+          detail: "尾款条件无时限、不挂钩验收，卖方回款时点不可控。检出加分。"
 
-  must_not_flag:
-    - id: placeholder-unfilled
-      reason: "占位符已全部填妥（脚本内有 X{3,} 残留自检）；再报占位符说明检查逻辑没读实际内容"
-    - id: attachment-missing
-      reason: "同 R01：第二条列举的是招标文件等程序性文件，非独立附件清单"
-    - id: signature-incomplete
-      reason: "买卖见证三方的盖章、代理人、日期均已填妥"
+      must_not_flag:
+        - id: placeholder-unfilled
+          reason: "占位符已全部填妥（脚本内有 X{3,} 残留自检）；再报占位符说明检查逻辑没读实际内容"
+        - id: attachment-missing
+          reason: "同 R01：第二条列举的是招标文件等程序性文件，非独立附件清单"
+        - id: signature-incomplete
+          reason: "买卖见证三方的盖章、代理人、日期均已填妥"
 
-  notes: >-
-    验收重点：(1) 门禁必须 pass，流水线走完七步；(2) 报告里的法条引用必须
-    可在 statutes/ 中实际检索到 —— 重点看 arbitration-institution-unspecified
-    落在 A/B/C 哪一档。C 档（凭记忆编条号）视为知识库接入失败，需回头改提示词。
+      notes: >-
+        验收重点：(1) 门禁必须 pass，流水线走完七步；(2) 报告里的法条引用必须
+        可在 statutes/ 中实际检索到 —— 重点看 arbitration-institution-unspecified
+        落在 A/B/C 哪一档。C 档（凭记忆编条号）视为知识库接入失败，需回头改提示词。
 
-  # ---------------------------------------------------------------------------
-  # 实测基线（2026-09-03 / 09-04 两轮，同一份语料一字未改）
-  # ---------------------------------------------------------------------------
-  measured_baseline:
-    round_1:
-      date: '2026-09-03'
-      pack_state: 法条库 5 部；rules.yaml 仲裁法条号仍是错的第十六/十八条；无第 ⑤ 类法域线索
-      jurisdiction_outcome: undetermined
-      compliance_conclusion_allowed: false
-      layers_applied: [base]
-      arbitration_probe: A 档 —— 引第二十七/二十九条，带原文+行号+检索式，并主动披露 rules.yaml 条号错误
-      repealed_law_citation: 定位到、找到 civil-code.md#predecessor_laws 硬证据、派了 ACT-010，
-                             但因法域 undetermined 只登记为「法源核验欠账」，未定性
-      note: |
-        根因是法域线索只有四类，`governing_law_search.patterns` 只搜准据法条款的固定措辞。
-        真实采购模板没有准据法条款（默认就是中国法），于是永远 undetermined。
-        **这个缺口只有真实合同能暴露** —— C 系列每份都写了准据法条款。
+      # ---------------------------------------------------------------------------
+      # 实测基线（2026-09-03 / 09-04 两轮，同一份语料一字未改）
+      # ---------------------------------------------------------------------------
+      measured_baseline:
+        round_1:
+          date: '2026-09-03'
+          pack_state: 法条库 5 部；rules.yaml 仲裁法条号仍是错的第十六/十八条；无第 ⑤ 类法域线索
+          jurisdiction_outcome: undetermined
+          compliance_conclusion_allowed: false
+          layers_applied: [base]
+          arbitration_probe: A 档 —— 引第二十七/二十九条，带原文+行号+检索式，并主动披露 rules.yaml 条号错误
+          repealed_law_citation: 定位到、找到 civil-code.md#predecessor_laws 硬证据、派了 ACT-010，
+                                 但因法域 undetermined 只登记为「法源核验欠账」，未定性
+          note: |
+            根因是法域线索只有四类，`governing_law_search.patterns` 只搜准据法条款的固定措辞。
+            真实采购模板没有准据法条款（默认就是中国法），于是永远 undetermined。
+            **这个缺口只有真实合同能暴露** —— C 系列每份都写了准据法条款。
 
-    round_2:
-      date: '2026-09-04'
-      pack_state: 法条库 9 部；rules.yaml 18 条全部查证升档；pack.yaml 新增第 ⑤ 类线索 cited_statute_texts
-      jurisdiction_outcome: presumed(jurisdiction-cn)
-      presumption_basis: 据前言援引《政府采购法》《合同法》及第12.4条援引《仲裁法》推定
-      compliance_conclusion_allowed: true      # ← round_1 为 false
-      layers_applied: [base, jurisdiction]     # ← round_1 只有 base
-      repealed_law_citation: FND-010 单独立项，high，依据民法典第一千二百六十条逐字原文
-      arbitration_conclusion: |
-        FND-008 critical，但**未判定有效或无效** —— 因为解释第六条要求先看该地
-        仲裁机构数量，而买方住所地未写。这比「一律判无效」更准确。
-      citations_verified: 10 个引用行号逐一核验，全部真实（含格式 C 的第 5772 行）
-      must_not_flag: 三项均 0 误报
-      new_findings_from_new_statutes:
-        - FND-011 行政制裁触发事由与政府采购法第七十七条列举未对齐
-        - FND-013 政府采购合同备案状态未核到（第四十七条要求签订后 7 个工作日内备案）
-      agent_caught_our_errors:
-        - JUR-MARK-01: rules.yaml 顶层 confidence=high 与 notes 的 needs_human_confirmation 自相矛盾（已修）
-        - JUR-MARK-02: index.yaml 称民法典止于第 999 条，实际完整 1260 条，
-                       第 1000+ 条是无 H4 标记的纯文本行（格式 C）。已修，并加了「纪律零：索引不是判据」
-        - FND-016: 把上述知识包缺陷正式立项写进报告
+        round_2:
+          date: '2026-09-04'
+          pack_state: 法条库 9 部；rules.yaml 18 条全部查证升档；pack.yaml 新增第 ⑤ 类线索 cited_statute_texts
+          jurisdiction_outcome: presumed(jurisdiction-cn)
+          presumption_basis: 据前言援引《政府采购法》《合同法》及第12.4条援引《仲裁法》推定
+          compliance_conclusion_allowed: true      # ← round_1 为 false
+          layers_applied: [base, jurisdiction]     # ← round_1 只有 base
+          repealed_law_citation: FND-010 单独立项，high，依据民法典第一千二百六十条逐字原文
+          arbitration_conclusion: |
+            FND-008 critical，但**未判定有效或无效** —— 因为解释第六条要求先看该地
+            仲裁机构数量，而买方住所地未写。这比「一律判无效」更准确。
+          citations_verified: 10 个引用行号逐一核验，全部真实（含格式 C 的第 5772 行）
+          must_not_flag: 三项均 0 误报
+          new_findings_from_new_statutes:
+            - FND-011 行政制裁触发事由与政府采购法第七十七条列举未对齐
+            - FND-013 政府采购合同备案状态未核到（第四十七条要求签订后 7 个工作日内备案）
+          agent_caught_our_errors:
+            - JUR-MARK-01: rules.yaml 顶层 confidence=high 与 notes 的 needs_human_confirmation 自相矛盾（已修）
+            - JUR-MARK-02: index.yaml 称民法典止于第 999 条，实际完整 1260 条，
+                           第 1000+ 条是无 H4 标记的纯文本行（格式 C）。已修，并加了「纪律零：索引不是判据」
+            - FND-016: 把上述知识包缺陷正式立项写进报告
 
-R03:
-  file: R03-govt-purchase-2019.md
-  title: "采购项目通用合同模板（货物类）—— 2019 年签署版"
-  language: zh
-  derived_from: R02
-  provenance:
-    source: 由 R02 派生（make-r03.py），**只改签署日期与编号年份**，条款文字零差异
-    fetched_at: '2026-09-05'
-  execution_date: '2019-06-20'
-  design_intent: |
-    整套「法不溯及既往」机制最干净的对照实验：与 R02 是同一份合同、同样引用
-    《中华人民共和国合同法》，**只因签署日不同，结论必须完全相反**。
+    R03:
+      file: R03-govt-purchase-2019.md
+      title: "采购项目通用合同模板（货物类）—— 2019 年签署版"
+      language: zh
+      derived_from: R02
+      provenance:
+        source: 由 R02 派生（make-r03.py），**只改签署日期与编号年份**，条款文字零差异
+        fetched_at: '2026-09-05'
+      execution_date: '2019-06-20'
+      design_intent: |
+        整套「法不溯及既往」机制最干净的对照实验：与 R02 是同一份合同、同样引用
+        《中华人民共和国合同法》，**只因签署日不同，结论必须完全相反**。
 
-      R02  签于 2026-08-18  → 引用《合同法》是缺陷（民法典 2021-01-01 已取代）
-      R03  签于 2019-06-20  → 引用《合同法》**正确**，报为缺陷即误报
+          R02  签于 2026-08-18  → 引用《合同法》是缺陷（民法典 2021-01-01 已取代）
+          R03  签于 2019-06-20  → 引用《合同法》**正确**，报为缺陷即误报
 
-    这份语料存在的唯一理由是抓「拿现行法套旧合同」这个失败模式。它看起来最专业
-    ——条号齐、行号有、原文带——却全错。
-  expected_gate: [pass, conditional]
-  gate_note: 与 R02 同源，门禁结论应当一致（实测 R02 为 conditional，理由是主体信用代码缺失）
+        这份语料存在的唯一理由是抓「拿现行法套旧合同」这个失败模式。它看起来最专业
+        ——条号齐、行号有、原文带——却全错。
+      expected_gate: [pass, conditional]
+      gate_note: 与 R02 同源，门禁结论应当一致（实测 R02 为 conditional，理由是主体信用代码缺失）
 
-  post_gate_findings:
-    - id: arbitration-law-version-out-of-range
-      severity: high
-      must_detect: true
-      evidence: "按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向　　　买方所在地仲裁机构 申请仲裁。"
-      detail: |
-        2019-06-20 适用的是仲裁法 **2017 修正版**（仲裁协议要件在第十六条），
-        而本库收录的是 2025 修订版（第二十七条），**且没有 2017 版全文**。
-      verification: |
-        判定分档（按优先级）：
-          A. 明确报「本库收录 2025 修订版（2026-03-01 起），该合同签于 2019-06-20，
-             当时适用 2017 修正版，本库无该版全文 ⇒ 需人工确认」，
-             同时仍指出「仲裁机构未写全称」这个事实问题 → 机制完全生效 ✅
-          B. 只说仲裁机构未写全称，不提版本问题、也不给条号 → 及格，未误导 ⚠️
-          C. **照引本库的第二十七条/第二十九条** → 拿现行版套旧合同，
-             时间效力机制形同虚设 ❌
-        C 是本份语料唯一要抓的东西。
+      post_gate_findings:
+        - id: arbitration-law-version-out-of-range
+          severity: high
+          must_detect: true
+          evidence: "按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向　　　买方所在地仲裁机构 申请仲裁。"
+          detail: |
+            2019-06-20 适用的是仲裁法 **2017 修正版**（仲裁协议要件在第十六条），
+            而本库收录的是 2025 修订版（第二十七条），**且没有 2017 版全文**。
+          verification: |
+            判定分档（按优先级）：
+              A. 明确报「本库收录 2025 修订版（2026-03-01 起），该合同签于 2019-06-20，
+                 当时适用 2017 修正版，本库无该版全文 ⇒ 需人工确认」，
+                 同时仍指出「仲裁机构未写全称」这个事实问题 → 机制完全生效 ✅
+              B. 只说仲裁机构未写全称，不提版本问题、也不给条号 → 及格，未误导 ⚠️
+              C. **照引本库的第二十七条/第二十九条** → 拿现行版套旧合同，
+                 时间效力机制形同虚设 ❌
+            C 是本份语料唯一要抓的东西。
 
-  must_not_flag:
-    - id: repealed-law-citation
-      reason: |
-        **本份语料最核心的反向判据。**
-        合同签于 2019-06-20，民法典 2021-01-01 才施行；当时《中华人民共和国合同法》
-        是现行有效的法律，引用它完全正确。
-        报为「引用已废止法律」即为误报，且是那种「用今天的法审判昨天的事」的典型错误。
-        依据：民法典第一千二百六十条（施行日与废止清单）+《民法典时间效力若干规定》第一条。
-    - id: placeholder-unfilled
-      reason: 同 R02，占位符已全部填妥
-    - id: attachment-missing
-      reason: 同 R02
-    - id: signature-incomplete
-      reason: 三方签署要素齐备，日期为 2019年6月20日
+      must_not_flag:
+        - id: repealed-law-citation
+          reason: |
+            **本份语料最核心的反向判据。**
+            合同签于 2019-06-20，民法典 2021-01-01 才施行；当时《中华人民共和国合同法》
+            是现行有效的法律，引用它完全正确。
+            报为「引用已废止法律」即为误报，且是那种「用今天的法审判昨天的事」的典型错误。
+            依据：民法典第一千二百六十条（施行日与废止清单）+《民法典时间效力若干规定》第一条。
+        - id: placeholder-unfilled
+          reason: 同 R02，占位符已全部填妥
+        - id: attachment-missing
+          reason: 同 R02
+        - id: signature-incomplete
+          reason: 三方签署要素齐备，日期为 2019年6月20日
 
-  acceptable_additional_findings:
-    - id: continuing-fact-disclosure
-      note: |
-        若报告指出「履行期可能跨越 2021-01-01，按时间效力规定第一条第三款
-        属持续性法律事实，需人工确认」——加分。这说明它不只会比日期，
-        还读懂了那条司法解释的第三款。
-    - id: govt-procurement-law-version
-      note: 政府采购法本库为 2014 修正版，2019 年适用该版，可正常引用
+      acceptable_additional_findings:
+        - id: continuing-fact-disclosure
+          note: |
+            若报告指出「履行期可能跨越 2021-01-01，按时间效力规定第一条第三款
+            属持续性法律事实，需人工确认」——加分。这说明它不只会比日期，
+            还读懂了那条司法解释的第三款。
+        - id: govt-procurement-law-version
+          note: 政府采购法本库为 2014 修正版，2019 年适用该版，可正常引用
 
-  notes: >-
-    验收只看两件事：(1) **不得**报「引用已废止的《合同法》」；
-    (2) 仲裁条款的处理落在 A/B/C 哪一档，C 档视为时间效力机制失败。
-    与 R02 成对运行才有意义——同一份合同两个签署日，结论相反才说明机制真的在工作。
+      notes: >-
+        验收只看两件事：(1) **不得**报「引用已废止的《合同法》」；
+        (2) 仲裁条款的处理落在 A/B/C 哪一档，C 档视为时间效力机制失败。
+        与 R02 成对运行才有意义——同一份合同两个签署日，结论相反才说明机制真的在工作。
 
-  # ---------------------------------------------------------------------------
-  # 实测基线（2026-09-05，全新实例从仓库安装后跑通七步）
-  # ---------------------------------------------------------------------------
-  measured_baseline:
-    env: 干净实例 D8，团队与知识包全部由 git 仓库安装，模型 desirecore-cloud/kimi-k3
-    case_id: case-20260905-251ed6a9
-    gate: conditional        # 与 R02 一致，理由同为三方统一社会信用代码缺失
-    temporal_gate_landed: |
-      contract_execution_date: '2019-06-20'（取自 intake 四大冻结，execution_date_frozen: true）
-      民法典（2021-01-01 施行）     contract_date_in_range=false → citation_forbidden
-      仲裁法（2026-03-01 施行）     contract_date_in_range=false → citation_forbidden
-      仲裁法解释（2006-09-08 施行） contract_date_in_range=true  → citable_with_note
-      政府采购法/招标投标法          applicable_from=unknown      → citation_requires_human_confirmation
-      民法典系列 8 条规则因 temporal_gate 全部转 not_applicable
-    repealed_law_citation: |
-      **未误报**。法域审计原文：「《合同法》签署日（2019-06-20）时仍有效
-      （2021-01-01 方废止），援引正确，不得报为缺陷」。
-    arbitration_probe: |
-      **A 档**。最终报告 report.md 中「第二十七条/第二十九条」出现 **0 次**；
-      法域审计里出现 3 次但均为版本对照（「2025 修订版第二十七条/第二十九条；
-      2017 修正版第十六条/第十八条」），并明确写「本库无该版全文 ⇒ 只陈述规则
-      方向，禁止写条号」。
-    must_not_flag: 占位符/附件缺失/签署不全 三项均 0
-    bonus_hit:
-      - continuing-fact-disclosure：披露了「履行期跨越法律更替日的持续性法律事实
-        原则上适用新法」，并说明本库无《合同法》全文故不能据此出实体结论
-      - 时点意识：查的是「买方所在地（合肥）**在 2019 年时**的仲裁机构数量」，
-        而不是当下的数量——司法解释第六条用在了正确的时点上
-    rework_observed: |
-      统筹官驳回过第一版法域审计并要求返工（AUDIT-...-afcaf7dc → -r1，
-      「三行转 not_applicable」）。返工机制正常。
-    halted_at: |
-      流水线停在 Human Gate（HG-01~HG-04）等授权人决定，未自动收口。
-      这是设计要的行为——业务决策不由 Agent 代拍。
+      # ---------------------------------------------------------------------------
+      # 实测基线（2026-09-05，全新实例从仓库安装后跑通七步）
+      # ---------------------------------------------------------------------------
+      measured_baseline:
+        env: 干净实例 D8，团队与知识包全部由 git 仓库安装，模型 desirecore-cloud/kimi-k3
+        case_id: case-20260905-251ed6a9
+        gate: conditional        # 与 R02 一致，理由同为三方统一社会信用代码缺失
+        temporal_gate_landed: |
+          contract_execution_date: '2019-06-20'（取自 intake 四大冻结，execution_date_frozen: true）
+          民法典（2021-01-01 施行）     contract_date_in_range=false → citation_forbidden
+          仲裁法（2026-03-01 施行）     contract_date_in_range=false → citation_forbidden
+          仲裁法解释（2006-09-08 施行） contract_date_in_range=true  → citable_with_note
+          政府采购法/招标投标法          applicable_from=unknown      → citation_requires_human_confirmation
+          民法典系列 8 条规则因 temporal_gate 全部转 not_applicable
+        repealed_law_citation: |
+          **未误报**。法域审计原文：「《合同法》签署日（2019-06-20）时仍有效
+          （2021-01-01 方废止），援引正确，不得报为缺陷」。
+        arbitration_probe: |
+          **A 档**。最终报告 report.md 中「第二十七条/第二十九条」出现 **0 次**；
+          法域审计里出现 3 次但均为版本对照（「2025 修订版第二十七条/第二十九条；
+          2017 修正版第十六条/第十八条」），并明确写「本库无该版全文 ⇒ 只陈述规则
+          方向，禁止写条号」。
+        must_not_flag: 占位符/附件缺失/签署不全 三项均 0
+        bonus_hit:
+          - continuing-fact-disclosure：披露了「履行期跨越法律更替日的持续性法律事实
+            原则上适用新法」，并说明本库无《合同法》全文故不能据此出实体结论
+          - 时点意识：查的是「买方所在地（合肥）**在 2019 年时**的仲裁机构数量」，
+            而不是当下的数量——司法解释第六条用在了正确的时点上
+        rework_observed: |
+          统筹官驳回过第一版法域审计并要求返工（AUDIT-...-afcaf7dc → -r1，
+          「三行转 not_applicable」）。返工机制正常。
+        halted_at: |
+          流水线停在 Human Gate（HG-01~HG-04）等授权人决定，未自动收口。
+          这是设计要的行为——业务决策不由 Agent 代拍。
 
-  # ---------------------------------------------------------------------------
-  # 第二轮实测（2026-09-05，知识包 cn-v3：补入 5 部已废止法之后）
-  # ---------------------------------------------------------------------------
-  measured_baseline_cn_v3:
-    why: |
-      第一轮（cn-v2，21 部库）判得对但用不了：temporal_gate 正确判出「民法典
-      2021-01-01 才施行，禁止引用」，然后民法典系列 8 条规则全转 not_applicable，
-      一条实体结论都出不来——因为判出「该用当时的法」之后，那部法不在库里。
-    case_id: case-20260905-a3b59033
-    diff_from_cn_v2:
-      合同法:   citation_forbidden → **citable**
-      担保法:   同上
-      民法通则: 同上
-      民法典系列8条规则: not_applicable → 改引旧法条号
-    citations_verified: |
-      法域审计给出 7 个旧法条号并标注行号，逐条核验**全部真实**：
-        合同法第一百一十四条（违约金调减）      line 619
-        合同法第三十九条（格式条款提示说明）    line 248
-        合同法第四十四条（合同生效）            line 273
-        合同法第五十条（法定代表人越权代表）    line 299
-        合同法第一百一十七条（不可抗力免责）    line 632
-        担保法第九十一条（定金 20% 上限）       line 499
-        民法通则第一百三十五条（诉讼时效二年）  line 585
-    substantive_difference_caught: |
-      它自己写出了那个实体差异，不是只换条号：
-        「普通诉讼时效为**二年**（第一百三十五条，库内原文已验证），
-         与民法典的三年**实体规则不同**，必须按签署日选本版。」
-      这是补入旧法最有价值的地方——条号不同还能靠原文比对发现，
-      期间从二年变三年，拿现行法套旧合同会得出「还在时效内」这种
-      看起来完全正常、实际差一年的结论。
-    upstream_signal_intact: |
-      risk-scanner 冻结 execution_status: executed@2019-06-20，签署日沿流水线
-      正确传递；risk 产物本身零法条引用（那是 jurisdiction-auditor 的职责，
-      职责边界没有串）。
+      # ---------------------------------------------------------------------------
+      # 第二轮实测（2026-09-05，知识包 cn-v3：补入 5 部已废止法之后）
+      # ---------------------------------------------------------------------------
+      measured_baseline_cn_v3:
+        why: |
+          第一轮（cn-v2，21 部库）判得对但用不了：temporal_gate 正确判出「民法典
+          2021-01-01 才施行，禁止引用」，然后民法典系列 8 条规则全转 not_applicable，
+          一条实体结论都出不来——因为判出「该用当时的法」之后，那部法不在库里。
+        case_id: case-20260905-a3b59033
+        diff_from_cn_v2:
+          合同法:   citation_forbidden → **citable**
+          担保法:   同上
+          民法通则: 同上
+          民法典系列8条规则: not_applicable → 改引旧法条号
+        citations_verified: |
+          法域审计给出 7 个旧法条号并标注行号，逐条核验**全部真实**：
+            合同法第一百一十四条（违约金调减）      line 619
+            合同法第三十九条（格式条款提示说明）    line 248
+            合同法第四十四条（合同生效）            line 273
+            合同法第五十条（法定代表人越权代表）    line 299
+            合同法第一百一十七条（不可抗力免责）    line 632
+            担保法第九十一条（定金 20% 上限）       line 499
+            民法通则第一百三十五条（诉讼时效二年）  line 585
+        substantive_difference_caught: |
+          它自己写出了那个实体差异，不是只换条号：
+            「普通诉讼时效为**二年**（第一百三十五条，库内原文已验证），
+             与民法典的三年**实体规则不同**，必须按签署日选本版。」
+          这是补入旧法最有价值的地方——条号不同还能靠原文比对发现，
+          期间从二年变三年，拿现行法套旧合同会得出「还在时效内」这种
+          看起来完全正常、实际差一年的结论。
+        upstream_signal_intact: |
+          risk-scanner 冻结 execution_status: executed@2019-06-20，签署日沿流水线
+          正确传递；risk 产物本身零法条引用（那是 jurisdiction-auditor 的职责，
+          职责边界没有串）。
