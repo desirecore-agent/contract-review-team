@@ -6,7 +6,15 @@ last-reviewed: 2026-09-29
 
 [中文详细记录](CHANGELOG.zh-CN.md)
 
-## Unreleased — documentation correction 2026-09-29
+## 0.1.37 - 2026-09-29
+
+- Pin intake 1.0.7: validate receipt YAML with StructuredFileValidate against a schema shipped with the skill; the old "no parser, no passed" fallback made `passed` unreachable while its own receipts failed to parse twice. S8 version-unavailable flags no longer count as verdict-affecting.
+- Pin lead 1.0.22: allow StructuredFileValidate and UnderstandImage. Delegated sessions are capped at the delegator's tools, so members silently lost both.
+- Add `shared/resources/check-member-tool-ceiling.mjs`, C09a/C09b attachment-manifest corpus (`make-c09.py`) and `testdata/contracts/check-evidence.mjs`; record the 2026-09-29 real-machine baseline in ground-truth.
+- Correct the lock: the previous intake commit was outside main history, and clause-extractor/review-reporter content hashes did not match their locked commits (verified with the platform's `computeMemberContentHash`).
+- Includes the documentation correction below.
+
+## Documentation correction 2026-09-29 (released in 0.1.37)
 
 - Add paired onboarding, design/KPI, testing and maintenance guides; correct provenance, counts and links.
 - Reconstruct 0.1.33–0.1.35 from Git history and reorder entries; correct the historical R02 authenticity claim.

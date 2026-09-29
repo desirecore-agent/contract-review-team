@@ -32,6 +32,8 @@ last-reviewed: 2026-09-29
 
 PR #46 只改文档，未改运行规则、oracle、成员锁或模型，也未发布市场更新。
 
+2026-09-29 更新——PR #45 发布团队 0.1.37：intake 1.0.7 用 StructuredFileValidate 校验回执 YAML，S8 版本「取不到值」标记不再阻止 `passed`；统筹官 1.0.22 白名单补入 StructuredFileValidate 与 UnderstandImage，因为委派会话的工具上限是统筹官的子集。锁文件同时修正了一个不在 main 历史上的 intake 提交和两条过期内容摘要。新增 C09a/C09b 语料、`check-evidence.mjs`、`check-member-tool-ceiling.mjs`。当前基线请重读 members.lock.json；上文版本号描述的是 #46 快照。
+
 平台源码入口：[desirecore/desirecore](https://github.com/desirecore/desirecore)；平台配置的市场源：[desirecore/market](https://github.com/desirecore/market)。访问需使用接手环境自己的授权；发布前重新核对当前平台市场配置和对应条目，不假定历史源或分支未变。
 
 ## 设计与仍未关闭的问题

@@ -6,7 +6,7 @@ last-reviewed: 2026-09-29
 
 [中文](design.zh-CN.md) · [Quickstart](quickstart.md) · [Testing](testing.md)
 
-Baseline: team 0.1.36 and [members.lock.json](../members.lock.json), documented on 2026-09-29. This is a design and acceptance description, not a claim of production readiness.
+Baseline: team 0.1.37 and [members.lock.json](../members.lock.json), documented on 2026-09-29. This is a design and acceptance description, not a claim of production readiness.
 
 ## Responsibilities and calls
 

@@ -10,11 +10,11 @@ last-reviewed: 2026-09-29
 
 | File | What to verify |
 |---|---|
-| [team.json](../team.json) | Team identity, supervisor, members and distributable version: baseline 0.1.36. |
+| [team.json](../team.json) | Team identity, supervisor, members and distributable version: baseline 0.1.37. |
 | [members.lock.json](../members.lock.json) | Each member's repository, exact commit, version and content hash. |
 | [Shared rules](../shared/rules.md) | Instructions injected into members; behavior changes require runtime regression. |
 | [Resources](../shared/resources/README.md) | Pack versions, scope, rules, statutes and provenance; read each pack's metadata. |
-| [package.json](../package.json), [package-lock.json](../package-lock.json) | Local guard dependencies. The manifest currently says 0.1.30; this differs from team 0.1.36. Historical intent is not established here. |
+| [package.json](../package.json), [package-lock.json](../package-lock.json) | Local guard dependencies. The manifest currently says 0.1.30; this differs from team 0.1.37. Historical intent is not established here. |
 | [CHANGELOG](../CHANGELOG.md) | Human-readable history; do not infer undocumented release contents. |
 
 Repository content and marketplace records are separate publication surfaces. A merged team PR alone does not demonstrate a marketplace update or successful installation.
@@ -27,9 +27,11 @@ From the repository root, with Node and npm available:
 npm ci
 npm run check:gates
 node shared/resources/jurisdiction-packs/jurisdiction-cn/statutes/check-temporal.mjs
+node testdata/contracts/check-evidence.mjs
+node shared/resources/check-member-tool-ceiling.mjs   # reads installed members; see docs/maintenance
 ```
 
-Check the current directory first: `team.json` and `package.json` must be present. `check:gates` invokes the gate-literal and intake-contract guards. The temporal script resolves files beside itself and checks statute registration/temporal metadata consistency. None calls a live model, installs from the marketplace, validates every historical oracle entry, proves legal correctness or checks DOCX appearance.
+Check the current directory first: `team.json` and `package.json` must be present. `check:gates` invokes the gate-literal and intake-contract guards. The temporal script resolves files beside itself and checks statute registration/temporal metadata consistency. `check-evidence.mjs` confirms every evidence string in ground-truth.yaml occurs verbatim in its corpus file; it is zero-dependency, and `check:gates` does not cover testdata. `check-member-tool-ceiling.mjs` confirms each member's tool allowlist lies within the supervisor's: a delegated session is capped at the delegator's tools and inherits its deny list, so a tool missing from the lead silently disappears from members. It reads installed members (`<root>/teams/<team>` beside `<root>/agents/<id>`); in a development checkout pass `--agents-dir <parent of member directories>`. It fails if any member cannot be read. None of these calls a live model, installs from the marketplace, validates every historical oracle entry, proves legal correctness or checks DOCX appearance.
 
 Also check changed Markdown links, bilingual counterparts and stated counts/versions against source files. For corpus changes, recheck evidence quotations and version-pair invariants. Resolve known oracle mismatches explicitly and document their meaning; do not silently rewrite history to make a test pass.
 
@@ -37,7 +39,7 @@ Also check changed Markdown links, bilingual counterparts and stated counts/vers
 
 1. Make and review the change in its owning member or resource repository. State the affected goal, expected behavior and failure example.
 2. Record the exact reviewed member commit and version in the lock using the supported DesireCore publishing/locking process. Verify its content hash using the platform's canonical implementation; do not invent a replacement hashing algorithm or copy a stale digest.
-3. Check every listed member resolves to its expected content. Keep machine-local credentials and model preferences out of published assets.
+3. Check every listed member resolves to its expected content. Keep machine-local credentials and model preferences out of published assets. Whenever a member or the lead changes `tool_permissions`, run `check-member-tool-ceiling.mjs`.
 4. Run the scoped guards and affected live scenarios. Changes to delegation, scope, evidence handling or export need the relevant end-to-end acceptance, not only text checks.
 5. Update paired documentation and the change log with actual results and unfinished checks. A documentation-only correction does not close a runtime defect.
 
