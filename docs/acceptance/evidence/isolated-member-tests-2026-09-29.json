@@ -1,0 +1,300 @@
+{
+  "observedAt": "2026-09-29T11:21:23.299088+00:00",
+  "kind": "isolated-source-tests-not-runtime-acceptance",
+  "members": [
+    {
+      "member": "contract-review-lead",
+      "baselineCommit": "e5bbe87f53aa0e788dfb7ac30a828219a660d3d4",
+      "passed": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "modelBytesUnchanged": true,
+      "modelBlockSha256": "80e78ad51bc83c3d7c18a37b929cb3c153e438caa3ff3fb0e64b87d93d67982c",
+      "filesSha256": {
+        "agent.json": "8fc63a12479f85057c7c8d13aa2eeb26c0db350ea7e643bf85fe1920b82ffb09",
+        "persona.md": "135b4deb12b2ca9345e722b8e36a11bd9d4eb6471811479467c99c81e2af6213",
+        "principles.md": "3505906638d08c8d0ac0d3c6b7ca9afe9625f5181412c04cf63abc068d4fb064",
+        "skills/coverage-matrix/SKILL.md": "8943245896ef1b7a8ab657769f75563ca8bd0be2f4aa64d996df30a05b762c6c",
+        "skills/review-orchestration/SKILL.md": "525098a8a96a48f092783785d287c0141347459fc9a32df61085fb6404ab2751",
+        "tests/delegate-api.contract.test.mjs": "48d93d1447c7fa61285e98f3f90cf091790deee41c3ad083d13f6d65c865eb96",
+        "tests/fixtures/intake-malformed.json": "1da685c3ea7fb744c1e2b0f7f8ae3cb1621809ce90c8ffbf4246682dbe4cb562",
+        "tests/fixtures/intake-malformed.yaml": "1dacfc5532e96bb563fc72c48c0f1ad160e7c60d9a1931fd422ff2525df32fc3",
+        "tests/fixtures/intake-valid-false.json": "9bf03d1fc2e025de03bf0575da2c6ddbda17febebc7e3a0ae24baa52277d5f71",
+        "tests/o1-boundary.contract.test.mjs": "0406b6f84daae8e5d2cd811946c6824c988ce55aac4be5814b01f3b93afb289f",
+        "tests/ts-extension-loader.mjs": "3ab669c2dbfa6ba8b87a7bc61f172027c3a64b0844a7c348e1135311f44ded3f",
+        "package.json": "74a584180622cc444f7f5cf3a855fd1509c022a96b0eff4592b7d5da33b82ee0",
+        "package-lock.json": "3c32e3388f1384b654eb3ed0a4e39ff0acf9dd6c2090f6f10a8bc6048fad8971"
+      },
+      "install": {
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "exitCode": 0,
+        "output": "\nup to date in 115ms\n"
+      },
+      "test": {
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "output": "\n> contract-review-lead-contract-tests@1.0.22 test\n> node --test tests/o1-boundary.contract.test.mjs\n\n✔ O1 remains sync isolated, blocked cannot pass, conditional continues (3.131459ms)\n✔ execution graph has true O3 parallel and two isolated reporter calls (0.708459ms)\n✔ coverage goals are seven fixed rows and not nonexistent S1-S8 rows (0.911375ms)\n✔ digest failure continues and direction vocabulary is canonical (0.644542ms)\n✔ agent model block and permissions retain expected safety boundaries (0.386875ms)\n✔ Lead can expose the real structured validator to its intake child without enabling shell or changing routing (0.396083ms)\n✔ malformed YAML/JSON and valid:false retain the failure artifact and dispatch nothing (1.174583ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 52.193166\n"
+      },
+      "executedTests": 7
+    },
+    {
+      "member": "contract-intake",
+      "baselineCommit": "7c3f436852aa258259a166f3b376243587bfe915",
+      "passed": false,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "modelBytesUnchanged": true,
+      "modelBlockSha256": "99255a904e87ff49e37d6b952f5a96e3f9dac01883abdc388b8ce187ce595ae5",
+      "filesSha256": {
+        "agent.json": "ef008ec967c78779cc3206b69e046cbcc1fee19aef4a1768283421b381722738",
+        "persona.md": "2186941a36dce908599a2f2d7b611b40756bcbbb34aeab2aa5df1af4237edd68",
+        "principles.md": "b7928dbd27b7ccdc5e8617aea8388fcada4a1f127dd9aca2012fddb413a6a4fb",
+        "skills/contract-intake-gate/LOCKED-KNOWLEDGE-MAP.md": "a1d4c67bbbe8052da32ea414d649201d29712fb7e3e619857716fcfd62b58a3c",
+        "skills/contract-intake-gate/SKILL.md": "53405f95d4bbfa7b0511b65ee91e08417c12d864e47119d77b2d5721147c6988",
+        "skills/contract-intake-gate/lib/intake-decision.mjs": "a9860eea651629533649d8f7f185d2c21b1f3e8f11845ddf383511ed40f84e54",
+        "skills/contract-intake-gate/schemas/intake-receipt.schema.json": "2b69de3cc4560ac3871f87fb75e1f74241352d97d4967090da0596e227ab109e",
+        "skills/contract-intake-gate/tests/consistency.contract.test.mjs": "e5d11d3b3d17dfe41223c37b432e007e93a6765f399834f29f50f6ea8b98f0e7",
+        "skills/contract-intake-gate/tests/fixtures/complete-manifest.receipt.yaml": "066ee2771cff1ddd06bf224a589b187bfebbff847e3182d3f4c8d987155a3760",
+        "skills/contract-intake-gate/tests/fixtures/draft-scenarios.yaml": "b6032829b07d19d7fcb9a5c3fa0adfc060363d646ae500ab76ac15c1e3f47c12",
+        "skills/contract-intake-gate/tests/fixtures/incomplete-signature.receipt.yaml": "1cebc1a8e1a976d40eaa60d885d70e29275930b41aaa23fcd4e042518e00f2bc",
+        "skills/contract-intake-gate/tests/fixtures/r02-manifest-incomplete.receipt.yaml": "4a335444068800043d63b6ddf4ede4734ea77b497019ea8665c42704d6d73154",
+        "skills/contract-intake-gate/tests/fixtures/r8-version-change.receipt.yaml": "20d402208a9ae03650ae78226be7124c44ca6bdb2182fadf1767d20bdb9253dc",
+        "skills/contract-intake-gate/tests/fixtures/schema-invalid.receipt.yaml": "d166d0ca82e467edd01261f3091f375000dafb8bf2a3f6cb2acab3b7a523c5ae",
+        "skills/contract-intake-gate/tests/fixtures/schema-valid.receipt.yaml": "a9d806a42b1336b145e07df94db7710b7df2787d0a6aeffca61d728a37948d89",
+        "skills/contract-intake-gate/tests/fixtures/text-declared-signature.receipt.yaml": "6a9433fa4f6e479cf0e5604da397dfcd161a8666ac6b8d3dd8f0cc2c25f85d3f",
+        "skills/contract-intake-gate/tests/fixtures/undeclared-referenced-attachment.receipt.yaml": "fb7fb438346094f210fefaa9d8e5766bd24c3ba4c5dd4d4c80fc4d3cdaa288e0",
+        "skills/contract-intake-gate/tests/fixtures/undelivered-attachment-body.receipt.yaml": "642c859f64552f50e70236a9f2df1ffe28123ce2d756be25ab4da2f13e149d40",
+        "skills/contract-intake-gate/tests/fixtures/visual-signature-mark.receipt.yaml": "5d0e64800b7570d8c077217550dc0fda01d8a4e0b0c2f31d2be8016f61a255af",
+        "skills/contract-intake-gate/tests/locked-knowledge-mapping.test.mjs": "97dd11a3de9b62c88fc76d671aeb3a7ef8a2cfcdc7c96b7ac09b40b674d44e6a",
+        "skills/contract-intake-gate/tests/member-consistency.contract.test.mjs": "97425eb66f629451bccdaaa9fbec646ac747f02ad6ea55fdeaf81015c3cbb163",
+        "skills/contract-intake-gate/tests/receipt-contract.test.mjs": "695fa3ae1911b2d6bcf9d42313f068d964b5599ba880edfe645a9684a39a355b",
+        "package.json": "dfbad065674ba70624083bb948ab937c30afe26cc9c3f461af65abcda6eb9567",
+        "package-lock.json": "6a2fd7ddf84bcb96439fb98a9d1db39864600fb807ccdf00744ebeb582d360c3"
+      },
+      "install": {
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "exitCode": 0,
+        "output": "\nadded 6 packages in 264ms\n"
+      },
+      "test": {
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 1,
+        "output": "\n> contract-intake-contract-tests@0.0.0 test\n> node --test skills/contract-intake-gate/tests/receipt-contract.test.mjs skills/contract-intake-gate/tests/consistency.contract.test.mjs tests/locked-knowledge-mapping.test.mjs\n\n✔ frontmatter is byte-zero YAML and skill versions are internally consistent (10.683833ms)\n✔ real Draft-07 schema accepts the valid document and rejects the combined review counterexample (37.576416ms)\n✔ each receipt contradiction is independently rejected (21.514167ms)\n✔ real Draft-07 schema accepts required, not_applicable and unknown role receipts without conflating them (21.703083ms)\n✔ tool success with report.valid false is denied by the real admission decision (3.28475ms)\n✖ skill records role applicability and write-once sidecar validation semantics (1.747ms)\n✔ R02-like incomplete manifest is conditional, escalated, and handed off (7.735666ms)\n✔ complete manifest remains passed (0.826334ms)\n✔ ordinary declared attachment body absence remains a scope fact (0.984917ms)\n✔ R8 keeps its version-change escalation without becoming PEND-001 (0.827667ms)\n✔ referenced attachment omitted from formal manifest remains blocked (0.850084ms)\n✔ text-declared signature fields can pass S5 without claiming authenticity verification (1.128917ms)\n✔ visual signature observation can pass S5 without becoming authenticity verification (1.294042ms)\n✔ incomplete S5 fixture remains source-anchored without an ungrounded seal field (0.864375ms)\n✔ S5 contract rejects a text claim of a present seal or unsupported authenticity verification (3.441834ms)\nℹ tests 15\nℹ suites 0\nℹ pass 14\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 169.179417\n\n✖ failing tests:\n\ntest at skills/contract-intake-gate/tests/consistency.contract.test.mjs:93:1\n✖ skill records role applicability and write-once sidecar validation semantics (1.747ms)\n  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /party_role/. Input:\n  \n  '---\\n' +\n    'name: contract-intake-gate\\n' +\n    'description: >-\\n' +\n    '  合同审查流水线的输入治理闸门。对提交的合同材料执行固定顺序的 8 步硬校验（受理范围切分、\\n' +\n    '  主版本冻结、页码连续性、附件清单四字段对账、签章状态、占位符扫描、主体身份一致性、版本矩阵对齐），\\n' +\n    '  产出「通过 / 条件通过 / 拒绝」三态受理回执与结构化交接块。命中阻断项时直接终止流水线，\\n' +\n    '  不降级为提醒、不向下游交接。用户提到合同受理、合同预检、准入校验、输入治理、附件清单核对、\\n' +\n    '  签章状态确认、页码完整性、版本冻结、版本矩阵对齐时使用。\\n' +\n    '  Use when gating contract materials before clause extraction: freezes master version,\\n' +\n    '  attachment manifest, page range and execution status; blocks placeholders, missing\\n' +\n    '  attachments, unconfirmed signatures, broken pagination and party-name mismatches.\\n' +\n    'version: 1.0.7\\n' +\n    'type: procedural\\n' +\n    'risk_level: low\\n' +\n    'status: enabled\\n' +\n    'tags:\\n' +\n    '  - contract-review\\n' +\n    '  - intake\\n' +\n    '  - input-governance\\n' +\n    '  - completeness-check\\n' +\n    '  - version-freeze\\n' +\n    'requires:\\n' +\n    '  tools:\\n' +\n    '    - Read\\n' +\n    '    - Ls\\n' +\n    '    - Glob\\n' +\n    '    - Grep\\n' +\n    '    - Write\\n' +\n    '    - MathCalc\\n' +\n    '    - GenerateUUID\\n' +\n    '    - UnderstandImage\\n' +\n    '    - FileDigest\\n' +\n    '    - StructuredFileValidate\\n' +\n    'metadata:\\n' +\n    '  author: DesireCore\\n' +\n    '  version: 1.0.7\\n' +\n    \"  updated_at: '2026-09-15'\\n\" +\n    '  pipeline_stage: O1\\n' +\n    '  upstream: contract-review-lead\\n' +\n    '  downstream: [contract-review-lead]\\n' +\n    '---\\n' +\n    '\\n' +\n    '# 合同输入治理闸门\\n' +\n    '\\n' +\n    '## 何时使用\\n' +\n    '\\n' +\n    '收到 Lead 登记并指定的合同对象时执行 O1。本技能不自行启动 O2/O3/O4/O5；只有有效的 `通过` 或 `条件通过` 回执可交回 Lead 继续编排。\\n' +\n    '\\n' +\n    '## 不可协商的前提\\n' +\n    '\\n' +\n    '1. **S1→S8 顺序固定**，不得打乱、不得跳步、不得因为\"看起来没问题\"提前结束。顺序固定是为了让任何人重跑得到同样的过程。\\n' +\n    '2. **阻断即拒绝**。命中任一 `BLK-*` 编码，最终结论只能是 `blocked`（拒绝），且**不得调用 Delegate / SendMessage 向下游交接**，也不得输出条款清单或风险清单。\\n' +\n    '3. **没检查到就显式留白**。检查矩阵里每一项都必须有状态；未覆盖写 `not_covered`，不得因为没提就当 `pass`。\\n' +\n    '4. **四大冻结未全部成立时，禁止输出任何\"一致 / 无差异 / 差异为 0\"结论。**\\n' +\n    '\\n' +\n    '5. **结构化产物必须先保证 YAML 语法，再谈业务结论。** 机器消费的 `intake.yaml` 与回执\\n' +\n    '   只能使用块式映射/序列；任何标量中含 ASCII 双引号、冒号、井号、方括号、花括号、换行\\n' +\n    '   或前导/尾随空格时，必须改用单引号（单引号本身写成两个连续单引号）或块标量 `|` / `>`。\\n' +\n    '   禁止把含英文双引号的文本放进双引号标量而不转义，禁止复制 flow map/flow sequence 示例。\\n' +\n    '6. **回读与结构校验必须有工具证据。** `Read` 只证明文件已回读；再用只读 `StructuredFileValidate` 按本地 schema 校验同一字节，并核对 document/schema SHA-256。工具失败属于 capability/serialization debt，不伪装成合同 FLG 或自动把合同 verdict 降为 conditional；无有效机器回执时 `handoff.to=null`，由 Lead 决定重试，O2 不启动。\\n' +\n    '7. **写入前自检高风险标量。** 对 `note`、`detail`、`finding`、`statement`、`evidence.quote`\\n' +\n    '   等自由文本逐个检查引号配对与缩进；无法安全编码时用块标量，不得为了省字删掉证据或改写\\n' +\n    '   原文。写入后再次 `Read`，保持 `input_file.absolute_path`、SHA 和所有门禁字段不变。\\n' +\n    '\\n' +\n    '---\\n' +\n    '\\n' +\n    '## 术语：三类判定\\n' +\n    '\\n' +\n    '| 类别 | 编码前缀 | 语义 | 对结论的影响 |\\n' +\n    '|---|---|---|---|\\n' +\n    '| **阻断项** | `BLK-` | 材料自身事实缺失或自相矛盾，下游无论如何处理都会得到错误结论 | 结论强制为 `blocked` |\\n' +\n    '| **失败标记** | `FLG-` | 事实完整但置信度或覆盖度不足，下游可在知情前提下继续 | 结论降为 `conditional`（**照常交接、下游照常全量执行**） |\\n' +\n    '| **范围事实** | `SCOPE-` | 本次受理客观的边界（哪些部件随材料送达） | **永远不影响结论**，只写进 `scope` |\\n' +\n    '\\n' +\n    '判不准时**按阻断处理**。误拦一次的成本是补一次材料；误放一次的成本是整条流水线的结论作废。\\n' +\n    '\\n' +\n    '### 判定编码与门禁结论的关系（**必须严格遵守**）\\n' +\n    '\\n' +\n    '门禁结论**只由 `BLK-*` 与 `FLG-*` 决定**。`SCOPE-*` 是客观范围记录，**永远不改变门禁结论**——\\n' +\n    '把范围事实当缺陷会在正常合同上产生门禁错判。\\n' +\n    '\\n' +\n    '### 对外统一的 `gate_reason_id`\\n' +\n    '\\n' +\n    '内部编码（`BLK-*` / `FLG-*`）用于本技能内部推理；**对外输出的每一条都必须同时带上下表的\\n' +\n    '`gate_reason_id`**，下游与验收口径以它为准：\\n' +\n    '\\n' +\n    '| `gate_reason_id` | 阻断 | 内部编码 |\\n' +\n    '|---|---|---|\\n' +\n    '| `placeholder-unfilled` | 是 | `BLK-PLACEHOLDER` |\\n' +\n    '| `attachment-missing` | 是 | `BLK-ATTACHMENT-MISSING` |\\n' +\n    '| `signature-status-unconfirmed` | 是 | `BLK-SIGNATURE-INCOMPLETE` / `BLK-SIGNATURE-BLOCK-ABSENT` / `BLK-EXECUTION-DATE-CONFLICT` / `BLK-EXECUTION-STATUS-CONFLICT` |\\n' +\n    '| `page-discontinuity` | 是 | `BLK-PAGE-INCOMPLETE` / `BLK-PAGE-DUPLICATE` / `BLK-PAGE-TOTAL-CONFLICT` |\\n' +\n    '| `version-mismatch` | 是 | `BLK-ATTACHMENT-VERSION-CONFLICT` / `BLK-ATTACHMENT-NAME-CONFLICT` |\\n' +\n    '| `party-name-inconsistency` | 是 | `BLK-PARTY-INCONSISTENT` / `BLK-PARTY-ROLE-CONFLICT` |\\n' +\n    '| `amount-in-words-mismatch` | **否** | `FLG-AMOUNT-IN-WORDS-MISMATCH` |\\n' +\n    '| `attachment-manifest-incomplete` | **否** | `FLG-ATTACHMENT-MANIFEST-INCOMPLETE` |\\n' +\n    '\\n' +\n    '表外的内部编码（`BLK-OBJECT-UNIDENTIFIED`、`BLK-JURISDICTION-PACK-MISMATCH` 等）照常影响门禁结论，\\n' +\n    '输出时 `gate_reason_id` 写 `null` 并在 `finding` 里说清楚。\\n' +\n    '\\n' +\n    '---\\n' +\n    '\\n' +\n    '## S1 受理范围清点与部件切分\\n' +\n    '\\n' +\n    '**怎么检**\\n' +\n    '\\n' +\n    '1. 用 `Ls` / `Glob` 列出本次提交的全部文件，逐一 `Read`。\\n' +\n    '2. 把内容切分为**文档部件（part）**：\\n' +\n    '   - `body` —— 合同正文\\n' +\n    '   - `attachment:<编号>` —— 随材料送达的附件正文（如 `attachment:附件二`、`attachment:Exhibit B`）\\n' +\n    '\\n' +\n    '   > **部件是按内容切分的，不是按文件切分的。** 一个文件里可能同时含正文与一份或多份\\n' +\n    '   > 附件正文（常见于导出为单一 Markdown/PDF 的合同：正文之后接\\n' +\n    '   > 「附件二　服务水平协议」再接其全文）。逐文件 `Read` 之后，必须在**文件内部**\\n' +\n    '   > 继续按附件标题切分，不能因为「只提交了一个文件」就断定附件正文未送达。\\n' +\n    '   >\\n' +\n    '   > 判据：文件内出现形如 `# 附件<编号>　<名称>` / `## Exhibit <X>` 的标题，\\n' +\n    '   > 且其后有实质条款正文（而非仅在附件清单表格里被列名），即应登记为独立部件。\\n' +\n    '   >\\n' +\n    '   > 实测教训：C06a/C06b 把附件二 SLA 全文内嵌在同一份 .md 里，\\n' +\n    '   > 因只按文件数判断而误报 `SCOPE-ATTACHMENT-BODY-ABSENT`，\\n' +\n    '   > 导致下游范围事实错误、被统筹官形式检查打回返工。\\n' +\n    '3. 识别提交模式：\\n' +\n    '   - `single` —— 单一版本受理\\n' +\n    '   - `version_comparison` —— 同一合同的两个及以上版本同时提交（要求做版本对照）\\n' +\n    '4. 用 `GenerateUUID` 生成 `intake_id`，格式 `INTAKE-<YYYYMMDD>-<uuid 前 8 位>`。\\n' +\n    '\\n' +\n    '**“组成合同的文件”与附件清单的边界**：正文以“组成本合同的文件包括……”列举采购文件、\\n' +\n    '答疑/更正公告、中标公告、响应文件、补充协议等程序性材料时，如果没有显式的“附件清单 / 合同附件 /\\n' +\n    'Exhibit / Schedule”章节和附件编号，这些材料只是正文引用的组成材料。应记录为\\n' +\n    '`SCOPE-ATTACHMENT-BODY-ABSENT` 或 `SCOPE-ATTACHMENT-VERSION-UNCOVERED`，不得因为材料\\n' +\n    '未随正文提交而创建 `BLK-ATTACHMENT-MISSING`。`BLK-ATTACHMENT-MISSING` 只适用于正文明确引用\\n' +\n    '某个编号/名称的附件，而正式附件清单中没有对应条目（S4 R1）。\\n' +\n    '\\n' +\n    '**命中什么算失败**\\n' +\n    '\\n' +\n    '| 情形 | 判定 |\\n' +\n    '|---|---|\\n' +\n    '| 提交为空 / 全部文件不可读 | `BLK-NO-MATERIAL` |\\n' +\n    '| 声称版本对比但只提交了一个版本 | `BLK-COMPARISON-INCOMPLETE` |\\n' +\n    '| 附件清单声明的附件正文未随材料送达 | `SCOPE-ATTACHMENT-BODY-ABSENT`（**范围事实，不是缺陷**） |\\n' +\n    '| 正文明确把另附、未送达的文件指定为**权威附件清单**，以致本次无法取得完整 `declared` 集合 | 见 S4 R9；不得仅因某一已声明附件正文未送达而命中 |\\n' +\n    '\\n' +\n    '> ⚠️ 最容易误报的地方：**附件正文没随材料来 ≠ 缺失附件**。冻结的对象是**附件清单**，不是附件文件。\\n' +\n    '> 只有\"正文引用了、清单里没有\"才是缺失（见 S4）。\\n' +\n    '\\n' +\n    '**失败后输出什么**\\n' +\n    '\\n' +\n    '写入 `scope`：\\n' +\n    '\\n' +\n    '```yaml\\n' +\n    'scope:\\n' +\n    '  submission_mode: single\\n' +\n    '  parts:\\n' +\n    '    - id: body\\n' +\n    '      source: /abs/path/C02-software-outsourcing.md\\n' +\n    '    - id: attachment:附件二\\n' +\n    '      source: null\\n' +\n    '      delivered: false\\n' +\n    '  in_scope: [正文完整性, 附件清单一致性, 签章状态, 页码连续性, 版本矩阵]\\n' +\n    '  out_of_scope: [条款实质评价, 风险打分, 法域合规判断]\\n' +\n    '```\\n' +\n    '\\n' +\n    '---\\n' +\n    '\\n' +\n    '## S2 主版本冻结\\n' +\n    '\\n' +\n    '**怎么检**\\n' +\n    '\\n' +\n    '从 `body` 提取并锁定以下字段，逐个记录证据位置：\\n' +\n    '\\n' +\n    '| 字段 | 取值来源 | 缺失时 |\\n' +\n    '|---|---|---|\\n' +\n    '| `contract_no` | 合同编号 / Contract No. | `BLK-OBJECT-UNIDENTIFIED` |\\n' +\n    '| `object_title` | 标题行 | `FLG-TITLE-MISSING` |\\n' +\n    '| `revision_label` | 编号后缀的状态标注，如\"（草稿，待用印）\"\"Draft\"\"Rev.B\" | 无标注时记 `null`，不算缺陷 |\\n' +\n    '| `execution_date_declared` | 首部\"签署日期 / Date\" | 见 S5 |\\n' +\n    '| `content_digest` | 正文规范化后的摘要（用于后续重提对照） | 不可得时记 `null` |\\n' +\n    '\\n' +\n    '**版本对比模式（`version_comparison`）额外必做**\\n' +\n    '\\n' +\n    '1. 对 `body` 做逐字对照，记录 `body_diff_count`。\\n' +\n    '2. **无论 `body_diff_count` 是否为 0，都必须继续做 S4 的附件清单跨版本对账。**\\n' +\n    '3. `body_diff_count == 0` 时，禁止写\"两版一致\"。正确写法是：\\n' +\n    '   `正文逐字相同（diff=0）；一致性结论待附件层对账后给出`。\\n' +\n    '\\n' +\n    '**命中什么算失败**\\n' +\n    '\\n' +\n    '| 情形 | 判定 |\\n' +\n    '|---|---|\\n' +\n    '| 找不到可唯一标识本合同的编号或等价标识 | `BLK-OBJECT-UNIDENTIFIED` |\\n' +\n    '| `revision_label` 标明草稿/待用印，但 S5 检出已完成签章 | `BLK-EXECUTION-STATUS-CONFLICT` |\\n' +\n    '| 版本对比模式下 `body_diff_count == 0` 且附件清单存在差异 | 见 S4 的 `FLG-ATTACHMENT-VERSION-CHANGED`，并强制 `must_escalate: true` |\\n' +\n    '\\n' +\n    '**失败后输出什么**\\n' +\n    '\\n' +\n    '```yaml\\n' +\n    'freeze:\\n' +\n    '  master_version:\\n' +\n    '    frozen: false\\n' +\n    '    contract_no: YCIT-OSD-2026-0042\\n' +\n    '    revision_label: 草稿，待用印\\n' +\n    '    execution_date_declared: \"2026 年 3 月 __ 日\"\\n' +\n    '    body_diff_count: null\\n' +\n    '    consistency_conclusion_allowed: false\\n' +\n    '```\\n' +\n    '\\n' +\n    '---\\n' +\n    '\\n' +\n    '## S3 页码范围冻结与连续性校验\\n' +\n    '\\n' +\n    '**怎么检**\\n' +\n    '\\n' +\n    '1. 用 `Grep` 抓取全部页码标记。至少支持两种形态：\\n' +\n    '   - 中文：`第 N 页 / 共 M 页`\\n' +\n    '   - 英文：`Page N of M`\\n' +\n    '2. **按部件分组**。正文一段序列、每个附件各一段序列。\\n' +\n    '3. 对每一组：\\n' +\n    '   - 取声明总页数 `M`（组内 `M` 不唯一时 → `BLK-PAGE-TOTAL-CONFLICT`）\\n' +\n    '   - 用 `MathCalc` 校验实际出现的页码集合是否等于 `{1..M}`\\n' +\n    '   - 缺号 → 记录缺失页列表；重号 → 记录重复页列表\\n' +\n    '\\n' +\n    '> ⚠️ 最容易误报的地方：一个文件里可能同时存在\"正文 1–7 / 共 7 页\"和\"附件 1–2 / 共 2 页\"两段序列。\\n' +\n    '> **把它们混在一起判断会得出\"页码从 7 跳回 1\"的假阳性。**必须先按部件切分再判连续性。\\n' +\n    '\\n' +\n    '**命中什么算失败**\\n' +\n    '\\n' +\n    '| 情形 | 判定 |\\n' +\n    '|---|---|\\n' +\n    '| 某组页码集合 ≠ `{1..M}`（缺号） | `BLK-PAGE-INCOMPLETE` |\\n' +\n    '| 同组内声明总页数 `M` 不一致 | `BLK-PAGE-TOTAL-CONFLICT` |\\n' +\n    '| 页码重复 | `BLK-PAGE-DUPLICATE` |\\n' +\n    '| 全文无任何页码标记 | `FLG-PAGINATION-ABSENT`（无法冻结页码范围 → 结论至多 `conditional`） |\\n' +\n    '\\n' +\n    '**失败后输出什么**\\n' +\n    '\\n' +\n    '```yaml\\n' +\n    'freeze:\\n' +\n    '  page_range:\\n' +\n    '    frozen: false\\n' +\n    '    parts:\\n' +\n    '      - part: body\\n' +\n    '        declared_total: 8\\n' +\n    '        observed: [1, 2, 4, 5, 6, 7, 8]\\n' +\n    '        missing: [3]\\n' +\n    '        duplicated: []\\n' +\n    '        continuous: false\\n' +\n    'blocks:\\n' +\n    '  - code: BLK-PAGE-INCOMPLETE\\n' +\n    '    gate_reason_id: page-discontinuity\\n' +\n    '    severity: block\\n' +\n    '    clause: null\\n' +\n    '    evidence:\\n' +\n    '      part: body\\n' +\n    '      page: 3\\n' +\n    '      locator: \"第 2 页与第 4 页之间\"\\n' +\n    '      quote: \"第 2 页 / 共 8 页 → 第 4 页 / 共 8 页\"\\n' +\n    '    finding: 正文声明共 8 页，实际缺少第 3 页\\n' +\n    '    action: 补齐第 3 页原件后整份重新提交受理\\n' +\n    '```\\n' +\n    '\\n' +\n    '---\\n' +\n    '\\n' +\n    '## S4 附件清单冻结与四字段对账\\n' +\n    '\\n' +\n    '这是**最容易漏、后果最重**的一步。蓝本第九节的\"版本对比陷阱\"整个落在这里。\\n' +\n    '\\n' +\n    '**怎么检**\\n' +\n    '\\n' +\n    '分三个来源分别建表，然后做三向对账：\\n' +\n    '\\n' +\n    '1. **`declared`（清单声明）** —— 附则里的\"本合同附件清单如下 / The Exhibits to this Agreement are\"章节。\\n' +\n    '   逐条抽取四个字段：`no`（附件编号）、`name`（附件名称）、`version`（版本标识）、`doc_no`（文档编号）。\\n' +\n    '2. **`referenced`（正文引用）** —— 用 `Grep` 搜正文中所有出现的附件引用\\n' +\n    '   （`附件[一二三四五六七八九十]`、`Exhibit [A-Z]`、`Schedule \\\\d`、`Annex \\\\w`、`Appendix \\\\w`），\\n' +\n    '   连同引用处写明的版本标识一并记录。\\n' +\n    '3. **`delivered`（随材料送达的附件正文）** —— 来自 S1 的部件表。\\n' +\n    '\\n' +\n    '**对账规则（顺序不可换）**\\n' +\n    '\\n' +\n    '| # | 规则 | 判定 |\\n' +\n    '|---|---|---|\\n' +\n    '| R1 | `referenced` 中某编号在 `declared` 中**没有条目** | `BLK-ATTACHMENT-MISSING` |\\n' +\n    '| R2 | 同一编号在 `referenced` 与 `declared` 中的 `version` **不相同** | `BLK-ATTACHMENT-VERSION-CONFLICT` |\\n' +\n    '| R3 | 同一编号在 `referenced` 与 `declared` 中的 `name` 实质不同 | `BLK-ATTACHMENT-NAME-CONFLICT` |\\n' +\n    '| R4 | `declared` 中同一编号出现多次且内容不同 | `BLK-ATTACHMENT-DUPLICATE` |\\n' +\n    '| R5 | `declared` 条目缺 `no` 或 `name` | `BLK-ATTACHMENT-UNIDENTIFIED`（身份无法冻结） |\\n' +\n    '| R6 | `declared` 条目**缺 `version`** | `SCOPE-ATTACHMENT-VERSION-UNCOVERED`（**不是缺陷，不影响门禁结论**） |\\n' +\n    '| R7 | `declared` 条目**未随材料送达正文** | `SCOPE-ATTACHMENT-BODY-ABSENT`（**不是缺陷，不影响门禁结论**） |\\n' +\n    '| R8 | 版本对比模式下，两版 `declared` 的同编号条目 `version` 或 `doc_no` 不同 | `FLG-ATTACHMENT-VERSION-CHANGED` + `must_escalate: true` |\\n' +\n    '| R9 | 正文明确指向独立的**权威附件清单**（如“完整附件清单见另附《合同附件目录》”），但该清单未随材料送达，因而无法确定完整 `declared` 集合 | `FLG-ATTACHMENT-MANIFEST-INCOMPLETE` + `PEND-001.must_escalate: true` |\\n' +\n    '\\n' +\n    '> ⚠️ **R5/R6 的分界必须守住。**\"附件一《岗位职责说明书》\"\"Exhibit A — Statement of Work Template\"\\n' +\n    '> 没有版本号，是常见且合法的写法。**只记 `SCOPE-`，既不阻断也不把门禁结论降为 `conditional`。**\\n' +\n    '> 要求每个附件都带版本号，会把一大批正常合同错判成 `conditional`，属于门禁错判。\\n' +\n    '\\n' +\n    '> ⚠️ **R7 同理。**附件正文没随材料来 ≠ 附件缺失。冻结的对象是清单条目的身份，\\n' +\n    '> 不是附件文件本身。只在 `scope` 里如实登记 `delivered: false`，并让下游把相关检查项留白为\\n' +\n    '> `not_covered`。\\n' +\n    '\\n' +\n    '> ⚠️ **R9 的范围必须收窄。**它只适用于本次材料明确承认存在、却未取得的**权威附件清单本身**；\\n' +\n    '> 这使 `declared` 集合无法被冻结，不能按“已知附件正文未送达”处理。不得把 R7、没有版本号的\\n' +\n    '> R6、或 R8 的版本变化改写为 R9。正文引用某附件而正式清单没有该条目仍是 R1 的 `blocked`，\\n' +\n    '> 绝不能降级为 `conditional`。\\n' +\n    '\\n' +\n    '> ⚠️ **程序性组成材料也适用 R7。**“组成合同的文件”条款本身不是附件清单；没有附件编号的\\n' +\n    '> 采购文件/响应文件/补充协议只形成范围事实，不影响门禁结论。不要把 `SCOPE-*` 升格为 `BLK-*`。\\n' +\n    '\\n' +\n    '> ⚠️ **R8 是\"差异为 0\"陷阱的唯一防线。**主文本逐字相同、diff 为零时，\\n' +\n    '> 系统会默认\"附件也没变\"从而整段跳过——而附件恰恰是从 `SLA-v1.2` 换成了 `SLA-v2.0`。\\n' +\n    '> 所以 R8 **不看 `body_diff_count`，无条件执行**。\\n' +\n    '>\\n' +\n    '> R8 只在 `version_comparison` 模式下产出**版本对照结论**，**不改变任何一份材料单独受理时的门禁结论**\\n' +\n    '>（各版本单独受理时若无 `BLK-*` / `FLG-*`，结论仍是 `passed`）。命中 R8 时：\\n' +\n    '> - `consistency_conclusion_allowed` 置 `false`\\n' +\n    '> - 在交接块的 `pending` 中写死\"附件 `<编号>` 由 `<旧版本>` 替换为 '... 23861 more characters\n  \n      at TestContext.<anonymous> (file:///private<isolated-member>/skills/contract-intake-gate/tests/consistency.contract.test.mjs:95:10)\n      at async Test.run (node:internal/test_runner/test:1389:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: '---\\nname: contract-intake-gate\\ndescription: >-\\n  合同审查流水线的输入治理闸门。对提交的合同材料执行固定顺序的 8 步硬校验（受理范围切分、\\n  主版本冻结、页码连续性、附件清单四字段对账、签章状态、占位符扫描、主体身份一致性、版本矩阵对齐），\\n  产出「通过 / 条件通过 / 拒绝」三态受理回执与结构化交接块。命中阻断项时直接终止流水线，\\n  不降级为提醒、不向下游交接。用户提到合同受理、合同预检、准入校验、输入治理、附件清单核对、\\n  签章状态确认、页码完整性、版本冻结、版本矩阵对齐时使用。\\n  Use when gating contract materials before clause extraction: freezes master version,\\n  attachment manifest, page range and execution status; blocks placeholders, missing\\n  attachments, unconfirmed signatures, broken pagination and party-name mismatches.\\nversion: 1.0.7\\ntype: procedural\\nrisk_level: low\\nstatus: enabled\\ntags:\\n  - contract-review\\n  - intake\\n  - input-governance\\n  - completeness-check\\n  - version-freeze\\nrequires:\\n  tools:\\n    - Read\\n    - Ls\\n    - Glob\\n    - Grep\\n    - Write\\n    - MathCalc\\n    - GenerateUUID\\n    - UnderstandImage\\n    - FileDigest\\n    - StructuredFileValidate\\nmetadata:\\n  author: DesireCore\\n  version: 1.0.7\\n  updated_at: \\'2026-09-15\\'\\n  pipeline_stage: O1\\n  upstream: contract-review-lead\\n  downstream: [contract-review-lead]\\n---\\n\\n# 合同输入治理闸门\\n\\n## 何时使用\\n\\n收到 Lead 登记并指定的合同对象时执行 O1。本技能不自行启动 O2/O3/O4/O5；只有有效的 `通过` 或 `条件通过` 回执可交回 Lead 继续编排。\\n\\n## 不可协商的前提\\n\\n1. **S1→S8 顺序固定**，不得打乱、不得跳步、不得因为\"看起来没问题\"提前结束。顺序固定是为了让任何人重跑得到同样的过程。\\n2. **阻断即拒绝**。命中任一 `BLK-*` 编码，最终结论只能是 `blocked`（拒绝），且**不得调用 Delegate / SendMessage 向下游交接**，也不得输出条款清单或风险清单。\\n3. **没检查到就显式留白**。检查矩阵里每一项都必须有状态；未覆盖写 `not_covered`，不得因为没提就当 `pass`。\\n4. **四大冻结未全部成立时，禁止输出任何\"一致 / 无差异 / 差异为 0\"结论。**\\n\\n5. **结构化产物必须先保证 YAML 语法，再谈业务结论。** 机器消费的 `intake.yaml` 与回执\\n   只能使用块式映射/序列；任何标量中含 ASCII 双引号、冒号、井号、方括号、花括号、换行\\n   或前导/尾随空格时，必须改用单引号（单引号本身写成两个连续单引号）或块标量 `|` / `>`。\\n   禁止把含英文双引号的文本放进双引号标量而不转义，禁止复制 flow map/flow sequence 示例。\\n6. **回读与结构校验必须有工具证据。** `Read` 只证明文件已回读；再用只读 `StructuredFileValidate` 按本地 schema 校验同一字节，并核对 document/schema SHA-256。工具失败属于 capability/serialization debt，不伪装成合同 FLG 或自动把合同 verdict 降为 conditional；无有效机器回执时 `handoff.to=null`，由 Lead 决定重试，O2 不启动。\\n7. **写入前自检高风险标量。** 对 `note`、`detail`、`finding`、`statement`、`evidence.quote`\\n   等自由文本逐个检查引号配对与缩进；无法安全编码时用块标量，不得为了省字删掉证据或改写\\n   原文。写入后再次 `Read`，保持 `input_file.absolute_path`、SHA 和所有门禁字段不变。\\n\\n---\\n\\n## 术语：三类判定\\n\\n| 类别 | 编码前缀 | 语义 | 对结论的影响 |\\n|---|---|---|---|\\n| **阻断项** | `BLK-` | 材料自身事实缺失或自相矛盾，下游无论如何处理都会得到错误结论 | 结论强制为 `blocked` |\\n| **失败标记** | `FLG-` | 事实完整但置信度或覆盖度不足，下游可在知情前提下继续 | 结论降为 `conditional`（**照常交接、下游照常全量执行**） |\\n| **范围事实** | `SCOPE-` | 本次受理客观的边界（哪些部件随材料送达） | **永远不影响结论**，只写进 `scope` |\\n\\n判不准时**按阻断处理**。误拦一次的成本是补一次材料；误放一次的成本是整条流水线的结论作废。\\n\\n### 判定编码与门禁结论的关系（**必须严格遵守**）\\n\\n门禁结论**只由 `BLK-*` 与 `FLG-*` 决定**。`SCOPE-*` 是客观范围记录，**永远不改变门禁结论**——\\n把范围事实当缺陷会在正常合同上产生门禁错判。\\n\\n### 对外统一的 `gate_reason_id`\\n\\n内部编码（`BLK-*` / `FLG-*`）用于本技能内部推理；**对外输出的每一条都必须同时带上下表的\\n`gate_reason_id`**，下游与验收口径以它为准：\\n\\n| `gate_reason_id` | 阻断 | 内部编码 |\\n|---|---|---|\\n| `placeholder-unfilled` | 是 | `BLK-PLACEHOLDER` |\\n| `attachment-missing` | 是 | `BLK-ATTACHMENT-MISSING` |\\n| `signature-status-unconfirmed` | 是 | `BLK-SIGNATURE-INCOMPLETE` / `BLK-SIGNATURE-BLOCK-ABSENT` / `BLK-EXECUTION-DATE-CONFLICT` / `BLK-EXECUTION-STATUS-CONFLICT` |\\n| `page-discontinuity` | 是 | `BLK-PAGE-INCOMPLETE` / `BLK-PAGE-DUPLICATE` / `BLK-PAGE-TOTAL-CONFLICT` |\\n| `version-mismatch` | 是 | `BLK-ATTACHMENT-VERSION-CONFLICT` / `BLK-ATTACHMENT-NAME-CONFLICT` |\\n| `party-name-inconsistency` | 是 | `BLK-PARTY-INCONSISTENT` / `BLK-PARTY-ROLE-CONFLICT` |\\n| `amount-in-words-mismatch` | **否** | `FLG-AMOUNT-IN-WORDS-MISMATCH` |\\n| `attachment-manifest-incomplete` | **否** | `FLG-ATTACHMENT-MANIFEST-INCOMPLETE` |\\n\\n表外的内部编码（`BLK-OBJECT-UNIDENTIFIED`、`BLK-JURISDICTION-PACK-MISMATCH` 等）照常影响门禁结论，\\n输出时 `gate_reason_id` 写 `null` 并在 `finding` 里说清楚。\\n\\n---\\n\\n## S1 受理范围清点与部件切分\\n\\n**怎么检**\\n\\n1. 用 `Ls` / `Glob` 列出本次提交的全部文件，逐一 `Read`。\\n2. 把内容切分为**文档部件（part）**：\\n   - `body` —— 合同正文\\n   - `attachment:<编号>` —— 随材料送达的附件正文（如 `attachment:附件二`、`attachment:Exhibit B`）\\n\\n   > **部件是按内容切分的，不是按文件切分的。** 一个文件里可能同时含正文与一份或多份\\n   > 附件正文（常见于导出为单一 Markdown/PDF 的合同：正文之后接\\n   > 「附件二　服务水平协议」再接其全文）。逐文件 `Read` 之后，必须在**文件内部**\\n   > 继续按附件标题切分，不能因为「只提交了一个文件」就断定附件正文未送达。\\n   >\\n   > 判据：文件内出现形如 `# 附件<编号>　<名称>` / `## Exhibit <X>` 的标题，\\n   > 且其后有实质条款正文（而非仅在附件清单表格里被列名），即应登记为独立部件。\\n   >\\n   > 实测教训：C06a/C06b 把附件二 SLA 全文内嵌在同一份 .md 里，\\n   > 因只按文件数判断而误报 `SCOPE-ATTACHMENT-BODY-ABSENT`，\\n   > 导致下游范围事实错误、被统筹官形式检查打回返工。\\n3. 识别提交模式：\\n   - `single` —— 单一版本受理\\n   - `version_comparison` —— 同一合同的两个及以上版本同时提交（要求做版本对照）\\n4. 用 `GenerateUUID` 生成 `intake_id`，格式 `INTAKE-<YYYYMMDD>-<uuid 前 8 位>`。\\n\\n**“组成合同的文件”与附件清单的边界**：正文以“组成本合同的文件包括……”列举采购文件、\\n答疑/更正公告、中标公告、响应文件、补充协议等程序性材料时，如果没有显式的“附件清单 / 合同附件 /\\nExhibit / Schedule”章节和附件编号，这些材料只是正文引用的组成材料。应记录为\\n`SCOPE-ATTACHMENT-BODY-ABSENT` 或 `SCOPE-ATTACHMENT-VERSION-UNCOVERED`，不得因为材料\\n未随正文提交而创建 `BLK-ATTACHMENT-MISSING`。`BLK-ATTACHMENT-MISSING` 只适用于正文明确引用\\n某个编号/名称的附件，而正式附件清单中没有对应条目（S4 R1）。\\n\\n**命中什么算失败**\\n\\n| 情形 | 判定 |\\n|---|---|\\n| 提交为空 / 全部文件不可读 | `BLK-NO-MATERIAL` |\\n| 声称版本对比但只提交了一个版本 | `BLK-COMPARISON-INCOMPLETE` |\\n| 附件清单声明的附件正文未随材料送达 | `SCOPE-ATTACHMENT-BODY-ABSENT`（**范围事实，不是缺陷**） |\\n| 正文明确把另附、未送达的文件指定为**权威附件清单**，以致本次无法取得完整 `declared` 集合 | 见 S4 R9；不得仅因某一已声明附件正文未送达而命中 |\\n\\n> ⚠️ 最容易误报的地方：**附件正文没随材料来 ≠ 缺失附件**。冻结的对象是**附件清单**，不是附件文件。\\n> 只有\"正文引用了、清单里没有\"才是缺失（见 S4）。\\n\\n**失败后输出什么**\\n\\n写入 `scope`：\\n\\n```yaml\\nscope:\\n  submission_mode: single\\n  parts:\\n    - id: body\\n      source: /abs/path/C02-software-outsourcing.md\\n    - id: attachment:附件二\\n      source: null\\n      delivered: false\\n  in_scope: [正文完整性, 附件清单一致性, 签章状态, 页码连续性, 版本矩阵]\\n  out_of_scope: [条款实质评价, 风险打分, 法域合规判断]\\n```\\n\\n---\\n\\n## S2 主版本冻结\\n\\n**怎么检**\\n\\n从 `body` 提取并锁定以下字段，逐个记录证据位置：\\n\\n| 字段 | 取值来源 | 缺失时 |\\n|---|---|---|\\n| `contract_no` | 合同编号 / Contract No. | `BLK-OBJECT-UNIDENTIFIED` |\\n| `object_title` | 标题行 | `FLG-TITLE-MISSING` |\\n| `revision_label` | 编号后缀的状态标注，如\"（草稿，待用印）\"\"Draft\"\"Rev.B\" | 无标注时记 `null`，不算缺陷 |\\n| `execution_date_declared` | 首部\"签署日期 / Date\" | 见 S5 |\\n| `content_digest` | 正文规范化后的摘要（用于后续重提对照） | 不可得时记 `null` |\\n\\n**版本对比模式（`version_comparison`）额外必做**\\n\\n1. 对 `body` 做逐字对照，记录 `body_diff_count`。\\n2. **无论 `body_diff_count` 是否为 0，都必须继续做 S4 的附件清单跨版本对账。**\\n3. `body_diff_count == 0` 时，禁止写\"两版一致\"。正确写法是：\\n   `正文逐字相同（diff=0）；一致性结论待附件层对账后给出`。\\n\\n**命中什么算失败**\\n\\n| 情形 | 判定 |\\n|---|---|\\n| 找不到可唯一标识本合同的编号或等价标识 | `BLK-OBJECT-UNIDENTIFIED` |\\n| `revision_label` 标明草稿/待用印，但 S5 检出已完成签章 | `BLK-EXECUTION-STATUS-CONFLICT` |\\n| 版本对比模式下 `body_diff_count == 0` 且附件清单存在差异 | 见 S4 的 `FLG-ATTACHMENT-VERSION-CHANGED`，并强制 `must_escalate: true` |\\n\\n**失败后输出什么**\\n\\n```yaml\\nfreeze:\\n  master_version:\\n    frozen: false\\n    contract_no: YCIT-OSD-2026-0042\\n    revision_label: 草稿，待用印\\n    execution_date_declared: \"2026 年 3 月 __ 日\"\\n    body_diff_count: null\\n    consistency_conclusion_allowed: false\\n```\\n\\n---\\n\\n## S3 页码范围冻结与连续性校验\\n\\n**怎么检**\\n\\n1. 用 `Grep` 抓取全部页码标记。至少支持两种形态：\\n   - 中文：`第 N 页 / 共 M 页`\\n   - 英文：`Page N of M`\\n2. **按部件分组**。正文一段序列、每个附件各一段序列。\\n3. 对每一组：\\n   - 取声明总页数 `M`（组内 `M` 不唯一时 → `BLK-PAGE-TOTAL-CONFLICT`）\\n   - 用 `MathCalc` 校验实际出现的页码集合是否等于 `{1..M}`\\n   - 缺号 → 记录缺失页列表；重号 → 记录重复页列表\\n\\n> ⚠️ 最容易误报的地方：一个文件里可能同时存在\"正文 1–7 / 共 7 页\"和\"附件 1–2 / 共 2 页\"两段序列。\\n> **把它们混在一起判断会得出\"页码从 7 跳回 1\"的假阳性。**必须先按部件切分再判连续性。\\n\\n**命中什么算失败**\\n\\n| 情形 | 判定 |\\n|---|---|\\n| 某组页码集合 ≠ `{1..M}`（缺号） | `BLK-PAGE-INCOMPLETE` |\\n| 同组内声明总页数 `M` 不一致 | `BLK-PAGE-TOTAL-CONFLICT` |\\n| 页码重复 | `BLK-PAGE-DUPLICATE` |\\n| 全文无任何页码标记 | `FLG-PAGINATION-ABSENT`（无法冻结页码范围 → 结论至多 `conditional`） |\\n\\n**失败后输出什么**\\n\\n```yaml\\nfreeze:\\n  page_range:\\n    frozen: false\\n    parts:\\n      - part: body\\n        declared_total: 8\\n        observed: [1, 2, 4, 5, 6, 7, 8]\\n        missing: [3]\\n        duplicated: []\\n        continuous: false\\nblocks:\\n  - code: BLK-PAGE-INCOMPLETE\\n    gate_reason_id: page-discontinuity\\n    severity: block\\n    clause: null\\n    evidence:\\n      part: body\\n      page: 3\\n      locator: \"第 2 页与第 4 页之间\"\\n      quote: \"第 2 页 / 共 8 页 → 第 4 页 / 共 8 页\"\\n    finding: 正文声明共 8 页，实际缺少第 3 页\\n    action: 补齐第 3 页原件后整份重新提交受理\\n```\\n\\n---\\n\\n## S4 附件清单冻结与四字段对账\\n\\n这是**最容易漏、后果最重**的一步。蓝本第九节的\"版本对比陷阱\"整个落在这里。\\n\\n**怎么检**\\n\\n分三个来源分别建表，然后做三向对账：\\n\\n1. **`declared`（清单声明）** —— 附则里的\"本合同附件清单如下 / The Exhibits to this Agreement are\"章节。\\n   逐条抽取四个字段：`no`（附件编号）、`name`（附件名称）、`version`（版本标识）、`doc_no`（文档编号）。\\n2. **`referenced`（正文引用）** —— 用 `Grep` 搜正文中所有出现的附件引用\\n   （`附件[一二三四五六七八九十]`、`Exhibit [A-Z]`、`Schedule \\\\d`、`Annex \\\\w`、`Appendix \\\\w`），\\n   连同引用处写明的版本标识一并记录。\\n3. **`delivered`（随材料送达的附件正文）** —— 来自 S1 的部件表。\\n\\n**对账规则（顺序不可换）**\\n\\n| # | 规则 | 判定 |\\n|---|---|---|\\n| R1 | `referenced` 中某编号在 `declared` 中**没有条目** | `BLK-ATTACHMENT-MISSING` |\\n| R2 | 同一编号在 `referenced` 与 `declared` 中的 `version` **不相同** | `BLK-ATTACHMENT-VERSION-CONFLICT` |\\n| R3 | 同一编号在 `referenced` 与 `declared` 中的 `name` 实质不同 | `BLK-ATTACHMENT-NAME-CONFLICT` |\\n| R4 | `declared` 中同一编号出现多次且内容不同 | `BLK-ATTACHMENT-DUPLICATE` |\\n| R5 | `declared` 条目缺 `no` 或 `name` | `BLK-ATTACHMENT-UNIDENTIFIED`（身份无法冻结） |\\n| R6 | `declared` 条目**缺 `version`** | `SCOPE-ATTACHMENT-VERSION-UNCOVERED`（**不是缺陷，不影响门禁结论**） |\\n| R7 | `declared` 条目**未随材料送达正文** | `SCOPE-ATTACHMENT-BODY-ABSENT`（**不是缺陷，不影响门禁结论**） |\\n| R8 | 版本对比模式下，两版 `declared` 的同编号条目 `version` 或 `doc_no` 不同 | `FLG-ATTACHMENT-VERSION-CHANGED` + `must_escalate: true` |\\n| R9 | 正文明确指向独立的**权威附件清单**（如“完整附件清单见另附《合同附件目录》”），但该清单未随材料送达，因而无法确定完整 `declared` 集合 | `FLG-ATTACHMENT-MANIFEST-INCOMPLETE` + `PEND-001.must_escalate: true` |\\n\\n> ⚠️ **R5/R6 的分界必须守住。**\"附件一《岗位职责说明书》\"\"Exhibit A — Statement of Work Template\"\\n> 没有版本号，是常见且合法的写法。**只记 `SCOPE-`，既不阻断也不把门禁结论降为 `conditional`。**\\n> 要求每个附件都带版本号，会把一大批正常合同错判成 `conditional`，属于门禁错判。\\n\\n> ⚠️ **R7 同理。**附件正文没随材料来 ≠ 附件缺失。冻结的对象是清单条目的身份，\\n> 不是附件文件本身。只在 `scope` 里如实登记 `delivered: false`，并让下游把相关检查项留白为\\n> `not_covered`。\\n\\n> ⚠️ **R9 的范围必须收窄。**它只适用于本次材料明确承认存在、却未取得的**权威附件清单本身**；\\n> 这使 `declared` 集合无法被冻结，不能按“已知附件正文未送达”处理。不得把 R7、没有版本号的\\n> R6、或 R8 的版本变化改写为 R9。正文引用某附件而正式清单没有该条目仍是 R1 的 `blocked`，\\n> 绝不能降级为 `conditional`。\\n\\n> ⚠️ **程序性组成材料也适用 R7。**“组成合同的文件”条款本身不是附件清单；没有附件编号的\\n> 采购文件/响应文件/补充协议只形成范围事实，不影响门禁结论。不要把 `SCOPE-*` 升格为 `BLK-*`。\\n\\n> ⚠️ **R8 是\"差异为 0\"陷阱的唯一防线。**主文本逐字相同、diff 为零时，\\n> 系统会默认\"附件也没变\"从而整段跳过——而附件恰恰是从 `SLA-v1.2` 换成了 `SLA-v2.0`。\\n> 所以 R8 **不看 `body_diff_count`，无条件执行**。\\n>\\n> R8 只在 `version_comparison` 模式下产出**版本对照结论**，**不改变任何一份材料单独受理时的门禁结论**\\n>（各版本单独受理时若无 `BLK-*` / `FLG-*`，结论仍是 `passed`）。命中 R8 时：\\n> - `consistency_conclusion_allowed` 置 `false`\\n> - 在交接块的 `pending` 中写死\"附件 `<编号>` 由 `<旧版本>` 替换为 '... 23861 more characters,\n    expected: /party_role/,\n    operator: 'match',\n    diff: 'simple'\n  }\n"
+      },
+      "executedTests": 15
+    },
+    {
+      "member": "clause-extractor",
+      "baselineCommit": "6129add5f40109f895d4125065a761b58f73819d",
+      "passed": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "modelBytesUnchanged": true,
+      "modelBlockSha256": "0b9a4c40d7b1210a7808dad5dfec437b41033f2adbfff01af7a8625719f9d338",
+      "filesSha256": {
+        "agent.json": "b158a9765b09dd52b39d3f8c37b288dd5ac06a2f2330bf17b68b017426015f5a",
+        "persona.md": "03adf53ec4cdcb84cc604cf81b6b780e85d77cea4c33a4481c1cbe6d718a70dd",
+        "principles.md": "3b8bf71880ad9fac0c8a5f5b5b37d185bb723e814e99a2532ff4932fc84353b3",
+        "skills/clause-extraction/LOCKED-KNOWLEDGE-MAP.md": "e6969d272beb1f710886830bf083008907474fc5f20270b52810d5d5a0377260",
+        "skills/clause-extraction/SKILL.md": "9d3031cf58990c46f3908ba7dcef9ae19da2bd94c77eb9021f02fbfde9a1e742",
+        "tests/locked-knowledge-mapping.test.mjs": "f51c77e7ff1182a875d567db5ea49d73ef556ef5e8db7ca08515d8e6f2d1d691",
+        "package.json": "e3d29525beaccee715d28c386b09fed324aa75e67ec4ddb2f43f75fcc9a71cf4",
+        "package-lock.json": "441667f94116600632b59e47c85afda1bcb854fd4860f1288148a604a5fcfd78"
+      },
+      "install": {
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "exitCode": 0,
+        "output": "\nadded 1 package in 156ms\n"
+      },
+      "test": {
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "output": "\n> clause-extractor-contract-tests@0.0.0 test\n> node --test tests/*.test.mjs\n\n✔ locked extractor tables and corrective actions remain live and mapped (2.245166ms)\n✔ platform-equivalent frontmatter and live instructions encode O2 Lead handoff once (4.845ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 63.831542\n"
+      },
+      "executedTests": 2
+    },
+    {
+      "member": "risk-scanner",
+      "baselineCommit": "ea396f95e0a3c1917bd0b8fa02e956c4cc7bf578",
+      "passed": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "modelBytesUnchanged": true,
+      "modelBlockSha256": "b783e01167113db94cf2cb8910fb3f2ed8e517d6f8c0335b9220246d67e99c1e",
+      "filesSha256": {
+        "agent.json": "64f35b44f1aba27ee7ea45a2774c9ec2dbb3ebacbf3faaf987dc5a273c7b2536",
+        "persona.md": "53a6e1f5562522e917bea1f133170fb5c278e4a416f119809487ac88ececd8d8",
+        "principles.md": "be94888afd8fb765d3d91848b742180a4d4019f8a859a1e701b180eff7b57ff0",
+        "skills/risk-scanning/LOCKED-KNOWLEDGE-MAP.md": "019fa541f5b92fa3d0d58d3750e967cb6e1374cb67bd197baf1f78d74e089191",
+        "skills/risk-scanning/SKILL.md": "df820ed895707862e76c91ae79526051749f267c867d3c425ec37b48175fdf2f",
+        "tests/locked-knowledge-mapping.test.mjs": "0d112819c544b13262f065771880113ff01e42b61355a4cb410c6aaa83f5de83",
+        "package.json": "9d33b3660972ea5d348b58f0be88bac85c34fcbddeea66350eb11f0a304bf7a4",
+        "package-lock.json": "51d8866d71df8da8c655b9f08ca35f3bc844ae4ae6cecf2ddb2db7684d7fdaad"
+      },
+      "install": {
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "exitCode": 0,
+        "output": "\nadded 1 package in 197ms\n"
+      },
+      "test": {
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "output": "\n> risk-scanner-contract-tests@0.0.0 test\n> node --test tests/*.test.mjs\n\n✔ locked risk rules, counterexamples and corrections remain live and mapped (2.54475ms)\n✔ platform-equivalent frontmatter and live instructions encode O3 Lead isolation and nine classes (6.249375ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 66.066834\n"
+      },
+      "executedTests": 2
+    },
+    {
+      "member": "jurisdiction-auditor",
+      "baselineCommit": "7ae69f15a6f56dc71cbfef9f07d6e65642563601",
+      "passed": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "modelBytesUnchanged": true,
+      "modelBlockSha256": "1eaac54c72780d36fb240ef7155de138edc0b46b5e72e04911cdd0ec15f6e273",
+      "filesSha256": {
+        "agent.json": "82186ea1d82fbbf9550a4bbbfd3f67bcac4207cbd10acbf8aaffda054e6dd21f",
+        "persona.md": "438228bfa1445fc9f7a443cc2ccd4339870eb6e2e6606ce3c30e77b69a064b3f",
+        "principles.md": "c0b20898cec3c03d37c255c8a528dd5ad415f6b9fa4ff5888cbeaf6e9877c11f",
+        "skills/jurisdiction-audit/LOCKED-KNOWLEDGE-MAP.md": "25f020a4c1f46098b2e5cc79480565af77a22942a80723467963c943cf2fd3a1",
+        "skills/jurisdiction-audit/SKILL.md": "158ce2b26be0f54e0fb56d363e05390efd45bf21e6888029a342ecab83c5ab66",
+        "tests/locked-knowledge-mapping.test.mjs": "7fe94073dc71dd0b6b956a44a2981f83e01fec344c1b9fbc114bccdd4283acc3",
+        "package.json": "458ab78daa82ac84fc49dd818f5893db03d3a6a173ce9546f253b0ef2e4fded1",
+        "package-lock.json": "3be02e5f9c636abbcce5d0483c55db5df99b53d72dfe1dcc344775467e8ca1c2"
+      },
+      "install": {
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "exitCode": 0,
+        "output": "\nadded 1 package in 157ms\n"
+      },
+      "test": {
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "output": "\n> jurisdiction-auditor-contract-tests@0.0.0 test\n> node --test tests/*.test.mjs\n\n✔ locked jurisdiction rules, boundaries and corrections remain live and mapped (1.846208ms)\n✔ platform-equivalent frontmatter and live instructions encode O3 Lead isolation once (5.039333ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 57.557667\n"
+      },
+      "executedTests": 2
+    },
+    {
+      "member": "review-reporter",
+      "baselineCommit": "9198728db040106525341de260f7dc8b5f50742a",
+      "passed": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "modelBytesUnchanged": true,
+      "modelBlockSha256": "6747646caf9ad2b73339c59fd518d3760b4c1d0c7eb93595f029c7c67b6e2e65",
+      "filesSha256": {
+        "agent.json": "8e9302d138d29281e65782cabc503363c4e716d21a4317a2e86fba83eb0b1f39",
+        "persona.md": "45f2bf2698609a7068b73650077e31fa4d28582ed6d2878011e9d5ba505906d5",
+        "principles.md": "dd2b24de675846b0dcada7c9fe51b898c5de494a2305ebf5b456aa744069dcf9",
+        "skills/independent-verification/SKILL.md": "ec63fed972ac02e75345ef186f480e73082ee9424aeff19b360ecc4f8d5001d9",
+        "skills/report-composition/SKILL.md": "91801cbaa73318bf2e15dfb092fbf3c2b28a03a28cc04daa3c830ebbef314b25",
+        "skills/review-scoring/SKILL.md": "f445a6f66a3e94b3a5db22ea5130fdefe6bdcddb219fb5cd081d8cce2982cdf4",
+        "resources/scoring-rules-cn-v1.0.3.json": "c38408deefef58778d4a23b213e9af71ab1738e4c1d664318029f2cd7456b128",
+        "tests/o4-o5.contract.test.mjs": "cee5519f687055be4c533c59149181ab872ed25108c3176c92b804269a19762d",
+        "package.json": "1072144176dd76bc25a4325990354d5cd953d23f009a3e184185479a892936ad",
+        "package-lock.json": "9458638850add1b50b1b3bfc13fc37acdc4e78ab36b6b25aec72115cdc0da504"
+      },
+      "install": {
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "exitCode": 0,
+        "output": "\nup to date in 128ms\n"
+      },
+      "test": {
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "output": "\n> review-reporter-contract-tests@0.0.0 test\n> node --test tests/*.test.mjs\n\n✔ agent declares the independent verification entry without changing wait policy (2.232625ms)\n✔ O4 uses candidate three-state results plus an independent additional collection (1.214042ms)\n✔ all reporter instruction layers keep additional separate from candidate states (1.440792ms)\n✔ O5 consumes O4 and refuses a fake complete score when compliance is uncovered (0.336083ms)\n✔ versioned scoring resource computes deductions, caps, floor and tier without reweighting (0.764417ms)\n✔ O4 and O5 require file allowlists and disclose the platform isolation debt (0.4555ms)\n✔ pending gates do not block artifact delivery and redline audit is append-only (0.267292ms)\n✔ risk direction uses four values and R7/R9 stay distinct (0.531041ms)\n✔ DOCX evidence uses only the exact allowed output path, never directory enumeration or binary text readback (0.281792ms)\n✔ nonexistent redline capability is not statically advertised (0.339666ms)\nℹ tests 10\nℹ suites 0\nℹ pass 10\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 49.628334\n"
+      },
+      "executedTests": 10
+    }
+  ],
+  "passed": false
+}

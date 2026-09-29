@@ -7,6 +7,8 @@ node_modules/
 *.log
 # Only reviewed, redacted acceptance logs are published; runtime logs remain ignored.
 !docs/acceptance/evidence/*.log
+!docs/acceptance/followup-evidence/*.log
 .cache/
+__pycache__/
 .DS_Store
 Thumbs.db
