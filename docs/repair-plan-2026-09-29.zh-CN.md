@@ -2,6 +2,8 @@
 
 [English](repair-plan-2026-09-29.md) · [交接](handoff.zh-CN.md) · [上一轮账本](acceptance/takeover-2026-09-29.zh-CN.md)
 
+> 最新续轮以远端 `346343b` / 0.1.37 为整合目标，状态见[上游整合与检查器修复验收](acceptance/continuation-2026-09-29.zh-CN.md)。下文 GO、成员计数和“锁未变”均属于先前 e1837f2 修复快照，不代表新上游成员兼容已通过。
+
 状态：本轮源码/评测缺陷修复已取得独立 GO，发布仍 NO-GO。新增测试、失败反例、最终复审和当前精确候选见[本轮验收记录](acceptance/followup-2026-09-29.zh-CN.md)。团队原提交工具已接受本轮提交；六成员修复已提交至现有 Draft 分支，发布锁与模型配置未变。开始时远端 main 为 e1837f2931ec077b7bf522f5c223c0af5df840cf，首次回读七个 PR 均为原候选 Open Draft；这段是起始基线，不代表最终候选 HEAD。
 
 ## 文件责任与验收

@@ -55,3 +55,5 @@ Acceptance requires all prescribed checks to pass, no missing mandatory findings
 ## Current evidence limit
 
 September C07 observations are local historical reports: O0–O4 and partial O5, contract score 62, manual YAML repair and external DOCX generation. No public reproducible run-log bundle is present. The old shared sequence and O0–O5 design still conflict; see [Design](design.md). Re-run after behavior changes before asserting completion. Static guards in [Maintenance](maintenance.md) do not perform any of the live-model acceptance above.
+
+The upstream 0.1.37 C01/C09a/C09b report is preserved in [upstream-0.1.37-live-baseline.json](../testdata/contracts/upstream-0.1.37-live-baseline.json) as explicitly non-normative provenance. It was non-blind, single-run, and only intake steps 1–2 were rerun after the fix, so this candidate does not inherit it as a live pass.

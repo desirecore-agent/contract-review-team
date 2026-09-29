@@ -6,7 +6,21 @@ last-reviewed: 2026-09-29
 
 [English](CHANGELOG.md)
 
-## 未发布 — 文档修订 2026-09-29
+## 未发布 — 规范化 oracle/workflow candidate
+
+- 原样保留已发布团队 0.1.37 锁，并把 C09a/C09b 融入 14 文件规范 oracle；新增 R7/R9/R1 正例、禁报、错误映射及 source-binding guard。
+- 上游真机报告仅作为 non-normative provenance；本 candidate 不继承真机通过结论。
+
+## 0.1.37 - 2026-09-29
+
+- `contract-intake` 升级至 1.0.7：用 `StructuredFileValidate` 按随技能分发的回执 Schema 校验 YAML，恢复 `passed` 的可达性。此前「无解析器即禁止 passed」让任何合同都拿不到 passed，而兜底写出的回执本身两次解析失败（C01 第 164 行、C09a 第 153 行，均为未加引号的冒号）。S8 版本维度「取不到值」标记不再被判定表算作影响结论的 FLG-*。
+- `contract-review-lead` 升级至 1.0.22：白名单补入 `StructuredFileValidate` 与 `UnderstandImage`。委派时子会话工具上限是发起方的子集，编排官没有的工具成员一律拿不到——intake 1.0.7 首跑即回报「本环境无 StructuredFileValidate 工具」，`UnderstandImage` 在四名成员身上一直处于这个状态。
+- 新增 `shared/resources/check-member-tool-ceiling.mjs`：成员工具白名单 ⊆ 编排官白名单的机械自检。
+- 新增附件清单 R7 / R9 / R1 三份对照语料 C01 / C09a / C09b（`make-c09.py` 从 C01 派生）与 `testdata/contracts/check-evidence.mjs`（查出并修正 R01–R03 三条匹配不上的仲裁条款证据）；ground-truth 追加 2026-09-29 真机基线与 R9 回执契约的措辞修正。
+- 更新成员锁定：intake `02b654dc…`、编排官 `d5818345…`；修正 intake 原锁定提交不在 main 历史上、clause-extractor 与 review-reporter 的 `v3` 摘要与锁定提交不配套（安装器按锁快进更新时要求两者相等，否则判 unsafe）。六条摘要均已用平台 `computeMemberContentHash` 复核。
+- 包含下方的文档修订。
+
+## 文档修订 2026-09-29（随 0.1.37 发布）
 
 - 补齐双语入门、设计/KPI、测试及发布维护说明，纠正来源、数量和链接。
 - 按 Git 历史补记 0.1.33–0.1.35 并排序历史记录；修正旧记录对 R02 的真实性误述。

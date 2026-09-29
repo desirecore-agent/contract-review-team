@@ -18,7 +18,7 @@ Configure team tool approvals to allow all as requested. This does not authorize
 
 ## Remote baseline and reading order
 
-Repository: [desirecore-agent/contract-review-team](https://github.com/desirecore-agent/contract-review-team). Documentation [PR #46](https://github.com/desirecore-agent/contract-review-team/pull/46) merged as 7d6c7290ca603f52543fb48a4db629df57a374d4, team 0.1.36. Fetch and compare current main before work; preserve subsequent changes.
+Repository: [desirecore-agent/contract-review-team](https://github.com/desirecore-agent/contract-review-team). Published baseline is PR #45 commit 346343b63347f70603fe47c14887b6f1fb799275, team 0.1.37. This branch adds an unreleased normalized-oracle/workflow candidate without replacing the published locks.
 
 Read:
 
@@ -28,9 +28,9 @@ Read:
 4. [Injected shared rules](../shared/rules.md), [ontology rules](../shared/resources/business-ontology/rules.md), [resources](../shared/resources/README.md).
 5. [Corpus provenance and limitations](../testdata/contracts/README.md), [oracle](../testdata/contracts/ground-truth.yaml), [history](../CHANGELOG.md).
 
-members.json supplies member repository URLs. Installed execution baselines come from exact commits/content hashes in members.lock.json, not the latest member main. Baseline versions: lead 1.0.21, intake 1.0.6, extractor 1.1.0, risk 1.1.0, jurisdiction 1.3.0, reporter 1.0.6. The private tooling package's 0.1.30 is not the team version.
+members.json supplies member repository URLs. Installed execution baselines come from exact commits/content hashes in members.lock.json, not the latest member main. Published versions: lead 1.0.22, intake 1.0.7, extractor 1.1.0, risk 1.1.0, jurisdiction 1.3.0, reporter 1.0.6. The private tooling package's 0.1.30 is not the team version.
 
-PR #46 changed documentation only, not runtime rules, oracle, member locks or models, and did not update the marketplace.
+PR #46 changed documentation only. PR #45 subsequently published 0.1.37, corrected the locks, and added C09a/C09b plus the evidence and tool-ceiling checks. Its reported live measurements are retained separately as non-normative provenance and are not a live-pass claim for this candidate.
 
 Platform source: [desirecore/desirecore](https://github.com/desirecore/desirecore); configured marketplace source: [desirecore/market](https://github.com/desirecore/market). Access requires the successor environment's own authorization. Recheck current platform market configuration and the relevant entry before publishing; do not assume historical sources or branches remain unchanged.
 

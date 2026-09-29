@@ -55,3 +55,5 @@ last-reviewed: 2026-09-29
 ## 当前证据限制
 
 9 月 C07 属本地历史观察：O0–O4 与部分 O5、合同分数 62、人工修 YAML、外部生成 DOCX。仓库没有公开可复验 run 日志包。旧共享步骤与 O0–O5 仍有冲突，见[设计](design.zh-CN.md)。行为改动后须重跑，再声称完成。[维护](maintenance.zh-CN.md)中的静态 guard 不执行以上模型真机验收。
+
+上游 0.1.37 的 C01/C09a/C09b 报告保存在 [upstream-0.1.37-live-baseline.json](../testdata/contracts/upstream-0.1.37-live-baseline.json)，明确标为 non-normative provenance。该报告非盲测、每场景单次，修后仅重跑 intake 第 1–2 步，因此本 candidate 不继承为真机通过。

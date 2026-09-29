@@ -2,6 +2,8 @@
 
 [中文](repair-plan-2026-09-29.zh-CN.md) · [Previous evidence ledger](acceptance/takeover-2026-09-29.md)
 
+> The latest continuation integrates remote `346343b` / 0.1.37; see [upstream/checker acceptance](acceptance/continuation-2026-09-29.md). GO, member counts and unchanged-lock statements below belong to the earlier e1837f2 repair snapshot, not verified compatibility with the new upstream members.
+
 Source/evaluation repairs have independent GO; release remains NO-GO. See the [new acceptance record](acceptance/followup-2026-09-29.md). The original commit tool accepted this round's team changes; six members have new draft-branch commits. Published locks and model configuration remain unchanged. The starting remote main was e1837f2931ec077b7bf522f5c223c0af5df840cf and the initial seven PRs were unchanged open drafts; those are starting observations, not final candidate heads.
 
 ## Ownership and acceptance
