@@ -12,6 +12,7 @@ last-reviewed: 2026-09-29
 
 ## 从这里开始
 
+- [跨环境优化交接与剩余工作](docs/handoff.zh-CN.md)
 - [安装及首次审查](docs/quickstart.zh-CN.md)
 - [设计、成员职责与好/不好判据](docs/design.zh-CN.md)
 - [测试、证据边界与修订 DOCX 验收](docs/testing.zh-CN.md)

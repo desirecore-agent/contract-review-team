@@ -12,6 +12,7 @@ A six-member DesireCore team for evidence-based contract review. It separates in
 
 ## Start here
 
+- [Remote-agent optimization handoff and remaining work](docs/handoff.md)
 - [Install and run your first review](docs/quickstart.md)
 - [Design, member responsibilities and success criteria](docs/design.md)
 - [Tests, evidence limitations and tracked DOCX acceptance](docs/testing.md)
