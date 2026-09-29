@@ -32,6 +32,8 @@ last-reviewed: 2026-09-29
 
 PR #46 只改文档。随后 PR #45 发布 0.1.37，修正成员锁，并新增 C09a/C09b、证据检查与工具上限检查。其真机测量单独保留为 non-normative provenance，不作为本 candidate 的真机通过声明。
 
+2026-09-29 更新——PR #45 发布团队 0.1.37：intake 1.0.7 用 StructuredFileValidate 校验回执 YAML，S8 版本「取不到值」标记不再阻止 `passed`；统筹官 1.0.22 白名单补入 StructuredFileValidate 与 UnderstandImage，因为委派会话的工具上限是统筹官的子集。锁文件同时修正了一个不在 main 历史上的 intake 提交和两条过期内容摘要。新增 C09a/C09b 语料、`check-evidence.mjs`、`check-member-tool-ceiling.mjs`。当前精确提交与版本以 members.lock.json 为准；本段保留上游发布记录，不代表本次已复验新成员源码或模型运行。
+
 平台源码入口：[desirecore/desirecore](https://github.com/desirecore/desirecore)；平台配置的市场源：[desirecore/market](https://github.com/desirecore/market)。访问需使用接手环境自己的授权；发布前重新核对当前平台市场配置和对应条目，不假定历史源或分支未变。
 
 ## 设计与仍未关闭的问题

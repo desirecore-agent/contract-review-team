@@ -32,6 +32,8 @@ members.json supplies member repository URLs. Installed execution baselines come
 
 PR #46 changed documentation only. PR #45 subsequently published 0.1.37, corrected the locks, and added C09a/C09b plus the evidence and tool-ceiling checks. Its reported live measurements are retained separately as non-normative provenance and are not a live-pass claim for this candidate.
 
+Update 2026-09-29 — PR #45 releases team 0.1.37: intake 1.0.7 validates its receipt YAML with StructuredFileValidate, and S8 version-unavailable flags no longer prevent `passed`; lead 1.0.22 adds StructuredFileValidate and UnderstandImage to its allowlist, because delegated sessions are capped at the lead's tools. The lock also corrects an intake commit outside main history and two stale content hashes. New: C09a/C09b corpus, `check-evidence.mjs`, `check-member-tool-ceiling.mjs`. Use members.lock.json for the exact current commits and versions. This paragraph preserves the upstream release record, not a claim that this continuation revalidated new member sources or live model behavior.
+
 Platform source: [desirecore/desirecore](https://github.com/desirecore/desirecore); configured marketplace source: [desirecore/market](https://github.com/desirecore/market). Access requires the successor environment's own authorization. Recheck current platform market configuration and the relevant entry before publishing; do not assume historical sources or branches remain unchanged.
 
 ## Design and unresolved work
