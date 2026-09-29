@@ -1,7 +1,7 @@
 # 多 Agent 合同审查智能体团队 —— 测试语料 Ground Truth
 #
 # 用法：以本文件为唯一判据，逐份合同比对审查产物。
-# 解析约定：合同条目的 key 匹配正则 ^C0\d[ab]?$；以 _ 开头的 key 为元数据与词表，不是合同。
+# 解析约定：合同条目的 key 匹配正则 ^C0\d[ab]?$ 或 ^R0\d$；以 _ 开头的 key 为元数据与词表，不是合同。
 # 判定规则见同目录 README.md「验收判定规则」一节。
 
 _meta:
@@ -41,6 +41,12 @@ _taxonomy:
     amount-in-words-mismatch:
       blocking: false
       description: "金额中文大写与阿拉伯数字小写不一致，需人工核对，但不阻断流水线"
+    attachment-manifest-incomplete:
+      blocking: false
+      description: >-
+        正文明确指向另附的权威附件清单（如《合同附件目录》），该清单未随材料送达，
+        以致完整附件集合无法冻结。对应 intake S4 R9：条件通过 + 恰好一个 must_escalate 的 PEND-001。
+        **不是**「某份已登记附件的正文没来」——那是 R7 的范围事实，不影响门禁结论。
 
   clause_slugs:
     liability-cap: "责任上限"
@@ -114,6 +120,14 @@ C01:
         520 × 2400 = ¥1,248,000，而合同写 ¥1,250,000，差 ¥2,000；三年合计差 ¥6,000。
       discovered_by: "review-reporter RV-026 / FND-001（2026-08-31 真机验收）"
       verified_independently: true
+  # 2026-09-28 补：R7 对照。三份已登记附件的正文都没有随材料送达，应如实登记为范围事实，
+  # 且**不改变**门禁结论（仍是 passed）。
+  expected_scope_facts:
+    - code: SCOPE-ATTACHMENT-BODY-ABSENT
+      count: 3
+      evidence: "17.4 本协议附件清单如下："
+      must_detect: true
+      detail: "附件一、二、三均在正式清单中登记，但只有清单条目、没有正文部件"
   clause_presence_evidence:
     liability-cap: "不超过索赔事件发生前 12 个月内甲方实际支付的服务费用总额"
     breach-remedy: "## 第十一条　违约责任与救济"
@@ -143,6 +157,11 @@ C01:
       reason: "全文甲方恒为「星海科技（示例）有限公司」，乙方恒为「云梯信息技术（示例）有限公司」"
     - id: amount-in-words-mismatch
       reason: "第 4.1 款大写与小写金额一一对应"
+    # ── 2026-09-28 补：C01 同时是附件清单三条判据（R7/R9/R1）的 R7 对照组，见 C09a/C09b ──
+    - id: attachment-manifest-incomplete
+      reason: >-
+        第 17.4 款本身就是完整的正式附件清单，没有指向任何另附目录。三份附件正文未随材料送达
+        属于 R7 的范围事实；据此报 R9、或把门禁降为 conditional，即是把「正文没来」错当成「清单不全」。
     - slug: liability-cap
       reason: "第 10.1 款已明确约定责任上限，不得报缺失"
     - slug: breach-remedy
@@ -589,6 +608,96 @@ C08:
     验收时重点看两件事：(1) 是否阻断而非「提示后继续」；
     (2) 是否把签名区空白正确归类为签署状态问题，而不是仅当作占位符。
 
+C09a:
+  file: C09a-saas-manifest-deferred.md
+  title: "软件即服务（SaaS）订阅服务协议（权威附件清单另附未送达）"
+  language: zh
+  derived_from: C01
+  derivation: "make-c09.py —— 与 C01 仅差两行：合同编号加 -R9 后缀；第 17.4 款引导句改为指向另附的《合同附件目录》"
+  # 除下列显式字段外，其余判据与 C01 完全相同（条款内容逐字未动）。改 C01 时这些继承自动生效。
+  inherits_from_derived: [expected_missing_clauses, not_applicable_clauses, expected_risks,
+                          clause_presence_evidence, market_ruler_compliance, must_not_flag]
+  design_intent: >-
+    intake S4 R9 的单点测试：合同明确承认存在一份权威附件清单，却没有随材料送达，完整附件集合无法冻结。
+    与 C01（R7）、C09b（R1）构成同一份合同只差一句话、门禁结论必须分别为 passed / conditional / blocked 的对照组。
+  expected_gate: conditional
+  gate_reasons:
+    - id: attachment-manifest-incomplete
+      severity: medium
+      evidence: "完整附件清单以双方另行签署的《合同附件目录》（编号 XHKJ-FJML-2026-0117）为准，该目录为本协议附件清单的唯一权威来源"
+      must_detect: true
+      blocking: false
+      detail: >-
+        第 17.4 款列出的三项只是「包括但不限于」，权威清单在另附的《合同附件目录》里，而该目录未随材料送达。
+        于是本次无法确定完整的附件集合，属 R9，不是 R7（「某份已登记附件的正文没来」）。
+      # R9 的跨字段回执契约（intake SKILL.md S4「R9 的跨字段回执契约」），任一条不满足即判失败：
+      receipt_contract:
+        verdict: conditional
+        flag: FLG-ATTACHMENT-MANIFEST-INCOMPLETE
+        handoff_to_is_null: false          # conditional 不是暂停或拒绝，必须照常交接下游
+        pending:
+          exactly_one: PEND-001
+          from_flag: FLG-ATTACHMENT-MANIFEST-INCOMPLETE
+          must_escalate: true
+        # 团队 rules.md 第三节：must_escalate 的 pending 必须逐条透传到最终报告
+        must_reach_final_report: true
+  expected_scope_facts:
+    - code: SCOPE-ATTACHMENT-BODY-ABSENT
+      count: 3
+      evidence: "　　附件三　《数据处理附录 V1.0》"
+      must_detect: false
+      detail: >-
+        已列出的三项附件正文同样未送达（与 C01 相同）。R9 与 R7 可以并存；
+        检出加分，漏检不扣分——本份的判据重心在 R9 的回执契约。
+  must_not_flag_additional:
+    - id: attachment-missing
+      reason: >-
+        正文引用的附件一、附件二都在第 17.4 款已列项中，没有任何「正文引用却不在清单」的附件。
+        报 R1 即是把「清单不全」错当成「缺失附件」，会把条件通过错判成阻断。
+  notes: >-
+    验收重点：(1) 结论是 conditional 而不是 blocked 或 passed；
+    (2) 流水线照常走完七步，conditional 不得中断，也不得因此少出条款缺失清单；
+    (3) PEND-001 恰好一个、must_escalate: true，并出现在最终报告里；
+    (4) 下游不得把《合同附件目录》里可能存在的未知附件当作已覆盖。
+
+C09b:
+  file: C09b-saas-attachment-unlisted.md
+  title: "软件即服务（SaaS）订阅服务协议（正文引用未登记附件）"
+  language: zh
+  derived_from: C01
+  derivation: "make-c09.py —— 与 C01 仅差两行：合同编号加 -R1 后缀；第 14.1 款末尾追加一句引用「附件四」，第 17.4 款清单不动"
+  design_intent: >-
+    intake S4 R1 的单点测试：正文明确引用附件四，而正式附件清单只有附件一至三。
+    与 C09a 的差别只在于「缺的是清单本身」还是「清单里缺了被引用的那一项」——前者条件通过，后者必须阻断。
+  expected_gate: blocked
+  gate_reasons:
+    - id: attachment-missing
+      severity: critical
+      evidence: "审计所需的安全合规证明材料清单以附件四《安全合规证明材料清单 V1.0》为准。"
+      additional_evidence:
+        - "17.4 本协议附件清单如下："
+      must_detect: true
+      blocking: true
+      detail: "第 14.1 款引用附件四，第 17.4 款正式附件清单只登记了附件一、附件二、附件三"
+  expected_missing_clauses: []
+  not_applicable_clauses: []
+  expected_risks: []
+  must_not_flag:
+    - id: attachment-manifest-incomplete
+      reason: >-
+        第 17.4 款是完整的正式清单，没有指向任何另附目录。intake SKILL.md 明确：
+        正文引用某附件而正式清单没有该条目仍是 R1 的 blocked，**绝不能**降级为 R9 的 conditional。
+    - id: placeholder-unfilled
+      reason: "与 C01 相同，全文无占位符"
+    - id: signature-status-unconfirmed
+      reason: "与 C01 相同，双方签字人、职务、日期、公章齐备"
+    - id: page-discontinuity
+      reason: "与 C01 相同，第 1 页至第 9 页连续"
+  notes: >-
+    阻断类样本，只验输入治理：必须 blocked，且不得输出「注意风险后继续」。
+    最容易出的错是把它和 C09a 混为一谈、同样给 conditional——两者在清单里都「找不全」，
+    但 C09b 缺的是一个被正文点名的具体附件，那是硬缺陷。
+
 # ===========================================================================
 # R 系列：联网获取的**真实**合同（非人工构造）
 # ---------------------------------------------------------------------------
@@ -818,7 +927,11 @@ R01:
       blocking: true
     - id: dispute-resolution-unselected
       severity: critical
-      evidence: "按以下第（ ）项方式处理：①根据《中华人民共和国仲裁法》的规定向　　　申请仲裁。②向　　　人民法院起诉。"
+      # 原文此处是 .doc→textutil 转换留下的「换行 + 11 个 ASCII 空格」，单行固定字符串跨不过去；
+      # 按行拆成两段各自原文匹配（2026-09-28 修正，此前写成全角空格，三条均匹配失败）。
+      evidence: "按以下第（ ）项方式处理：①根据《中华人民共和国仲裁法》的规定向"
+      additional_evidence:
+        - "申请仲裁。②向            人民法院起诉。"
       must_detect: true
       detail: |
         仲裁与诉讼是**互斥**选项，模板留空未勾选，且仲裁机构与法院名称均空白。
@@ -907,7 +1020,11 @@ R02:
     - id: arbitration-institution-unspecified
       severity: high
       must_detect: true
-      evidence: "按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向　　　买方所在地仲裁机构 申请仲裁。"
+      # 原文此处是 .doc→textutil 转换留下的「换行 + 11 个 ASCII 空格」，单行固定字符串跨不过去；
+      # 按行拆成两段各自原文匹配（2026-09-28 修正，此前写成全角空格，三条均匹配失败）。
+      evidence: "按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向"
+      additional_evidence:
+        - "买方所在地仲裁机构 申请仲裁。"
       detail: |
         **这条是专门用来验证「Agent 是否真去库里查条号」的探针。**
         约定"买方所在地仲裁机构"未选定具体机构，属约定不明。
@@ -1013,7 +1130,11 @@ R03:
     - id: arbitration-law-version-out-of-range
       severity: high
       must_detect: true
-      evidence: "按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向　　　买方所在地仲裁机构 申请仲裁。"
+      # 原文此处是 .doc→textutil 转换留下的「换行 + 11 个 ASCII 空格」，单行固定字符串跨不过去；
+      # 按行拆成两段各自原文匹配（2026-09-28 修正，此前写成全角空格，三条均匹配失败）。
+      evidence: "按以下第（ ① ）项方式处理：①根据《中华人民共和国仲裁法》的规定向"
+      additional_evidence:
+        - "买方所在地仲裁机构 申请仲裁。"
       detail: |
         2019-06-20 适用的是仲裁法 **2017 修正版**（仲裁协议要件在第十六条），
         而本库收录的是 2025 修订版（第二十七条），**且没有 2017 版全文**。
