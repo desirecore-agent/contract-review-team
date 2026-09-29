@@ -30,6 +30,12 @@ The first independent review reported 0 P0 / 2 P1, confirming C09 and documentat
 
 The [fresh test log](followup-evidence/continuation-team-final-20260929.log), [source/lock provenance](followup-evidence/continuation-provenance-20260929.json), [failing counterexamples](followup-evidence/continuation-regression-negative-20260929.log) and [passing rerun](followup-evidence/continuation-regression-positive-20260929.log) use the `followup-evidence/continuation-*` prefix. Failed and passing runs, source provenance and both review reports are retained. Published redacted copies receive their own byte digests.
 
+## Upstream conflict integration and post-merge regression
+
+Source repair commit: `c71363ecd16e788542309a561aee4c277f9db6a6`. Upstream integration commit: `7eb41e3f7e35d927ce1ead6974ddc25cd7482961`, with parents reviewed candidate `983a9b8f508614f2e94888397e64d8151d540d2b` and remote main `346343b63347f70603fe47c14887b6f1fb799275`. This integrates main into the candidate branch; it does not merge the PR into main.
+
+Each of 17 conflicting paths retains the already upstream-integrated, independently reviewed and tested candidate content. Two automatically merged handoff release notes were retained with their outdated version statement corrected. Only those two documentation files differ from the reviewed snapshot; core source bytes are unchanged. A fresh post-merge `npm run check` again passed **115/115**, a rerun rather than 115 additional tests. The [new log](followup-evidence/continuation-postmerge-check-20260929.log) and [parent/content verification](followup-evidence/continuation-merge-provenance-20260929.json) are archived.
+
 ## Remaining gates
 
 The official team metadata and lock retain exact upstream bytes. Access to upstream Lead `d5818345004e0920f9594ad55177b86738d1c123` and intake `02b654dc4e5b1bc24f0e9c55abb5ba95528031b1` source was previously blocked by the host safety check. No alternative command, Agent or channel was used to bypass it, and compatibility with those real member sources was not tested.

@@ -32,6 +32,12 @@
 
 [新测试日志](followup-evidence/continuation-team-final-20260929.log)、[原文与锁保留](followup-evidence/continuation-provenance-20260929.json)、[失败反例](followup-evidence/continuation-regression-negative-20260929.log)与[修后反例](followup-evidence/continuation-regression-positive-20260929.log)使用 `followup-evidence/continuation-*` 前缀。负例、正例、原文来源清单和两轮 reviewer 报告一并保留；机器路径脱敏后另记录公开副本摘要。
 
+## 上游冲突整合与合并后回归
+
+修复源码提交为 `c71363ecd16e788542309a561aee4c277f9db6a6`。上游整合提交为 `7eb41e3f7e35d927ce1ead6974ddc25cd7482961`，父提交分别为已审阅候选 `983a9b8f508614f2e94888397e64d8151d540d2b` 与远端 main `346343b63347f70603fe47c14887b6f1fb799275`。这只是把 main 整合进候选分支，不是合并 PR 到 main。
+
+17 个冲突文件逐路径使用已经整合上游、独立审阅并测试过的候选内容；自动合入的两份 handoff 发布说明保留，并纠正其旧版本说明。最终与已审阅快照相比只增加两份文档说明，核心源码字节不变。合并后再次 `npm run check` 为 **115/115**，不是新增 115 项；[新日志](followup-evidence/continuation-postmerge-check-20260929.log)与[双亲及内容保留核对](followup-evidence/continuation-merge-provenance-20260929.json)一并归档。
+
 ## 仍然阻断的范围
 
 正式锁保持上游原字节，不能用旧候选锁替换。上游 lead `d5818345004e0920f9594ad55177b86738d1c123` 与 intake `02b654dc4e5b1bc24f0e9c55abb5ba95528031b1` 的源码获取先前被宿主安全检查阻止；本次未通过另一命令、Agent 或通道绕过，也没有运行该正式锁的真实成员兼容性检查。
