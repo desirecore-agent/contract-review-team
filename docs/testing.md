@@ -55,3 +55,5 @@ Acceptance requires all prescribed checks to pass, no missing mandatory findings
 ## Current evidence limit
 
 September C07 observations are local historical reports: O0–O4 and partial O5, contract score 62, manual YAML repair and external DOCX generation. No public reproducible run-log bundle is present. The old shared sequence and O0–O5 design still conflict; see [Design](design.md). Re-run after behavior changes before asserting completion. Static guards in [Maintenance](maintenance.md) do not perform any of the live-model acceptance above.
+
+The 2026-09-29 C01/C09a/C09b runs (desirecore-cloud/kimi-k3, local instance) are recorded in the ground-truth comment block "C01 / C09a / C09b 真机实测基线". They were **not blind**: the corpus was read from the team directory, where ground-truth.yaml appears in directory listings (no member opened it). Each scenario ran once rather than three times. Treat them as regression evidence for the intake 1.0.7 / lead 1.0.22 gate fix, not as acceptance.

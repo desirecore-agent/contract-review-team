@@ -6,7 +6,7 @@ last-reviewed: 2026-09-29
 
 [English](quickstart.md) · [设计](design.zh-CN.md) · [测试](testing.zh-CN.md)
 
-本指南说明团队 **0.1.36** 的目标使用流程，不代表每一步均已通过验收。实现中的冲突见[设计说明](design.zh-CN.md)。
+本指南说明团队 **0.1.37** 的目标使用流程，不代表每一步均已通过验收。实现中的冲突见[设计说明](design.zh-CN.md)。
 
 ## 安装与准备
 

@@ -10,11 +10,11 @@ last-reviewed: 2026-09-29
 
 | 文件 | 核对内容 |
 |---|---|
-| [team.json](../team.json) | 团队身份、组长、成员和分发版本；基线 0.1.36。 |
+| [team.json](../team.json) | 团队身份、组长、成员和分发版本；基线 0.1.37。 |
 | [members.lock.json](../members.lock.json) | 每个成员仓库、准确 commit、版本和内容摘要。 |
 | [共享规则](../shared/rules.md) | 注入成员的指令；行为改动需真机回归。 |
 | [资源](../shared/resources/README.md) | 包版本、范围、规则、法条和来源；读取各包元数据。 |
-| [package.json](../package.json)、[package-lock.json](../package-lock.json) | 本地 guard 依赖；manifest 当前为 0.1.30，与团队 0.1.36 不同。本文不推断其历史意图。 |
+| [package.json](../package.json)、[package-lock.json](../package-lock.json) | 本地 guard 依赖；manifest 当前为 0.1.30，与团队 0.1.37 不同。本文不推断其历史意图。 |
 | [CHANGELOG](../CHANGELOG.md) | 面向人的历史，不推断未记录版本的内容。 |
 
 仓库内容和市场记录是不同发布面。团队 PR 合并不证明市场已更新或安装成功。
@@ -27,9 +27,11 @@ last-reviewed: 2026-09-29
 npm ci
 npm run check:gates
 node shared/resources/jurisdiction-packs/jurisdiction-cn/statutes/check-temporal.mjs
+node testdata/contracts/check-evidence.mjs
+node shared/resources/check-member-tool-ceiling.mjs   # 读取已安装成员；见 docs/maintenance.zh-CN
 ```
 
-先核对当前目录存在 `team.json` 和 `package.json`。`check:gates` 调用门禁字面量和 intake 契约检查。temporal 脚本按自身所在目录查文件，检查法条登记与时间元数据一致性。它们不调用真实模型、不从市场安装、不验证全部历史 oracle、不证明法律正确性，也不检查 DOCX 视觉质量。
+先核对当前目录存在 `team.json` 和 `package.json`。`check:gates` 调用门禁字面量和 intake 契约检查。temporal 脚本按自身所在目录查文件，检查法条登记与时间元数据一致性。`check-evidence.mjs` 核对 ground-truth.yaml 的每条证据都能在对应语料中逐字找到；零依赖，`check:gates` 不覆盖 testdata。`check-member-tool-ceiling.mjs` 核对每名成员的工具白名单都在统筹官白名单之内：委派会话的工具上限是发起方的子集，发起方的禁用名单也整体传递，统筹官缺的工具会在成员身上静默消失。它读取已安装成员（`<根>/teams/<团队>` 旁的 `<根>/agents/<id>`）；开发检出时传 `--agents-dir <成员目录的父目录>`，任一成员读不到即失败。以上检查都不调用真实模型、不从市场安装、不验证全部历史 oracle、不证明法律正确性，也不检查 DOCX 视觉质量。
 
 另需检查 Markdown 链接、中英文配对，以及数量/版本与源文件一致。修改语料时重新核对证据引用和版本对比不变量。明确解决已知 oracle 差异并记录含义，不能为通过测试静默重写历史。
 
@@ -37,7 +39,7 @@ node shared/resources/jurisdiction-packs/jurisdiction-cn/statutes/check-temporal
 
 1. 在成员或资源所属仓库修改并审阅，说明受影响目标、预期行为和失败样例。
 2. 使用 DesireCore 支持的发布/锁定流程登记已审阅成员的准确 commit 和版本。通过平台权威实现验证内容摘要，不另造 hash 算法或沿用陈旧摘要。
-3. 确认每个成员解析到预期内容；本机凭据和模型偏好不写入发布资产。
+3. 确认每个成员解析到预期内容；本机凭据和模型偏好不写入发布资产。任一成员或统筹官改动 `tool_permissions` 后运行 `check-member-tool-ceiling.mjs`。
 4. 执行相关 guard 与真机场景。委派、范围、证据处理或导出改动需要对应端到端验收，不仅检查文本。
 5. 同步双语文档与日志，记录实际结果和未完成检查。纯文档更正不能关闭运行缺陷。
 

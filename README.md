@@ -8,7 +8,7 @@ last-reviewed: 2026-09-29
 
 A six-member DesireCore team for evidence-based contract review. It separates intake, extraction, risk observations, jurisdiction analysis, independent review, and delivery. Its supported legal service scope is mainland China; foreign-law material requires referral, even when general document governance can continue.
 
-**Status:** team 0.1.36. Documentation audited on 2026-09-29 against commit aa67148. This is not a production-readiness certificate: unresolved shared-rule conflicts and incomplete end-to-end evidence are listed in [testing](docs/testing.md).
+**Status:** team 0.1.37. Documentation audited on 2026-09-29 against commit aa67148; 0.1.37 updates the intake and lead locks (see [CHANGELOG](CHANGELOG.md)). This is not a production-readiness certificate: unresolved shared-rule conflicts and incomplete end-to-end evidence are listed in [testing](docs/testing.md).
 
 ## Start here
 
@@ -27,8 +27,8 @@ Provide the original contract and attachments, your party/role, jurisdiction, an
 
 | Member | Locked version | Responsibility |
 |---|---|---|
-| contract-review-lead | 1.0.21 | Register scope, dispatch, reconcile and deliver |
-| contract-intake | 1.0.6 | Input completeness, frozen facts and gate decision |
+| contract-review-lead | 1.0.22 | Register scope, dispatch, reconcile and deliver |
+| contract-intake | 1.0.7 | Input completeness, frozen facts and gate decision |
 | clause-extractor | 1.1.0 | Traceable clause facts and explicit unknowns |
 | risk-scanner | 1.1.0 | Evidence-based commercial risk candidates |
 | jurisdiction-auditor | 1.3.0 | Jurisdiction and applicable-law observations |
@@ -40,12 +40,14 @@ O3 risk and jurisdiction work can run in parallel after extraction. O4 and O5 ar
 
 The CN pack identifies itself as cn-v3. Its statute index declares 29 instruments, 4,096 articles and 1,270,526 bytes. These are repository metadata, not certification of completeness, freshness or legal applicability.
 
-The corpus has 12 contract files and 11 case IDs: nine synthetic C-series files (C06 is a pair), a public blank procurement template R01, and generated derivatives R02/R03. R02 includes intentionally inserted defects; neither derivative is evidence of an executed customer contract.
+The corpus has 14 contract files and 13 case IDs: eleven synthetic C-series files (C06 is a version pair; C09a/C09b are attachment-manifest derivatives of C01), a public blank procurement template R01, and generated derivatives R02/R03. R02 includes intentionally inserted defects; neither derivative is evidence of an executed customer contract.
 
 ```sh
 npm ci
 npm run check:gates
 node shared/resources/jurisdiction-packs/jurisdiction-cn/statutes/check-temporal.mjs
+node testdata/contracts/check-evidence.mjs
+node shared/resources/check-member-tool-ceiling.mjs   # reads installed members; see docs/maintenance
 ```
 
 These are static consistency checks, not agent or legal acceptance tests. The private tooling package still reports 0.1.30; the published team version comes from team.json. No version alignment is made by this documentation update.
