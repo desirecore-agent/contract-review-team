@@ -635,10 +635,18 @@ C09a:
         verdict: conditional
         flag: FLG-ATTACHMENT-MANIFEST-INCOMPLETE
         handoff_to_is_null: false          # conditional 不是暂停或拒绝，必须照常交接下游
+        # 契约是「R9 对应的待办有且仅有一条，编号 PEND-001」，**不是**「pending 只能有一条」。
+        # R7 的范围事实可另起一条 must_escalate: false 的待办（intake SKILL.md 的交接示例即如此），
+        # 不得据此判失败——2026-09-29 真机首跑就是这样输出的，按字面「恰好一个 PEND-001」会误判。
         pending:
-          exactly_one: PEND-001
-          from_flag: FLG-ATTACHMENT-MANIFEST-INCOMPLETE
-          must_escalate: true
+          r9_item:
+            id: PEND-001
+            from_flag: FLG-ATTACHMENT-MANIFEST-INCOMPLETE
+            must_escalate: true
+          count_from_r9_flag: 1        # from_flag 为 FLG-ATTACHMENT-MANIFEST-INCOMPLETE 的恰好一条
+          must_escalate_total: 1       # 全部待办中 must_escalate: true 的也恰好这一条
+          forbidden_from_flags: [FLG-FREEZE-INCOMPLETE]   # R9 已解释冻结缺口，不得补记或为它另起待办
+          allowed_additional: "from_flag 为 SCOPE-* 且 must_escalate: false 的条目"
         # 团队 rules.md 第三节：must_escalate 的 pending 必须逐条透传到最终报告
         must_reach_final_report: true
   expected_scope_facts:
@@ -657,7 +665,8 @@ C09a:
   notes: >-
     验收重点：(1) 结论是 conditional 而不是 blocked 或 passed；
     (2) 流水线照常走完七步，conditional 不得中断，也不得因此少出条款缺失清单；
-    (3) PEND-001 恰好一个、must_escalate: true，并出现在最终报告里；
+    (3) R9 对应的待办恰好一条（PEND-001，must_escalate: true），并出现在最终报告里；
+    R7 范围事实另起一条不升级的待办是允许的；
     (4) 下游不得把《合同附件目录》里可能存在的未知附件当作已覆盖。
 
 C09b:
@@ -697,6 +706,55 @@ C09b:
     阻断类样本，只验输入治理：必须 blocked，且不得输出「注意风险后继续」。
     最容易出的错是把它和 C09a 混为一谈、同样给 conditional——两者在清单里都「找不全」，
     但 C09b 缺的是一个被正文点名的具体附件，那是硬缺陷。
+
+# ---------------------------------------------------------------------------
+# C01 / C09a / C09b 真机实测基线（2026-09-29，desirecore-cloud/kimi-k3，cn-v3）
+# ---------------------------------------------------------------------------
+# 实例 d8（dev --home 隔离），经编排官完整委派；另有一轮 mimo-v2.5-pro 的 C09a
+# （模型在第 7 步被云端目录下架，报告终版未写完），结论与 kimi 一致，差异单列。
+#
+# 【首轮：contract-intake 1.0.6 / 编排官 1.0.21，全流程七步】
+#
+#   C09b  R1  ✅ blocked / 拒绝，唯一阻断 BLK-ATTACHMENT-MISSING，证据逐字命中 14.1；
+#             handoff.to: null，flags 与 pending 均为空，O2–O5 未派发。没有降级成 R9。
+#   C09a  R9  ✅ conditional / 条件通过，flag 四元组证据落在 17.4「另行签署的《合同附件目录》」；
+#             照常交接，R9 待办恰好一条 PEND-001（must_escalate: true），未补记 FREEZE。
+#             三名下游成员都逐条承接 PEND-001，依赖附件的检查项留白为 not_covered / unknown；
+#             最终报告 FND-002 标题即「PEND-001 逐条透传」，兑现台账写明「原样透传，未消化」。
+#   C01   R7  ❌ conditional（应为 passed）。R7 本身判得对——三份附件正文记为范围事实，未报 R9；
+#             下游 9 项关键条款全部判「存在」、市场标尺三项对齐、唯一风险是加分项
+#             amount-arithmetic-mismatch，must_not_flag 零命中。降级的唯一原因是
+#             FLG-RECEIPT-YAML-UNVERIFIED：intake 前置规则第 6 条在「没有 YAML 解析器」时禁止 passed，
+#             而 intake 的工具里确实没有——于是**任何合同**都拿不到 passed。
+#             讽刺的是那一轮的 intake.yaml 恰好在第 164 行（`quote: yaml_unverified: true`）解析失败；
+#             C09a 的回执也在第 153 行（`frozen: false`）解析失败。兜底既拿不到 passed，也没拦住真错误。
+#
+# 【根因与修法】
+#
+#   ① contract-intake 1.0.7（intake#10）：用平台 StructuredFileValidate 按随技能分发的
+#      schemas/intake-receipt.schema.json 真的去解析；失败修正重试，工具不可用才走旧兜底。
+#      同时修掉 S8 与判定表的矛盾：版本维度「取不到值」标记不影响 verdict，判定表却把
+#      它们算进「存在任一 FLG-*」——server_version / parser_revision 在当前运行时恒为取不到值。
+#   ② 编排官 1.0.22（lead#22）：只升级 intake 还不够。C09a 首跑 intake 1.0.7 回报
+#      「本环境无 StructuredFileValidate 工具」——委派时子会话工具上限是发起方的子集，
+#      编排官白名单里没有，成员就拿不到。同一原因下 UnderstandImage 在四名成员身上
+#      一直被截掉。现由 shared/resources/check-member-tool-ceiling.mjs 机械兜住。
+#
+# 【修后门禁回归：intake 1.0.7 / 编排官 1.0.22，只跑第 1–2 步】
+#
+#   C01   ✅ passed / 通过；flags 只剩三条 S8「取不到值」；唯一待办是 R7 范围事实（不升级）
+#   C09a  ✅ conditional；待办恰好一条 PEND-001（R9，升级）
+#   C09b  ✅ blocked；handoff.to: null；唯一阻断 BLK-ATTACHMENT-MISSING
+#   三轮共调用 StructuredFileValidate 9 次，全部一次 valid: true；回执全部可被解析，
+#   C01 回执校验后文件哈希未变（没有「校验完又回写」）。
+#
+# 【模型差异（mimo-v2.5-pro 的 C09a）】门禁与下游承接与 kimi 一致；review-reporter 没写
+#   report-composition 要求的「上游待确认项兑现」表，PEND-001 只在 scorecard 的
+#   pending_settlement 里有编号，报告正文只有实质内容（FND-003 + GATE-EXECUTION）。
+#   按 must_reach_final_report 判「实质透传、编号缺失」，记为模型相关的弱项，不改判据。
+#
+# 测试污染检查：ground-truth.yaml 未被任何成员读取（只在一次目录列表里出现文件名）。
+# ---------------------------------------------------------------------------
 
 # ===========================================================================
 # R 系列：联网获取的**真实**合同（非人工构造）
