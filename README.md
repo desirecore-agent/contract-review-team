@@ -1,62 +1,54 @@
+---
+last-reviewed: 2026-09-29
+---
+
 # Contract Review Team
 
-## 关于此团队
+[中文](README.zh-CN.md)
 
-本目录是 [DesireCore](https://desirecore.net) 团队仓库,记录了团队的组织架构(`team.json`)、成员声明(`members.json`)、精确锁定(`members.lock.json`)和共享资源(`shared/`)。
+A six-member DesireCore team for evidence-based contract review. It separates intake, extraction, risk observations, jurisdiction analysis, independent review, and delivery. Its supported legal service scope is mainland China; foreign-law material requires referral, even when general document governance can continue.
 
-## 文件说明
+**Status:** team 0.1.36. Documentation audited on 2026-09-29 against commit aa67148. This is not a production-readiness certificate: unresolved shared-rule conflicts and incomplete end-to-end evidence are listed in [testing](docs/testing.md).
 
-- `team.json` — 团队配置(成员列表、supervisor、类型等)
-- `members.json` — 成员声明(类似 npm 的 dependencies)
-- `members.lock.json` — 成员精确锁定(类似 package-lock.json)
-- `shared/` — 团队公共技能、记忆与协作规则
-- `testdata/` — 回归语料与 ground truth(见下)
-- `workspace/` — 团队共享工作目录(默认不入版本)
+## Start here
 
-## `shared/resources/jurisdiction-packs/jurisdiction-cn/statutes/` — 法条全文库
+- [Install and run your first review](docs/quickstart.md)
+- [Design, member responsibilities and success criteria](docs/design.md)
+- [Tests, evidence limitations and tracked DOCX acceptance](docs/testing.md)
+- [Maintenance, release and rollback](docs/maintenance.md)
+- [Shared resources](shared/resources/README.md), [test corpus](testdata/contracts/README.md), [change history](CHANGELOG.md)
 
-判据与原文分家：`rules.yaml` 是**判据**(「试用期不得超过六个月」这类可直接比对的阈值),
-`statutes/` 是**原文**(法条逐字文本,供报告引用与人工复核)。有了原文,报告里的条号才能
-写成可验证的东西,而不是「包内记载」。
+Provide the original contract and attachments, your party/role, jurisdiction, and review goal. The lead should return evidence-linked findings, unresolved questions and actual artifact paths. A contract score is not a quality score for the team. Approval mode in the platform does not establish legal or business consent.
 
-9 部法、2030 条、584 KB,来自 [ouyangyipeng/Legalize-CN](https://github.com/ouyangyipeng/Legalize-CN)
-(默认分支 `history-rebuild`,不是 main)。法律法规文本依《中华人民共和国著作权法》第五条
-不受著作权保护。
+## Published baseline
 
-### 法的时间效力（`statutes/temporal.yaml`）
+[team.json](team.json) defines one supervisor and five members. [members.lock.json](members.lock.json) pins exact source commits and content digests; it is the installation reference.
 
-「03 年的案子对应 03 年的刑法」——法不溯及既往。一份 2019 年签的合同，适用的是当时
-有效的法律，不是今天的现行法。`temporal.yaml` 逐部记录**本库收录的是哪一版**、
-该版本的生效区间、以及每个日期的出处；`jurisdiction-audit` 的 J2.5 闸门据此判定。
+| Member | Locked version | Responsibility |
+|---|---|---|
+| contract-review-lead | 1.0.21 | Register scope, dispatch, reconcile and deliver |
+| contract-intake | 1.0.6 | Input completeness, frozen facts and gate decision |
+| clause-extractor | 1.1.0 | Traceable clause facts and explicit unknowns |
+| risk-scanner | 1.1.0 | Evidence-based commercial risk candidates |
+| jurisdiction-auditor | 1.3.0 | Jurisdiction and applicable-law observations |
+| review-reporter | 1.0.6 | Isolated independent review, then scoring and reporting |
 
-两个会直接把结论带错的实例：
+O3 risk and jurisdiction work can run in parallel after extraction. O4 and O5 are separate calls to the same reporter, not an additional team member. Legacy seven-step shared instructions still conflict with this design; see the design and testing guides before treating execution consistency as established.
 
-- **仲裁法条号整体重排**。2025 修订版 2026-03-01 才施行：仲裁协议要件在 2017 版是
-  第十六条，在本库这版是第二十七条。拿现行版条号去套旧合同，报告看起来一样专业、
-  一样有行号，条号却指向完全不同的内容。
-- **公司法本库是 2018 修正版**（218 条），而 2023 修订版（266 条）已于 2024-07-01
-  施行。⇒ 之后的合同本库公司法不可用；之前的合同这一版正是当时有效的。
-  **不能假定「入库的就是现行版」。**
+## Resources and validation
 
-由此推出一条最容易搞反的判断：合同签署日 **< 2021-01-01** 而引用《合同法》的，
-是**正确**的，不得报为缺陷；只有 >= 2021-01-01 仍引用才是法律引用失效。
+The CN pack identifies itself as cn-v3. Its statute index declares 29 instruments, 4,096 articles and 1,270,526 bytes. These are repository metadata, not certification of completeness, freshness or legal applicability.
 
-一致性自检：`cd statutes && node check-temporal.mjs`（零依赖，随包分发即可运行）。
+The corpus has 12 contract files and 11 case IDs: nine synthetic C-series files (C06 is a pair), a public blank procurement template R01, and generated derivatives R02/R03. R02 includes intentionally inserted defects; neither derivative is evidence of an executed customer contract.
 
-**检索前先读 `statutes/index.yaml`** —— 那里记着三条纪律和几个会静默产生错误结论的坑:
+```sh
+npm ci
+npm run check:gates
+node shared/resources/jurisdiction-packs/jurisdiction-cn/statutes/check-temporal.mjs
+```
 
-- 上游 frontmatter 有系统性错误:9 部里 5 部的 `status`/`title` 不可信
-- **条号在、内容对不上**:仲裁法 2025 修订后序号整体重排,旧条号指向完全不同的内容
-- 库内有三种条文标题格式,只按 `^#### 第X条` 检索会让整整 261 条查不到、看起来像「法条不存在」
-- 索引本身也可能出错,与全文文件冲突时**永远以全文为准**
+These are static consistency checks, not agent or legal acceptance tests. The private tooling package still reports 0.1.30; the published team version comes from team.json. No version alignment is made by this documentation update.
 
-## `testdata/` — 回归语料
+## License and responsibility
 
-11 份合同 + `ground-truth.yaml`,每次改动提示词、工具或流水线后跑一遍,用同一份 ground truth
-判定通过或失败。分两类:
-
-- `C01`–`C08` 虚构语料,缺陷是人工植入的 —— 保证每个检查点都有对应语料
-- `R01`–`R02` 真实公开文档,缺陷是原文档自带的 —— 人工构造想不到的那类
-
-R 系列的价值在 `README.md` 里有完整说明。一个例子:R01 引用了已废止五年多的《合同法》,
-这种缺陷不会出现在虚构语料里,因为写语料的人不会想到去引用一部废止的法律。
+See [LICENSE](LICENSE). This team supports review; it does not replace qualified legal advice, verify signatures merely from typed names, or authorize signing. Protect confidential contracts and verify applicable law, source evidence and final edits before use.
