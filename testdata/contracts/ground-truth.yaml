@@ -16,6 +16,8 @@ normative:
     - C06b
     - C07
     - C08
+    - C09a
+    - C09b
     - R01
     - R02
     - R03
@@ -46,6 +48,11 @@ normative:
         - id: attachment-missing
           required: true
           evidence_ref: c01-manifest
+        - id: attachment-manifest-incomplete
+          required: true
+          evidence_ref: c01-manifest
+          output_rule: forbidden
+          reason: The clause itself is the authoritative complete manifest; absent listed attachment bodies are R7 scope facts, not R9.
         - id: signature-status-unconfirmed
           required: true
           evidence_ref: c01-signature
@@ -943,6 +950,468 @@ normative:
           page: 1
           clause_no: parties
           quote: Northwind and Blue Harbor are each referred to as a "Party" and together as the "Parties".
+    C09a:
+      expected_gate: conditional
+      source:
+        file: C09a-saas-manifest-deferred.md
+        sha256: 98f546c3f6bf68ce8336cdef4d5e53d31f8cffd9bc0f3a6fd4f997283b7779f6
+        classification: synthetic
+      service_scope:
+        status: in_scope
+      legal_review:
+        status: not_required
+      comparison:
+        applicability: not_applicable
+      must_detect:
+        - id: amount-arithmetic-mismatch
+          required: false
+          fact_only: true
+          evidence_ref: c01-total
+          optional_reason: Arithmetic consistency is an observation separate from the mandatory prohibition on falsely reporting an amount-in-words mismatch.
+        - id: attachment-manifest-incomplete
+          required: true
+          evidence_ref: c09a-authoritative-manifest
+          severity: important
+          severity_source: intake S4 R9
+      must_not_flag:
+        - id: placeholder-unfilled
+          required: true
+          evidence_ref: c01-signature
+        - id: signature-status-unconfirmed
+          required: true
+          evidence_ref: c01-signature
+        - id: page-discontinuity
+          required: true
+          evidence_ref: c01-pages
+        - id: version-mismatch
+          required: true
+          evidence_ref: c01-manifest
+        - id: party-name-inconsistency
+          required: true
+          evidence_ref: c01-parties
+        - id: liability-cap-missing
+          evidence_ref: c01-liability
+          required: true
+        - id: dispute-resolution-missing
+          evidence_ref: c01-dispute
+          required: true
+        - id: amount-in-words-mismatch
+          required: true
+          evidence_ref: c01-total
+          output_rule: forbidden
+          reason: Chinese uppercase and numeric amounts correspond; arithmetic seat-total mismatch is a separate optional finding
+        - id: breach-remedy-present
+          required: true
+          evidence_ref: c01-remedy
+          output_rule: forbidden
+        - id: grace-period-present
+          required: true
+          evidence_ref: c01-grace
+          output_rule: forbidden
+        - id: termination-convenience-present
+          required: true
+          evidence_ref: c01-termination
+          output_rule: forbidden
+        - id: subcontracting-present
+          required: true
+          evidence_ref: c01-subcontracting
+          output_rule: forbidden
+        - id: audit-right-present
+          required: true
+          evidence_ref: c01-audit
+          output_rule: forbidden
+        - id: force-majeure-present
+          required: true
+          evidence_ref: c01-force-majeure
+          output_rule: forbidden
+        - id: data-export-present
+          required: true
+          evidence_ref: c01-export
+          output_rule: forbidden
+        - id: renewal-notice-window-reviewed
+          required: true
+          evidence_ref: c01-renewal
+          output_rule: forbidden
+          reason: 90-day notice meets the historical benchmark
+        - id: data-export-prohibition-reviewed
+          required: true
+          evidence_ref: c01-export
+          output_rule: forbidden
+          reason: standard exports are expressly allowed
+        - id: attachment-missing
+          required: true
+          evidence_ref: c09a-listed-attachments
+      coverage_targets:
+        - input-integrity
+        - nine-key-clauses
+        - market-rulers
+        - attachments
+        - signature
+        - breach-remedy-present
+        - grace-period-present
+        - termination-convenience-present
+        - subcontracting-present
+        - audit-right-present
+        - force-majeure-present
+        - data-export-present
+        - renewal-notice-window-reviewed
+        - data-export-prohibition-reviewed
+        - R9-authoritative-manifest-absent
+      negative_searches:
+        - id: c01-no-placeholder
+          patterns:
+            - \$X
+            - TBD
+            - 【待定】
+            - ____________
+          scope: contract body excluding decorative signature separators
+      scope_targets:
+        - mainland-china
+        - commercial-saas
+      evidence:
+        - id: c01-total
+          kind: literal
+          part: body
+          page: 3
+          clause_no: "4.1"
+          quote: 年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）
+        - id: c01-manifest
+          kind: literal
+          part: body
+          page: 9
+          clause_no: "17.4"
+          quote: 附件二　《服务水平协议 SLA-v1.2》
+        - id: c01-signature
+          kind: literal
+          part: body
+          page: 9
+          clause_no: signature
+          quote: 授权代表签字：陈慕远
+        - id: c01-pages
+          kind: literal
+          part: body
+          page: 9
+          clause_no: page-marker
+          quote: 第 9 页 / 共 9 页
+        - id: c01-parties
+          kind: literal
+          part: body
+          page: 1
+          clause_no: parties
+          quote: "**乙方（服务商）：云梯信息技术（示例）有限公司**"
+        - id: c01-liability
+          kind: literal
+          part: body
+          page: 6
+          clause_no: "10.1"
+          quote: 不超过索赔事件发生前 12 个月内甲方实际支付的服务费用总额
+        - id: c01-dispute
+          kind: literal
+          part: body
+          page: 9
+          clause_no: "16.2"
+          quote: 提交上海国际经济贸易仲裁委员会
+        - id: c01-remedy
+          kind: literal
+          part: body
+          page: 6
+          clause_no: "11"
+          quote: "## 第十一条　违约责任与救济"
+        - id: c01-grace
+          kind: literal
+          part: body
+          page: 6
+          clause_no: "11.1"
+          quote: 该期间为违约治愈宽限期
+        - id: c01-termination
+          kind: literal
+          part: body
+          page: 6
+          clause_no: "12.2"
+          quote: 甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）
+        - id: c01-subcontracting
+          kind: literal
+          part: body
+          page: 7
+          clause_no: "13"
+          quote: "## 第十三条　分包与变更控制"
+        - id: c01-audit
+          kind: literal
+          part: body
+          page: 7
+          clause_no: "14"
+          quote: "## 第十四条　审计权"
+        - id: c01-force-majeure
+          kind: literal
+          part: body
+          page: 8
+          clause_no: "15"
+          quote: "## 第十五条　不可抗力"
+        - id: c01-export
+          kind: literal
+          part: body
+          page: 5
+          clause_no: "7.2"
+          quote: 导出格式为 CSV、JSON 及标准 SQL 转储文件，不收取任何费用
+        - id: c01-renewal
+          kind: literal
+          part: body
+          page: 3
+          clause_no: "3.2"
+          quote: 订阅期届满前 90 日以书面形式通知对方不再续约
+        - id: c09a-authoritative-manifest
+          kind: literal
+          part: body
+          page: 9
+          clause_no: "17.4"
+          quote: 完整附件清单以双方另行签署的《合同附件目录》（编号 XHKJ-FJML-2026-0117）为准，该目录为本协议附件清单的唯一权威来源
+        - id: c09a-listed-attachments
+          kind: literal
+          part: body
+          page: 9
+          clause_no: "17.4"
+          quote: 附件二　《服务水平协议 SLA-v1.2》
+      gate_reason:
+        code: FLG-ATTACHMENT-MANIFEST-INCOMPLETE
+        source: contract-intake@1.0.7 S4 R9
+        downstream: continue
+        pending:
+          id: PEND-001
+          from_flag: FLG-ATTACHMENT-MANIFEST-INCOMPLETE
+          must_escalate: true
+          count_from_r9_flag: 1
+          must_escalate_total: 1
+          forbidden_from_flags:
+            - FLG-FREEZE-INCOMPLETE
+          allowed_additional: SCOPE-* with must_escalate false
+        must_reach_final_report: true
+    C09b:
+      expected_gate: blocked
+      source:
+        file: C09b-saas-attachment-unlisted.md
+        sha256: 20a9462e3d02ff466f0c09a0a370237244e3203f73300c65bd5c53dd9a687aaf
+        classification: synthetic
+      service_scope:
+        status: in_scope
+      legal_review:
+        status: not_required
+      comparison:
+        applicability: not_applicable
+      must_detect:
+        - id: amount-arithmetic-mismatch
+          required: false
+          fact_only: true
+          evidence_ref: c01-total
+          optional_reason: Arithmetic consistency is an observation separate from the mandatory prohibition on falsely reporting an amount-in-words mismatch.
+        - id: attachment-missing
+          required: true
+          evidence_refs:
+            - c09b-body-reference
+            - c09b-manifest
+          severity: severe
+          severity_source: intake S4 R1
+      must_not_flag:
+        - id: placeholder-unfilled
+          required: true
+          evidence_ref: c01-signature
+        - id: signature-status-unconfirmed
+          required: true
+          evidence_ref: c01-signature
+        - id: page-discontinuity
+          required: true
+          evidence_ref: c01-pages
+        - id: version-mismatch
+          required: true
+          evidence_ref: c01-manifest
+        - id: party-name-inconsistency
+          required: true
+          evidence_ref: c01-parties
+        - id: liability-cap-missing
+          evidence_ref: c01-liability
+          required: true
+        - id: dispute-resolution-missing
+          evidence_ref: c01-dispute
+          required: true
+        - id: amount-in-words-mismatch
+          required: true
+          evidence_ref: c01-total
+          output_rule: forbidden
+          reason: Chinese uppercase and numeric amounts correspond; arithmetic seat-total mismatch is a separate optional finding
+        - id: breach-remedy-present
+          required: true
+          evidence_ref: c01-remedy
+          output_rule: forbidden
+        - id: grace-period-present
+          required: true
+          evidence_ref: c01-grace
+          output_rule: forbidden
+        - id: termination-convenience-present
+          required: true
+          evidence_ref: c01-termination
+          output_rule: forbidden
+        - id: subcontracting-present
+          required: true
+          evidence_ref: c01-subcontracting
+          output_rule: forbidden
+        - id: audit-right-present
+          required: true
+          evidence_ref: c01-audit
+          output_rule: forbidden
+        - id: force-majeure-present
+          required: true
+          evidence_ref: c01-force-majeure
+          output_rule: forbidden
+        - id: data-export-present
+          required: true
+          evidence_ref: c01-export
+          output_rule: forbidden
+        - id: renewal-notice-window-reviewed
+          required: true
+          evidence_ref: c01-renewal
+          output_rule: forbidden
+          reason: 90-day notice meets the historical benchmark
+        - id: data-export-prohibition-reviewed
+          required: true
+          evidence_ref: c01-export
+          output_rule: forbidden
+          reason: standard exports are expressly allowed
+        - id: attachment-manifest-incomplete
+          required: true
+          evidence_ref: c09b-manifest
+      coverage_targets:
+        - input-integrity
+        - nine-key-clauses
+        - market-rulers
+        - attachments
+        - signature
+        - breach-remedy-present
+        - grace-period-present
+        - termination-convenience-present
+        - subcontracting-present
+        - audit-right-present
+        - force-majeure-present
+        - data-export-present
+        - renewal-notice-window-reviewed
+        - data-export-prohibition-reviewed
+        - R1-body-reference-not-in-manifest
+      negative_searches:
+        - id: c01-no-placeholder
+          patterns:
+            - \$X
+            - TBD
+            - 【待定】
+            - ____________
+          scope: contract body excluding decorative signature separators
+      scope_targets:
+        - mainland-china
+        - commercial-saas
+      evidence:
+        - id: c01-total
+          kind: literal
+          part: body
+          page: 3
+          clause_no: "4.1"
+          quote: 年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）
+        - id: c01-manifest
+          kind: literal
+          part: body
+          page: 9
+          clause_no: "17.4"
+          quote: 附件二　《服务水平协议 SLA-v1.2》
+        - id: c01-signature
+          kind: literal
+          part: body
+          page: 9
+          clause_no: signature
+          quote: 授权代表签字：陈慕远
+        - id: c01-pages
+          kind: literal
+          part: body
+          page: 9
+          clause_no: page-marker
+          quote: 第 9 页 / 共 9 页
+        - id: c01-parties
+          kind: literal
+          part: body
+          page: 1
+          clause_no: parties
+          quote: "**乙方（服务商）：云梯信息技术（示例）有限公司**"
+        - id: c01-liability
+          kind: literal
+          part: body
+          page: 6
+          clause_no: "10.1"
+          quote: 不超过索赔事件发生前 12 个月内甲方实际支付的服务费用总额
+        - id: c01-dispute
+          kind: literal
+          part: body
+          page: 9
+          clause_no: "16.2"
+          quote: 提交上海国际经济贸易仲裁委员会
+        - id: c01-remedy
+          kind: literal
+          part: body
+          page: 6
+          clause_no: "11"
+          quote: "## 第十一条　违约责任与救济"
+        - id: c01-grace
+          kind: literal
+          part: body
+          page: 6
+          clause_no: "11.1"
+          quote: 该期间为违约治愈宽限期
+        - id: c01-termination
+          kind: literal
+          part: body
+          page: 6
+          clause_no: "12.2"
+          quote: 甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）
+        - id: c01-subcontracting
+          kind: literal
+          part: body
+          page: 7
+          clause_no: "13"
+          quote: "## 第十三条　分包与变更控制"
+        - id: c01-audit
+          kind: literal
+          part: body
+          page: 7
+          clause_no: "14"
+          quote: "## 第十四条　审计权"
+        - id: c01-force-majeure
+          kind: literal
+          part: body
+          page: 8
+          clause_no: "15"
+          quote: "## 第十五条　不可抗力"
+        - id: c01-export
+          kind: literal
+          part: body
+          page: 5
+          clause_no: "7.2"
+          quote: 导出格式为 CSV、JSON 及标准 SQL 转储文件，不收取任何费用
+        - id: c01-renewal
+          kind: literal
+          part: body
+          page: 3
+          clause_no: "3.2"
+          quote: 订阅期届满前 90 日以书面形式通知对方不再续约
+        - id: c09b-body-reference
+          kind: literal
+          part: body
+          page: 7
+          clause_no: "14.1"
+          quote: 审计所需的安全合规证明材料清单以附件四《安全合规证明材料清单 V1.0》为准。
+        - id: c09b-manifest
+          kind: literal
+          part: body
+          page: 9
+          clause_no: "17.4"
+          quote: 17.4 本协议附件清单如下：
+      gate_reason:
+        code: BLK-ATTACHMENT-MISSING
+        source: contract-intake@1.0.7 S4 R1
+        downstream: stop
     R01:
       expected_gate: blocked
       source:

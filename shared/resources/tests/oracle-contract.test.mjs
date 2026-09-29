@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { parse, stringify } from 'yaml'
 import { createHash } from 'node:crypto'
+import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { evaluateOracleOutput, loadOracle, loadSourceBindings, validateOracle, repositoryRoot } from '../check-oracle-contract.mjs'
 
@@ -19,9 +20,10 @@ test('the real normative oracle and frozen bindings pass', () => assert.deepEqua
 test('the parsed historical oracle remains value-for-value frozen', () => {
   assert.equal(createHash('sha256').update(JSON.stringify(baseline().history)).digest('hex'), '1a17baa686385ee250e874b45a19696651cb797b889ccd400be0158b5a4e8cc6')
 })
-test('all 12 source digests remain byte-accurate', () => {
+test('all 14 source digests remain byte-accurate while the original 12 stay present', () => {
   const oracle = baseline()
-  assert.equal(Object.keys(oracle.normative.cases).length, 12)
+  assert.equal(Object.keys(oracle.normative.cases).length, 14)
+  for (const id of ['C01','C02','C03','C04','C05','C06a','C06b','C07','C08','R01','R02','R03']) assert.ok(oracle.normative.cases[id], id)
   assert.deepEqual(validateOracle(oracle, { baseDir }).filter((error) => /source\.sha256/.test(error)), [])
 })
 test('49 legacy scope changes are isolated in explicitly non-normative provenance', () => {
@@ -74,7 +76,7 @@ for (const [label, output, pattern] of [
 
 test('the exact independently reviewable source-binding values remain frozen', () => {
   assert.equal(createHash('sha256').update(JSON.stringify(loadSourceBindings())).digest('hex'),
-    '47a07dbb1a2e7f3554fa72940ed8e3d0ff535a5d8e3b8e7bbd62b1f387458f85')
+    'f46bee317772a099239a4292eb7df5f7eba22e7e250407beeacb7954ae77099f')
 })
 
 test('rejects erased assertions even when the target keeps its evidence refs', () => {
@@ -159,3 +161,36 @@ test('R01 keeps both source-grounded prohibitions', () => {
   assert.ok(ids.includes('attachment-missing'))
   assert.ok(ids.includes('party-name-inconsistency'))
 })
+
+test('C09 metadata binds the exact upstream raw bytes, without newline normalization', () => {
+  const oracle = baseline(), bindings = loadSourceBindings()
+  const expected = {
+    C09a: '98f546c3f6bf68ce8336cdef4d5e53d31f8cffd9bc0f3a6fd4f997283b7779f6',
+    C09b: '20a9462e3d02ff466f0c09a0a370237244e3203f73300c65bd5c53dd9a687aaf',
+  }
+  for (const [id, digest] of Object.entries(expected)) {
+    const actual = createHash('sha256').update(readFileSync(join(baseDir, oracle.normative.cases[id].source.file))).digest('hex')
+    assert.equal(actual, digest, `${id}: upstream bytes changed`)
+    assert.equal(oracle.normative.cases[id].source.sha256, actual, `${id}: oracle digest drift`)
+    assert.equal(bindings.cases[id].source_sha256, actual, `${id}: binding digest drift`)
+  }
+})
+
+test('C01 is the R7 positive control and forbids an R9 report', () => {
+  const oracle=baseline()
+  assert.equal(evaluateOracleOutput(oracle,'C01',{detected_ids:[]}).pass,true)
+  assert.deepEqual(evaluateOracleOutput(oracle,'C01',{detected_ids:['attachment-manifest-incomplete']}).forbidden,['attachment-manifest-incomplete'])
+})
+test('C09a requires R9 and forbids an R1 mapping', () => {
+  const oracle=baseline()
+  assert.equal(evaluateOracleOutput(oracle,'C09a',{detected_ids:requiredDetections(oracle,'C09a')}).pass,true)
+  assert.deepEqual(evaluateOracleOutput(oracle,'C09a',{detected_ids:['attachment-missing']}).forbidden,['attachment-missing'])
+})
+test('C09b requires R1 and forbids an R9 downgrade', () => {
+  const oracle=baseline()
+  assert.equal(evaluateOracleOutput(oracle,'C09b',{detected_ids:requiredDetections(oracle,'C09b')}).pass,true)
+  assert.deepEqual(evaluateOracleOutput(oracle,'C09b',{detected_ids:['attachment-manifest-incomplete']}).forbidden,['attachment-manifest-incomplete'])
+})
+test('rejects an R9-to-R1 mapping substitution', () => rejected((x) => {
+  x.normative.cases.C09a.must_detect.find((v)=>v.id==='attachment-manifest-incomplete').id='attachment-missing'
+}, /C09a.*attachment-manifest-incomplete|binding/))

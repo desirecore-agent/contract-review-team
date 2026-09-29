@@ -9,10 +9,12 @@ const here = dirname(fileURLToPath(import.meta.url))
 export const repositoryRoot = resolve(here, '..', '..')
 export const defaultOraclePath = join(repositoryRoot, 'testdata', 'contracts', 'ground-truth.yaml')
 export const defaultSourceBindingsPath = join(repositoryRoot, 'testdata', 'contracts', 'oracle-source-bindings.json')
-export const CASE_IDS = ['C01', 'C02', 'C03', 'C04', 'C05', 'C06a', 'C06b', 'C07', 'C08', 'R01', 'R02', 'R03']
+export const LEGACY_CASE_IDS = ['C01', 'C02', 'C03', 'C04', 'C05', 'C06a', 'C06b', 'C07', 'C08', 'R01', 'R02', 'R03']
+export const CASE_IDS = ['C01', 'C02', 'C03', 'C04', 'C05', 'C06a', 'C06b', 'C07', 'C08', 'C09a', 'C09b', 'R01', 'R02', 'R03']
 // Update only with an independently reviewed source-binding change. This pins
 // serialized JSON values, not whitespace; it is a review fence, not a signature.
-export const SOURCE_BINDINGS_SHA256 = '47a07dbb1a2e7f3554fa72940ed8e3d0ff535a5d8e3b8e7bbd62b1f387458f85'
+export const PRIOR_SOURCE_BINDINGS_SHA256 = '47a07dbb1a2e7f3554fa72940ed8e3d0ff535a5d8e3b8e7bbd62b1f387458f85'
+export const SOURCE_BINDINGS_SHA256 = 'f46bee317772a099239a4292eb7df5f7eba22e7e250407beeacb7954ae77099f'
 const GATES = new Set(['passed', 'conditional', 'blocked'])
 const DIRECTIONS = new Set(['up', 'down', 'flat', 'undetermined'])
 const SOURCES = new Set(['synthetic', 'public_template', 'synthetic_derivative', 'temporal_derivative'])
@@ -274,6 +276,19 @@ export function validateOracle(document, options = {}) {
   if (bindings && sha256(JSON.stringify(bindings)) !== SOURCE_BINDINGS_SHA256) {
     push(errors, 'source_bindings.digest', 'frozen source-binding digest changed; independent review and an explicit pin update are required')
   }
+  if (bindings) {
+    const legacyProjection = {
+      version: bindings.version,
+      purpose: bindings.purpose,
+      cases: Object.fromEntries(LEGACY_CASE_IDS.map((id) => {
+        const value = structuredClone(bindings.cases?.[id])
+        if (id === 'C01') delete value?.targets?.['must_not_flag:attachment-manifest-incomplete']
+        return [id, value]
+      })),
+    }
+    if (sha256(JSON.stringify(legacyProjection)) !== PRIOR_SOURCE_BINDINGS_SHA256) push(errors, 'source_bindings.provenance', 'the prior 88-target binding projection is not preserved value-for-value')
+    if (bindings.provenance?.normative !== false || bindings.provenance?.prior_pin_sha256 !== PRIOR_SOURCE_BINDINGS_SHA256 || bindings.provenance?.prior_target_count !== 88) push(errors, 'source_bindings.provenance', 'must explicitly relate the new pin to the prior non-normative 88-target pin')
+  }
   if (bindings) for (const [caseId, item] of Object.entries(cases)) {
     const frozenCase = bindings.cases?.[caseId]
     if (frozenCase?.source_file !== item.source.file || frozenCase?.source_sha256 !== item.source.sha256) push(errors, `source_bindings.cases.${caseId}`, 'source file/SHA binding changed')
@@ -325,6 +340,14 @@ export function validateOracle(document, options = {}) {
   const r9 = normative.targeted_scenarios?.R9_authoritative_manifest_absent
   if (r9?.expected_gate !== 'conditional' || r9?.required_pending_id !== 'PEND-001') push(errors, 'normative.targeted_scenarios.R9_authoritative_manifest_absent', 'R9 must be conditional and retain PEND-001')
   if (normative.targeted_scenarios?.body_reference_not_in_manifest?.expected_gate !== 'blocked') push(errors, 'normative.targeted_scenarios.body_reference_not_in_manifest', 'an undeclared referenced attachment must remain blocked')
+  const c01R7 = (cases.C01?.must_not_flag ?? []).find((target) => target?.id === 'attachment-manifest-incomplete')
+  if (c01R7?.required !== true) push(errors, 'normative.cases.C01.must_not_flag.attachment-manifest-incomplete', 'R7 control must forbid an R9 finding without making an old mandatory target optional')
+  const c09aR9 = (cases.C09a?.must_detect ?? []).find((target) => target?.id === 'attachment-manifest-incomplete')
+  if (cases.C09a?.expected_gate !== 'conditional' || c09aR9?.required !== true || cases.C09a?.gate_reason?.code !== 'FLG-ATTACHMENT-MANIFEST-INCOMPLETE' || cases.C09a?.gate_reason?.pending?.id !== 'PEND-001' || cases.C09a?.gate_reason?.pending?.must_escalate !== true || cases.C09a?.gate_reason?.downstream !== 'continue') push(errors, 'normative.cases.C09a', 'R9 must be a required conditional finding with one escalating PEND-001 and downstream continuation')
+  if (!(cases.C09a?.must_not_flag ?? []).some((target) => target?.id === 'attachment-missing' && target.required === true)) push(errors, 'normative.cases.C09a.must_not_flag', 'R9 must explicitly forbid the R1 attachment-missing mapping')
+  const c09bR1 = (cases.C09b?.must_detect ?? []).find((target) => target?.id === 'attachment-missing')
+  if (cases.C09b?.expected_gate !== 'blocked' || c09bR1?.required !== true || cases.C09b?.gate_reason?.code !== 'BLK-ATTACHMENT-MISSING' || cases.C09b?.gate_reason?.downstream !== 'stop') push(errors, 'normative.cases.C09b', 'R1 must be a required blocked attachment-missing finding with downstream stop')
+  if (!(cases.C09b?.must_not_flag ?? []).some((target) => target?.id === 'attachment-manifest-incomplete' && target.required === true)) push(errors, 'normative.cases.C09b.must_not_flag', 'R1 must explicitly forbid an R9 downgrade')
   return errors
 }
 

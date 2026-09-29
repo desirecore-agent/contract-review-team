@@ -9,7 +9,8 @@
     "check:oracle": "node shared/resources/check-oracle-contract.mjs",
     "check:workflow": "node shared/resources/check-workflow-contract.mjs",
     "test:contracts": "node --test shared/resources/tests/*.test.mjs",
-    "check": "npm run check:gates && npm run check:oracle && npm run check:workflow && npm run test:contracts"
+    "check:evidence": "node testdata/contracts/check-evidence.mjs",
+    "check": "npm run check:gates && npm run check:oracle && npm run check:workflow && npm run check:evidence && npm run test:contracts"
   },
   "dependencies": {
     "yaml": "2.9.0"

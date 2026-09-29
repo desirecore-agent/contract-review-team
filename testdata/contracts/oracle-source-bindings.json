@@ -271,6 +271,20 @@
               "source_case": "C01"
             }
           ]
+        },
+        "must_not_flag:attachment-manifest-incomplete": {
+          "required": true,
+          "refs": [
+            "c01-manifest"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-manifest",
+              "kind": "literal",
+              "quote": "附件二　《服务水平协议 SLA-v1.2》",
+              "source_case": "C01"
+            }
+          ]
         }
       }
     },
@@ -1417,6 +1431,591 @@
           ]
         }
       }
+    },
+    "C09a": {
+      "source_file": "C09a-saas-manifest-deferred.md",
+      "source_sha256": "98f546c3f6bf68ce8336cdef4d5e53d31f8cffd9bc0f3a6fd4f997283b7779f6",
+      "targets": {
+        "must_detect:amount-arithmetic-mismatch": {
+          "required": false,
+          "refs": [
+            "c01-total"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-total",
+              "kind": "literal",
+              "quote": "年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_detect:attachment-manifest-incomplete": {
+          "required": true,
+          "refs": [
+            "c09a-authoritative-manifest"
+          ],
+          "assertions": [
+            {
+              "ref": "c09a-authoritative-manifest",
+              "kind": "literal",
+              "quote": "完整附件清单以双方另行签署的《合同附件目录》（编号 XHKJ-FJML-2026-0117）为准，该目录为本协议附件清单的唯一权威来源",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:placeholder-unfilled": {
+          "required": true,
+          "refs": [
+            "c01-signature"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-signature",
+              "kind": "literal",
+              "quote": "授权代表签字：陈慕远",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:signature-status-unconfirmed": {
+          "required": true,
+          "refs": [
+            "c01-signature"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-signature",
+              "kind": "literal",
+              "quote": "授权代表签字：陈慕远",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:page-discontinuity": {
+          "required": true,
+          "refs": [
+            "c01-pages"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-pages",
+              "kind": "literal",
+              "quote": "第 9 页 / 共 9 页",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:version-mismatch": {
+          "required": true,
+          "refs": [
+            "c01-manifest"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-manifest",
+              "kind": "literal",
+              "quote": "附件二　《服务水平协议 SLA-v1.2》",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:party-name-inconsistency": {
+          "required": true,
+          "refs": [
+            "c01-parties"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-parties",
+              "kind": "literal",
+              "quote": "**乙方（服务商）：云梯信息技术（示例）有限公司**",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:liability-cap-missing": {
+          "required": true,
+          "refs": [
+            "c01-liability"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-liability",
+              "kind": "literal",
+              "quote": "不超过索赔事件发生前 12 个月内甲方实际支付的服务费用总额",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:dispute-resolution-missing": {
+          "required": true,
+          "refs": [
+            "c01-dispute"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-dispute",
+              "kind": "literal",
+              "quote": "提交上海国际经济贸易仲裁委员会",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:amount-in-words-mismatch": {
+          "required": true,
+          "refs": [
+            "c01-total"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-total",
+              "kind": "literal",
+              "quote": "年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:breach-remedy-present": {
+          "required": true,
+          "refs": [
+            "c01-remedy"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-remedy",
+              "kind": "literal",
+              "quote": "## 第十一条　违约责任与救济",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:grace-period-present": {
+          "required": true,
+          "refs": [
+            "c01-grace"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-grace",
+              "kind": "literal",
+              "quote": "该期间为违约治愈宽限期",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:termination-convenience-present": {
+          "required": true,
+          "refs": [
+            "c01-termination"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-termination",
+              "kind": "literal",
+              "quote": "甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:subcontracting-present": {
+          "required": true,
+          "refs": [
+            "c01-subcontracting"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-subcontracting",
+              "kind": "literal",
+              "quote": "## 第十三条　分包与变更控制",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:audit-right-present": {
+          "required": true,
+          "refs": [
+            "c01-audit"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-audit",
+              "kind": "literal",
+              "quote": "## 第十四条　审计权",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:force-majeure-present": {
+          "required": true,
+          "refs": [
+            "c01-force-majeure"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-force-majeure",
+              "kind": "literal",
+              "quote": "## 第十五条　不可抗力",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:data-export-present": {
+          "required": true,
+          "refs": [
+            "c01-export"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-export",
+              "kind": "literal",
+              "quote": "导出格式为 CSV、JSON 及标准 SQL 转储文件，不收取任何费用",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:renewal-notice-window-reviewed": {
+          "required": true,
+          "refs": [
+            "c01-renewal"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-renewal",
+              "kind": "literal",
+              "quote": "订阅期届满前 90 日以书面形式通知对方不再续约",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:data-export-prohibition-reviewed": {
+          "required": true,
+          "refs": [
+            "c01-export"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-export",
+              "kind": "literal",
+              "quote": "导出格式为 CSV、JSON 及标准 SQL 转储文件，不收取任何费用",
+              "source_case": "C09a"
+            }
+          ]
+        },
+        "must_not_flag:attachment-missing": {
+          "required": true,
+          "refs": [
+            "c09a-listed-attachments"
+          ],
+          "assertions": [
+            {
+              "ref": "c09a-listed-attachments",
+              "kind": "literal",
+              "quote": "附件二　《服务水平协议 SLA-v1.2》",
+              "source_case": "C09a"
+            }
+          ]
+        }
+      }
+    },
+    "C09b": {
+      "source_file": "C09b-saas-attachment-unlisted.md",
+      "source_sha256": "20a9462e3d02ff466f0c09a0a370237244e3203f73300c65bd5c53dd9a687aaf",
+      "targets": {
+        "must_detect:amount-arithmetic-mismatch": {
+          "required": false,
+          "refs": [
+            "c01-total"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-total",
+              "kind": "literal",
+              "quote": "年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_detect:attachment-missing": {
+          "required": true,
+          "refs": [
+            "c09b-body-reference",
+            "c09b-manifest"
+          ],
+          "assertions": [
+            {
+              "ref": "c09b-body-reference",
+              "kind": "literal",
+              "quote": "审计所需的安全合规证明材料清单以附件四《安全合规证明材料清单 V1.0》为准。",
+              "source_case": "C09b"
+            },
+            {
+              "ref": "c09b-manifest",
+              "kind": "literal",
+              "quote": "17.4 本协议附件清单如下：",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:placeholder-unfilled": {
+          "required": true,
+          "refs": [
+            "c01-signature"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-signature",
+              "kind": "literal",
+              "quote": "授权代表签字：陈慕远",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:signature-status-unconfirmed": {
+          "required": true,
+          "refs": [
+            "c01-signature"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-signature",
+              "kind": "literal",
+              "quote": "授权代表签字：陈慕远",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:page-discontinuity": {
+          "required": true,
+          "refs": [
+            "c01-pages"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-pages",
+              "kind": "literal",
+              "quote": "第 9 页 / 共 9 页",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:version-mismatch": {
+          "required": true,
+          "refs": [
+            "c01-manifest"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-manifest",
+              "kind": "literal",
+              "quote": "附件二　《服务水平协议 SLA-v1.2》",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:party-name-inconsistency": {
+          "required": true,
+          "refs": [
+            "c01-parties"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-parties",
+              "kind": "literal",
+              "quote": "**乙方（服务商）：云梯信息技术（示例）有限公司**",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:liability-cap-missing": {
+          "required": true,
+          "refs": [
+            "c01-liability"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-liability",
+              "kind": "literal",
+              "quote": "不超过索赔事件发生前 12 个月内甲方实际支付的服务费用总额",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:dispute-resolution-missing": {
+          "required": true,
+          "refs": [
+            "c01-dispute"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-dispute",
+              "kind": "literal",
+              "quote": "提交上海国际经济贸易仲裁委员会",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:amount-in-words-mismatch": {
+          "required": true,
+          "refs": [
+            "c01-total"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-total",
+              "kind": "literal",
+              "quote": "年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:breach-remedy-present": {
+          "required": true,
+          "refs": [
+            "c01-remedy"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-remedy",
+              "kind": "literal",
+              "quote": "## 第十一条　违约责任与救济",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:grace-period-present": {
+          "required": true,
+          "refs": [
+            "c01-grace"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-grace",
+              "kind": "literal",
+              "quote": "该期间为违约治愈宽限期",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:termination-convenience-present": {
+          "required": true,
+          "refs": [
+            "c01-termination"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-termination",
+              "kind": "literal",
+              "quote": "甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:subcontracting-present": {
+          "required": true,
+          "refs": [
+            "c01-subcontracting"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-subcontracting",
+              "kind": "literal",
+              "quote": "## 第十三条　分包与变更控制",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:audit-right-present": {
+          "required": true,
+          "refs": [
+            "c01-audit"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-audit",
+              "kind": "literal",
+              "quote": "## 第十四条　审计权",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:force-majeure-present": {
+          "required": true,
+          "refs": [
+            "c01-force-majeure"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-force-majeure",
+              "kind": "literal",
+              "quote": "## 第十五条　不可抗力",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:data-export-present": {
+          "required": true,
+          "refs": [
+            "c01-export"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-export",
+              "kind": "literal",
+              "quote": "导出格式为 CSV、JSON 及标准 SQL 转储文件，不收取任何费用",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:renewal-notice-window-reviewed": {
+          "required": true,
+          "refs": [
+            "c01-renewal"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-renewal",
+              "kind": "literal",
+              "quote": "订阅期届满前 90 日以书面形式通知对方不再续约",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:data-export-prohibition-reviewed": {
+          "required": true,
+          "refs": [
+            "c01-export"
+          ],
+          "assertions": [
+            {
+              "ref": "c01-export",
+              "kind": "literal",
+              "quote": "导出格式为 CSV、JSON 及标准 SQL 转储文件，不收取任何费用",
+              "source_case": "C09b"
+            }
+          ]
+        },
+        "must_not_flag:attachment-manifest-incomplete": {
+          "required": true,
+          "refs": [
+            "c09b-manifest"
+          ],
+          "assertions": [
+            {
+              "ref": "c09b-manifest",
+              "kind": "literal",
+              "quote": "17.4 本协议附件清单如下：",
+              "source_case": "C09b"
+            }
+          ]
+        }
+      }
     }
+  },
+  "provenance": {
+    "normative": false,
+    "prior_pin_sha256": "47a07dbb1a2e7f3554fa72940ed8e3d0ff535a5d8e3b8e7bbd62b1f387458f85",
+    "prior_target_count": 88,
+    "relationship": "All 88 prior target binding values are preserved verbatim; this revision only adds the C01 R7 prohibition and C09a/C09b bindings."
   }
 }
