@@ -8,7 +8,7 @@ last-reviewed: 2026-09-29
 
 A six-member DesireCore team for evidence-based contract review. It separates intake, extraction, risk observations, jurisdiction analysis, independent review, and delivery. Its supported legal service scope is mainland China; foreign-law material requires referral, even when general document governance can continue.
 
-**Status:** team 0.1.37. Documentation audited on 2026-09-29 against commit aa67148; 0.1.37 updates the intake and lead locks (see [CHANGELOG](CHANGELOG.md)). This is not a production-readiness certificate: unresolved shared-rule conflicts and incomplete end-to-end evidence are listed in [testing](docs/testing.md).
+**Status:** team 0.1.38. Documentation audited on 2026-09-29 against commit aa67148; 0.1.37 updates the intake and lead locks, while 0.1.38 adds transparent team and member portraits (see [CHANGELOG](CHANGELOG.md)). This is not a production-readiness certificate: unresolved shared-rule conflicts and incomplete end-to-end evidence are listed in [testing](docs/testing.md).
 
 ## Start here
 

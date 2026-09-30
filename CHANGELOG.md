@@ -1,10 +1,14 @@
 ---
-last-reviewed: 2026-09-29
+last-reviewed: 2026-09-30
 ---
 
 # Changelog
 
 [中文详细记录](CHANGELOG.zh-CN.md)
+
+## 0.1.38 - 2026-09-30
+
+- Add transparent photorealistic portraits for the team and all six members. Pin the corresponding member commits, versions, and content hashes; no review behavior changes.
 
 ## 0.1.37 - 2026-09-29
 
