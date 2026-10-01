@@ -55,3 +55,7 @@ These are static consistency checks, not agent or legal acceptance tests. The pr
 ## License and responsibility
 
 See [LICENSE](LICENSE). This team supports review; it does not replace qualified legal advice, verify signatures merely from typed names, or authorize signing. Protect confidential contracts and verify applicable law, source evidence and final edits before use.
+
+## Member display default
+
+Version 0.1.39 declares `memberDisplay: "nested"` in `team.json`: team members appear under the leader, initially collapsed. Explicit user preferences take priority. Install this release only after the DesireCore platform adds support for this field; older clients reject it during team schema validation.
