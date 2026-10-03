@@ -1,4 +1,9 @@
 ---
+
+## 0.1.39
+
+- Declare nested member display as the team default; explicit user choices override it. Requires platform support before marketplace publication.
+
 last-reviewed: 2026-09-30
 ---
 

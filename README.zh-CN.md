@@ -55,3 +55,7 @@ node shared/resources/check-member-tool-ceiling.mjs   # 读取已安装成员；
 ## 许可与责任
 
 许可见 [LICENSE](LICENSE)。团队辅助审查，不能替代专业法律意见，不能仅凭打字姓名验证签章，也不能代为授权签署。使用前应保护合同隐私，核对适用法律、原文证据与最终修订。
+
+## 成员默认展示
+
+版本 0.1.39 在 `team.json` 声明 `memberDisplay: "nested"`：成员默认收纳到组长名下，初始收起；用户手动选择优先。此版本需在 DesireCore 平台发布该字段支持后安装，旧客户端会在团队 Schema 校验时拒绝新增字段。
