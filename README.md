@@ -8,7 +8,7 @@ last-reviewed: 2026-09-29
 
 A six-member DesireCore team for evidence-based contract review. It separates intake, extraction, risk observations, jurisdiction analysis, independent review, and delivery. Its supported legal service scope is mainland China; foreign-law material requires referral, even when general document governance can continue.
 
-**Status:** team 0.1.38. Documentation audited on 2026-09-29 against commit aa67148; 0.1.37 updates the intake and lead locks, while 0.1.38 adds transparent team and member portraits (see [CHANGELOG](CHANGELOG.md)). This is not a production-readiness certificate: unresolved shared-rule conflicts and incomplete end-to-end evidence are listed in [testing](docs/testing.md).
+**Status:** team 0.1.40. Documentation audited on 2026-09-29 against commit aa67148; 0.1.37 updates the intake and lead locks, while 0.1.38 adds transparent team and member portraits (see [CHANGELOG](CHANGELOG.md)). This is not a production-readiness certificate: unresolved shared-rule conflicts and incomplete end-to-end evidence are listed in [testing](docs/testing.md).
 
 ## Start here
 
@@ -51,6 +51,12 @@ node shared/resources/check-member-tool-ceiling.mjs   # reads installed members;
 ```
 
 These are static consistency checks, not agent or legal acceptance tests. The private tooling package still reports 0.1.30; the published team version comes from team.json. No version alignment is made by this documentation update.
+
+## Release 0.1.40: model service prerequisites
+
+Before submitting contract text or attachments, configure and confirm the selected provider/model route, service readiness and authorization to process the materials. Provider terms, applicable licensing and any separate costs remain the operator's responsibility. Existing verified configuration and authorization may be reused.
+
+The [shared execution rules](shared/rules.md) require evidence or explicit operator confirmation before affected work and new external calls. Unavailable or unverified prerequisites stop those calls and downstream review through `verdict: blocked` and `handoff.to: null`, with a bounded capability-debt statement instead of invented legal findings, scores or exports. Team instructions cannot undo Host requests already sent to the default inference model. Static guards do not establish live adherence or real-contract acceptance.
 
 ## License and responsibility
 
