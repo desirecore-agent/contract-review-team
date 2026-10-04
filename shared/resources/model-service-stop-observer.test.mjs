@@ -33,3 +33,9 @@ test('failed prerequisites are structured known field names without duplicates',
     assert.throws(() => readDecisionReceipt([nativeReceipt({ ...decision(), failedPrerequisites: invalid })]))
   }
 })
+
+test('a valid receipt cannot hide prose findings, scores or artifact claims', () => {
+  for (const content of ['The contract is legally compliant.', 'Final score: 95.', 'Report.docx has been produced.']) {
+    assert.throws(() => collectToolIntents({ tool_calls: [nativeReceipt(decision())], content }))
+  }
+})

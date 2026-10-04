@@ -6,6 +6,8 @@ export function collectToolIntents(message) {
   const openings = [...text.matchAll(/<function=([^>]+)>/g)]
   const complete = [...text.matchAll(/<function=([^>]+)>([\s\S]*?)<\/function>/g)]
   if (openings.length !== complete.length) throw new Error('Incomplete textual tool intent')
+  const prose = text.replace(/<tool_call>[\s\S]*?<\/tool_call>/g, '').trim()
+  if (prose) throw new Error('Assistant prose outside the structured observer is not accepted')
   const xml = complete.map(match => {
     const params = {}
     for (const part of match[2].matchAll(/<parameter=([^>]+)>([\s\S]*?)<\/parameter>/g)) {
