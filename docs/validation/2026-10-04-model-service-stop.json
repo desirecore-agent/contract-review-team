@@ -750,5 +750,9 @@
   "state": "passed",
   "finishedAt": "2026-10-04T13:07:05.063Z",
   "transport": "production Compat Proxy / live configured chat provider",
-  "scope": "Eighteen lead-only real model turns with finite observer state: five synthetic failed-prerequisite declarations (3 each), one all-confirmed preflight-only positive control (3). The control request is transmitted to the live inference provider; no additional business calls, review, scoring, or DOCX work is claimed or dispatched. No empirical outage or locked-member/full Agent Service/real-contract acceptance claim."
+  "scope": "Eighteen lead-only real model turns with finite observer state: five synthetic failed-prerequisite declarations (3 each), one all-confirmed preflight-only positive control (3). The control request is transmitted to the live inference provider; no additional business calls, review, scoring, or DOCX work is claimed or dispatched. No empirical outage or locked-member/full Agent Service/real-contract acceptance claim.",
+  "modelIdentitySha256": "42f4aabe21fcf6e90a9dff6ca891fe75a31816e8049848e0c3f4e4a7c7c201ec",
+  "providerIdentitySha256": "40e9611bcf3f840c92caeec7b74b7b7f8ae711ed25127b13ed2ae5120f74c3ef",
+  "apiFormat": "anthropic-messages",
+  "modelIdentityProvenance": "Hashes were recovered through the production compute resolver from the same isolated runtime configuration used by the source run; the original runner dropped startup metadata. The corrected runner now persists these fields automatically. No raw provider labels, model aliases or credentials are published."
 }

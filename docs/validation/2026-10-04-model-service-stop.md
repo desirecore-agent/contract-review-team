@@ -38,3 +38,5 @@ The final full matrix uses only synthetic operator declarations. It does not pro
 The three positive controls assess only whether the prerequisite gate permits later intake. They do not bypass intake or perform review, scoring or DOCX work. Duplicate XML parameter names are rejected; normal validation includes eleven decoder regressions.
 
 The final observer accepts finite prerequisite codes and explicit execution booleans only. Model explanations and other free-form assertions are excluded. controlRequestTransmitted is true: the synthetic sentence was sent to the live inference provider; the tested absence concerns additional affected business-service calls. JSON and XML duplicate keys are both rejected. The full eighteen-turn matrix was regenerated with this contract.
+
+Provider and model identity are recorded as SHA-256 fingerprints to preserve private configuration labels. They were recovered from the same isolated run configuration; the corrected runner retains them in every subsequent and final save. The recovered apiFormat is also recorded.
