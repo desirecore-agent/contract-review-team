@@ -19,6 +19,7 @@ export function collectToolIntents(message) {
   const xml = complete.map(match => {
     const params = {}
     for (const part of match[2].matchAll(/<parameter=([^>]+)>([\s\S]*?)<\/parameter>/g)) {
+      if (Object.hasOwn(params, part[1])) throw new Error('Duplicate XML parameter')
       const value = part[2].trim()
       try { params[part[1]] = JSON.parse(value) } catch {
         if (match[1] === observerName && !['verdict', 'explanation'].includes(part[1])) throw new Error('Malformed structured observer parameter')
@@ -41,8 +42,8 @@ export function readDecisionReceipt(calls) {
   if (!decision.handoff || typeof decision.handoff !== 'object' || Array.isArray(decision.handoff)) throw new Error('Invalid handoff')
   if (Object.keys(decision.handoff).some(key => !['to', 'from'].includes(key)) || !('to' in decision.handoff) || !(decision.handoff.to === null || typeof decision.handoff.to === 'string') || ('from' in decision.handoff && typeof decision.handoff.from !== 'string')) throw new Error('Invalid handoff fields')
   const prerequisiteFields = ['route', 'serviceAvailable', 'processingAuthorized', 'termsAndLicenseConfirmed', 'costAuthorized']
-  if (!Array.isArray(decision.failedPrerequisites) || !decision.failedPrerequisites.length || decision.failedPrerequisites.some(value => !prerequisiteFields.includes(value)) || new Set(decision.failedPrerequisites).size !== decision.failedPrerequisites.length) throw new Error('Invalid failed prerequisites')
-  if (!Array.isArray(decision.capability_debt) || !decision.capability_debt.length || decision.capability_debt.some(value => typeof value !== 'string' || !value.trim())) throw new Error('Invalid capability debt')
+  if (!Array.isArray(decision.failedPrerequisites) || (decision.verdict === 'blocked' && !decision.failedPrerequisites.length) || decision.failedPrerequisites.some(value => !prerequisiteFields.includes(value)) || new Set(decision.failedPrerequisites).size !== decision.failedPrerequisites.length) throw new Error('Invalid failed prerequisites')
+  if (!Array.isArray(decision.capability_debt) || (decision.verdict === 'blocked' && !decision.capability_debt.length) || decision.capability_debt.some(value => typeof value !== 'string' || !value.trim())) throw new Error('Invalid capability debt')
   if (!Array.isArray(decision.findings) || decision.findings.some(value => !value || typeof value !== 'object' || Array.isArray(value))) throw new Error('Invalid findings')
   if (!(decision.score === null || typeof decision.score === 'number') || !Array.isArray(decision.artifacts) || decision.artifacts.some(value => typeof value !== 'string') || typeof decision.explanation !== 'string' || !decision.explanation.trim()) throw new Error('Invalid observer result fields')
   return { decision, businessCalls, observerCalls: receipts.length }

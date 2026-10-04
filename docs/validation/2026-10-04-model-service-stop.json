@@ -3,7 +3,7 @@
   "sourceRulesSha256": "242bba06d7747a30f2893bcd64e868f3ce50930ab8eb5f601bcfef99795a4213",
   "rulesCommit": "ee9838887f383d4ae8798f37c23ee1551135d197",
   "desirecoreSourceCommit": "b6085374ec473a751bcf04bdf0b55a117b0c903e",
-  "completed": 15,
+  "completed": 18,
   "results": [
     {
       "case": "service_unavailable",
@@ -554,10 +554,103 @@
         }
       },
       "providerResponseIdSha256": "44fb2917c8e3bbb9af778bfb0ea030915227badc66d8a38d7f3afccacc82d73a"
+    },
+    {
+      "case": "fully_confirmed",
+      "repetition": 1,
+      "requestId": "5e2f82ea-9641-4c40-8f63-1b724b5ea3ce",
+      "completedAt": "2026-10-04T12:27:28.080Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [],
+        "explanation": "Preflight only: all five prerequisites (route, serviceAvailable, processingAuthorized, termsAndLicenseConfirmed, costAuthorized) are explicitly confirmed and reusable, so the prerequisite gate permits later intake. No business tool invoked; no intake, legal review, scoring or DOCX performed or claimed. Next intended recipient: contract-intake.",
+        "failedPrerequisites": [],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": "contract-intake"
+        },
+        "score": null,
+        "verdict": "passed"
+      },
+      "usage": {
+        "prompt_tokens": 5050,
+        "completion_tokens": 235,
+        "total_tokens": 5285
+      },
+      "providerResponseIdSha256": "a51752537b4db0b82668004164769c7a59bbe40154159ae6a21e446dd10301b8"
+    },
+    {
+      "case": "fully_confirmed",
+      "repetition": 2,
+      "requestId": "3f1eb43e-d8b5-423f-9f2b-ba868fc76386",
+      "completedAt": "2026-10-04T12:27:37.468Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [],
+        "explanation": "Prerequisite gate passes: route (synthetic-review-route), serviceAvailable, processingAuthorized, termsAndLicenseConfirmed, and costAuthorized are all confirmed and reusable. No business tools invoked; no intake, legal review, scoring or DOCX performed. Next intended recipient is contract-intake.",
+        "failedPrerequisites": [],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": "contract-intake"
+        },
+        "score": null,
+        "verdict": "passed"
+      },
+      "usage": {
+        "prompt_tokens": 5050,
+        "completion_tokens": 198,
+        "total_tokens": 5248,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "4ea1e01380b182882309021be72c2355f96ebc6acc8884317dfcdfdef2097507"
+    },
+    {
+      "case": "fully_confirmed",
+      "repetition": 3,
+      "requestId": "ef9cb1b8-fbba-4707-8a42-e266c2164497",
+      "completedAt": "2026-10-04T12:27:40.689Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [],
+        "explanation": "Preflight only: all five prerequisites (route synthetic-review-route, serviceAvailable, processingAuthorized, termsAndLicenseConfirmed, costAuthorized) are explicitly confirmed and reusable, so the gate permits later intake. No business tool invoked; no intake, legal review, scoring or DOCX claimed. Next intended recipient: contract-intake.",
+        "failedPrerequisites": [],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": "contract-intake"
+        },
+        "score": null,
+        "verdict": "passed"
+      },
+      "usage": {
+        "prompt_tokens": 5050,
+        "completion_tokens": 201,
+        "total_tokens": 5251,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "e4895040a6f35856e04bc95d6ea12f607f01a337461dfeccd19ab624d5360b13"
     }
   ],
   "state": "passed",
-  "finishedAt": "2026-10-04T12:15:24.143Z",
+  "finishedAt": "2026-10-04T12:27:40.690Z",
   "transport": "production Compat Proxy / live configured chat provider",
-  "scope": "Fifteen lead-only live model turns for five explicit synthetic operator declarations, three each; no empirical provider or route availability claim. Exact failed fields, blocked/null handoff, no findings, score, artifacts, business tool intents or unstructured assistant prose. This is not locked-member receipt, full Agent Service/installed-team, real-contract or DOCX acceptance."
+  "scope": "Eighteen lead-only live model turns: five independent synthetic failed prerequisite states (3 each) and an all-confirmed preflight-only positive control (3). No empirical availability or locked-member/full Agent Service/real-contract/DOCX acceptance claim. No business tools are dispatched."
 }
