@@ -10,7 +10,7 @@ last-reviewed: 2026-10-04
 
 - Add injected model-service prerequisites and stop-before-call instructions; operators confirm the configured route, availability, processing authorization, provider terms/licensing and separate costs before submitting materials.
 - Unavailable or unverified prerequisites retain the existing blocked/null handoff behavior and only a bounded capability-debt statement. No new member versions or tool permissions are introduced.
-- Validation covers static consistency only; live-service failure regression, marketplace installation and real-contract acceptance remain unverified.
+- Static guards and nine live model-turn stop regressions pass; see docs/validation/2026-10-04-model-service-stop.md. Full Agent Service integration, marketplace installation and real-contract acceptance remain unverified.
 
 ## 0.1.39
 
