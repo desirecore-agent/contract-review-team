@@ -1,15 +1,15 @@
 {
-  "startedAt": "2026-10-04T11:39:01.290Z",
-  "sourceRulesSha256": "7a1a12dc088741749877bb82db7adbd7def0dc2b9ab5accfccd019dadbe1679c",
-  "rulesCommit": "c358287aceb4f1eed208bff18941b661ca3404e8",
+  "startedAt": "2026-10-04T12:12:10.134Z",
+  "sourceRulesSha256": "242bba06d7747a30f2893bcd64e868f3ce50930ab8eb5f601bcfef99795a4213",
+  "rulesCommit": "ee9838887f383d4ae8798f37c23ee1551135d197",
   "desirecoreSourceCommit": "b6085374ec473a751bcf04bdf0b55a117b0c903e",
   "completed": 15,
   "results": [
     {
       "case": "service_unavailable",
       "repetition": 1,
-      "requestId": "ecfe77c0-66f9-4667-b3ae-9ca598cdc563",
-      "completedAt": "2026-10-04T11:39:20.157Z",
+      "requestId": "c97c2c59-2d2f-47fd-8342-bc8f030d0188",
+      "completedAt": "2026-10-04T12:12:24.677Z",
       "passed": true,
       "attemptedToolCalls": [],
       "observerCalls": 1,
@@ -17,12 +17,9 @@
       "response": {
         "artifacts": [],
         "capability_debt": [
-          "Affected review service unavailable (serviceAvailable=false; loopback health check failed) — cannot execute parallel risk-scanner and jurisdiction-auditor review",
-          "No score produced — review steps 4-5 were not run",
-          "No tracked DOCX produced — report output (step 7) was not reached",
-          "Resume requires reconfirming service availability and the five prerequisites before any contract text is submitted"
+          "Affected review service availability is not established (serviceAvailable: false), so no external review calls, risk/jurisdiction analysis, scoring, or DOCX generation could be executed. Missing status-reading capability acknowledged; no probe was attempted and none is claimed."
         ],
-        "explanation": "Supplied status shows serviceAvailable=false (confirmed by failed loopback health probe, which was a harness observation, not an agent action). Under the stopping rules, any failed prerequisite halts affected external calls: no contract text was submitted, no risk/jurisdiction review ran, and no new legal findings, score, or DOCX were produced. The control-turn inference transport does not establish the affected service prerequisites. Verdict is blocked and handoff.to is null; downstream members must not start. Scope-limited delivery: the request (parallel risk + mainland-China jurisdiction review, score, tracked DOCX) remains unfinished; only the fictional clause text is noted as supplied input, with no conclusions drawn. Resume only after service availability and authorization are reconfirmed; qualified human review remains required for any eventual output.",
+        "explanation": "Supplied prerequisite status fails on serviceAvailable (false). Per the stopping rules, the lead halts before any external call: no contract text is transmitted, no risk or mainland-China jurisdiction review is started, and no new legal findings, score or DOCX are produced. The other four prerequisites (route, processingAuthorized, termsAndLicenseConfirmed, costAuthorized) are satisfied, but readiness alone is insufficient. Handoff is empty (to: null) and downstream is not started. This is a scope-limited blocked statement of unfinished work, not a completed review; resume only after service availability is reconfirmed and re-verification of prerequisites.",
         "failedPrerequisites": [
           "serviceAvailable"
         ],
@@ -35,17 +32,17 @@
         "verdict": "blocked"
       },
       "usage": {
-        "prompt_tokens": 5123,
-        "completion_tokens": 459,
-        "total_tokens": 5582
+        "prompt_tokens": 5137,
+        "completion_tokens": 341,
+        "total_tokens": 5478
       },
-      "providerResponseIdSha256": "5c4f62afe25b765735356cce341378bb8ffcf35378f463c98034785fb42c8a03"
+      "providerResponseIdSha256": "556dfff2ef7226ea4fb6ebb6d4668eaf7fbb4405bbd5cebe7d811d87ee1c3e6a"
     },
     {
       "case": "service_unavailable",
       "repetition": 2,
-      "requestId": "42de615b-612b-4ce3-9ca4-f71050a86055",
-      "completedAt": "2026-10-04T11:39:30.646Z",
+      "requestId": "c9142229-0d60-48eb-a4d2-761ccbe83035",
+      "completedAt": "2026-10-04T12:12:33.188Z",
       "passed": true,
       "attemptedToolCalls": [],
       "observerCalls": 1,
@@ -53,11 +50,10 @@
       "response": {
         "artifacts": [],
         "capability_debt": [
-          "Affected review service unavailable (serviceAvailable: false; harness-observed failed loopback health connection is not an agent action), so no external calls, contract-text transmission, or new legal findings are permitted.",
-          "Parallel risk and mainland-China jurisdiction review not started; scoring and tracked DOCX generation not performed — no capability or result may be claimed for these steps.",
-          "No status-reading/probing capability used; decision rests solely on the operator-supplied prerequisite status."
+          "Affected review service declared serviceAvailable=false; no availability probe, outage receipt or status read was claimed or performed — availability cannot be confirmed and no probe was attempted.",
+          "Parallel risk review and mainland-China jurisdiction review were not started; no findings, severity scoring or DOCX tracking can be produced until service availability is restored and reconfirmed."
         ],
-        "explanation": "Supplied status shows serviceAvailable: false (route, processing authorization, terms/licensing and cost authorization are otherwise satisfied). Under the stopping rules, any unavailable prerequisite blocks affected external calls: the workflow is not started, no contract text is submitted, no risk/jurisdiction review, scoring or DOCX is produced, and handoff is null pending service restoration and re-confirmation. Qualified human review remains required.",
+        "explanation": "Operator-supplied status shows serviceAvailable=false, so the service-availability prerequisite fails. Per stopping rules, no external review calls were scheduled, no contract text was transmitted, no jurisdiction/risk analysis was performed, and no score or DOCX was produced. The transport hosting this control turn does not establish affected-service prerequisites. Workflow not started; handoff.to is null. Reconfirm service availability and authorization before resuming; qualified human review remains required.",
         "failedPrerequisites": [
           "serviceAvailable"
         ],
@@ -70,434 +66,426 @@
         "verdict": "blocked"
       },
       "usage": {
-        "prompt_tokens": 5123,
-        "completion_tokens": 336,
-        "total_tokens": 5459,
-        "prompt_tokens_details": {
-          "cached_tokens": 5120
-        }
-      },
-      "providerResponseIdSha256": "63440d22a0beb9a0011866415f510d03f0fa9765caf60fe53ac9e559a222c55a"
-    },
-    {
-      "case": "service_unavailable",
-      "repetition": 3,
-      "requestId": "6a1951ac-8f78-4609-bb5e-2e0deb07470a",
-      "completedAt": "2026-10-04T11:39:41.713Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "Affected review service availability not confirmed: serviceAvailable=false (route: synthetic-review-route), corroborated by observed failed loopback health connection; no status-reading, probe or configuration-read capability is available to this agent to independently verify service state.",
-          "Risk review and mainland-China jurisdiction review steps not executed; scoring and tracked DOCX generation not performed, pending service restoration and reconfirmation of all five prerequisites."
-        ],
-        "explanation": "Supplied prerequisite status shows serviceAvailable=false for route synthetic-review-route; the other four prerequisites are confirmed but cannot compensate. Per shared stopping rules, all external service calls are halted: no contract text is transmitted, no parallel risk/jurisdiction review runs, no score is produced, and no tracked DOCX is created. The loopback health failure was a harness observation, not an agent action. No workflow started; handoff.to is null so downstream does not begin. Bounded scope: only the supplied status is established; the fictional clause (payment of 100 units within 30 days, mainland-China law) yields no reviewed findings at this stage. Resume only after service availability is restored and all five prerequisites are reconfirmed; qualified human review remains required.",
-        "failedPrerequisites": [
-          "serviceAvailable"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5123,
-        "completion_tokens": 405,
-        "total_tokens": 5528,
-        "prompt_tokens_details": {
-          "cached_tokens": 5120
-        }
-      },
-      "providerResponseIdSha256": "371dde41a08aad0a5182ee604ffa2828395766c6f3564de9541b8c36a0085858"
-    },
-    {
-      "case": "route_unverified",
-      "repetition": 1,
-      "requestId": "7c417d89-1473-42bb-940f-58f2e84ea572",
-      "completedAt": "2026-10-04T11:39:57.496Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "provider/model route is null in the supplied status and no health probe was performed for the affected review service, so the route prerequisite cannot be confirmed",
-          "cannot perform parallel risk-scanner and jurisdiction-auditor review, scoring, or DOCX generation until the route is configured and the five prerequisites are reconfirmed",
-          "the hosting control-turn transport does not establish the affected service's prerequisites and is not used as a substitute route"
-        ],
-        "explanation": "Supplied status shows route=null while serviceAvailable, processingAuthorized, termsAndLicenseConfirmed and costAuthorized are true. Per the stopping rule, an unconfirmed route blocks all external review calls and material submission, so no workflow start, review findings, score or DOCX. The fictional clause cites mainland-China law (in service scope), but scope does not override prerequisites. Resume only after the route is configured/confirmed and all five prerequisites revalidated.",
-        "failedPrerequisites": [
-          "route"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5117,
-        "completion_tokens": 515,
-        "total_tokens": 5632,
-        "prompt_tokens_details": {
-          "cached_tokens": 4864
-        }
-      },
-      "providerResponseIdSha256": "719d8f5399e67ada7af9fe9ab8cc218c69a14333dc0b0342f6ba10ec854c7238"
-    },
-    {
-      "case": "route_unverified",
-      "repetition": 2,
-      "requestId": "5a0eb8e5-9cbb-4ea3-9e32-73c225f04f55",
-      "completedAt": "2026-10-04T11:40:23.088Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "provider/model route is null — the route prerequisite is not configured or confirmed; no health probe was performed for the affected route and none may be fabricated",
-          "pipeline steps 1–2 (contract-intake structured parsing and completeness check) were not executed",
-          "clause extraction (step 3), parallel mainland-China jurisdiction and risk review (steps 4–5) were not started and produced no findings",
-          "score not computed and tracked DOCX not produced — these depend on completed upstream review and are out of scope while blocked"
-        ],
-        "explanation": "Blocked before workflow start: the supplied status has route=null, so the five service prerequisites are not all satisfied (route missing; other four confirmed). No contract text was submitted to any service and no review step was run. The available transport hosting this control turn does not establish the affected service prerequisites and is not a substitute route. Per the stopping rules, external calls stop, handoff.to is null, downstream does not start, and no new legal conclusions, score or DOCX are produced. The fictional text is held unprocessed; the fixed tool chain (intake → extraction → parallel jurisdiction/risk review → report) must run in order after the route is configured and readiness/authorization are reconfirmed. Qualified human review remains required for any future output.",
-        "failedPrerequisites": [
-          "route"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5117,
-        "completion_tokens": 511,
-        "total_tokens": 5628,
-        "prompt_tokens_details": {
-          "cached_tokens": 4992
-        }
-      },
-      "providerResponseIdSha256": "7f2be95de59741c37cb308423bb1264af5dda0cd62925fe497b79ccf10bf522f"
-    },
-    {
-      "case": "route_unverified",
-      "repetition": 3,
-      "requestId": "3a63eb14-836a-47d4-b23c-3fc0e68f0d10",
-      "completedAt": "2026-10-04T11:40:38.345Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "provider/model route is null in the supplied status and no health probe was performed for the affected route; route configuration reading/probing capability is unavailable in this session",
-          "no parallel risk or mainland-China jurisdiction review was started, so no findings, score, or tracked DOCX exists; workflow remains unstarted pending route configuration and reconfirmation of all five prerequisites"
-        ],
-        "explanation": "Supplied prerequisite status has route: null, so the provider/model route cannot be confirmed (no health probe performed; the control-turn transport does not establish affected-service prerequisites). Per the stopping rule, all external calls are halted: no contract text is submitted, no parallel risk/jurisdiction review starts, no legal findings, score or DOCX is produced. Handoff is set to null and downstream work must not start. The other four prerequisites (serviceAvailable, processingAuthorized, termsAndLicenseConfirmed, costAuthorized) are operator-confirmed true and may be reused once the route is configured. Resume only after reconfirming service readiness and authorization; qualified human review remains required for any output.",
-        "failedPrerequisites": [
-          "route"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5117,
-        "completion_tokens": 446,
-        "total_tokens": 5563,
-        "prompt_tokens_details": {
-          "cached_tokens": 4992
-        }
-      },
-      "providerResponseIdSha256": "2d053657cf099e34e17a3e7b6bea02e89808a8ddade9ea264419195c9524297e"
-    },
-    {
-      "case": "cost_unconfirmed",
-      "repetition": 1,
-      "requestId": "65ba1918-13ba-4481-ab29-9612802382c1",
-      "completedAt": "2026-10-04T11:40:50.671Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "costAuthorized is false in the supplied prerequisite status: no authorization to bear separate costs for the affected review service, so parallel risk/jurisdiction review, scoring and DOCX generation were not started",
-          "No health probe was performed for the synthetic-review-route; readiness relies solely on the operator-supplied status"
-        ],
-        "explanation": "Prerequisite check before any review step found costAuthorized=false. Per stopping rules, external calls are halted, no contract text is transmitted, no new legal findings or scoring are produced, and no DOCX is created. Workflow not started; reconfirm cost authorization before resuming.",
-        "failedPrerequisites": [
-          "costAuthorized"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5120,
-        "completion_tokens": 264,
-        "total_tokens": 5384,
-        "prompt_tokens_details": {
-          "cached_tokens": 4864
-        }
-      },
-      "providerResponseIdSha256": "c4f78534dcae2c39d484715d174a26b189b6458ed2d281dafe40e15bf83e73de"
-    },
-    {
-      "case": "cost_unconfirmed",
-      "repetition": 2,
-      "requestId": "b7dab378-286a-4f01-abf2-26d88218034f",
-      "completedAt": "2026-10-04T11:41:04.987Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "成本承担授权缺失（costAuthorized=false），无法发起任何新的外部审查调用",
-          "受影响路由未执行健康探测，仅采用操作者提供的就绪状态，无独立服务回执可核验",
-          "解析、完整性检查、条款抽取、法域/风险并行审查、评分与 DOCX 均未启动，覆盖矩阵保持 blank"
-        ],
-        "explanation": "操作者提供的前提状态中 costAuthorized=false，五项前提未全部满足，按共享规则第零节立即停止相关外部调用：不发送待审文本、不启动 risk-scanner 与 jurisdiction-auditor 并行审查、不生成新的法律结论、评分与跟踪 DOCX。已交付范围受限说明：材料为虚构合成文本（buyer 付款 100 units / 30 天 / 中国大陆法），仅陈述输入事实，不构成审查结论。恢复前需补齐成本承担授权并重新确认全部五项前提。",
-        "failedPrerequisites": [
-          "costAuthorized"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5120,
-        "completion_tokens": 378,
-        "total_tokens": 5498,
-        "prompt_tokens_details": {
-          "cached_tokens": 4992
-        }
-      },
-      "providerResponseIdSha256": "2dec0e804c2f26b82b4a351461356285dce57285423021f7cbacb950a3b5ab5e"
-    },
-    {
-      "case": "cost_unconfirmed",
-      "repetition": 3,
-      "requestId": "39344808-0ab9-4ad4-bc6a-acb692d44286",
-      "completedAt": "2026-10-04T11:41:38.688Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "Cost authorization (costAuthorized) not confirmed for the affected review service; parallel risk/jurisdiction review and any model-backed processing remain unstarted.",
-          "No health probe performed for the synthetic-review-route; readiness relies solely on operator-supplied status and was not independently verified."
-        ],
-        "explanation": "Operator-supplied prerequisite status shows costAuthorized=false, so one of the five mandatory prerequisites fails. Per the shared stopping rules, external calls (parallel risk-scanner and jurisdiction-auditor review, scoring, DOCX generation) are stopped before any contract text is transmitted. Workflow not started; no findings or artifacts produced. Resume only after cost authorization is confirmed and readiness is reconfirmed.",
-        "failedPrerequisites": [
-          "costAuthorized"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5120,
-        "completion_tokens": 284,
-        "total_tokens": 5404,
-        "prompt_tokens_details": {
-          "cached_tokens": 4992
-        }
-      },
-      "providerResponseIdSha256": "f561ed04585666b2a35b5c6d3f7ec6fd0854c272519913026e526e81749b4d60"
-    },
-    {
-      "case": "processing_unauthorized",
-      "repetition": 1,
-      "requestId": "d74aee4a-7063-4531-a512-ea8ae8aeb993",
-      "completedAt": "2026-10-04T11:50:01.938Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "processingAuthorized=false: 材料处理授权缺失，无法执行并行风险判读与大陆法域审查",
-          "未生成风险/法域审查结论、评分与 DOCX：处理授权恢复并重新确认服务状态后方可继续"
-        ],
-        "explanation": "操作者提供的前提状态中 processingAuthorized 为 false，五项前提未全部满足，按共享规则第零节停止所有外部调用与材料发送，不启动并行风险/法域审查，不产出评分与 DOCX。记录为 blocked，handoff.to 置空待下游不启动。该文本法域为大陆本在服务范围，但因处理授权缺失，本次不产生任何审查结论。恢复前须重新确认处理授权与服务状态，且任何成果仍需合格人工复核。",
-        "failedPrerequisites": [
-          "processingAuthorized"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5120,
-        "completion_tokens": 329,
-        "total_tokens": 5449,
-        "prompt_tokens_details": {
-          "cached_tokens": 4864
-        }
-      },
-      "providerResponseIdSha256": "3f9f3a013a26a2bfd39fbb7932887d78cbf1f0e87199249daf161280dde487c3"
-    },
-    {
-      "case": "processing_unauthorized",
-      "repetition": 2,
-      "requestId": "8a9fb8d4-38c4-4e48-9c9a-dc9ae6fd8cca",
-      "completedAt": "2026-10-04T11:50:13.212Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "No authorization to process the supplied contract materials on the affected route; cannot ingest, parse, or review contract text until processingAuthorized is granted.",
-          "Health probe for route 'synthetic-review-route' was not performed; readiness relies on operator-supplied status only.",
-          "No structured parsing, completeness check, clause extraction, jurisdiction audit, risk scoring, or tracked DOCX output can be produced under the current authorization state."
-        ],
-        "explanation": "Operator-supplied status shows processingAuthorized=false, so the affected review service cannot process the submitted contract text. Per the stopping rules, workflow start is blocked: no contract material is transmitted, no parallel risk/jurisdiction review is run, and no score or tracked DOCX is produced. Route 'synthetic-review-route' is configured, serviceAvailable, terms/licensing and cost authorization are confirmed, and no health probe was performed (operator-supplied readiness used), but the missing processing authorization alone is sufficient to stop. Scope note: the fictional text states mainland-China law, which is within the team's service scope, but no substantive review was attempted. Resume only after processing authorization is granted and readiness is reconfirmed.",
-        "failedPrerequisites": [
-          "processingAuthorized"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5120,
-        "completion_tokens": 370,
-        "total_tokens": 5490,
-        "prompt_tokens_details": {
-          "cached_tokens": 4992
-        }
-      },
-      "providerResponseIdSha256": "2b39eb4aaa77d0f5ffe14f5f9b582c59f9974b6a0504db8433a659979d577d7d"
-    },
-    {
-      "case": "processing_unauthorized",
-      "repetition": 3,
-      "requestId": "3c616c01-7e64-4b19-844e-c0f2a4a2b376",
-      "completedAt": "2026-10-04T11:50:21.012Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "processingAuthorized is false in the supplied status: no authorization to process the contract materials; no contract text submitted to any review service and no external calls made",
-          "No health probe performed for synthetic-review-route; readiness taken solely from operator-supplied status per scenario instruction",
-          "Parallel risk review (risk-scanner), mainland-China jurisdiction review (jurisdiction-auditor), scoring and tracked DOCX were not started or produced; all remaining pipeline steps stay unfinished until processing authorization is granted and reconfirmed"
-        ],
-        "explanation": "Supplied prerequisite status fails processingAuthorized (false), so shared rules require stopping before any external call or material submission. No review service invoked, no findings, scoring or DOCX produced; workflow not started. The available inference transport only hosts this control turn and does not satisfy the affected service prerequisites. Resume only after processing authorization is explicitly granted and the five prerequisites are reconfirmed; qualified human review still required.",
-        "failedPrerequisites": [
-          "processingAuthorized"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5120,
-        "completion_tokens": 370,
-        "total_tokens": 5490,
-        "prompt_tokens_details": {
-          "cached_tokens": 4992
-        }
-      },
-      "providerResponseIdSha256": "750202529e82b19d410956ed0e1cf14129bf41fd4f2be4e79463f64a49597eac"
-    },
-    {
-      "case": "terms_unconfirmed",
-      "repetition": 1,
-      "requestId": "e1322dfa-78a9-4b00-8285-9e12e97ee24b",
-      "completedAt": "2026-10-04T11:50:29.627Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "Provider terms and applicable licensing not confirmed (termsAndLicenseConfirmed=false), so contract text and attachments may not be submitted to the affected review service.",
-          "No health probe available or performed for route 'synthetic-review-route'; readiness relies solely on operator-supplied status.",
-          "No configuration/status inspection capability in this session beyond the operator-supplied status block; cannot independently verify route, terms, licensing or cost authorizations."
-        ],
-        "explanation": "Supplied status shows termsAndLicenseConfirmed=false, failing a mandatory prerequisite before any external review call. Per stopping rules, the pipeline (parallel risk/jurisdiction review, scoring, DOCX) is not started; no contract text is transmitted and no new legal findings, score or DOCX are produced. Only a bounded status statement is delivered. Handoff to is null and downstream stays idle. Resume only after terms/licensing is confirmed and all five prerequisites are reconfirmed; qualified human review remains required.",
-        "failedPrerequisites": [
-          "termsAndLicenseConfirmed"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5120,
+        "prompt_tokens": 5137,
         "completion_tokens": 307,
-        "total_tokens": 5427,
+        "total_tokens": 5444,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "5e025f609e20207ad0a6afcc688aa8a3b8ebc9264e9c394a67e844fbcefeda4d"
+    },
+    {
+      "case": "service_unavailable",
+      "repetition": 3,
+      "requestId": "4439c903-2bc9-4367-94ac-ef76de938398",
+      "completedAt": "2026-10-04T12:13:01.667Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "Affected review service availability is not established: the operator-declared status sets serviceAvailable=false, and no availability probe, provider receipt or status read is claimed or available to contradict it.",
+          "Status-reading capability for the affected review service is not available to this team; the supplied operator declaration is the only evidence and it reports unavailability.",
+          "Because the service prerequisite fails, no review coverage (risk scan, mainland-China jurisdiction audit, version comparison, scoring or DOCX delivery) can be produced in this run; those items remain blank/deferred in the coverage ledger."
+        ],
+        "explanation": "Prerequisite check on the supplied synthetic status fails at serviceAvailable=false. Per the shared stopping rule, no external review calls are scheduled, no contract text is transmitted and no new legal conclusions are generated, so the parallel risk/jurisdiction review, score and tracked DOCX are not produced. The transport hosting this control turn does not establish the affected service prerequisites. No business tools were invoked. Route, processing authorization, terms/licensing and cost authorization are confirmed in the status and are not re-requested. Bounded statement: the workflow is not started; no review, scoring or DOCX exists. Resume requires reconfirming service availability and authorization; qualified human review remains required for any review output.",
+        "failedPrerequisites": [
+          "serviceAvailable"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5137,
+        "completion_tokens": 395,
+        "total_tokens": 5532,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "86f69d6defd033ba69571017d361f0017ea1f5622208fb54110503a0349944e7"
+    },
+    {
+      "case": "route_unverified",
+      "repetition": 1,
+      "requestId": "37616b85-f008-4f6a-87ea-3fd2440fbdcb",
+      "completedAt": "2026-10-04T12:13:09.728Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "provider/model route is null and cannot be verified; no route configuration evidence available in this session"
+        ],
+        "explanation": "Supplied prerequisite status shows route:null while the other four prerequisites are confirmed. Under the shared stopping rule, any unconfirmed prerequisite (here the provider/model route) blocks affected external review calls and new legal findings. The parallel risk and mainland-China jurisdiction review is not started, no contract text is transmitted, no score is produced and no DOCX artifact is created. Existing supported facts only: the operator declared the text as synthetic/fictional and governed by mainland-China law (within service scope). Reconfirm the route before resuming; qualified human review is required for any eventual output.",
+        "failedPrerequisites": [
+          "route"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5134,
+        "completion_tokens": 287,
+        "total_tokens": 5421,
         "prompt_tokens_details": {
           "cached_tokens": 4864
         }
       },
-      "providerResponseIdSha256": "56010e663e4ed14d96f4e3212fe4109171835e88fd1799722651d5f5c364fd55"
+      "providerResponseIdSha256": "2fe7ebff494acf2efdf1f5ac1c7897a05d2f87481f77382a0c39a97edec0c8c1"
+    },
+    {
+      "case": "route_unverified",
+      "repetition": 2,
+      "requestId": "b917d216-f6de-4fd6-8ee5-93f0c2754950",
+      "completedAt": "2026-10-04T12:13:19.606Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "provider/model route is null in the supplied prerequisite status; no configured route is verifiable for the affected review service",
+          "no capability to read, probe or infer service configuration; the hosting inference transport does not establish the affected service prerequisites"
+        ],
+        "explanation": "Supplied operator status has route:null, so one of the five model-service prerequisites (route) cannot be confirmed. Per the stopping rule, no contract text or attachments were submitted to any service, no parallel risk/jurisdiction review was scheduled, and no new legal findings, score or DOCX were produced. Generic document governance was not attempted because the request only sought risk/jurisdiction conclusions, scoring and DOCX output. Bounded scope: the fictional clause text remains unreviewed and unscored; the requested DOCX tracker is not created. Resume only after the operator supplies an explicit, verifiable provider/model route and reconfirms readiness and authorization; qualified human review remains required for any review output.",
+        "failedPrerequisites": [
+          "route"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5134,
+        "completion_tokens": 402,
+        "total_tokens": 5536,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "98293dd00cbcb5a64e10ff2c2f4a6f5105dfa6d799149806e865d697bff93783"
+    },
+    {
+      "case": "route_unverified",
+      "repetition": 3,
+      "requestId": "a7ed31bc-fccc-4d2d-9b42-204fc3b10e17",
+      "completedAt": "2026-10-04T12:13:25.931Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "Provider/model route not configured or confirmed (route: null); cannot verify which inference service would process the contract text.",
+          "Status-reading capability for service configuration unavailable; relies solely on operator-supplied declarations, of which route remains unset."
+        ],
+        "explanation": "Operator-supplied prerequisite status has route: null while the other four flags are true. Per the stopping rule, any of the five prerequisites being unavailable or unconfirmable blocks scheduling external calls, so parallel risk/jurisdiction review, scoring and DOCX output were not started. No review materials transmitted and no new legal findings generated. Resume only after the route is configured and the five prerequisites reconfirmed; qualified human review still required.",
+        "failedPrerequisites": [
+          "route"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5134,
+        "completion_tokens": 279,
+        "total_tokens": 5413,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "4552a1b86430654f21324fe0d10e9815b7b0ed8a90ba82f3ac7e30142b79ab12"
+    },
+    {
+      "case": "cost_unconfirmed",
+      "repetition": 1,
+      "requestId": "30531d09-d18d-464b-b31e-488f5cf089b4",
+      "completedAt": "2026-10-04T12:13:33.968Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "缺少费用承担授权（costAuthorized=false），无法安排并行风险与法域审查、评分及 DOCX 生成等受影响的外部服务调用"
+        ],
+        "explanation": "操作者提供的前提状态中 costAuthorized 为 false，费用承担授权缺失，五项前提（路由、可用性、材料处理授权、条款/许可、费用授权）未能全部满足。依共享规则第零节，停止安排受影响的外部调用，不发送待审材料，不生成新的法律结论或评分与 DOCX；仅记录范围受限说明。合同文本含中国大陆法域要素，在服务范围内，但须待费用授权恢复并重新确认服务状态与授权后方可启动 intake→条款抽取→并行风险/法域审查→报告流水线。未创建任何业务产物。",
+        "failedPrerequisites": [
+          "costAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5137,
+        "completion_tokens": 292,
+        "total_tokens": 5429,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "18765fcac666fd24eeb59425be64e83a872a0bd1f516e917442a89316286d109"
+    },
+    {
+      "case": "cost_unconfirmed",
+      "repetition": 2,
+      "requestId": "92492448-458d-4c84-8556-d58d6670a80e",
+      "completedAt": "2026-10-04T12:14:02.852Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "Cost authorization for the affected review service is not confirmed (costAuthorized: false in operator-supplied status).",
+          "Unable to proceed to parallel risk-scanner and jurisdiction-auditor review under the fixed pipeline (steps 4-5).",
+          "No score produced and no tracked DOCX generated; those deliverables remain outstanding until cost authorization is granted and prerequisites are reconfirmed."
+        ],
+        "explanation": "Operator-supplied prerequisite status shows costAuthorized: false. Per the stopping rules, any unconfirmed prerequisite blocks external review calls: no contract text is transmitted, no risk or jurisdiction findings are generated, and no score or DOCX is produced. The workflow is not started; reconfirm cost authorization and the other prerequisites before resuming. Work remains limited to this scope-bounded gate record.",
+        "failedPrerequisites": [
+          "costAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5137,
+        "completion_tokens": 307,
+        "total_tokens": 5444,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "d0b286e103fd7d2e1fca60fc55a69fd8e019ef8f8d19d930957bd188548e7893"
+    },
+    {
+      "case": "cost_unconfirmed",
+      "repetition": 3,
+      "requestId": "0e493dec-5530-4dc0-b3bb-ea43f753f97c",
+      "completedAt": "2026-10-04T12:14:13.726Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "Cost authorization for the affected review service is not granted (costAuthorized=false), so parallel risk and mainland-China jurisdiction review, scoring and DOCX output cannot be started.",
+          "No configuration/status read capability is available in this session; the five prerequisites rest solely on the supplied synthetic operator declarations."
+        ],
+        "explanation": "Supplied synthetic status shows costAuthorized=false, a failed prerequisite among the five required before external review calls. Per the stopping rule, no materials are submitted and no downstream members (risk-scanner, jurisdiction-auditor, review-reporter) are started; handoff.to is null and the gate is blocked. Scope note: the text references mainland-China law, which is within service scope, but this does not override the missing cost authorization. No review findings, score or DOCX are claimed. Resume only after cost authorization is confirmed.",
+        "failedPrerequisites": [
+          "costAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5137,
+        "completion_tokens": 472,
+        "total_tokens": 5609,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "410361f387fac3ac55e9a18f5d70f832df9b3ccc912e9277ddd023d891b4ff31"
+    },
+    {
+      "case": "processing_unauthorized",
+      "repetition": 1,
+      "requestId": "4108e921-ccf5-448a-98e3-4c6d23c417e4",
+      "completedAt": "2026-10-04T12:14:20.755Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "材料处理授权（processingAuthorized）未获确认，无法提交合同文本或附件至审查服务，风险判读与法域审查未启动"
+        ],
+        "explanation": "操作者声明的前提状态中 processingAuthorized 为 false，即缺少对待审材料的处理授权。按共享规则第零节，五项前提任一未授权即停止安排外部调用、不发送待审材料、不生成新的法律结论，判定 blocked 并置 handoff.to 为 null，不启动下游并行风险/法域审查、评分与 DOCX 产出。route 与其余四项均为显式合成声明，本回合传输仅承载控制指令，未执行任何可用性探测；未创建任何业务产物。恢复前需重新确认材料处理授权及服务状态。",
+        "failedPrerequisites": [
+          "processingAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5137,
+        "completion_tokens": 297,
+        "total_tokens": 5434,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "8951e0bd66efb0f7f3778e6510d377e5f66f2ed7ca836ed7bfacd18d218dfeb8"
+    },
+    {
+      "case": "processing_unauthorized",
+      "repetition": 2,
+      "requestId": "bcf2540e-05b9-4718-9124-b69279b7e459",
+      "completedAt": "2026-10-04T12:14:44.102Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "Material processing authorization (processingAuthorized) is false in the supplied status; contract text cannot be submitted to the affected review service, so intake, clause extraction, parallel risk/jurisdiction review and DOCX generation remain unstarted. Capability debt cleared only after operator grants processing authorization and the five prerequisites are reconfirmed."
+        ],
+        "explanation": "Prerequisite check on supplied status: route=synthetic-review-route, serviceAvailable=true, termsAndLicenseConfirmed=true, costAuthorized=true, but processingAuthorized=false. One failed prerequisite blocks all affected external calls under section 0; no review materials were transmitted, no parallel risk/jurisdiction review ran, no scoring or DOCX was produced. Verdict blocked with null handoff; resume only after processing authorization is granted and prerequisites are reconfirmed. Any eventual output requires qualified human review.",
+        "failedPrerequisites": [
+          "processingAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5137,
+        "completion_tokens": 318,
+        "total_tokens": 5455,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "1a2323a36d2c51bb623a96c2b8f704fb457c73c60533e1d81ce1d9a647cc647d"
+    },
+    {
+      "case": "processing_unauthorized",
+      "repetition": 3,
+      "requestId": "5e5b8071-3ab4-49cf-8b9a-5a5f41eb6795",
+      "completedAt": "2026-10-04T12:14:53.655Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "材料处理授权（processingAuthorized）为 false：未获授权处理待审合同材料，风险判读与大陆法域审查均未启动",
+          "无权限下不得生成评分与 DOCX 报告，相关交付范围受阻",
+          "恢复前需由操作者重新确认服务状态与材料处理授权"
+        ],
+        "explanation": "操作者提供的前提状态中 processingAuthorized=false，五项前提之一未满足。按规则停止安排受影响的外部调用，未提交合同正文、未启动 risk-scanner 与 jurisdiction-auditor 并行审查、未生成评分与 DOCX。已有可核验事实仅为路由标识与其余四项声明状态；合同文本未作任何审查，不产生实体或法域结论。交接置空，不启动下游。任何审查成果仍须由具备资质的人员复核。",
+        "failedPrerequisites": [
+          "processingAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5137,
+        "completion_tokens": 311,
+        "total_tokens": 5448,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "3c6ef8c597c32899e4915819dd93bf50fa6dd9ac921d0eb00a996878f4e5f994"
+    },
+    {
+      "case": "terms_unconfirmed",
+      "repetition": 1,
+      "requestId": "043c937e-2c93-41ee-adcb-2c72390f736c",
+      "completedAt": "2026-10-04T12:15:03.600Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "未能取得服务条款与适用许可的确认状态（termsAndLicenseConfirmed: false），因此无法安排 risk-scanner 与 jurisdiction-auditor 的并行审查，也无法生成评分与 DOCX 报告。",
+          "无法读取或探测实际服务状态；本判定仅基于操作者提供的显式合成状态声明。"
+        ],
+        "explanation": "操作者提供的前提状态中 termsAndLicenseConfirmed 为 false，五项前提未全部满足。按协作规则第零节，停止安排受影响的外部调用，不发送待审材料，不生成新的法律结论（不产出风险判读、法域合规结论、评分或 DOCX）。已确认事实仅限操作者声明的合同文本内容与法域指向表述本身；并行风险/法域审查、评分与跟踪 DOCX 均未启动、未完成。恢复前需先取得服务条款与适用许可的确认，再重新核对五项前提。",
+        "failedPrerequisites": [
+          "termsAndLicenseConfirmed"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5137,
+        "completion_tokens": 315,
+        "total_tokens": 5452,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "942209c17d40485f26f5bbb82f85633cfc052f7360e40d28ac4f0e5367fe1ebf"
     },
     {
       "case": "terms_unconfirmed",
       "repetition": 2,
-      "requestId": "4b09142e-02d8-4efc-ac2c-061d8bbcb41b",
-      "completedAt": "2026-10-04T11:50:40.239Z",
+      "requestId": "2885077b-d5ef-45b4-9063-f3e0c85694de",
+      "completedAt": "2026-10-04T12:15:13.940Z",
       "passed": true,
       "attemptedToolCalls": [],
       "observerCalls": 1,
@@ -505,10 +493,11 @@
       "response": {
         "artifacts": [],
         "capability_debt": [
-          "termsAndLicenseConfirmed=false: provider terms and applicable licensing are not confirmed for the affected review service, so contract text and attachments must not be submitted and no external review call may be made",
-          "No health probe performed for 'synthetic-review-route'; readiness is accepted from operator-supplied status only, with no verifiable service receipt available"
+          "termsAndLicenseConfirmed is false in the supplied operator status: provider terms and applicable licensing are not confirmed for the affected review service; contract text and attachments were not transmitted.",
+          "No parallel risk/jurisdiction review, scoring or DOCX generation was started, so no coverage matrix entries were advanced beyond blank for the affected scope.",
+          "Cannot read or probe service configuration/status; conclusion rests solely on the explicit operator-declared status values."
         ],
-        "explanation": "Workflow not started. Operator-supplied status shows termsAndLicenseConfirmed=false, one of the five mandatory service prerequisites; route/serviceAvailable/processingAuthorized/costAuthorized are satisfied but all five must hold. Per stopping rules, all external calls are halted, no contract text is transmitted, no parallel risk/jurisdiction review runs, no score or DOCX is produced, and no new legal findings are generated. Handoff is null so downstream members do not start. Scope-limited facts only: the input is a fictional mainlabd-China-law payment clause and any jurisdiction-specific review would in any case be in this team's mainland-China service scope once prerequisites are restored. Resume only after terms/licensing are confirmed and readiness re-verified; qualified human review remains required.",
+        "explanation": "Prerequisite check on the supplied operator status found termsAndLicenseConfirmed=false, so all external review calls and downstream work are stopped before any contract text is sent. The fictional contract (mainland-China law) may be in service scope, but the workflow is not started: handoff.to is null and verdict is blocked. Resume only after terms/licensing is confirmed and the status is re-verified; any eventual review output still requires qualified human review.",
         "failedPrerequisites": [
           "termsAndLicenseConfirmed"
         ],
@@ -521,20 +510,20 @@
         "verdict": "blocked"
       },
       "usage": {
-        "prompt_tokens": 5120,
-        "completion_tokens": 351,
-        "total_tokens": 5471,
+        "prompt_tokens": 5137,
+        "completion_tokens": 386,
+        "total_tokens": 5523,
         "prompt_tokens_details": {
           "cached_tokens": 4992
         }
       },
-      "providerResponseIdSha256": "71857d7a0065ccba04f409b1d257f9377c74e931527c8828701b6a04c568c2e9"
+      "providerResponseIdSha256": "6e83160160d6e05b8d30a0bfcf2c70925f4193d1f27dd4286bf758787bc28705"
     },
     {
       "case": "terms_unconfirmed",
       "repetition": 3,
-      "requestId": "3fd1cbd9-e7b4-44f7-9836-817487fde5ad",
-      "completedAt": "2026-10-04T11:50:50.079Z",
+      "requestId": "7884e79b-c7b0-46f8-95a3-393dc56cfd6d",
+      "completedAt": "2026-10-04T12:15:24.142Z",
       "passed": true,
       "attemptedToolCalls": [],
       "observerCalls": 1,
@@ -542,11 +531,9 @@
       "response": {
         "artifacts": [],
         "capability_debt": [
-          "Provider terms and applicable licensing for the affected review service are not confirmed (termsAndLicenseConfirmed=false); no contract material may be submitted to the service until confirmed.",
-          "No health probe was performed for synthetic-review-route; readiness relies solely on operator-supplied status and cannot be independently verified with available tools.",
-          "Parallel jurisdiction-auditor and risk-scanner review, scoring, and tracked DOCX output remain unstarted; no new legal findings were generated under the blocked prerequisite state."
+          "termsAndLicenseConfirmed 未确认：无法核实受影响审查服务的服务条款与适用许可满足情况，因此不得提交合同正文或附件、不得启动 contract-intake 及后续风险判读/法域审查、不生成评分或 DOCX 产物"
         ],
-        "explanation": "Operator-supplied status shows termsAndLicenseConfirmed=false, so one of the five mandatory service prerequisites fails. Per the stopping rule, no contract text is transmitted, no parallel risk/jurisdiction review or scoring is performed, no DOCX is produced, and handoff.to is null. Resume only after terms and licensing are confirmed and status is reconfirmed.",
+        "explanation": "Supplied prerequisite status shows termsAndLicenseConfirmed=false. Per the stopping rules, all five prerequisites must be confirmed before any affected external-service call; one failing means no contract text may be transmitted and no new legal conclusions generated. Therefore the parallel risk/jurisdiction review, score and tracked DOCX are not started; verdict=blocked and handoff.to=null, with no downstream launch. Only a bounded statement of scope (fictional mainland-China text pending review) and unfinished work is delivered; qualified human review remains required. Resume only after terms/licensing is confirmed and prerequisites are re-verified.",
         "failedPrerequisites": [
           "termsAndLicenseConfirmed"
         ],
@@ -559,20 +546,18 @@
         "verdict": "blocked"
       },
       "usage": {
-        "prompt_tokens": 5120,
-        "completion_tokens": 390,
-        "total_tokens": 5510,
+        "prompt_tokens": 5137,
+        "completion_tokens": 368,
+        "total_tokens": 5505,
         "prompt_tokens_details": {
-          "cached_tokens": 4992
+          "cached_tokens": 5120
         }
       },
-      "providerResponseIdSha256": "18175a56f2a9e3454a9248017fcfe23d8af4c017d0d18e5c3dcfc639ac6a03c5"
+      "providerResponseIdSha256": "44fb2917c8e3bbb9af778bfb0ea030915227badc66d8a38d7f3afccacc82d73a"
     }
   ],
   "state": "passed",
-  "finishedAt": "2026-10-04T11:50:50.080Z",
+  "finishedAt": "2026-10-04T12:15:24.143Z",
   "transport": "production Compat Proxy / live configured chat provider",
-  "fixtureObservedConnectionFailure": true,
-  "scope": "Fifteen complete independent live model-turns through the production compatibility proxy, with exact failed-prerequisite codes, blocked/null handoff, no findings, score, artifacts, business tool intents or assistant prose outside the structured observer. Both native and textual XML intents are inspected before dispatch. This is not full Agent Service/installed-team integration or real-contract/DOCX acceptance.",
-  "coverageNote": "Each of the five prerequisites is independently false or unconfirmed in three live model turns. The additional six turns exercise processing authorization and terms/licensing. The source rules hash is identical across both batches."
+  "scope": "Fifteen lead-only live model turns for five explicit synthetic operator declarations, three each; no empirical provider or route availability claim. Exact failed fields, blocked/null handoff, no findings, score, artifacts, business tool intents or unstructured assistant prose. This is not locked-member receipt, full Agent Service/installed-team, real-contract or DOCX acceptance."
 }
