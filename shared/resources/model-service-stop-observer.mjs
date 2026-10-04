@@ -6,6 +6,14 @@ export function collectToolIntents(message) {
   const openings = [...text.matchAll(/<function=([^>]+)>/g)]
   const complete = [...text.matchAll(/<function=([^>]+)>([\s\S]*?)<\/function>/g)]
   if (openings.length !== complete.length) throw new Error('Incomplete textual tool intent')
+  const wrappers = [...text.matchAll(/<tool_call>([\s\S]*?)<\/tool_call>/g)]
+  if ((text.match(/<tool_call>/g) ?? []).length !== wrappers.length) throw new Error('Incomplete tool-call wrapper')
+  for (const wrapper of wrappers) {
+    if (!/^\s*<function=[^>]+>[\s\S]*<\/function>\s*$/.test(wrapper[1]) || [...wrapper[1].matchAll(/<function=/g)].length !== 1) throw new Error('Tool-call wrapper must contain exactly one function')
+    const body = wrapper[1].replace(/^\s*<function=[^>]+>/, '').replace(/<\/function>\s*$/, '')
+    if (body.replace(/<parameter=[^>]+>[\s\S]*?<\/parameter>/g, '').trim()) throw new Error('Unexpected prose in function body')
+  }
+  if (wrappers.length !== complete.length) throw new Error('Unwrapped textual function')
   const prose = text.replace(/<tool_call>[\s\S]*?<\/tool_call>/g, '').trim()
   if (prose) throw new Error('Assistant prose outside the structured observer is not accepted')
   const xml = complete.map(match => {
