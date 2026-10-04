@@ -1,0 +1,62 @@
+{
+  "observedAt": "2026-10-04T04:27:20.775Z",
+  "kind": "candidate-lock-evidence-not-release-or-install",
+  "platformCommit": "5ad8fa4b0f3dd62bded6ce234a094915bb837d2e",
+  "generator": "official computeMemberContentHashAt + validateTeamLockFile",
+  "lockSha256": "16d9b507e98582c7d9d2d385a20b7eff994f4d27dcc71e5581502b74422a8b43",
+  "records": [
+    {
+      "member": "contract-review-lead",
+      "commit": "2a6a63b2d4fd3e0c4606c2a08a21db65bfc74cba",
+      "tree": "e07b546d4637929b127acde7d038eeb850ea6913",
+      "version": "1.0.23",
+      "contentHash": "v3:649ceec591e2e5133a82d69aacafeabd6863e0403c40c4fb53521868c4630ead",
+      "reviewedBytesAndCommitMatch": true
+    },
+    {
+      "member": "contract-intake",
+      "commit": "25efa509b811e0f12f51ca0159ef5772585bdc31",
+      "tree": "bbf5a080d7fa9184c571df31caa9efbcd38aa455",
+      "version": "1.0.8",
+      "contentHash": "v3:6b7ed2e2b379db043ee86fbe2d31247b58525503886c59a39da34a5c0a92b406",
+      "reviewedBytesAndCommitMatch": true
+    },
+    {
+      "member": "clause-extractor",
+      "commit": "35a6ea9a578c97b8d7225a23d8a66ad3478f234e",
+      "tree": "185e29ff900006bbf3298c8e95cc15bd1e1e01ae",
+      "version": "1.1.1",
+      "contentHash": "v3:9a63128dd15e45b6ac72164b6be2b8331881086361e962a3350cd2165d411dea",
+      "reviewedBytesAndCommitMatch": true
+    },
+    {
+      "member": "risk-scanner",
+      "commit": "e712c7a724b53f0409afbc66153b1be83a2630df",
+      "tree": "9295a396addfb1470f4134b1c325066bed4bc36a",
+      "version": "1.1.1",
+      "contentHash": "v3:3ca4c51b7b5bf9d588bd444231be4e563ab787fb866bc4754c5e380d84d7f82f",
+      "reviewedBytesAndCommitMatch": true
+    },
+    {
+      "member": "jurisdiction-auditor",
+      "commit": "c65f6179dd7b4003328f301ff9b394f3fbf04a4a",
+      "tree": "cb7bb88a29055b837035017485c0c5f8116c3fde",
+      "version": "1.3.1",
+      "contentHash": "v3:0df4f366978abd26b7aa5b5e845251bd32f749e7bed22627b574387bac274c1e",
+      "reviewedBytesAndCommitMatch": true
+    },
+    {
+      "member": "review-reporter",
+      "commit": "5db3030fec8f9e4ad8e9bad464ff4e7d0aa2ec2d",
+      "tree": "b97feba4dc4f16b729d7e259ed1ad4e9ccaac954",
+      "version": "1.0.7",
+      "contentHash": "v3:2463d0ffc1e2ebe82ed1cf8cd6ff3c4ba464035a9468dd1f72b6fb7a1bd54f9d",
+      "reviewedBytesAndCommitMatch": true
+    }
+  ],
+  "limitations": [
+    "v3 covers identity files only; Git commit/tree fixes complete source",
+    "no published lock overwritten",
+    "not a runtime/approval/installation or DOCX result"
+  ]
+}

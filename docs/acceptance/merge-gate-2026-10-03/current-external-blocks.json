@@ -1,0 +1,15 @@
+{
+  "observedAt": "2026-10-04T04:20:35.007031+00:00",
+  "teamMerge": {
+    "operation": "git merge --no-commit --no-ff 440c28a494d1f06f2785552e57cca3f03cd4111e",
+    "result": "blocked_by_host_safety_check",
+    "alternativeRouteAttempted": false
+  },
+  "postInstallUiObservation": {
+    "operation": "node workspace/inspect-owned-dev.mjs on the newly-owned dev instance",
+    "result": "blocked_by_host_safety_check",
+    "alternativeRouteAttempted": false,
+    "installResult": "unconfirmed; install input was sent once, no retry"
+  },
+  "message": "This tool call was blocked by OpenAI because we couldn't determine the safety status of the request."
+}

@@ -1,0 +1,51 @@
+✔ schema compiles with the platform Draft-07 Ajv profile and validates the live flat receipt (8.703333ms)
+✔ passed accepts exactly the four S8 unavailable flags and rejects a real business flag (8.374625ms)
+✔ conditional still requires a verdict-affecting flag and BLK remains dominant (1.720583ms)
+✖ conditional requires the canonical Lead route instead of null, blank or another member (1.7385ms)
+✖ S8 unavailable flags cannot become business flags by flipping their boolean (1.447083ms)
+✔ strict platform YAML parser rejects malformed scalars and duplicate keys (1.241667ms)
+✔ skill keeps validator failure separate from the business verdict (1.001875ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 5
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 154.401167
+
+✖ failing tests:
+
+test at workspace/sources/contract-intake/skills/contract-intake-gate/tests/receipt-schema.test.mjs:79:1
+✖ conditional requires the canonical Lead route instead of null, blank or another member (1.7385ms)
+  AssertionError [ERR_ASSERTION]: conditional route null must be rejected
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file://<team-workspace>/workspace/sources/contract-intake/skills/contract-intake-gate/tests/receipt-schema.test.mjs:87:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at workspace/sources/contract-intake/skills/contract-intake-gate/tests/receipt-schema.test.mjs:91:1
+✖ S8 unavailable flags cannot become business flags by flipping their boolean (1.447083ms)
+  AssertionError [ERR_ASSERTION]: coverage-only conditional must fail: FLG-SKILL-VERSION-UNAVAILABLE
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file://<team-workspace>/workspace/sources/contract-intake/skills/contract-intake-gate/tests/receipt-schema.test.mjs:98:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

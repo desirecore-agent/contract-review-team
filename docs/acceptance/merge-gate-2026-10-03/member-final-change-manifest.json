@@ -1,0 +1,101 @@
+{
+  "observedAt": "2026-10-04T04:22:25.668094+00:00",
+  "members": [
+    {
+      "member": "contract-review-lead",
+      "head": "c28919295c2ad611bf2ebee2ba4a4532b18ea1b9",
+      "branch": "optimize/contract-takeover-20260929",
+      "paths": [
+        "agent.json",
+        "assets/avatar.webp",
+        "package-lock.json",
+        "package.json",
+        "tests/o1-boundary.contract.test.mjs"
+      ],
+      "sha256": {
+        "agent.json": "f8445897c91effe415c09eae8dcd9df9cbfad885715845630a4a56067ea6e844",
+        "assets/avatar.webp": "3ad9fb31a8c34d7ad33dec947aa2a81b487baca2d2fb34676ca87e75b70d17c8",
+        "package-lock.json": "65778da91898370a438ec3c94b676997849841b51e223a09b143a73706ec3160",
+        "package.json": "1ce626b8b344e0b0ce69b40cfdf7ffa714bbc8e00ccac1c838b97f70914b1421",
+        "tests/o1-boundary.contract.test.mjs": "c796ec5187a2ee1522d8c97813174b9a3d716eee951b65c49447fad1b23b5866"
+      }
+    },
+    {
+      "member": "contract-intake",
+      "head": "6a43c714e599def32f0514d2071113dce4bb3d5c",
+      "branch": "optimize/contract-takeover-20260929",
+      "paths": [
+        "agent.json",
+        "assets/avatar.webp",
+        "package.json",
+        "skills/contract-intake-gate/SKILL.md",
+        "skills/contract-intake-gate/schemas/intake-receipt.schema.json",
+        "skills/contract-intake-gate/tests/consistency.contract.test.mjs",
+        "skills/contract-intake-gate/tests/receipt-contract.test.mjs",
+        "skills/contract-intake-gate/tests/receipt-schema.test.mjs"
+      ],
+      "sha256": {
+        "agent.json": "faa2350af459b7677655da59cf97e871f604c8a2941b6a22aacfa4732ac70460",
+        "assets/avatar.webp": "9f890f4e8dd2702f6dd5879b44c20d3f5d8c55957b136ace802d7fbcd3056f62",
+        "package.json": "267023e160cdfb73fb58a9f5000eea287b58cb85fabba3e80240f69512839371",
+        "skills/contract-intake-gate/SKILL.md": "ca5039bcf9111cb28659f43f14a7da850d8c701698ad0fe66888a3e4cfa41da2",
+        "skills/contract-intake-gate/schemas/intake-receipt.schema.json": "b76ef3b270ecdcfc1c95a6bfa38fcf29d20f6b8d9e10f773119bc042071ac97b",
+        "skills/contract-intake-gate/tests/consistency.contract.test.mjs": "7fa1c3decb13e289ad3755ea6a03312998d381042ca841257d0b19892566f16d",
+        "skills/contract-intake-gate/tests/receipt-contract.test.mjs": "f32150fddf31e5601070b75e2af52ff3adfcaf6f065114de3aee604bde328fba",
+        "skills/contract-intake-gate/tests/receipt-schema.test.mjs": "cc40497e8e581579a36a18d05d66144b68a710edc35e70a0d8cf2173f854c219"
+      }
+    },
+    {
+      "member": "clause-extractor",
+      "head": "01aba64dee10871fa3d697f42b8d1aa12e35ec94",
+      "branch": "optimize/contract-takeover-20260929",
+      "paths": [
+        "agent.json",
+        "assets/avatar.webp"
+      ],
+      "sha256": {
+        "agent.json": "a8841a7c427e7b83f121c3258d58177d392c7c4471cf2c0e13e9d7dbb28e6b10",
+        "assets/avatar.webp": "0271a15121672800a07341eaaa19f522bb49f9a958c6e230af8ed9d7510d13ec"
+      }
+    },
+    {
+      "member": "risk-scanner",
+      "head": "5d02c3177c3ee93706d726d40cceeafbb7e25de6",
+      "branch": "optimize/contract-takeover-20260929",
+      "paths": [
+        "agent.json",
+        "assets/avatar.webp"
+      ],
+      "sha256": {
+        "agent.json": "f06a964e36d99dfa6bc9be33c5b1388763318081473594a695d63d66c28137e6",
+        "assets/avatar.webp": "672bb68b4e0038bea07627acc84fb4b37112c688db37544b26fecb8fd7006bb7"
+      }
+    },
+    {
+      "member": "jurisdiction-auditor",
+      "head": "2e37e0ae096f7b067bbab2d0b025ebe25eaecc86",
+      "branch": "optimize/contract-takeover-20260929",
+      "paths": [
+        "agent.json",
+        "assets/avatar.webp"
+      ],
+      "sha256": {
+        "agent.json": "690760aa64accb0e4dbbeca5375130ee7c9d2f7d80ce27e59be77c29d39c287a",
+        "assets/avatar.webp": "49d26c1ffcbb0c654e1536e270992084280bf9d95e3501fc5eb87c9c4873d719"
+      }
+    },
+    {
+      "member": "review-reporter",
+      "head": "678cbfaa49ac8d6c404160b65c415e07fabe4508",
+      "branch": "optimize/contract-takeover-20260929",
+      "paths": [
+        "agent.json",
+        "assets/avatar.webp"
+      ],
+      "sha256": {
+        "agent.json": "36d65f71b3d2904915ec8c6f7c0af83eac0c7a8dbf8f4e6fdaad35e814709abb",
+        "assets/avatar.webp": "b2d28911ba3f665cb68a5f866ada381ecbd9333fcc9c3e893e126706c30c1588"
+      }
+    }
+  ]
+}

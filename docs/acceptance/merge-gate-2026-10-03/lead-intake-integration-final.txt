@@ -1,0 +1,16 @@
+
+> contract-review-lead-contract-tests@1.0.23 test:intake
+> node --test tests/intake-integration.contract.test.mjs
+
+✔ Lead and actual intake schema agree without a receipt valid field (2.41025ms)
+✔ a stale or incomplete tool report cannot admit the current receipt (0.179791ms)
+✔ the real schema and decision reject invalid gates and top-level self-certification (0.3195ms)
+✔ standard parsers reject malformed persisted JSON and YAML (0.432792ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 153.56875

@@ -1,0 +1,28 @@
+{
+  "observedAt": "2026-10-04T04:17:24.960Z",
+  "kind": "owned-development-instance-probe-not-installation-acceptance",
+  "platformCommit": "5ad8fa4b0f3dd62bded6ce234a094915bb837d2e",
+  "independentHomeAndHostAgentHome": true,
+  "telemetryDisabled": true,
+  "rendererTitle": "DesireCore",
+  "nativeDevClientStarted": true,
+  "cdpPublishedWitnessAndBrowserPathMatched": true,
+  "marketObservedVersion": "0.1.39",
+  "marketObservedUninstalledBeforeAction": true,
+  "installButtonSentOnce": true,
+  "afterInstallVerification": "blocked_by_host_safety_check",
+  "installationOutcome": "unconfirmed",
+  "runtimeTeamModel": "not_invoked",
+  "testProcess": "stopped_by_owned_job_stop",
+  "runtimeHomeAndArtifacts": "retained; not included in published evidence",
+  "notVerified": [
+    "candidate team full integration",
+    "successful installation",
+    "user approvals",
+    "upgrade",
+    "rollback",
+    "O0-O5 model calls",
+    "tracked DOCX",
+    "three-run consistency"
+  ]
+}
