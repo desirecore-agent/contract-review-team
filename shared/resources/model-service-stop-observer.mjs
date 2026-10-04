@@ -25,11 +25,13 @@ export function readDecisionReceipt(calls) {
   const businessCalls = calls.filter(call => call.function?.name !== observerName)
   if (receipts.length !== 1) throw new Error('Expected exactly one observer receipt')
   const decision = JSON.parse(receipts[0].function.arguments)
-  const keys = ['verdict', 'handoff', 'capability_debt', 'findings', 'score', 'artifacts', 'explanation']
+  const keys = ['verdict', 'handoff', 'failedPrerequisites', 'capability_debt', 'findings', 'score', 'artifacts', 'explanation']
   if (Object.keys(decision).some(key => !keys.includes(key)) || keys.some(key => !(key in decision))) throw new Error('Unexpected observer receipt shape')
   if (!['passed', 'conditional', 'blocked'].includes(decision.verdict)) throw new Error('Invalid verdict')
   if (!decision.handoff || typeof decision.handoff !== 'object' || Array.isArray(decision.handoff)) throw new Error('Invalid handoff')
   if (Object.keys(decision.handoff).some(key => !['to', 'from'].includes(key)) || !('to' in decision.handoff) || !(decision.handoff.to === null || typeof decision.handoff.to === 'string') || ('from' in decision.handoff && typeof decision.handoff.from !== 'string')) throw new Error('Invalid handoff fields')
+  const prerequisiteFields = ['route', 'serviceAvailable', 'processingAuthorized', 'termsAndLicenseConfirmed', 'costAuthorized']
+  if (!Array.isArray(decision.failedPrerequisites) || !decision.failedPrerequisites.length || decision.failedPrerequisites.some(value => !prerequisiteFields.includes(value)) || new Set(decision.failedPrerequisites).size !== decision.failedPrerequisites.length) throw new Error('Invalid failed prerequisites')
   if (!Array.isArray(decision.capability_debt) || !decision.capability_debt.length || decision.capability_debt.some(value => typeof value !== 'string' || !value.trim())) throw new Error('Invalid capability debt')
   if (!Array.isArray(decision.findings) || decision.findings.some(value => !value || typeof value !== 'object' || Array.isArray(value))) throw new Error('Invalid findings')
   if (!(decision.score === null || typeof decision.score === 'number') || !Array.isArray(decision.artifacts) || decision.artifacts.some(value => typeof value !== 'string') || typeof decision.explanation !== 'string' || !decision.explanation.trim()) throw new Error('Invalid observer result fields')

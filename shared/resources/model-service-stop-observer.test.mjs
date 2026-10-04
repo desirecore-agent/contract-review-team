@@ -2,7 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { collectToolIntents, readDecisionReceipt } from './model-service-stop-observer.mjs'
 
-const decision = () => ({ verdict: 'blocked', handoff: { to: null }, capability_debt: ['Service unavailable'], findings: [], score: null, artifacts: [], explanation: 'Review service is unavailable.' })
+const decision = () => ({ verdict: 'blocked', handoff: { to: null }, failedPrerequisites: ['serviceAvailable'], capability_debt: ['Service unavailable'], findings: [], score: null, artifacts: [], explanation: 'Review service is unavailable.' })
 const nativeReceipt = data => ({ function: { name: 'mcp__desirecore__RecordGateDecision', arguments: JSON.stringify(data) } })
 
 test('a native observer receipt cannot hide an XML business intent', () => {
@@ -26,4 +26,10 @@ test('capability debt must be a non-empty array of non-blank strings', () => {
 test('malformed structured XML and incomplete business intents fail closed', () => {
   assert.throws(() => collectToolIntents({ content: '<function=mcp__desirecore__RecordGateDecision><parameter=capability_debt>["a" + "b"]</parameter></function>' }))
   assert.throws(() => collectToolIntents({ tool_calls: [nativeReceipt(decision())], content: '<function=mcp__desirecore__Write>' }))
+})
+
+test('failed prerequisites are structured known field names without duplicates', () => {
+  for (const invalid of ['serviceAvailable', [], ['model'], ['costAuthorized', 'costAuthorized']]) {
+    assert.throws(() => readDecisionReceipt([nativeReceipt({ ...decision(), failedPrerequisites: invalid })]))
+  }
 })
