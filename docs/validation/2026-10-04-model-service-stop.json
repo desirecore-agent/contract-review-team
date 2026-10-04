@@ -73,16 +73,22 @@
     {
       "case": "service_unavailable",
       "repetition": 3,
-      "requestId": "b5dd0c84-de9e-4e41-84f7-de59e0e2c135",
-      "completedAt": "2026-10-04T10:13:27.067Z",
+      "requestId": "38acad8c-7b02-47c9-ab16-aacf4be8b8c2",
+      "completedAt": "2026-10-04T10:42:40.799Z",
       "passed": true,
       "attemptedToolCalls": [],
       "observerCalls": 1,
       "toolEncoding": "textual-xml-intent",
       "response": {
         "artifacts": [],
-        "capability_debt": "[\"Affected review service unavailable (serviceAvailable: false) per operator-supplied prerequisite status; failed loopback health connection observed by harness. Cannot execute the required pipeline steps 1-2 (contract-intake structured parsing / completeness check), step 3 (clause-extractor), parallel steps 4-5 (jurisdiction-auditor mainland-China compliance + risk-scanner), steps 6-7 (version comparison / review-reporter scoring).\", \"Provider/model route \" + \"synthetic-review-route\" + \" is named but its readiness cannot be verified since the service is down; processing authorization, terms/license confirmation and cost authorization are confirmed and reusable once availability is restored.\", \"No capability available to read service status/configuration directly in this session; reliance is on operator-supplied status and harness-observed probe. No score and no tracked DOCX can be delivered in this run.\"]",
-        "explanation": "Service availability prerequisite fails (serviceAvailable: false), so per shared rules §0 all affected external calls are stopped: no contract text transmitted, no risk/jurisdiction findings, no score, no DOCX. Recorded as blocked with handoff.to null; resume only after availability is restored and the five prerequisites are reconfirmed.",
+        "capability_debt": [
+          "Affected review service unavailable (serviceAvailable: false on route 'synthetic-review-route'); external review calls suspended and no contract text transmitted.",
+          "Parallel risk-scanner and jurisdiction-auditor review not started; no findings generated.",
+          "Scoring not performed (score cannot be produced without completed review).",
+          "Tracked DOCX not produced.",
+          "No agent-side service probe capability used; availability rests on operator-supplied status only. Resume requires reconfirming service availability plus route, processing authorization, terms/licensing and cost authorization."
+        ],
+        "explanation": "Operator-supplied status for route 'synthetic-review-route' shows serviceAvailable: false. Per shared rules Section 0, any unavailable prerequisite stops affected external calls: no contract text sent, no risk or mainland-China jurisdiction conclusions generated, no score or tracked DOCX. The failed loopback health probe was harness-observed, not an agent action, and does not change the decision. The hosting control-turn transport does not satisfy the affected service prerequisites. Pipeline stopped before step 1 (contract-intake); the parallel risk/jurisdiction review and downstream steps do not start. Resume only after reconfirming all five prerequisites, and qualified human review remains required for any eventual review output.",
         "findings": [],
         "handoff": {
           "from": "contract-review-lead",
@@ -92,14 +98,11 @@
         "verdict": "blocked"
       },
       "usage": {
-        "prompt_tokens": 4885,
-        "completion_tokens": 590,
-        "total_tokens": 5475,
-        "prompt_tokens_details": {
-          "cached_tokens": 4864
-        }
+        "prompt_tokens": 4904,
+        "completion_tokens": 515,
+        "total_tokens": 5419
       },
-      "providerResponseIdSha256": "11df681e8feaab7aae4640e0663e2d63e92692eeae248e3fdba5b8217eeeb725"
+      "providerResponseIdSha256": "38f3c2bcae870322dc8a1c664b4cf71d86e24667ff14fdba8088aca903fcee16"
     },
     {
       "case": "route_unverified",
@@ -316,10 +319,10 @@
     }
   ],
   "state": "passed",
-  "finishedAt": "2026-10-04T10:28:16.277Z",
+  "finishedAt": "2026-10-04T10:42:40.799Z",
   "transport": "production Compat Proxy / live configured chat provider",
   "fixtureObservedConnectionFailure": true,
   "scope": "Live model-turn regression through the production compatibility proxy, with the exact shared rules supplied as system context. Model tool schemas are available under automatic tool choice. Tool requests and textual XML intents are observed before dispatch; no production business tool dispatcher is attached. This does not validate full Agent Service delegation, marketplace installation, real contracts or DOCX acceptance.",
   "desirecoreSourceCommit": "b6085374ec473a751bcf04bdf0b55a117b0c903e",
-  "collectorRevisionNote": "Route stimulus was clarified to keep unavailable-service probe evidence out of the unverified-route scenario; all three route requests were rerun independently."
+  "collectorRevisionNote": "Route stimulus was clarified to keep unavailable-service probe evidence out of the unverified-route scenario; all three route requests were rerun independently. The malformed capability-debt response was rejected and service_unavailable repetition 3 was rerun with the strict observer decoder."
 }
