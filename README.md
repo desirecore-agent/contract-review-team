@@ -56,7 +56,7 @@ These are static consistency checks, not agent or legal acceptance tests. The pr
 
 Before submitting contract text or attachments, configure and confirm the selected provider/model route, service readiness and authorization to process the materials. Before submission, also confirm satisfaction of provider terms and applicable licensing and authorization to bear any separate costs. Existing verified configuration and authorization may be reused.
 
-The [shared execution rules](shared/rules.md) require evidence or explicit operator confirmation before affected work and new external calls. Unavailable or unverified prerequisites stop those calls and downstream review through `verdict: blocked` and `handoff.to: null`, with a bounded capability-debt statement instead of invented legal findings, scores or exports. Team instructions cannot undo Host requests already sent to the default inference model. Static guards do not establish live adherence or real-contract acceptance.
+The [shared execution rules](shared/rules.md) require the lead to check evidence or explicit operator confirmation before scheduling affected work and new external calls. Unavailable or unverified prerequisites stop those calls and downstream review through `verdict: blocked` and `handoff.to: null`, with a bounded capability-debt statement instead of invented legal findings, scores or exports. Team instructions cannot undo Host requests already sent to the default inference model. Static guards do not establish live adherence or real-contract acceptance.
 
 ## License and responsibility
 
