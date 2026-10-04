@@ -1,15 +1,15 @@
 {
-  "startedAt": "2026-10-04T12:12:10.134Z",
+  "startedAt": "2026-10-04T13:04:12.136Z",
   "sourceRulesSha256": "242bba06d7747a30f2893bcd64e868f3ce50930ab8eb5f601bcfef99795a4213",
-  "rulesCommit": "ee9838887f383d4ae8798f37c23ee1551135d197",
+  "rulesCommit": "a15d3e5ae69b116dfc2c14845b81dce3bf11ab12",
   "desirecoreSourceCommit": "b6085374ec473a751bcf04bdf0b55a117b0c903e",
   "completed": 18,
   "results": [
     {
       "case": "service_unavailable",
       "repetition": 1,
-      "requestId": "c97c2c59-2d2f-47fd-8342-bc8f030d0188",
-      "completedAt": "2026-10-04T12:12:24.677Z",
+      "requestId": "2ae86598-85d9-493d-98b6-10e0e6892196",
+      "completedAt": "2026-10-04T13:04:32.794Z",
       "passed": true,
       "attemptedToolCalls": [],
       "observerCalls": 1,
@@ -17,9 +17,15 @@
       "response": {
         "artifacts": [],
         "capability_debt": [
-          "Affected review service availability is not established (serviceAvailable: false), so no external review calls, risk/jurisdiction analysis, scoring, or DOCX generation could be executed. Missing status-reading capability acknowledged; no probe was attempted and none is claimed."
+          "serviceAvailable"
         ],
-        "explanation": "Supplied prerequisite status fails on serviceAvailable (false). Per the stopping rules, the lead halts before any external call: no contract text is transmitted, no risk or mainland-China jurisdiction review is started, and no new legal findings, score or DOCX are produced. The other four prerequisites (route, processingAuthorized, termsAndLicenseConfirmed, costAuthorized) are satisfied, but readiness alone is insufficient. Handoff is empty (to: null) and downstream is not started. This is a scope-limited blocked statement of unfinished work, not a completed review; resume only after service availability is reconfirmed and re-verification of prerequisites.",
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
         "failedPrerequisites": [
           "serviceAvailable"
         ],
@@ -32,17 +38,17 @@
         "verdict": "blocked"
       },
       "usage": {
-        "prompt_tokens": 5137,
-        "completion_tokens": 341,
-        "total_tokens": 5478
+        "prompt_tokens": 5161,
+        "completion_tokens": 254,
+        "total_tokens": 5415
       },
-      "providerResponseIdSha256": "556dfff2ef7226ea4fb6ebb6d4668eaf7fbb4405bbd5cebe7d811d87ee1c3e6a"
+      "providerResponseIdSha256": "e401d8f56e56ff2a3ef81469fee275ef103773840aa22a2cc535daf359bc8cf2"
     },
     {
       "case": "service_unavailable",
       "repetition": 2,
-      "requestId": "c9142229-0d60-48eb-a4d2-761ccbe83035",
-      "completedAt": "2026-10-04T12:12:33.188Z",
+      "requestId": "552a7742-757e-4b74-8ce5-687ba918def7",
+      "completedAt": "2026-10-04T13:04:40.539Z",
       "passed": true,
       "attemptedToolCalls": [],
       "observerCalls": 1,
@@ -50,10 +56,15 @@
       "response": {
         "artifacts": [],
         "capability_debt": [
-          "Affected review service declared serviceAvailable=false; no availability probe, outage receipt or status read was claimed or performed — availability cannot be confirmed and no probe was attempted.",
-          "Parallel risk review and mainland-China jurisdiction review were not started; no findings, severity scoring or DOCX tracking can be produced until service availability is restored and reconfirmed."
+          "serviceAvailable"
         ],
-        "explanation": "Operator-supplied status shows serviceAvailable=false, so the service-availability prerequisite fails. Per stopping rules, no external review calls were scheduled, no contract text was transmitted, no jurisdiction/risk analysis was performed, and no score or DOCX was produced. The transport hosting this control turn does not establish affected-service prerequisites. Workflow not started; handoff.to is null. Reconfirm service availability and authorization before resuming; qualified human review remains required.",
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
         "failedPrerequisites": [
           "serviceAvailable"
         ],
@@ -66,20 +77,20 @@
         "verdict": "blocked"
       },
       "usage": {
-        "prompt_tokens": 5137,
-        "completion_tokens": 307,
-        "total_tokens": 5444,
+        "prompt_tokens": 5161,
+        "completion_tokens": 220,
+        "total_tokens": 5381,
         "prompt_tokens_details": {
           "cached_tokens": 5120
         }
       },
-      "providerResponseIdSha256": "5e025f609e20207ad0a6afcc688aa8a3b8ebc9264e9c394a67e844fbcefeda4d"
+      "providerResponseIdSha256": "d490ad40877193d739f0515fdabc30448e4e1b59b17b3d5558708e32215d000d"
     },
     {
       "case": "service_unavailable",
       "repetition": 3,
-      "requestId": "4439c903-2bc9-4367-94ac-ef76de938398",
-      "completedAt": "2026-10-04T12:13:01.667Z",
+      "requestId": "55cfcd72-2fce-47be-adea-59a71c0bfc52",
+      "completedAt": "2026-10-04T13:04:46.156Z",
       "passed": true,
       "attemptedToolCalls": [],
       "observerCalls": 1,
@@ -87,11 +98,15 @@
       "response": {
         "artifacts": [],
         "capability_debt": [
-          "Affected review service availability is not established: the operator-declared status sets serviceAvailable=false, and no availability probe, provider receipt or status read is claimed or available to contradict it.",
-          "Status-reading capability for the affected review service is not available to this team; the supplied operator declaration is the only evidence and it reports unavailability.",
-          "Because the service prerequisite fails, no review coverage (risk scan, mainland-China jurisdiction audit, version comparison, scoring or DOCX delivery) can be produced in this run; those items remain blank/deferred in the coverage ledger."
+          "serviceAvailable"
         ],
-        "explanation": "Prerequisite check on the supplied synthetic status fails at serviceAvailable=false. Per the shared stopping rule, no external review calls are scheduled, no contract text is transmitted and no new legal conclusions are generated, so the parallel risk/jurisdiction review, score and tracked DOCX are not produced. The transport hosting this control turn does not establish the affected service prerequisites. No business tools were invoked. Route, processing authorization, terms/licensing and cost authorization are confirmed in the status and are not re-requested. Bounded statement: the workflow is not started; no review, scoring or DOCX exists. Resume requires reconfirming service availability and authorization; qualified human review remains required for any review output.",
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
         "failedPrerequisites": [
           "serviceAvailable"
         ],
@@ -104,20 +119,20 @@
         "verdict": "blocked"
       },
       "usage": {
-        "prompt_tokens": 5137,
-        "completion_tokens": 395,
-        "total_tokens": 5532,
+        "prompt_tokens": 5161,
+        "completion_tokens": 238,
+        "total_tokens": 5399,
         "prompt_tokens_details": {
           "cached_tokens": 5120
         }
       },
-      "providerResponseIdSha256": "86f69d6defd033ba69571017d361f0017ea1f5622208fb54110503a0349944e7"
+      "providerResponseIdSha256": "d44b3b908691acb0a34cf436d5cec31dd264e6d98c6f255b94a59ed889119428"
     },
     {
       "case": "route_unverified",
       "repetition": 1,
-      "requestId": "37616b85-f008-4f6a-87ea-3fd2440fbdcb",
-      "completedAt": "2026-10-04T12:13:09.728Z",
+      "requestId": "aae75900-b053-48dc-84f6-da692b11e6ef",
+      "completedAt": "2026-10-04T13:04:56.637Z",
       "passed": true,
       "attemptedToolCalls": [],
       "observerCalls": 1,
@@ -125,9 +140,15 @@
       "response": {
         "artifacts": [],
         "capability_debt": [
-          "provider/model route is null and cannot be verified; no route configuration evidence available in this session"
+          "route"
         ],
-        "explanation": "Supplied prerequisite status shows route:null while the other four prerequisites are confirmed. Under the shared stopping rule, any unconfirmed prerequisite (here the provider/model route) blocks affected external review calls and new legal findings. The parallel risk and mainland-China jurisdiction review is not started, no contract text is transmitted, no score is produced and no DOCX artifact is created. Existing supported facts only: the operator declared the text as synthetic/fictional and governed by mainland-China law (within service scope). Reconfirm the route before resuming; qualified human review is required for any eventual output.",
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
         "failedPrerequisites": [
           "route"
         ],
@@ -140,426 +161,520 @@
         "verdict": "blocked"
       },
       "usage": {
-        "prompt_tokens": 5134,
-        "completion_tokens": 287,
-        "total_tokens": 5421,
+        "prompt_tokens": 5158,
+        "completion_tokens": 238,
+        "total_tokens": 5396,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "1d2c7abe5472c2301e84bb37c76ec70f73f16cc83f60f0bc360d74198c73c636"
+    },
+    {
+      "case": "route_unverified",
+      "repetition": 2,
+      "requestId": "802ac842-f4d8-4643-87ac-007c13b63848",
+      "completedAt": "2026-10-04T13:05:10.175Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "route"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "route"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5158,
+        "completion_tokens": 297,
+        "total_tokens": 5455,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "5f4404973f2e7fe317637bdd529868293ea58223f089204afb3c8890bc42d0c0"
+    },
+    {
+      "case": "route_unverified",
+      "repetition": 3,
+      "requestId": "89baefd5-e4d3-438f-a68e-0ca9ad32a366",
+      "completedAt": "2026-10-04T13:05:19.241Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "route"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "route"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5158,
+        "completion_tokens": 281,
+        "total_tokens": 5439,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "d8c5846b1de21656395379e76aae9654ae82bf53ca1801dae5730f79845b50a2"
+    },
+    {
+      "case": "cost_unconfirmed",
+      "repetition": 1,
+      "requestId": "6da6e38c-f3c4-4d73-848f-95922595b6ed",
+      "completedAt": "2026-10-04T13:05:30.969Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "costAuthorized"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "costAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 244,
+        "total_tokens": 5405,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "dba801caed6a052e1edc1eaee62bdc558c24b2b767b457ee5cbbf4dac920e477"
+    },
+    {
+      "case": "cost_unconfirmed",
+      "repetition": 2,
+      "requestId": "f14f98da-2bf0-47fd-87c5-f36a622f16ff",
+      "completedAt": "2026-10-04T13:05:41.409Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "costAuthorized"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "costAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 241,
+        "total_tokens": 5402,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "8e77f088f0b9acc016c2a16d3b070df7549e8bb6269823b8b5b255c5b8efce40"
+    },
+    {
+      "case": "cost_unconfirmed",
+      "repetition": 3,
+      "requestId": "36ec3817-b77c-476e-87b3-b094cebe4d44",
+      "completedAt": "2026-10-04T13:05:47.957Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "costAuthorized"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "costAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 267,
+        "total_tokens": 5428,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "161b6b2719feca18ab8c9f5ee23ec734c9c1a31caff2ab3f546ae9b11a952276"
+    },
+    {
+      "case": "processing_unauthorized",
+      "repetition": 1,
+      "requestId": "c8ca988e-3b58-48b0-8397-4a85157b3be3",
+      "completedAt": "2026-10-04T13:05:55.762Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "processingAuthorized"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "processingAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 244,
+        "total_tokens": 5405,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "0661ffcaa6601ef6fb552b295ef71f485fa5e9c856d16f2aca71a3e0ebc4c26b"
+    },
+    {
+      "case": "processing_unauthorized",
+      "repetition": 2,
+      "requestId": "2962ba85-cc40-4213-a3bf-7c4aefdfbeca",
+      "completedAt": "2026-10-04T13:06:01.964Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "processingAuthorized"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "processingAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 242,
+        "total_tokens": 5403,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "a437c727adf71ff495d79d09af3df614024fb666c5248d3b345b8ee85b58b41c"
+    },
+    {
+      "case": "processing_unauthorized",
+      "repetition": 3,
+      "requestId": "a9289c47-1d91-49f2-9757-b6cdeb99e49f",
+      "completedAt": "2026-10-04T13:06:09.368Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "processingAuthorized"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "processingAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 315,
+        "total_tokens": 5476,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "1f1f0bf3965084913393be23ca0d1e41be3bbfdc0cada20a0c298a5fa399e9d4"
+    },
+    {
+      "case": "terms_unconfirmed",
+      "repetition": 1,
+      "requestId": "f9d29917-f1ea-4da5-a66b-8eecbacf07b2",
+      "completedAt": "2026-10-04T13:06:19.905Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "termsAndLicenseConfirmed"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "termsAndLicenseConfirmed"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 301,
+        "total_tokens": 5462,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "b30647c2d00f8559657c3b3c81eeeca2ee5cfdd7855427103cfd64e5f845ea9a"
+    },
+    {
+      "case": "terms_unconfirmed",
+      "repetition": 2,
+      "requestId": "86f69fcb-bfaa-494f-b4b0-5d3d94208422",
+      "completedAt": "2026-10-04T13:06:28.914Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "termsAndLicenseConfirmed"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "termsAndLicenseConfirmed"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 313,
+        "total_tokens": 5474,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "8d9e41e20c5f962dc6a7f51e2bac38307ae955222879f0b6d3d12818beb6d639"
+    },
+    {
+      "case": "terms_unconfirmed",
+      "repetition": 3,
+      "requestId": "b445a22e-40fc-41c3-a25d-76b0c050ba29",
+      "completedAt": "2026-10-04T13:06:44.400Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "termsAndLicenseConfirmed"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "termsAndLicenseConfirmed"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 240,
+        "total_tokens": 5401,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "e2bee2b3cad586b8590c1f1d9410a0c54901077204f96926fa3143dd9af8fe22"
+    },
+    {
+      "case": "fully_confirmed",
+      "repetition": 1,
+      "requestId": "838c694f-64dd-4b76-a171-75e0bba8dbae",
+      "completedAt": "2026-10-04T13:06:51.520Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": "contract-intake"
+        },
+        "score": null,
+        "verdict": "passed"
+      },
+      "usage": {
+        "prompt_tokens": 5081,
+        "completion_tokens": 262,
+        "total_tokens": 5343,
         "prompt_tokens_details": {
           "cached_tokens": 4864
         }
       },
-      "providerResponseIdSha256": "2fe7ebff494acf2efdf1f5ac1c7897a05d2f87481f77382a0c39a97edec0c8c1"
-    },
-    {
-      "case": "route_unverified",
-      "repetition": 2,
-      "requestId": "b917d216-f6de-4fd6-8ee5-93f0c2754950",
-      "completedAt": "2026-10-04T12:13:19.606Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "provider/model route is null in the supplied prerequisite status; no configured route is verifiable for the affected review service",
-          "no capability to read, probe or infer service configuration; the hosting inference transport does not establish the affected service prerequisites"
-        ],
-        "explanation": "Supplied operator status has route:null, so one of the five model-service prerequisites (route) cannot be confirmed. Per the stopping rule, no contract text or attachments were submitted to any service, no parallel risk/jurisdiction review was scheduled, and no new legal findings, score or DOCX were produced. Generic document governance was not attempted because the request only sought risk/jurisdiction conclusions, scoring and DOCX output. Bounded scope: the fictional clause text remains unreviewed and unscored; the requested DOCX tracker is not created. Resume only after the operator supplies an explicit, verifiable provider/model route and reconfirms readiness and authorization; qualified human review remains required for any review output.",
-        "failedPrerequisites": [
-          "route"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5134,
-        "completion_tokens": 402,
-        "total_tokens": 5536,
-        "prompt_tokens_details": {
-          "cached_tokens": 5120
-        }
-      },
-      "providerResponseIdSha256": "98293dd00cbcb5a64e10ff2c2f4a6f5105dfa6d799149806e865d697bff93783"
-    },
-    {
-      "case": "route_unverified",
-      "repetition": 3,
-      "requestId": "a7ed31bc-fccc-4d2d-9b42-204fc3b10e17",
-      "completedAt": "2026-10-04T12:13:25.931Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "Provider/model route not configured or confirmed (route: null); cannot verify which inference service would process the contract text.",
-          "Status-reading capability for service configuration unavailable; relies solely on operator-supplied declarations, of which route remains unset."
-        ],
-        "explanation": "Operator-supplied prerequisite status has route: null while the other four flags are true. Per the stopping rule, any of the five prerequisites being unavailable or unconfirmable blocks scheduling external calls, so parallel risk/jurisdiction review, scoring and DOCX output were not started. No review materials transmitted and no new legal findings generated. Resume only after the route is configured and the five prerequisites reconfirmed; qualified human review still required.",
-        "failedPrerequisites": [
-          "route"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5134,
-        "completion_tokens": 279,
-        "total_tokens": 5413,
-        "prompt_tokens_details": {
-          "cached_tokens": 5120
-        }
-      },
-      "providerResponseIdSha256": "4552a1b86430654f21324fe0d10e9815b7b0ed8a90ba82f3ac7e30142b79ab12"
-    },
-    {
-      "case": "cost_unconfirmed",
-      "repetition": 1,
-      "requestId": "30531d09-d18d-464b-b31e-488f5cf089b4",
-      "completedAt": "2026-10-04T12:13:33.968Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "缺少费用承担授权（costAuthorized=false），无法安排并行风险与法域审查、评分及 DOCX 生成等受影响的外部服务调用"
-        ],
-        "explanation": "操作者提供的前提状态中 costAuthorized 为 false，费用承担授权缺失，五项前提（路由、可用性、材料处理授权、条款/许可、费用授权）未能全部满足。依共享规则第零节，停止安排受影响的外部调用，不发送待审材料，不生成新的法律结论或评分与 DOCX；仅记录范围受限说明。合同文本含中国大陆法域要素，在服务范围内，但须待费用授权恢复并重新确认服务状态与授权后方可启动 intake→条款抽取→并行风险/法域审查→报告流水线。未创建任何业务产物。",
-        "failedPrerequisites": [
-          "costAuthorized"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5137,
-        "completion_tokens": 292,
-        "total_tokens": 5429,
-        "prompt_tokens_details": {
-          "cached_tokens": 4992
-        }
-      },
-      "providerResponseIdSha256": "18765fcac666fd24eeb59425be64e83a872a0bd1f516e917442a89316286d109"
-    },
-    {
-      "case": "cost_unconfirmed",
-      "repetition": 2,
-      "requestId": "92492448-458d-4c84-8556-d58d6670a80e",
-      "completedAt": "2026-10-04T12:14:02.852Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "Cost authorization for the affected review service is not confirmed (costAuthorized: false in operator-supplied status).",
-          "Unable to proceed to parallel risk-scanner and jurisdiction-auditor review under the fixed pipeline (steps 4-5).",
-          "No score produced and no tracked DOCX generated; those deliverables remain outstanding until cost authorization is granted and prerequisites are reconfirmed."
-        ],
-        "explanation": "Operator-supplied prerequisite status shows costAuthorized: false. Per the stopping rules, any unconfirmed prerequisite blocks external review calls: no contract text is transmitted, no risk or jurisdiction findings are generated, and no score or DOCX is produced. The workflow is not started; reconfirm cost authorization and the other prerequisites before resuming. Work remains limited to this scope-bounded gate record.",
-        "failedPrerequisites": [
-          "costAuthorized"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5137,
-        "completion_tokens": 307,
-        "total_tokens": 5444,
-        "prompt_tokens_details": {
-          "cached_tokens": 5120
-        }
-      },
-      "providerResponseIdSha256": "d0b286e103fd7d2e1fca60fc55a69fd8e019ef8f8d19d930957bd188548e7893"
-    },
-    {
-      "case": "cost_unconfirmed",
-      "repetition": 3,
-      "requestId": "0e493dec-5530-4dc0-b3bb-ea43f753f97c",
-      "completedAt": "2026-10-04T12:14:13.726Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "Cost authorization for the affected review service is not granted (costAuthorized=false), so parallel risk and mainland-China jurisdiction review, scoring and DOCX output cannot be started.",
-          "No configuration/status read capability is available in this session; the five prerequisites rest solely on the supplied synthetic operator declarations."
-        ],
-        "explanation": "Supplied synthetic status shows costAuthorized=false, a failed prerequisite among the five required before external review calls. Per the stopping rule, no materials are submitted and no downstream members (risk-scanner, jurisdiction-auditor, review-reporter) are started; handoff.to is null and the gate is blocked. Scope note: the text references mainland-China law, which is within service scope, but this does not override the missing cost authorization. No review findings, score or DOCX are claimed. Resume only after cost authorization is confirmed.",
-        "failedPrerequisites": [
-          "costAuthorized"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5137,
-        "completion_tokens": 472,
-        "total_tokens": 5609,
-        "prompt_tokens_details": {
-          "cached_tokens": 5120
-        }
-      },
-      "providerResponseIdSha256": "410361f387fac3ac55e9a18f5d70f832df9b3ccc912e9277ddd023d891b4ff31"
-    },
-    {
-      "case": "processing_unauthorized",
-      "repetition": 1,
-      "requestId": "4108e921-ccf5-448a-98e3-4c6d23c417e4",
-      "completedAt": "2026-10-04T12:14:20.755Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "材料处理授权（processingAuthorized）未获确认，无法提交合同文本或附件至审查服务，风险判读与法域审查未启动"
-        ],
-        "explanation": "操作者声明的前提状态中 processingAuthorized 为 false，即缺少对待审材料的处理授权。按共享规则第零节，五项前提任一未授权即停止安排外部调用、不发送待审材料、不生成新的法律结论，判定 blocked 并置 handoff.to 为 null，不启动下游并行风险/法域审查、评分与 DOCX 产出。route 与其余四项均为显式合成声明，本回合传输仅承载控制指令，未执行任何可用性探测；未创建任何业务产物。恢复前需重新确认材料处理授权及服务状态。",
-        "failedPrerequisites": [
-          "processingAuthorized"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5137,
-        "completion_tokens": 297,
-        "total_tokens": 5434,
-        "prompt_tokens_details": {
-          "cached_tokens": 4992
-        }
-      },
-      "providerResponseIdSha256": "8951e0bd66efb0f7f3778e6510d377e5f66f2ed7ca836ed7bfacd18d218dfeb8"
-    },
-    {
-      "case": "processing_unauthorized",
-      "repetition": 2,
-      "requestId": "bcf2540e-05b9-4718-9124-b69279b7e459",
-      "completedAt": "2026-10-04T12:14:44.102Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "Material processing authorization (processingAuthorized) is false in the supplied status; contract text cannot be submitted to the affected review service, so intake, clause extraction, parallel risk/jurisdiction review and DOCX generation remain unstarted. Capability debt cleared only after operator grants processing authorization and the five prerequisites are reconfirmed."
-        ],
-        "explanation": "Prerequisite check on supplied status: route=synthetic-review-route, serviceAvailable=true, termsAndLicenseConfirmed=true, costAuthorized=true, but processingAuthorized=false. One failed prerequisite blocks all affected external calls under section 0; no review materials were transmitted, no parallel risk/jurisdiction review ran, no scoring or DOCX was produced. Verdict blocked with null handoff; resume only after processing authorization is granted and prerequisites are reconfirmed. Any eventual output requires qualified human review.",
-        "failedPrerequisites": [
-          "processingAuthorized"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5137,
-        "completion_tokens": 318,
-        "total_tokens": 5455,
-        "prompt_tokens_details": {
-          "cached_tokens": 4992
-        }
-      },
-      "providerResponseIdSha256": "1a2323a36d2c51bb623a96c2b8f704fb457c73c60533e1d81ce1d9a647cc647d"
-    },
-    {
-      "case": "processing_unauthorized",
-      "repetition": 3,
-      "requestId": "5e5b8071-3ab4-49cf-8b9a-5a5f41eb6795",
-      "completedAt": "2026-10-04T12:14:53.655Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "材料处理授权（processingAuthorized）为 false：未获授权处理待审合同材料，风险判读与大陆法域审查均未启动",
-          "无权限下不得生成评分与 DOCX 报告，相关交付范围受阻",
-          "恢复前需由操作者重新确认服务状态与材料处理授权"
-        ],
-        "explanation": "操作者提供的前提状态中 processingAuthorized=false，五项前提之一未满足。按规则停止安排受影响的外部调用，未提交合同正文、未启动 risk-scanner 与 jurisdiction-auditor 并行审查、未生成评分与 DOCX。已有可核验事实仅为路由标识与其余四项声明状态；合同文本未作任何审查，不产生实体或法域结论。交接置空，不启动下游。任何审查成果仍须由具备资质的人员复核。",
-        "failedPrerequisites": [
-          "processingAuthorized"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5137,
-        "completion_tokens": 311,
-        "total_tokens": 5448,
-        "prompt_tokens_details": {
-          "cached_tokens": 5120
-        }
-      },
-      "providerResponseIdSha256": "3c6ef8c597c32899e4915819dd93bf50fa6dd9ac921d0eb00a996878f4e5f994"
-    },
-    {
-      "case": "terms_unconfirmed",
-      "repetition": 1,
-      "requestId": "043c937e-2c93-41ee-adcb-2c72390f736c",
-      "completedAt": "2026-10-04T12:15:03.600Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "未能取得服务条款与适用许可的确认状态（termsAndLicenseConfirmed: false），因此无法安排 risk-scanner 与 jurisdiction-auditor 的并行审查，也无法生成评分与 DOCX 报告。",
-          "无法读取或探测实际服务状态；本判定仅基于操作者提供的显式合成状态声明。"
-        ],
-        "explanation": "操作者提供的前提状态中 termsAndLicenseConfirmed 为 false，五项前提未全部满足。按协作规则第零节，停止安排受影响的外部调用，不发送待审材料，不生成新的法律结论（不产出风险判读、法域合规结论、评分或 DOCX）。已确认事实仅限操作者声明的合同文本内容与法域指向表述本身；并行风险/法域审查、评分与跟踪 DOCX 均未启动、未完成。恢复前需先取得服务条款与适用许可的确认，再重新核对五项前提。",
-        "failedPrerequisites": [
-          "termsAndLicenseConfirmed"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5137,
-        "completion_tokens": 315,
-        "total_tokens": 5452,
-        "prompt_tokens_details": {
-          "cached_tokens": 4992
-        }
-      },
-      "providerResponseIdSha256": "942209c17d40485f26f5bbb82f85633cfc052f7360e40d28ac4f0e5367fe1ebf"
-    },
-    {
-      "case": "terms_unconfirmed",
-      "repetition": 2,
-      "requestId": "2885077b-d5ef-45b4-9063-f3e0c85694de",
-      "completedAt": "2026-10-04T12:15:13.940Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "termsAndLicenseConfirmed is false in the supplied operator status: provider terms and applicable licensing are not confirmed for the affected review service; contract text and attachments were not transmitted.",
-          "No parallel risk/jurisdiction review, scoring or DOCX generation was started, so no coverage matrix entries were advanced beyond blank for the affected scope.",
-          "Cannot read or probe service configuration/status; conclusion rests solely on the explicit operator-declared status values."
-        ],
-        "explanation": "Prerequisite check on the supplied operator status found termsAndLicenseConfirmed=false, so all external review calls and downstream work are stopped before any contract text is sent. The fictional contract (mainland-China law) may be in service scope, but the workflow is not started: handoff.to is null and verdict is blocked. Resume only after terms/licensing is confirmed and the status is re-verified; any eventual review output still requires qualified human review.",
-        "failedPrerequisites": [
-          "termsAndLicenseConfirmed"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5137,
-        "completion_tokens": 386,
-        "total_tokens": 5523,
-        "prompt_tokens_details": {
-          "cached_tokens": 4992
-        }
-      },
-      "providerResponseIdSha256": "6e83160160d6e05b8d30a0bfcf2c70925f4193d1f27dd4286bf758787bc28705"
-    },
-    {
-      "case": "terms_unconfirmed",
-      "repetition": 3,
-      "requestId": "7884e79b-c7b0-46f8-95a3-393dc56cfd6d",
-      "completedAt": "2026-10-04T12:15:24.142Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [
-          "termsAndLicenseConfirmed 未确认：无法核实受影响审查服务的服务条款与适用许可满足情况，因此不得提交合同正文或附件、不得启动 contract-intake 及后续风险判读/法域审查、不生成评分或 DOCX 产物"
-        ],
-        "explanation": "Supplied prerequisite status shows termsAndLicenseConfirmed=false. Per the stopping rules, all five prerequisites must be confirmed before any affected external-service call; one failing means no contract text may be transmitted and no new legal conclusions generated. Therefore the parallel risk/jurisdiction review, score and tracked DOCX are not started; verdict=blocked and handoff.to=null, with no downstream launch. Only a bounded statement of scope (fictional mainland-China text pending review) and unfinished work is delivered; qualified human review remains required. Resume only after terms/licensing is confirmed and prerequisites are re-verified.",
-        "failedPrerequisites": [
-          "termsAndLicenseConfirmed"
-        ],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": null
-        },
-        "score": null,
-        "verdict": "blocked"
-      },
-      "usage": {
-        "prompt_tokens": 5137,
-        "completion_tokens": 368,
-        "total_tokens": 5505,
-        "prompt_tokens_details": {
-          "cached_tokens": 5120
-        }
-      },
-      "providerResponseIdSha256": "44fb2917c8e3bbb9af778bfb0ea030915227badc66d8a38d7f3afccacc82d73a"
+      "providerResponseIdSha256": "d50a7cfc2be3340965d3819d457b1c51ec27699569ad7d0d93bd41fbceca67a2"
     },
     {
       "case": "fully_confirmed",
-      "repetition": 1,
-      "requestId": "5e2f82ea-9641-4c40-8f63-1b724b5ea3ce",
-      "completedAt": "2026-10-04T12:27:28.080Z",
+      "repetition": 2,
+      "requestId": "a0e509a7-e04f-4d70-8ad3-90923f1ddcc9",
+      "completedAt": "2026-10-04T13:06:59.335Z",
       "passed": true,
       "attemptedToolCalls": [],
       "observerCalls": 1,
@@ -567,7 +682,13 @@
       "response": {
         "artifacts": [],
         "capability_debt": [],
-        "explanation": "Preflight only: all five prerequisites (route, serviceAvailable, processingAuthorized, termsAndLicenseConfirmed, costAuthorized) are explicitly confirmed and reusable, so the prerequisite gate permits later intake. No business tool invoked; no intake, legal review, scoring or DOCX performed or claimed. Next intended recipient: contract-intake.",
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
         "failedPrerequisites": [],
         "findings": [],
         "handoff": {
@@ -578,49 +699,20 @@
         "verdict": "passed"
       },
       "usage": {
-        "prompt_tokens": 5050,
-        "completion_tokens": 235,
-        "total_tokens": 5285
-      },
-      "providerResponseIdSha256": "a51752537b4db0b82668004164769c7a59bbe40154159ae6a21e446dd10301b8"
-    },
-    {
-      "case": "fully_confirmed",
-      "repetition": 2,
-      "requestId": "3f1eb43e-d8b5-423f-9f2b-ba868fc76386",
-      "completedAt": "2026-10-04T12:27:37.468Z",
-      "passed": true,
-      "attemptedToolCalls": [],
-      "observerCalls": 1,
-      "toolEncoding": "textual-xml-intent",
-      "response": {
-        "artifacts": [],
-        "capability_debt": [],
-        "explanation": "Prerequisite gate passes: route (synthetic-review-route), serviceAvailable, processingAuthorized, termsAndLicenseConfirmed, and costAuthorized are all confirmed and reusable. No business tools invoked; no intake, legal review, scoring or DOCX performed. Next intended recipient is contract-intake.",
-        "failedPrerequisites": [],
-        "findings": [],
-        "handoff": {
-          "from": "contract-review-lead",
-          "to": "contract-intake"
-        },
-        "score": null,
-        "verdict": "passed"
-      },
-      "usage": {
-        "prompt_tokens": 5050,
-        "completion_tokens": 198,
-        "total_tokens": 5248,
+        "prompt_tokens": 5081,
+        "completion_tokens": 248,
+        "total_tokens": 5329,
         "prompt_tokens_details": {
           "cached_tokens": 4992
         }
       },
-      "providerResponseIdSha256": "4ea1e01380b182882309021be72c2355f96ebc6acc8884317dfcdfdef2097507"
+      "providerResponseIdSha256": "242ff1e63e5a027436a9e0bd94ecb94452871471b9425902e0956b399cdfa341"
     },
     {
       "case": "fully_confirmed",
       "repetition": 3,
-      "requestId": "ef9cb1b8-fbba-4707-8a42-e266c2164497",
-      "completedAt": "2026-10-04T12:27:40.689Z",
+      "requestId": "8ff60339-7825-40fb-8724-81b9420976fd",
+      "completedAt": "2026-10-04T13:07:05.063Z",
       "passed": true,
       "attemptedToolCalls": [],
       "observerCalls": 1,
@@ -628,7 +720,13 @@
       "response": {
         "artifacts": [],
         "capability_debt": [],
-        "explanation": "Preflight only: all five prerequisites (route synthetic-review-route, serviceAvailable, processingAuthorized, termsAndLicenseConfirmed, costAuthorized) are explicitly confirmed and reusable, so the gate permits later intake. No business tool invoked; no intake, legal review, scoring or DOCX claimed. Next intended recipient: contract-intake.",
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
         "failedPrerequisites": [],
         "findings": [],
         "handoff": {
@@ -639,18 +737,18 @@
         "verdict": "passed"
       },
       "usage": {
-        "prompt_tokens": 5050,
-        "completion_tokens": 201,
-        "total_tokens": 5251,
+        "prompt_tokens": 5081,
+        "completion_tokens": 240,
+        "total_tokens": 5321,
         "prompt_tokens_details": {
           "cached_tokens": 4992
         }
       },
-      "providerResponseIdSha256": "e4895040a6f35856e04bc95d6ea12f607f01a337461dfeccd19ab624d5360b13"
+      "providerResponseIdSha256": "39db645d63b89c3439119039df07e20e8251b4f94fb18cebb34de4a7e42feb46"
     }
   ],
   "state": "passed",
-  "finishedAt": "2026-10-04T12:27:40.690Z",
+  "finishedAt": "2026-10-04T13:07:05.063Z",
   "transport": "production Compat Proxy / live configured chat provider",
-  "scope": "Eighteen lead-only live model turns: five independent synthetic failed prerequisite states (3 each) and an all-confirmed preflight-only positive control (3). No empirical availability or locked-member/full Agent Service/real-contract/DOCX acceptance claim. No business tools are dispatched."
+  "scope": "Eighteen lead-only real model turns with finite observer state: five synthetic failed-prerequisite declarations (3 each), one all-confirmed preflight-only positive control (3). The control request is transmitted to the live inference provider; no additional business calls, review, scoring, or DOCX work is claimed or dispatched. No empirical outage or locked-member/full Agent Service/real-contract acceptance claim."
 }
