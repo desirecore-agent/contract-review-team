@@ -2,7 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { collectToolIntents, readDecisionReceipt } from './model-service-stop-observer.mjs'
 
-const decision = () => ({ verdict: 'blocked', handoff: { to: null }, failedPrerequisites: ['serviceAvailable'], capability_debt: ['Service unavailable'], findings: [], score: null, artifacts: [], explanation: 'Review service is unavailable.' })
+const decision = () => ({ verdict: 'blocked', handoff: { to: null }, failedPrerequisites: ['serviceAvailable'], capability_debt: ['serviceAvailable'], findings: [], score: null, artifacts: [], execution: {controlRequestTransmitted:true,additionalBusinessCalls:0,reviewPerformed:false,scoreProduced:false,docxProduced:false} })
 const nativeReceipt = data => ({ function: { name: 'mcp__desirecore__RecordGateDecision', arguments: JSON.stringify(data) } })
 
 test('a native observer receipt cannot hide an XML business intent', () => {
@@ -53,4 +53,17 @@ test('duplicate XML parameters cannot overwrite prohibited findings', () => {
 test('an authorized preflight can pass without debt', () => {
   const positive = { ...decision(), verdict: 'passed', handoff: { to: 'contract-intake' }, failedPrerequisites: [], capability_debt: [] }
   assert.equal(readDecisionReceipt([nativeReceipt(positive)]).decision.verdict, 'passed')
+})
+
+test('native JSON duplicate keys cannot overwrite prohibited output', () => {
+  const raw = JSON.stringify(decision()).replace('"findings":[]', '"findings":[{"risk":"invented"}],"findings":[]')
+  assert.throws(() => readDecisionReceipt([{function:{name:'mcp__desirecore__RecordGateDecision',arguments:raw}}]))
+})
+
+test('finite execution claims cannot conceal successful business work or no control transport', () => {
+  for (const field of ['reviewPerformed','scoreProduced','docxProduced']) {
+    assert.throws(() => readDecisionReceipt([nativeReceipt({...decision(),execution:{...decision().execution,[field]:true}})]))
+  }
+  assert.throws(() => readDecisionReceipt([nativeReceipt({...decision(),execution:{...decision().execution,controlRequestTransmitted:false}})]))
+  assert.throws(() => readDecisionReceipt([nativeReceipt({...decision(),explanation:'The contract is compliant'})]))
 })
