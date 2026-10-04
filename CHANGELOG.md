@@ -1,15 +1,20 @@
 ---
-
-## 0.1.39
-
-- Declare nested member display as the team default; explicit user choices override it. Requires platform support before marketplace publication.
-
-last-reviewed: 2026-09-30
+last-reviewed: 2026-10-04
 ---
 
 # Changelog
 
 [中文详细记录](CHANGELOG.zh-CN.md)
+
+## 0.1.40 - 2026-10-04
+
+- Add lead-owned model-service prerequisites before delegation and stop-before-call instructions; operators confirm the configured route, availability, processing authorization, provider terms/licensing and separate costs before submitting materials.
+- Unavailable or unverified prerequisites retain the existing blocked/null handoff behavior and only a bounded capability-debt statement. No new member versions or tool permissions are introduced.
+- Static guards and eighteen live model-turn stop regressions pass; see docs/validation/2026-10-04-model-service-stop.md. Full Agent Service integration, marketplace installation and real-contract acceptance remain unverified.
+
+## 0.1.39
+
+- Declare nested member display as the team default; explicit user choices override it. Requires platform support before marketplace publication.
 
 ## 0.1.38 - 2026-09-30
 

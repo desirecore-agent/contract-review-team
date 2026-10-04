@@ -3,6 +3,17 @@
 > 本文注入全体成员的系统提示词。它规定的是**跨成员的协作契约**，
 > 不重复各成员 SKILL.md 里的执行细节。冲突时以本文为准。
 
+## 零、模型服务前提与停止规则 / Model service prerequisites and stopping
+
+提交合同正文或附件前，操作者必须配置并确认所用 provider/model 路由、服务可用性、材料处理权限、服务条款与适用许可的满足情况，以及额外费用的承担授权。当前会话已明确且可核验的配置与授权可以复用，不为已确认事项反复索要许可。默认推理服务由 Host 在发送请求前选定，团队指令不能回溯阻止已经发生的默认模型请求。
+Before submitting contract text or attachments, the operator must configure and confirm the provider/model route, service availability, authorization to process the materials, satisfaction of provider terms and applicable licensing, and authorization to bear separate costs. Reuse explicit, verifiable configuration and authorization from the current session. The Host selects the default inference service before sending requests; team instructions cannot retroactively prevent those requests.
+
+总审在安排受影响检查和新增外部服务调用前，依据可获取的配置/状态证据或操作者明确确认，核对路由、可用性、材料处理授权、条款/许可及费用承担授权这五项前提。无法读取状态时必须说明能力缺口，不得编造配置读取、探测或服务回执，不得用合同正文或附件试探服务是否可用。
+Before affected review work or a new external-service call, the lead checks all five prerequisites (route, readiness, processing authorization, terms/licensing and cost authorization) using available configuration/status evidence or explicit operator confirmation. Disclose unavailable status-reading capability; never invent configuration reads, probes or service receipts, and never use contract text or attachments as an availability probe.
+
+总审判断上述五项前提任一不可用、未授权或无法确认时，停止安排相关外部调用，不发送待审材料、不擅自切换供应商，也不生成新的相关法律结论。将缺少的能力记为 `capability_debt`，总审给出 `handoff.to: null` 与三态门禁 `verdict: blocked`，不启动下游；成员收到空交接不启动，成员自身的 status/verdict 及停止信号继续遵循既有 Schema 和本文第二节、三之一节，不新增字段或词表；只交付已有可靠事实、未完成范围及影响的范围受限说明，不把缺口写成已审查、已评分或已完成 DOCX。恢复前重新确认服务状态和授权。任何审查成果仍须由具备资质的人员复核。
+If the lead determines that any of those five prerequisites is unavailable, unauthorized or cannot be confirmed, stop scheduling the affected external calls. Do not transmit review materials, switch providers without authorization or generate new affected legal findings. Record missing capability as `capability_debt`, the lead emits `handoff.to: null` and the three-state gate `verdict: blocked` without starting downstream work. Members do not start on a null handoff; their own status/verdict fields and stop signals retain the existing schemas and sections two/three-one of these rules. Deliver only a bounded statement of already-supported facts, unfinished scope and impact; do not claim completed review, scoring or DOCX delivery. Reconfirm readiness and authorization before resuming. Qualified human review remains required for any review output.
+
 ## 一、固定工具链，顺序不可打乱
 
 ```
