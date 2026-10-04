@@ -58,4 +58,4 @@ node shared/resources/check-member-tool-ceiling.mjs   # 读取已安装成员；
 共享七步指令与 O0–O5 设计仍需对齐行为并真机回归。公开可复验全流程证据、重复一致性、获授权真实合同验证及自主修订导出仍是验收工作。商业待决不妨碍交付待确认报告或明确模拟的产品测试。历史证据限制见[设计](design.zh-CN.md)。
 
 
-The standard `npm run check:gates` command also runs `shared/resources/model-service-stop-observer.test.mjs`; these decoder tests are local and do not call a model.
+标准验证命令 `npm run check:gates` 同时执行 `shared/resources/model-service-stop-observer.test.mjs`；这些解析器测试在本地运行，不调用模型。
