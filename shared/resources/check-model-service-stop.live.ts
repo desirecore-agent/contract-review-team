@@ -77,7 +77,7 @@ async function main(){
     if(!passed) throw new Error('Stopping behavior regression failed');
    }
   }
-  save({state:'passed',finishedAt:new Date().toISOString(),transport:'production Compat Proxy / live configured chat provider',fixtureObservedConnectionFailure:observedUnavailable,scope:'Nine independent live model turns with callable tool schemas and synthetic prerequisite states; not full Agent Service delegation, marketplace installation, real contracts or artifact acceptance.'});
+  save({state:'passed',finishedAt:new Date().toISOString(),transport:'production Compat Proxy / live configured chat provider',fixtureObservedConnectionFailure:observedUnavailable,scope:`${results.length} independent live model turns across ${cases.length} scenarios with callable tool schemas and synthetic prerequisite states; not full Agent Service delegation, marketplace installation, real contracts or artifact acceptance.`});
  }catch(error:any){
   writeFileSync(`${testDir}/live-diagnostic-private.json`,JSON.stringify({name:error?.name,message:error?.message,stack:error?.stack}));
   const previous=JSON.parse(readFileSync(`${testDir}/live-summary.json`,'utf8'));
