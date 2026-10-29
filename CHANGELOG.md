@@ -12,6 +12,7 @@ last-reviewed: 2026-10-04
 - Keep the upstream live-run report as non-normative provenance; no live pass is inherited for this candidate.
 - The eighteen 0.1.40 model-service stop regressions are bound to the old rules (rules SHA-256 `242bba06…`). This branch rewrites sections one and two and links section zero to the `verdict` meaning, so that evidence is not inherited; rerun `check-model-service-stop.live.ts` before release.
 - Reorder the lead's `llm.reasoning` key to the platform's registration-time normalized form so a fresh install is not immediately marked diverged; intake validates `detail.yaml` syntax and writes `verdict_label` only in the detail file.
+- Add shared-rules section 3.2 on tool usage: declare `is_regex` for regex searches, batch-verify quotes with `literals`, pass `FileDigest` paths as an array, reuse the Lead's Plan when delegated, and record each step's conclusion in the reply text. Every member hit these redo and re-derivation loops in the 2026-10-29 live run.
 
 ## 0.1.40 - 2026-10-04
 

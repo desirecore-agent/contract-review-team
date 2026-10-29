@@ -12,6 +12,7 @@ last-reviewed: 2026-10-04
 - 上游真机报告仅作为 non-normative provenance；本 candidate 不继承真机通过结论。
 - 0.1.40 的十八次模型服务停止回归绑定的是旧规则（rules SHA-256 `242bba06…`）；本分支改写了第一、二节并补充第零节与 `verdict` 含义的衔接，这项证据不随规则继承，发布前须用 `check-model-service-stop.live.ts` 重跑。
 - 统筹官 `llm.reasoning` 键序调整为平台注册期规范化后的形式，避免安装后立即被判为偏离锁；intake 的 `detail.yaml` 增加语法校验，`verdict_label` 只写在 detail。
+- 共享规则新增第三之二节「工具用法：避免空转」：正则检索须显式传 `is_regex`、引文用 `literals` 批量核对、`FileDigest` 传数组、被委派时沿用 Lead 的 Plan、每步结论写进正文。依据是 2026-10-29 真机运行中各成员都踩过的重做与重推。
 
 ## 0.1.40 - 2026-10-04
 
