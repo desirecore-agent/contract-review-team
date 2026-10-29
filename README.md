@@ -8,7 +8,7 @@ last-reviewed: 2026-09-29
 
 A six-member DesireCore team for evidence-based contract review. It separates intake, extraction, risk observations, jurisdiction analysis, independent review, and delivery. Its supported legal service scope is mainland China; foreign-law material requires referral, even when general document governance can continue.
 
-**Status:** published team 0.1.37; this branch also contains unreleased oracle/workflow candidate changes. This is not a production-readiness certificate: evidence limits are listed in [testing](docs/testing.md).
+**Status:** published team 0.1.40. Documentation audited on 2026-09-29 against commit aa67148; 0.1.37 updates the intake and lead locks, while 0.1.38 adds transparent team and member portraits (see [CHANGELOG](CHANGELOG.md)). This branch also contains unreleased oracle/workflow candidate changes. This is not a production-readiness certificate: evidence limits are listed in [testing](docs/testing.md).
 
 ## Start here
 
@@ -52,6 +52,16 @@ node shared/resources/check-member-tool-ceiling.mjs   # reads installed member r
 
 The evidence checker is Node-core-only at runtime and fails on an unreviewed oracle/index drift or a missing/mismatched quote. The member checker also has no NPM dependency but requires native Git; it fails unless each installed repository root, exact locked HEAD and committed `agent.json` bytes match. This locks only the configuration it reads, not the full tree or all runtime capability. These are static consistency checks, not agent or legal acceptance tests. The private tooling package still reports 0.1.30; the published team version comes from team.json. No version alignment is made by this documentation update.
 
+## Release 0.1.40: model service prerequisites
+
+Before submitting contract text or attachments, configure and confirm the selected provider/model route, service readiness and authorization to process the materials. Before submission, also confirm satisfaction of provider terms and applicable licensing and authorization to bear any separate costs. Existing verified configuration and authorization may be reused.
+
+The [shared execution rules](shared/rules.md) require the lead to check evidence or explicit operator confirmation before scheduling affected work and new external calls. Unavailable or unverified prerequisites stop those calls and downstream review through `verdict: blocked` and `handoff.to: null`, with a bounded capability-debt statement instead of invented legal findings, scores or exports. Team instructions cannot undo Host requests already sent to the default inference model. Static guards do not establish live adherence or real-contract acceptance.
+
 ## License and responsibility
 
 See [LICENSE](LICENSE). This team supports review; it does not replace qualified legal advice, verify signatures merely from typed names, or authorize signing. Protect confidential contracts and verify applicable law, source evidence and final edits before use.
+
+## Member display default
+
+Version 0.1.39 declares `memberDisplay: "nested"` in `team.json`: team members appear under the leader, initially collapsed. Explicit user preferences take priority. Install this release only after the DesireCore platform adds support for this field; older clients reject it during team schema validation.

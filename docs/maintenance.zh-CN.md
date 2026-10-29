@@ -31,7 +31,7 @@ node testdata/contracts/check-evidence.mjs
 node shared/resources/check-member-tool-ceiling.mjs   # 读取已安装成员仓库
 ```
 
-先核对当前目录存在 `team.json` 和 `package.json`。`check:gates` 调用门禁字面量和 intake 契约检查。temporal 脚本按自身所在目录查文件，检查法条登记与时间元数据一致性。`check-evidence.mjs` 运行时只用 Node 核心模块，按 oracle/source 原始字节和当前 normative literal 核对已审阅 JSON 索引。只能显式执行 `npm ci && node testdata/contracts/generate-evidence-index.mjs` 重新派生并审阅 diff；运行时不会自动重建来掩盖漂移。成员 checker 不依赖 NPM 包但要求 native Git，先核对已安装目录确为仓库根、HEAD 等于完整锁定提交、`agent.json` 与提交 blob 原始字节相同，再检查工具上限；开发布局可传 `--agents-dir` 与 `--lock`。缺 Git/仓库/commit 或配置 dirty 都按未验证失败。这不是平台 v3 content hash 或全树/运行能力证明。它们不调用真实模型、不从市场安装、不验证全部历史 oracle、不证明法律正确性，也不证明 DOCX 已可用；当前对可选 `ExportDocument` 的排除仍留下已知 DOCX 能力债。
+先核对当前目录存在 `team.json` 和 `package.json`。`check:gates` 调用门禁字面量和 intake 契约检查，以及模型服务停止观察器的解析回归。temporal 脚本按自身所在目录查文件，检查法条登记与时间元数据一致性。`check-evidence.mjs` 运行时只用 Node 核心模块，按 oracle/source 原始字节和当前 normative literal 核对已审阅 JSON 索引。只能显式执行 `npm ci && node testdata/contracts/generate-evidence-index.mjs` 重新派生并审阅 diff；运行时不会自动重建来掩盖漂移。成员 checker 不依赖 NPM 包但要求 native Git，先核对已安装目录确为仓库根、HEAD 等于完整锁定提交、`agent.json` 与提交 blob 原始字节相同，再检查工具上限；开发布局可传 `--agents-dir` 与 `--lock`。缺 Git/仓库/commit 或配置 dirty 都按未验证失败。这不是平台 v3 content hash 或全树/运行能力证明。它们不调用真实模型、不从市场安装、不验证全部历史 oracle、不证明法律正确性，也不证明 DOCX 已可用；当前对可选 `ExportDocument` 的排除仍留下已知 DOCX 能力债。
 
 成员工具检查仅证明所选精确源码中的有限、明确工具名关系：先扣除成员自身 denied，再检查组长 allowed/denied，并排除平台禁止子体继承的 Delegate、DelegateControl 和 spawn_agent。`allowed: []` 在平台表示不施加白名单，不是零工具；本检查无法枚举真实注册表时明确返回未验证失败。`["none"]` 才表示禁用全部工具。畸形、空白或通配策略不能获得静态通过，可选 ExportDocument 缺口单列能力债，不计作已满足。证据索引绑定每个规范 source，包括只有阴性检索或没有 literal 的案例；源声明摘要不符时生成器拒绝写出。重新生成索引后需独立审阅并同步 checker 中的已审阅摘要围栏，不能在运行时自行接受新摘要。
 
@@ -58,3 +58,6 @@ node shared/resources/check-member-tool-ceiling.mjs   # 读取已安装成员仓
 ## 未完成工作
 
 共享七步指令与 O0–O5 设计仍需对齐行为并真机回归。公开可复验全流程证据、重复一致性、获授权真实合同验证及自主修订导出仍是验收工作。商业待决不妨碍交付待确认报告或明确模拟的产品测试。历史证据限制见[设计](design.zh-CN.md)。
+
+
+标准验证命令 `npm run check:gates` 同时执行 `shared/resources/model-service-stop-observer.test.mjs`；这些解析器测试在本地运行，不调用模型。

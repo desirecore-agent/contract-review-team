@@ -1,0 +1,758 @@
+{
+  "startedAt": "2026-10-04T13:04:12.136Z",
+  "sourceRulesSha256": "242bba06d7747a30f2893bcd64e868f3ce50930ab8eb5f601bcfef99795a4213",
+  "rulesCommit": "a15d3e5ae69b116dfc2c14845b81dce3bf11ab12",
+  "desirecoreSourceCommit": "b6085374ec473a751bcf04bdf0b55a117b0c903e",
+  "completed": 18,
+  "results": [
+    {
+      "case": "service_unavailable",
+      "repetition": 1,
+      "requestId": "2ae86598-85d9-493d-98b6-10e0e6892196",
+      "completedAt": "2026-10-04T13:04:32.794Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "serviceAvailable"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "serviceAvailable"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 254,
+        "total_tokens": 5415
+      },
+      "providerResponseIdSha256": "e401d8f56e56ff2a3ef81469fee275ef103773840aa22a2cc535daf359bc8cf2"
+    },
+    {
+      "case": "service_unavailable",
+      "repetition": 2,
+      "requestId": "552a7742-757e-4b74-8ce5-687ba918def7",
+      "completedAt": "2026-10-04T13:04:40.539Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "serviceAvailable"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "serviceAvailable"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 220,
+        "total_tokens": 5381,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "d490ad40877193d739f0515fdabc30448e4e1b59b17b3d5558708e32215d000d"
+    },
+    {
+      "case": "service_unavailable",
+      "repetition": 3,
+      "requestId": "55cfcd72-2fce-47be-adea-59a71c0bfc52",
+      "completedAt": "2026-10-04T13:04:46.156Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "serviceAvailable"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "serviceAvailable"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 238,
+        "total_tokens": 5399,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "d44b3b908691acb0a34cf436d5cec31dd264e6d98c6f255b94a59ed889119428"
+    },
+    {
+      "case": "route_unverified",
+      "repetition": 1,
+      "requestId": "aae75900-b053-48dc-84f6-da692b11e6ef",
+      "completedAt": "2026-10-04T13:04:56.637Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "route"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "route"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5158,
+        "completion_tokens": 238,
+        "total_tokens": 5396,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "1d2c7abe5472c2301e84bb37c76ec70f73f16cc83f60f0bc360d74198c73c636"
+    },
+    {
+      "case": "route_unverified",
+      "repetition": 2,
+      "requestId": "802ac842-f4d8-4643-87ac-007c13b63848",
+      "completedAt": "2026-10-04T13:05:10.175Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "route"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "route"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5158,
+        "completion_tokens": 297,
+        "total_tokens": 5455,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "5f4404973f2e7fe317637bdd529868293ea58223f089204afb3c8890bc42d0c0"
+    },
+    {
+      "case": "route_unverified",
+      "repetition": 3,
+      "requestId": "89baefd5-e4d3-438f-a68e-0ca9ad32a366",
+      "completedAt": "2026-10-04T13:05:19.241Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "route"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "route"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5158,
+        "completion_tokens": 281,
+        "total_tokens": 5439,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "d8c5846b1de21656395379e76aae9654ae82bf53ca1801dae5730f79845b50a2"
+    },
+    {
+      "case": "cost_unconfirmed",
+      "repetition": 1,
+      "requestId": "6da6e38c-f3c4-4d73-848f-95922595b6ed",
+      "completedAt": "2026-10-04T13:05:30.969Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "costAuthorized"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "costAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 244,
+        "total_tokens": 5405,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "dba801caed6a052e1edc1eaee62bdc558c24b2b767b457ee5cbbf4dac920e477"
+    },
+    {
+      "case": "cost_unconfirmed",
+      "repetition": 2,
+      "requestId": "f14f98da-2bf0-47fd-87c5-f36a622f16ff",
+      "completedAt": "2026-10-04T13:05:41.409Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "costAuthorized"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "costAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 241,
+        "total_tokens": 5402,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "8e77f088f0b9acc016c2a16d3b070df7549e8bb6269823b8b5b255c5b8efce40"
+    },
+    {
+      "case": "cost_unconfirmed",
+      "repetition": 3,
+      "requestId": "36ec3817-b77c-476e-87b3-b094cebe4d44",
+      "completedAt": "2026-10-04T13:05:47.957Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "costAuthorized"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "costAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 267,
+        "total_tokens": 5428,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "161b6b2719feca18ab8c9f5ee23ec734c9c1a31caff2ab3f546ae9b11a952276"
+    },
+    {
+      "case": "processing_unauthorized",
+      "repetition": 1,
+      "requestId": "c8ca988e-3b58-48b0-8397-4a85157b3be3",
+      "completedAt": "2026-10-04T13:05:55.762Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "processingAuthorized"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "processingAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 244,
+        "total_tokens": 5405,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "0661ffcaa6601ef6fb552b295ef71f485fa5e9c856d16f2aca71a3e0ebc4c26b"
+    },
+    {
+      "case": "processing_unauthorized",
+      "repetition": 2,
+      "requestId": "2962ba85-cc40-4213-a3bf-7c4aefdfbeca",
+      "completedAt": "2026-10-04T13:06:01.964Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "processingAuthorized"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "processingAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 242,
+        "total_tokens": 5403,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "a437c727adf71ff495d79d09af3df614024fb666c5248d3b345b8ee85b58b41c"
+    },
+    {
+      "case": "processing_unauthorized",
+      "repetition": 3,
+      "requestId": "a9289c47-1d91-49f2-9757-b6cdeb99e49f",
+      "completedAt": "2026-10-04T13:06:09.368Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "processingAuthorized"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "processingAuthorized"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 315,
+        "total_tokens": 5476,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "1f1f0bf3965084913393be23ca0d1e41be3bbfdc0cada20a0c298a5fa399e9d4"
+    },
+    {
+      "case": "terms_unconfirmed",
+      "repetition": 1,
+      "requestId": "f9d29917-f1ea-4da5-a66b-8eecbacf07b2",
+      "completedAt": "2026-10-04T13:06:19.905Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "termsAndLicenseConfirmed"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "termsAndLicenseConfirmed"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 301,
+        "total_tokens": 5462,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "b30647c2d00f8559657c3b3c81eeeca2ee5cfdd7855427103cfd64e5f845ea9a"
+    },
+    {
+      "case": "terms_unconfirmed",
+      "repetition": 2,
+      "requestId": "86f69fcb-bfaa-494f-b4b0-5d3d94208422",
+      "completedAt": "2026-10-04T13:06:28.914Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "termsAndLicenseConfirmed"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "termsAndLicenseConfirmed"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 313,
+        "total_tokens": 5474,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "8d9e41e20c5f962dc6a7f51e2bac38307ae955222879f0b6d3d12818beb6d639"
+    },
+    {
+      "case": "terms_unconfirmed",
+      "repetition": 3,
+      "requestId": "b445a22e-40fc-41c3-a25d-76b0c050ba29",
+      "completedAt": "2026-10-04T13:06:44.400Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [
+          "termsAndLicenseConfirmed"
+        ],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [
+          "termsAndLicenseConfirmed"
+        ],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": null
+        },
+        "score": null,
+        "verdict": "blocked"
+      },
+      "usage": {
+        "prompt_tokens": 5161,
+        "completion_tokens": 240,
+        "total_tokens": 5401,
+        "prompt_tokens_details": {
+          "cached_tokens": 5120
+        }
+      },
+      "providerResponseIdSha256": "e2bee2b3cad586b8590c1f1d9410a0c54901077204f96926fa3143dd9af8fe22"
+    },
+    {
+      "case": "fully_confirmed",
+      "repetition": 1,
+      "requestId": "838c694f-64dd-4b76-a171-75e0bba8dbae",
+      "completedAt": "2026-10-04T13:06:51.520Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": "contract-intake"
+        },
+        "score": null,
+        "verdict": "passed"
+      },
+      "usage": {
+        "prompt_tokens": 5081,
+        "completion_tokens": 262,
+        "total_tokens": 5343,
+        "prompt_tokens_details": {
+          "cached_tokens": 4864
+        }
+      },
+      "providerResponseIdSha256": "d50a7cfc2be3340965d3819d457b1c51ec27699569ad7d0d93bd41fbceca67a2"
+    },
+    {
+      "case": "fully_confirmed",
+      "repetition": 2,
+      "requestId": "a0e509a7-e04f-4d70-8ad3-90923f1ddcc9",
+      "completedAt": "2026-10-04T13:06:59.335Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": "contract-intake"
+        },
+        "score": null,
+        "verdict": "passed"
+      },
+      "usage": {
+        "prompt_tokens": 5081,
+        "completion_tokens": 248,
+        "total_tokens": 5329,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "242ff1e63e5a027436a9e0bd94ecb94452871471b9425902e0956b399cdfa341"
+    },
+    {
+      "case": "fully_confirmed",
+      "repetition": 3,
+      "requestId": "8ff60339-7825-40fb-8724-81b9420976fd",
+      "completedAt": "2026-10-04T13:07:05.063Z",
+      "passed": true,
+      "attemptedToolCalls": [],
+      "observerCalls": 1,
+      "toolEncoding": "textual-xml-intent",
+      "response": {
+        "artifacts": [],
+        "capability_debt": [],
+        "execution": {
+          "additionalBusinessCalls": 0,
+          "controlRequestTransmitted": true,
+          "docxProduced": false,
+          "reviewPerformed": false,
+          "scoreProduced": false
+        },
+        "failedPrerequisites": [],
+        "findings": [],
+        "handoff": {
+          "from": "contract-review-lead",
+          "to": "contract-intake"
+        },
+        "score": null,
+        "verdict": "passed"
+      },
+      "usage": {
+        "prompt_tokens": 5081,
+        "completion_tokens": 240,
+        "total_tokens": 5321,
+        "prompt_tokens_details": {
+          "cached_tokens": 4992
+        }
+      },
+      "providerResponseIdSha256": "39db645d63b89c3439119039df07e20e8251b4f94fb18cebb34de4a7e42feb46"
+    }
+  ],
+  "state": "passed",
+  "finishedAt": "2026-10-04T13:07:05.063Z",
+  "transport": "production Compat Proxy / live configured chat provider",
+  "scope": "Eighteen lead-only real model turns with finite observer state: five synthetic failed-prerequisite declarations (3 each), one all-confirmed preflight-only positive control (3). The control request is transmitted to the live inference provider; no additional business calls, review, scoring, or DOCX work is claimed or dispatched. No empirical outage or locked-member/full Agent Service/real-contract acceptance claim.",
+  "modelIdentitySha256": "42f4aabe21fcf6e90a9dff6ca891fe75a31816e8049848e0c3f4e4a7c7c201ec",
+  "providerIdentitySha256": "40e9611bcf3f840c92caeec7b74b7b7f8ae711ed25127b13ed2ae5120f74c3ef",
+  "apiFormat": "anthropic-messages",
+  "modelIdentityProvenance": "Hashes were recovered through the production compute resolver from the same isolated runtime configuration used by the source run; the original runner dropped startup metadata. The corrected runner now persists these fields automatically. No raw provider labels, model aliases or credentials are published."
+}
