@@ -34,7 +34,7 @@ Provide the original contract and attachments, your party/role, jurisdiction, an
 | jurisdiction-auditor | 1.3.0 | Jurisdiction and applicable-law observations |
 | review-reporter | 1.0.6 | Isolated independent review, then scoring and reporting |
 
-O3 risk and jurisdiction work can run in parallel after extraction. O4 and O5 are separate calls to the same reporter, not an additional team member. Legacy seven-step shared instructions still conflict with this design; see the design and testing guides before treating execution consistency as established.
+O3 risk and jurisdiction work can run in parallel after extraction. O4 and O5 are separate calls to the same reporter, not an additional team member. This branch rewrites the shared rules and ontology R-001 to the O0–O5 dependency model (unreleased), but parallelism, reviewer isolation and delivery order have not been regressed on a live run; see the design and testing guides before treating execution consistency as established.
 
 ## Resources and validation
 

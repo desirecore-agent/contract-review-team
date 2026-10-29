@@ -57,7 +57,7 @@ Before upgrade, preserve the prior team commit, member lock, marketplace referen
 
 ## Open work
 
-The shared seven-step instructions and O0–O5 design still require behavior alignment and runtime regression. Public reproducible full-flow evidence, repeated-run consistency, authorized real-contract validation and autonomous revision export remain acceptance work. Pending commercial decisions do not prevent delivery of a pending-confirmation report or explicitly simulated product tests. See [Design](design.md) for historical evidence limits.
+This branch aligns the shared rule text with O0–O5 (unreleased); behavior still requires runtime regression. Public reproducible full-flow evidence, repeated-run consistency, authorized real-contract validation and autonomous revision export remain acceptance work. Pending commercial decisions do not prevent delivery of a pending-confirmation report or explicitly simulated product tests. See [Design](design.md) for historical evidence limits.
 
 
 The standard `npm run check:gates` command also runs `shared/resources/model-service-stop-observer.test.mjs`; these decoder tests are local and do not call a model.

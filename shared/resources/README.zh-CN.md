@@ -35,7 +35,7 @@ CN 包声明 knowledge_base_version 为 2026-09-05，较旧的 updated_at 不能
 
 ## 已知设计债务
 
-注入的[共享规则](../rules.md)和[本体规则](business-ontology/rules.md)仍保留固定七步要求，与当前 O0–O5 并行观察设计冲突；共享说明同时存在已确认事实复用和独立重新取证要求。本次说明不覆盖或修复运行指令，见[测试及缺口](../../docs/testing.zh-CN.md)。
+本分支已把注入的[共享规则](../rules.md)和[本体规则](business-ontology/rules.md)改为 O0–O5 依赖关系，并写明 `confirmed[]` 只是带来源的交接事项、O4 须逐项重新取证（未发布；已发布 0.1.40 仍保留固定七步文本）。行为是否一致见[测试及缺口](../../docs/testing.zh-CN.md)。
 
 ## 维护与扩展
 

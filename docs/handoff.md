@@ -44,7 +44,7 @@ Legal service scope is mainland China only. Foreign-law contracts may receive ex
 
 | Gap | Evidence location/fact | Closure criterion |
 |---|---|---|
-| Runtime rule conflict | Shared and ontology rules retain seven-step/no-merging/no-reordering instructions | Inspect locked member instructions too; align actual flow and prove parallelism, reviewer isolation and ordering |
+| Runtime rule conflict | The candidate branch rewrites shared/rules section one and ontology R-001 to O0–O5 dependencies; published 0.1.40 still has seven-step/no-merging/no-reordering instructions | Inspect locked member instructions too; align actual flow and prove parallelism, reviewer isolation and ordering |
 | Fact reuse versus review | Shared rules require both confirmed-fact reuse and independent verification | Define stage boundaries; deliberately wrong candidates must be refuted from source |
 | Oracle drift | C05/C07 conditional; legacy pass in R02/R03; inconsistent historical scope/signature comments | Independently justify scenarios/expectations before editing; never fit answers to observed output |
 | Static blind spot | check:gates skips testdata | Add necessary scoped consistency coverage; separate historical observations from current expectations |
