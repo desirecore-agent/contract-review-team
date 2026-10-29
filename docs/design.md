@@ -33,7 +33,7 @@ Comparable inputs should produce comparable **result categories**: intake passed
 
 No prompt can guarantee perfect execution on every call. Test stability with three independent runs at fixed versions and compare source identity, required discoveries, prohibited false positives, scope, pending decisions and artifact integrity. A change in category needs a supported explanation.
 
-## Existing rules and unresolved conflict
+## Existing rules and alignment status
 
 [shared/rules.md](../shared/rules.md) declares precedence. This branch rewrites its section one and [business rule](../shared/resources/business-ontology/rules.md) R-001 to the O0–O5 dependencies above: the two O3 branches run in parallel, O4 and O5 are separate calls, and the seven items become coverage targets rather than seven calls that may not run in parallel (unreleased; published 0.1.40 still carries the fixed seven-step text). Aligned text is not verified behavior; see [testing](testing.md).
 

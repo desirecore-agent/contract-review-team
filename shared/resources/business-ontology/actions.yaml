@@ -526,7 +526,7 @@ actions:
     human_gate: null
     outputs: [report_markdown, coverage_matrix, pending_decisions, receipt, redline_docx_or_export_failure]
     output_constraints:
-      - DOCX 只能记录 ExportRedlineDocument 的真实返回路径与完整摘要；导出失败仍返回报告、回执和具体补救，不伪造文件
+      - DOCX 只能记录平台真实修订导出工具的返回路径与完整摘要（当前平台未提供，记 tool-not-found 欠账）；导出失败仍返回报告、回执和具体补救，不伪造文件
       - 报告和 DOCX 必须落盘后回读；文件存在、内容、修订与分页验收分别留证，不相互替代
     notes: 报告必须在 Human Gate pending 时仍可先落盘、回读并返回，但不得含「可放行」结论；有限证据报告须显式标注欠账且不得冒充完整评分
 

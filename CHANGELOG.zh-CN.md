@@ -10,6 +10,8 @@ last-reviewed: 2026-10-04
 
 - 原样保留已发布团队锁（候选形成时为 0.1.37，2026-10-29 合入 main 后为 0.1.40 的锁），并把 C09a/C09b 融入 14 文件规范 oracle；新增 R7/R9/R1 正例、禁报、错误映射及 source-binding guard。
 - 上游真机报告仅作为 non-normative provenance；本 candidate 不继承真机通过结论。
+- 0.1.40 的十八次模型服务停止回归绑定的是旧规则（rules SHA-256 `242bba06…`）；本分支改写了第一、二节并补充第零节与 `verdict` 含义的衔接，这项证据不随规则继承，发布前须用 `check-model-service-stop.live.ts` 重跑。
+- 统筹官 `llm.reasoning` 键序调整为平台注册期规范化后的形式，避免安装后立即被判为偏离锁；intake 的 `detail.yaml` 增加语法校验，`verdict_label` 只写在 detail。
 
 ## 0.1.40 - 2026-10-04
 

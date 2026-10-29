@@ -27,12 +27,14 @@ Provide the original contract and attachments, your party/role, jurisdiction, an
 
 | Member | Locked version | Responsibility |
 |---|---|---|
-| contract-review-lead | 1.0.22 | Register scope, dispatch, reconcile and deliver |
-| contract-intake | 1.0.7 | Input completeness, frozen facts and gate decision |
-| clause-extractor | 1.1.0 | Traceable clause facts and explicit unknowns |
-| risk-scanner | 1.1.0 | Evidence-based commercial risk candidates |
-| jurisdiction-auditor | 1.3.0 | Jurisdiction and applicable-law observations |
-| review-reporter | 1.0.6 | Isolated independent review, then scoring and reporting |
+| contract-review-lead | 1.0.23 | Register scope, dispatch, reconcile and deliver |
+| contract-intake | 1.0.8 | Input completeness, frozen facts and gate decision |
+| clause-extractor | 1.1.1 | Traceable clause facts and explicit unknowns |
+| risk-scanner | 1.1.1 | Evidence-based commercial risk candidates |
+| jurisdiction-auditor | 1.3.1 | Jurisdiction and applicable-law observations |
+| review-reporter | 1.0.7 | Isolated independent review, then scoring and reporting |
+
+These are the versions in the published 0.1.40 lock. This branch's candidate member content has changed without a version bump; bump before release.
 
 O3 risk and jurisdiction work can run in parallel after extraction. O4 and O5 are separate calls to the same reporter, not an additional team member. This branch rewrites the shared rules and ontology R-001 to the O0–O5 dependency model (unreleased), but parallelism, reviewer isolation and delivery order have not been regressed on a live run; see the design and testing guides before treating execution consistency as established.
 
