@@ -1,0 +1,121 @@
+{
+  "observedAt": "2026-10-04T04:20:35.006577+00:00",
+  "kind": "nonempty-raw-block-and-upstream-avatar-verification",
+  "supersedes": "member-protected-after.log first extraction attempt; empty hash rows are invalid evidence, not passing results",
+  "members": [
+    {
+      "member": "contract-review-lead",
+      "baseCommit": "c28919295c2ad611bf2ebee2ba4a4532b18ea1b9",
+      "version": "1.0.23",
+      "llmBytes": 298,
+      "llmSha256": "80e78ad51bc83c3d7c18a37b929cb3c153e438caa3ff3fb0e64b87d93d67982c",
+      "llmRawUnchanged": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "avatarMatchesUpstream": true,
+      "avatarSha256": "3ad9fb31a8c34d7ad33dec947aa2a81b487baca2d2fb34676ca87e75b70d17c8",
+      "agentJsonSha256": "f8445897c91effe415c09eae8dcd9df9cbfad885715845630a4a56067ea6e844"
+    },
+    {
+      "member": "contract-intake",
+      "baseCommit": "6a43c714e599def32f0514d2071113dce4bb3d5c",
+      "version": "1.0.8",
+      "llmBytes": 261,
+      "llmSha256": "99255a904e87ff49e37d6b952f5a96e3f9dac01883abdc388b8ce187ce595ae5",
+      "llmRawUnchanged": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "avatarMatchesUpstream": true,
+      "avatarSha256": "9f890f4e8dd2702f6dd5879b44c20d3f5d8c55957b136ace802d7fbcd3056f62",
+      "agentJsonSha256": "faa2350af459b7677655da59cf97e871f604c8a2941b6a22aacfa4732ac70460"
+    },
+    {
+      "member": "clause-extractor",
+      "baseCommit": "01aba64dee10871fa3d697f42b8d1aa12e35ec94",
+      "version": "1.1.1",
+      "llmBytes": 282,
+      "llmSha256": "0b9a4c40d7b1210a7808dad5dfec437b41033f2adbfff01af7a8625719f9d338",
+      "llmRawUnchanged": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "avatarMatchesUpstream": true,
+      "avatarSha256": "0271a15121672800a07341eaaa19f522bb49f9a958c6e230af8ed9d7510d13ec",
+      "agentJsonSha256": "a8841a7c427e7b83f121c3258d58177d392c7c4471cf2c0e13e9d7dbb28e6b10"
+    },
+    {
+      "member": "risk-scanner",
+      "baseCommit": "5d02c3177c3ee93706d726d40cceeafbb7e25de6",
+      "version": "1.1.1",
+      "llmBytes": 272,
+      "llmSha256": "b783e01167113db94cf2cb8910fb3f2ed8e517d6f8c0335b9220246d67e99c1e",
+      "llmRawUnchanged": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "avatarMatchesUpstream": true,
+      "avatarSha256": "672bb68b4e0038bea07627acc84fb4b37112c688db37544b26fecb8fd7006bb7",
+      "agentJsonSha256": "f06a964e36d99dfa6bc9be33c5b1388763318081473594a695d63d66c28137e6"
+    },
+    {
+      "member": "jurisdiction-auditor",
+      "baseCommit": "2e37e0ae096f7b067bbab2d0b025ebe25eaecc86",
+      "version": "1.3.1",
+      "llmBytes": 272,
+      "llmSha256": "1eaac54c72780d36fb240ef7155de138edc0b46b5e72e04911cdd0ec15f6e273",
+      "llmRawUnchanged": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "avatarMatchesUpstream": true,
+      "avatarSha256": "49d26c1ffcbb0c654e1536e270992084280bf9d95e3501fc5eb87c9c4873d719",
+      "agentJsonSha256": "690760aa64accb0e4dbbeca5375130ee7c9d2f7d80ce27e59be77c29d39c287a"
+    },
+    {
+      "member": "review-reporter",
+      "baseCommit": "678cbfaa49ac8d6c404160b65c415e07fabe4508",
+      "version": "1.0.7",
+      "llmBytes": 282,
+      "llmSha256": "6747646caf9ad2b73339c59fd518d3760b4c1d0c7eb93595f029c7c67b6e2e65",
+      "llmRawUnchanged": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "avatarMatchesUpstream": true,
+      "avatarSha256": "b2d28911ba3f665cb68a5f866ada381ecbd9333fcc9c3e893e126706c30c1588",
+      "agentJsonSha256": "36d65f71b3d2904915ec8c6f7c0af83eac0c7a8dbf8f4e6fdaad35e814709abb"
+    }
+  ]
+}

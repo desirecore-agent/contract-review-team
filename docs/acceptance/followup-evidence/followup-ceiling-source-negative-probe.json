@@ -1,0 +1,7 @@
+{
+  "scope": "synthetic fixture only; no real member sources read",
+  "scenario": "all versions match but no member repository or claimed commit exists",
+  "exitCode": 0,
+  "stdout": "✓ 5 名成员的工具白名单都在编排官 contract-review-lead 的上限之内（锁 <team-workspace>/workspace/ceiling-synthetic-lJlxGO/team/members.lock.json；豁免 1 项，理由见脚本 INTENTIONAL）\n",
+  "stderr": ""
+}

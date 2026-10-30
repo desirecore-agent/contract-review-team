@@ -1,0 +1,55 @@
+{
+  "observedAt": "2026-09-29T15:10:09.884052+00:00",
+  "kind": "fresh-source-test-and-review-evidence-not-live-acceptance",
+  "records": [
+    {
+      "file": "docs/acceptance/followup-evidence/continuation-team-baseline-20260929.log",
+      "rawSha256": "8382218010c0d2f6855b6ca5b81ab655bdddc4fbc944d97b6831c8a50a31d87c",
+      "publishedSha256": "005b15b35c577fa1ebd129ba19da939a692bb3078ad65837a97d54416799ebab",
+      "redacted": true,
+      "bytes": 9118
+    },
+    {
+      "file": "docs/acceptance/followup-evidence/continuation-team-final-20260929.log",
+      "rawSha256": "9a130181a45ceca81ff4268913a4c9015eef795db19b53d7a8abb8f3cd2b7a35",
+      "publishedSha256": "b4184e96edd0150b43147176e9edee8791c91bcec251336047038bcc33e82d1c",
+      "redacted": true,
+      "bytes": 10108
+    },
+    {
+      "file": "docs/acceptance/followup-evidence/continuation-regression-negative-20260929.log",
+      "rawSha256": "d2738620c6a308a90ad0a5c0d3c891e6210ff96d48caefbccdb525a536a687bf",
+      "publishedSha256": "b74778a88a1c3ff83fc84ef707b2740af85ba3c986fd274041a198d2f1b84995",
+      "redacted": true,
+      "bytes": 4746
+    },
+    {
+      "file": "docs/acceptance/followup-evidence/continuation-regression-positive-20260929.log",
+      "rawSha256": "94c1a29fa80e71bfb4cca0e188e45d35f72abd0344e4ae866336db401523e496",
+      "publishedSha256": "94c1a29fa80e71bfb4cca0e188e45d35f72abd0344e4ae866336db401523e496",
+      "redacted": false,
+      "bytes": 512
+    },
+    {
+      "file": "docs/acceptance/followup-evidence/continuation-provenance-20260929.json",
+      "rawSha256": "c0d45d95b2af70226d8016c934f5c0dfac86036888ee42e88031d60bc84c4bb5",
+      "publishedSha256": "c0d45d95b2af70226d8016c934f5c0dfac86036888ee42e88031d60bc84c4bb5",
+      "redacted": false,
+      "bytes": 4196
+    },
+    {
+      "file": "docs/acceptance/followup-evidence/continuation-upstream-review-20260929.md",
+      "rawSha256": "67c4f71a9bac94b5370bfc5768a689f121cbd72039a8ff114c3aca1f78cd7529",
+      "publishedSha256": "7602c1fa9997585504674a4f8061a056ce5f02221aff63875f51c9805c56fb3e",
+      "redacted": true,
+      "bytes": 6194
+    },
+    {
+      "file": "docs/acceptance/followup-evidence/continuation-final-independent-review-20260929.md",
+      "rawSha256": "f30d91cc01c10a1897692ac410a576ac4a08a5978dc765e33a93bab43e2f771e",
+      "publishedSha256": "cfcfea25b4d6d3d1db06735cc4c97f7537f3a4a9d1e654a00ce14d87fb5a82c1",
+      "redacted": true,
+      "bytes": 3624
+    }
+  ]
+}

@@ -35,7 +35,7 @@ The reporter independently returns to original evidence; prior confirmed labels 
 
 ## Known design debt
 
-The injected [shared rules](../rules.md) and [ontology rules](business-ontology/rules.md) retain fixed seven-step language, while the current member design uses O0–O5 with parallel observations. Shared instructions also contain both reuse of confirmed facts and independent re-verification language. This documentation does not override or repair those instructions. See [testing and open gaps](../../docs/testing.md).
+This branch rewrites the injected [shared rules](../rules.md) and [ontology rules](business-ontology/rules.md) to the O0–O5 dependency model and states that `confirmed[]` entries are sourced handoff items that O4 must re-verify one by one (unreleased; published 0.1.40 still carries the fixed seven-step text). See [testing and open gaps](../../docs/testing.md) for behavioral evidence.
 
 ## Maintenance and extension
 

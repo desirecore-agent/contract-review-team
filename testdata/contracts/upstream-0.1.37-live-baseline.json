@@ -1,0 +1,27 @@
+{
+  "normative": false,
+  "provenance": {
+    "upstreamCommit": "346343b63347f70603fe47c14887b6f1fb799275",
+    "releasedTeamVersion": "0.1.37",
+    "recordedAt": "2026-09-29",
+    "source": "upstream ground-truth.yaml comment block C01 / C09a / C09b 真机实测基线",
+    "scope": "Historical upstream measurement only; not inherited as a current live-pass or acceptance result."
+  },
+  "reportedRuns": {
+    "model": "desirecore-cloud/kimi-k3",
+    "blind": false,
+    "repeatCountPerScenario": 1,
+    "preFix": {
+      "C01": "reported conditional where passed was expected",
+      "C09a": "reported conditional",
+      "C09b": "reported blocked"
+    },
+    "postFixIntakeOnly": {
+      "C01": "reported passed",
+      "C09a": "reported conditional",
+      "C09b": "reported blocked",
+      "scope": "steps 1-2 only"
+    }
+  },
+  "currentCandidateConclusion": "not_run"
+}

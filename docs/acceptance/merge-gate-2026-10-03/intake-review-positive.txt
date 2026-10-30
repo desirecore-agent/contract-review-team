@@ -1,0 +1,42 @@
+
+> contract-intake-contract-tests@0.0.0 test
+> node --test skills/contract-intake-gate/tests/receipt-contract.test.mjs skills/contract-intake-gate/tests/receipt-schema.test.mjs skills/contract-intake-gate/tests/consistency.contract.test.mjs skills/contract-intake-gate/tests/locked-knowledge-mapping.test.mjs
+
+✔ frontmatter is byte-zero YAML and skill versions are internally consistent (6.78325ms)
+✔ real Draft-07 schema accepts the valid document and rejects the combined review counterexample (40.3745ms)
+✔ each receipt contradiction is independently rejected (21.268291ms)
+✔ real Draft-07 schema accepts required, not_applicable and unknown role receipts without conflating them (14.052208ms)
+✔ a blocking finding elsewhere takes precedence over an S7 flag (13.556083ms)
+✔ admission separates tool failure, schema invalidity and business gates (3.068291ms)
+✔ admission fails closed unless both validator hashes bind the read receipt and schema (1.507625ms)
+✔ admission rejects malformed input with a bounded result (0.166916ms)
+✔ skill records role applicability and write-once sidecar validation semantics (0.501542ms)
+✔ intake artifact layout keeps machine, detail and validation files run-local and distinct (0.4365ms)
+✔ validation sidecar binds actual validator report hashes and fails closed on mismatch (0.134708ms)
+✔ supplemental material requires a new run root and intake id without mutating the prior receipt (0.109708ms)
+✔ locked intake R2-R8 knowledge, exceptions and rerun actions remain in live resources (3.040333ms)
+✔ platform-equivalent frontmatter and live instructions encode O1 Lead-only handoff once (5.886208ms)
+✔ R02-like incomplete manifest is conditional, escalated, and handed off (8.186083ms)
+✔ complete manifest remains passed (1.875083ms)
+✔ ordinary declared attachment body absence remains a scope fact (1.579916ms)
+✔ R8 keeps its version-change escalation without becoming PEND-001 (1.2155ms)
+✔ referenced attachment omitted from formal manifest remains blocked (1.126959ms)
+✔ text-declared signature fields can pass S5 without claiming authenticity verification (1.707833ms)
+✔ visual signature observation can pass S5 without becoming authenticity verification (2.592375ms)
+✔ incomplete S5 fixture remains source-anchored without an ungrounded seal field (1.611542ms)
+✔ S5 contract rejects a text claim of a present seal or unsupported authenticity verification (3.726875ms)
+✔ schema compiles with the platform Draft-07 Ajv profile and validates the live flat receipt (10.225167ms)
+✔ passed accepts exactly the four S8 unavailable flags and rejects a real business flag (10.701042ms)
+✔ conditional still requires a verdict-affecting flag and BLK remains dominant (2.096166ms)
+✔ conditional requires the canonical Lead route instead of null, blank or another member (1.3705ms)
+✔ S8 unavailable flags cannot become business flags by flipping their boolean (5.912542ms)
+✔ strict platform YAML parser rejects malformed scalars and duplicate keys (0.9305ms)
+✔ skill keeps validator failure separate from the business verdict (0.429375ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 185.896125

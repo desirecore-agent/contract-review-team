@@ -1,0 +1,2 @@
+  - 可选能力欠账（不计作已满足）：review-reporter/exportdocument: 通用 ExportDocument 是可选的普通 Word/PDF 转换能力，编排官未提供。已知能力债：当前委派路径没有可用的 DOCX 导出能力；必要导出能力不会因本豁免而视为已满足。
+✓ 5 名成员的有限工具有效清单与 agent.json 源身份通过检查（锁 <team-workspace>/workspace/evidence/merge-gate-20261004T035909Z/members.candidate.lock.json；native Git；实际豁免 1 项；非运行能力证明）

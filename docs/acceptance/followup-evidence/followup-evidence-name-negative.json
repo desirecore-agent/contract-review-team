@@ -1,0 +1,26 @@
+[
+  {
+    "input": "../escape",
+    "exitCode": 1,
+    "expectedErrorPresent": true,
+    "homeAbsent": true
+  },
+  {
+    "input": "bad/name",
+    "exitCode": 1,
+    "expectedErrorPresent": true,
+    "homeAbsent": true
+  },
+  {
+    "input": "UPPER",
+    "exitCode": 1,
+    "expectedErrorPresent": true,
+    "homeAbsent": true
+  },
+  {
+    "input": "",
+    "exitCode": 1,
+    "expectedErrorPresent": true,
+    "homeAbsent": true
+  }
+]

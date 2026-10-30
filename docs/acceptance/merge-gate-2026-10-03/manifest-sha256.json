@@ -1,0 +1,145 @@
+{
+  "scope": "only selected public reports and evidence; runtime homes excluded",
+  "files": [
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/README.md",
+      "bytes": 2151,
+      "sha256": "e6544c8073f8c2258906ce691326b5187a867958b11275f92cadf1fe3be401c5"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/candidate-lock-verification.json",
+      "bytes": 2510,
+      "sha256": "4e43304c6a3d60da6dd53965d5f11e697524bbee1ede00870ca5a744d249e812"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/candidate-member-ceiling-before.txt",
+      "bytes": 438,
+      "sha256": "2b1b4fef738fd7ff0f8bd240d4b97e6eca3fcca43112d8925a0fb4044a24b599"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/candidate-member-ceiling-final.txt",
+      "bytes": 535,
+      "sha256": "14c6419edc337f7dd57b1622a600509b5e3bc46cd20b97c26b0ab0adb1b79083"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/current-external-blocks.json",
+      "bytes": 656,
+      "sha256": "9f2f290ce89bf671c8f4f977944332faf5e47ca71a963310b60d3a1ad8faaf51"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/dev-probe-summary.json",
+      "bytes": 977,
+      "sha256": "c66ab011fee9ba922f6f5175f336a5e65612d2004010422f61c5e73ff3e7aad9"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/independent-member-closure-review.md",
+      "bytes": 1882,
+      "sha256": "d17013ba127f6420f514b1bbb077a62760e9f0fc5a9c149c414174ebc776a930"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/independent-member-compatibility-review.md",
+      "bytes": 5763,
+      "sha256": "a381a97d76cfcb91271540689b92d3162d1b63abb5bd4c5bb85b676be55fed52"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/intake-review-negative.txt",
+      "bytes": 2339,
+      "sha256": "eebb47566bf538e6c00512bcb854f40e13c04242c2bd98d6f5d80e6c2cab557f"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/intake-review-positive.txt",
+      "bytes": 3246,
+      "sha256": "e16a71af5b46d20ff5f94220594454e12c816d93bdb16f199f55db5260033850"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/isolated-member-tests-final.json",
+      "bytes": 21821,
+      "sha256": "0586b2608fe1ac5e8865a3b8adac9b11bb1790a8580af00639ecb3ab939f53b0"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/isolated-member-tests-first.json",
+      "bytes": 21619,
+      "sha256": "a06684bdacb138a2cdb12a6b9bc723a3daa417874a9d1288414eaff213f2182e"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/lead-current-platform-final.txt",
+      "bytes": 2415,
+      "sha256": "ca112e67f142aa19d7d915f6a7ae0e33f1d1ceb2d4e18084fc6ed52463799679"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/lead-intake-integration-final.txt",
+      "bytes": 569,
+      "sha256": "a2d14adac0511ccc8aee9bebd7f8e5089c725894214855765cd2ba928c7d21ec"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/member-avatar-hashes.txt",
+      "bytes": 602,
+      "sha256": "074b1f3ebb85217cf38b199603c38b5476c1926a207f409e6d6755cb8733be27"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/member-compatibility-report.md",
+      "bytes": 3146,
+      "sha256": "7cf767b64926e3a0b925a9d18d630820a72d39009be6dc6f3db22ba018a53047"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/member-final-change-manifest.json",
+      "bytes": 4322,
+      "sha256": "2fbb87109edd55933cbac55eed104f06e15682098a22dc4d31a226caf6de7edd"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/member-protected-authoritative.json",
+      "bytes": 4532,
+      "sha256": "c63a6703214dca38154d64aa4d36b78ee2e6aaf5e7409e5fa3f7e30c888fa692"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/members.candidate.lock.json",
+      "bytes": 2435,
+      "sha256": "16d9b507e98582c7d9d2d385a20b7eff994f4d27dcc71e5581502b74422a8b43"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/platform-distribution-preflight.json",
+      "bytes": 3935,
+      "sha256": "109d2d3fb36b5a98220ef74af28d47a05b658168c62ff520171327970436da24"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/provenance.json",
+      "bytes": 6029,
+      "sha256": "6feb597e4ea1efccae3763a52d29ab234e17fac3b0d4db6765ddc375d09540cc"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/published-member-ceiling.txt",
+      "bytes": 541,
+      "sha256": "9ea38010522767cb8deb6cdfd7401bc08f0936e15e2eb443516f03fbd110771c"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/published-source-verification.json",
+      "bytes": 3900,
+      "sha256": "6a1fa3eeb182eccb6b0a609098f67fd36cfbca2cc17c641d08664c7fd99baa79"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/remote-status-after-member-push.json",
+      "bytes": 8284,
+      "sha256": "3d42d63267211f8f29b7ec80d38626706bf9a784b35ed03d0c034facd2cd5875"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/team-current-branch-check.txt",
+      "bytes": 10118,
+      "sha256": "6723cc8b6fe966236cf4baea5a493dfbfd93c2a71175222d0b7d4f1fb3ae7b3e"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03/upstream-0.1.39-members.lock.json",
+      "bytes": 2435,
+      "sha256": "bc899b83f86748d737cfee7342d2a716dfbb621a8869e68d3e052c7a4c6594b7"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03.md",
+      "bytes": 7673,
+      "sha256": "318b962a0a8155d766f4e3d4fab850494c4938782b3a3c4a70267065edf16adf"
+    },
+    {
+      "path": "docs/acceptance/merge-gate-2026-10-03.zh-CN.md",
+      "bytes": 8598,
+      "sha256": "795818f2f6d64713aca3259dd485b70b6945a96bb78ec1f9520754ee74c40a9f"
+    }
+  ]
+}

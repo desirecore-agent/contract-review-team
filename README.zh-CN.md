@@ -8,7 +8,7 @@ last-reviewed: 2026-09-29
 
 由六名 DesireCore 智能体组成，分别承担输入治理、条款抽取、风险观察、法域分析、独立复核和交付。法律服务范围为中国大陆；域外合同即使可继续通用文档治理，也必须明确转介，不能冒充已完成域外法律审查。
 
-**当前状态：**团队 0.1.40；文档于 2026-09-29 基于 aa67148 审计，0.1.37 更新了 intake 与统筹官的锁定，0.1.38 新增团队和成员透明人像头像（见[变更记录](CHANGELOG.zh-CN.md)）。本文不是生产就绪证明：共享规则冲突与端到端证据缺口见[测试说明](docs/testing.zh-CN.md)。
+**当前状态：**已发布团队为 0.1.40；文档于 2026-09-29 基于 aa67148 审计，0.1.37 更新了 intake 与统筹官的锁定，0.1.38 新增团队和成员透明人像头像（见[变更记录](CHANGELOG.zh-CN.md)）。本分支另含尚未发布的 oracle/workflow candidate 改动。本文不是生产就绪证明，证据边界见[测试说明](docs/testing.zh-CN.md)。
 
 ## 从这里开始
 
@@ -27,30 +27,32 @@ last-reviewed: 2026-09-29
 
 | 成员 | 锁定版本 | 职责 |
 |---|---|---|
-| contract-review-lead | 1.0.22 | 登记范围、派发、对账与交付 |
-| contract-intake | 1.0.7 | 输入完整性、事实冻结和门禁 |
-| clause-extractor | 1.1.0 | 可追溯条款事实及显式未知项 |
-| risk-scanner | 1.1.0 | 有证据的商业风险候选 |
-| jurisdiction-auditor | 1.3.0 | 法域及法律适用观察 |
-| review-reporter | 1.0.6 | 隔离独立复核，再评分和报告 |
+| contract-review-lead | 1.0.23 | 登记范围、派发、对账与交付 |
+| contract-intake | 1.0.8 | 输入完整性、事实冻结和门禁 |
+| clause-extractor | 1.1.1 | 可追溯条款事实及显式未知项 |
+| risk-scanner | 1.1.1 | 有证据的商业风险候选 |
+| jurisdiction-auditor | 1.3.1 | 法域及法律适用观察 |
+| review-reporter | 1.0.7 | 隔离独立复核，再评分和报告 |
 
-O3 风险与法域工作在抽取后可并行；O4、O5 是同一报告官的两次独立调用，不是第七名成员。旧共享规则仍存在七步顺序约束冲突，不能据此宣称执行一致性已经验证。
+表中是已发布 0.1.40 锁的版本；本分支的候选成员内容已变但尚未递增版本号，发布前须递增。
+
+O3 风险与法域工作在抽取后可并行；O4、O5 是同一报告官的两次独立调用，不是第七名成员。本分支已把共享规则与本体 R-001 改为 O0–O5 依赖关系（未发布），但并行、复核隔离与交付顺序尚未经真机回归，不能据此宣称执行一致性已经验证。
 
 ## 资源与检查
 
 CN 包标识为 cn-v3；法条索引声明 29 部、4,096 条、1,270,526 字节。这是仓库元数据，不是法律完整性、时效性或适用性认证。
 
-语料共 14 份文件、13 个案例编号：C 系列十一份合成文本（C06 为两版本；C09a/C09b 是由 C01 派生的附件清单对照样本）、公开空白采购模板 R01、生成衍生样本 R02/R03。R02 含人工植入缺陷；衍生样本不能证明真实客户已签合同验收。
+语料共 14 份文件、14 个规范 source case 编号；C06 为两版本，C09a/C09b 是由 C01 派生的附件清单对照样本。R02 含人工植入缺陷；衍生样本不能证明真实客户已签合同验收。
 
 ```sh
 npm ci
 npm run check:gates
 node shared/resources/jurisdiction-packs/jurisdiction-cn/statutes/check-temporal.mjs
 node testdata/contracts/check-evidence.mjs
-node shared/resources/check-member-tool-ceiling.mjs   # 读取已安装成员；见 docs/maintenance.zh-CN
+node shared/resources/check-member-tool-ceiling.mjs   # 读取已安装成员仓库
 ```
 
-以上仅为静态一致性检查，不等于智能体或法律验收。私有工具包版本仍为 0.1.30；发布团队版本读取 team.json。本次文档修订不调整版本配置。
+证据 checker 在运行时只用 Node 核心模块；oracle/index 未经审阅发生漂移或引用缺失/不符即失败。成员 checker 同样不依赖 NPM 包，但明确要求 native Git；成员目录不是仓库根、HEAD 不等于完整锁定提交、或 `agent.json` 与该提交中的原始字节不一致都会失败。它只锁定所读配置，不证明全树或全部运行能力。以上仅为静态一致性检查，不等于智能体或法律验收。私有工具包版本仍为 0.1.30；发布团队版本读取 team.json。本次文档修订不调整版本配置。
 
 ## 0.1.40：模型服务前提
 

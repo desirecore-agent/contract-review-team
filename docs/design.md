@@ -6,7 +6,7 @@ last-reviewed: 2026-09-29
 
 [中文](design.zh-CN.md) · [Quickstart](quickstart.md) · [Testing](testing.md)
 
-Baseline: team 0.1.37 and [members.lock.json](../members.lock.json), documented on 2026-09-29. This is a design and acceptance description, not a claim of production readiness.
+Published baseline: team 0.1.37 and [members.lock.json](../members.lock.json); this branch's oracle/workflow changes remain an unreleased candidate. This is a design and acceptance description, not a claim of production readiness.
 
 ## Responsibilities and calls
 
@@ -33,11 +33,11 @@ Comparable inputs should produce comparable **result categories**: intake passed
 
 No prompt can guarantee perfect execution on every call. Test stability with three independent runs at fixed versions and compare source identity, required discoveries, prohibited false positives, scope, pending decisions and artifact integrity. A change in category needs a supported explanation.
 
-## Existing rules and unresolved conflict
+## Existing rules and alignment status
 
-[shared/rules.md](../shared/rules.md) declares precedence and still specifies a fixed seven-step sequence. [Business rules](../shared/resources/business-ontology/rules.md) retain related legacy constraints. They do not fully describe the O0–O5 design above. This documentation change does **not** replace those injected instructions or prove that conflicts are resolved.
+[shared/rules.md](../shared/rules.md) declares precedence. This branch rewrites its section one and [business rule](../shared/resources/business-ontology/rules.md) R-001 to the O0–O5 dependencies above: the two O3 branches run in parallel, O4 and O5 are separate calls, and the seven items become coverage targets rather than seven calls that may not run in parallel (unreleased; published 0.1.40 still carries the fixed seven-step text). Aligned text is not verified behavior; see [testing](testing.md).
 
-Conceptual mapping: legacy parsing/completeness → O1; extraction → O2; jurisdiction/risk → O3; version comparison belongs to the applicable source comparison and reporting work; reporting → O5. O0 registration and O4 independent verification need explicit runtime treatment. The legacy ban on combining/reordering steps requires a separately reviewed behavior change and runtime regression.
+Conceptual mapping: legacy parsing/completeness → O1; extraction → O2; jurisdiction/risk → O3; version comparison belongs to the applicable source comparison and reporting work; reporting → O5. This branch's shared rules now state O0 registration and isolated O4 evidence collection (sections one and six); these behavior changes still need independent review and a live regression.
 
 Likewise, inherited “confirmed facts” are candidates for O4 re-verification, never permission to skip its independent checks. Approval modes govern tool use; contractual acceptance remains an explicit decision. The desired product delivers a pending-confirmation report without waiting indefinitely for business decisions. Tests may provide clearly labeled simulated answers without representing real authorization.
 

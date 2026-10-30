@@ -38,7 +38,7 @@ guarded_by:
   - ref: contract.yaml#enums.failure_mark_type
     how: placeholder_detected 是正式的失败标记类型，会进入覆盖矩阵而不是被丢弃
   - ref: rules.md#R-020
-    how: 空字段占位符是五类输入缺陷之首，裁决为 reject
+    how: 空字段占位符是五类输入缺陷之首，裁决为 blocked；明确 negotiation_draft 且 execution_validation_requested=false 时仅签署专用空白例外
   - ref: rules.md#R-011
     how: 未知必须显式；占位符是「当事人尚未确定」这一未知的书面形式，不得静默通过
   - ref: base/missing-clauses.yaml#breach-remedy
@@ -52,7 +52,7 @@ expected_behavior:
   must_not_output:
     - 违约责任已约定 / 该项通过
     - 把含占位符的条款计入通过率
-  scoring_expectation: 不进入评分阶段（intake reject）
+  scoring_expectation: 不进入评分阶段（intake blocked）
 
 repro_input:
   clause:

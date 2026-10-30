@@ -1,0 +1,12 @@
+✔ a finite ceiling proof cannot silently accept a member with unrestricted empty allowed (506.329417ms)
+✔ member denied wins before checking its required tools against the parent (479.675542ms)
+✔ the runtime recursion ceiling excludes DelegateControl as well as Delegate (468.63525ms)
+✔ the derived evidence index binds every normative source, including negative-only cases (94.870958ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1599.538667

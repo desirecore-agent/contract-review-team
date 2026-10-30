@@ -1,0 +1,85 @@
+{
+  "observedAt": "2026-10-04T04:14:17.217Z",
+  "platformCommit": "5ad8fa4b0f3dd62bded6ce234a094915bb837d2e",
+  "teamCommit": "440c28a494d1f06f2785552e57cca3f03cd4111e",
+  "kind": "production-schema-and-canonical-hash-preflight-not-runtime-or-installation",
+  "teamSha256": "69ead2cce20c67ccfabfa50afb62e4c15712ab678baf07c33c2de41d75679b64",
+  "lockSha256": "bc899b83f86748d737cfee7342d2a716dfbb621a8869e68d3e052c7a4c6594b7",
+  "teamSchemaValid": true,
+  "invalidMemberDisplayRejected": true,
+  "memberHashes": [
+    {
+      "id": "contract-review-lead",
+      "head": "cf2b68387bba4c3b66f95be2f91913fd4a19eea3",
+      "version": "1.0.23",
+      "expected": "v3:fe00047be810dd29aef16107746b680adb3947783b57ed53442a02b6ee533816",
+      "actual": "v3:fe00047be810dd29aef16107746b680adb3947783b57ed53442a02b6ee533816",
+      "matches": true
+    },
+    {
+      "id": "contract-intake",
+      "head": "a1fe4921ab6815c45db089123fd9a4068fda1514",
+      "version": "1.0.8",
+      "expected": "v3:9e85bf99dc418fd61d07ced7c8d177b38b41ad9345cc80965ac3dc896b38dc03",
+      "actual": "v3:9e85bf99dc418fd61d07ced7c8d177b38b41ad9345cc80965ac3dc896b38dc03",
+      "matches": true
+    },
+    {
+      "id": "clause-extractor",
+      "head": "af75df2e0dad7908d1b4f840a61e7fd4c5937596",
+      "version": "1.1.1",
+      "expected": "v3:32942ffa204f652239403c21d83247f1dba422f68ab903ed0c7e570ad94dd52a",
+      "actual": "v3:32942ffa204f652239403c21d83247f1dba422f68ab903ed0c7e570ad94dd52a",
+      "matches": true
+    },
+    {
+      "id": "risk-scanner",
+      "head": "009d0c9256603d70a6b0748f66e7d43eea4c2462",
+      "version": "1.1.1",
+      "expected": "v3:d983fcc76c7e0593bb53a82b844edbe6df9561a366566063d7e2da02c90ec604",
+      "actual": "v3:d983fcc76c7e0593bb53a82b844edbe6df9561a366566063d7e2da02c90ec604",
+      "matches": true
+    },
+    {
+      "id": "jurisdiction-auditor",
+      "head": "0aaef5fd77be3041169178e2e92b3e4bb21ddd32",
+      "version": "1.3.1",
+      "expected": "v3:74012728d724f255c199c9939bda6bb62cedc3f9f820435586ff594ba46f1f68",
+      "actual": "v3:74012728d724f255c199c9939bda6bb62cedc3f9f820435586ff594ba46f1f68",
+      "matches": true
+    },
+    {
+      "id": "review-reporter",
+      "head": "e06dcf3e7fb838bc57bede712ea634e187ed77e1",
+      "version": "1.0.7",
+      "expected": "v3:2648e9eec65a6f649b177758b36d569fbc2658aecd0d49dcabc523059dcaf892",
+      "actual": "v3:2648e9eec65a6f649b177758b36d569fbc2658aecd0d49dcabc523059dcaf892",
+      "matches": true
+    }
+  ],
+  "documentRelatedTools": [
+    {
+      "id": "ExportMedia",
+      "description": "将已提供的 dc-media:// 媒体引用原字节导出到授权工作目录的新文件，供本地分析或交付。不会重新渲染、压缩或下载 URL。最大 32 MiB；父目录须存在，拒绝已有目标、目标符号链接及越界路径。支持 PNG/JPEG/GIF/WebP、MPEG/Opus/AAC/FLAC/WAV/Ogg 音频和 MP4/WebM 视频（按实际媒体签名识别）。成功返回路径、MIME、字节数和完整 SHA-256。历史内部媒体遵循实例媒体读取兼容规则；有 owner 元数据的媒体只允许所属用户导出。",
+      "parameters": [
+        "media_ref",
+        "file_path"
+      ]
+    },
+    {
+      "id": "ExportDocument",
+      "description": "把一个 Markdown(.md)或文档文件转换为 PDF 或 DOCX,完整保留 markdown 排版(标题、表格、列表、代码块、引用块),效果与编辑器导出一致。转换文档时务必使用本工具,不要自己写脚本(reportlab / Python 等不解析 markdown,会丢失格式)。输出文件默认写到源文件同目录,返回输出文件的绝对路径。",
+      "parameters": [
+        "path",
+        "format",
+        "output"
+      ]
+    }
+  ],
+  "redlineNamedToolPresent": false,
+  "boundaries": [
+    "schema/hash checks do not prove installation or approval",
+    "catalog inspection does not execute export",
+    "no autonomous DOCX or legal accuracy claim"
+  ]
+}

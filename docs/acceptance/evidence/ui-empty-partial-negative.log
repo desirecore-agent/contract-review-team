@@ -1,0 +1,58 @@
+
+ RUN  v5.0.1 <platform-workspace>
+
+ ❯  unit  app/components/market/__tests__/MarketTeamPostInstall.test.tsx (12 tests | 2 failed) 40ms
+   ❯ MarketTeamPostInstall (12)
+     ✓ 待办以常驻 DOM 元素逐条呈现，而不是一闪而过的提示 18ms
+     ✓ 语气是「等你确认」而不是「出错了」：role=status，信任决定用 decision 语气 3ms
+     ✓ 成员待办把 agentId 插进标题，并展示授权文件路径 2ms
+     ✓ 每条待办给出跳转入口，并把目标身份交回调用方 4ms
+     ✓ 成员待办缺 agentId 时退回会话列表，不跳到一个猜出来的成员 1ms
+     ✓ 空清单 = 确认无需再做任何事；缺字段 = 拿不到清单，两者不可混为一谈 1ms
+     ✓ 未知 kind 不被丢弃：展示通用标题加后端原文，且不猜跳转目标 1ms
+     ✓ warnings 与待办分区展示，安装本身仍然报告为成功 2ms
+     ✓ 成员部分失败时展示失败成员与原因，不能仍用全绿已安装状态 2ms
+     × 部分安装且待办为 undefined 时不能声称团队就绪 4ms
+     × 部分安装且待办为 undefined 时不能声称团队就绪 1ms
+     ✓ 收起动作交回调用方，面板自己不决定何时消失 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL   unit  app/components/market/__tests__/MarketTeamPostInstall.test.tsx > MarketTeamPostInstall > 部分安装且待办为 undefined 时不能声称团队就绪
+AssertionError: expected '部分安装：contract-review-team已安装 5 名成员，1 …' to contain '成员尚未全部安装'
+
+Expected: "成员尚未全部安装"
+Received: "部分安装：contract-review-team已安装 5 名成员，1 名成员失败。本机团队 ID 可能与市场条目 ID 不同。知道了未安装的成员（1 名）contract-intake: locked commit unavailable无需你再做任何事团队已就绪。"
+
+ ❯ app/components/market/__tests__/MarketTeamPostInstall.test.tsx:260:33
+    258|       },
+    259|     }))
+    260|     expect(panel().textContent).toContain('成员尚未全部安装')
+       |                                 ^
+    261|     expect(panel().textContent).not.toContain(testDictionary.market.te…
+    262|     expect(panel().textContent).not.toContain(testDictionary.market.te…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL   unit  app/components/market/__tests__/MarketTeamPostInstall.test.tsx > MarketTeamPostInstall > 部分安装且待办为 undefined 时不能声称团队就绪
+AssertionError: expected '部分安装：contract-review-team已安装 5 名成员，1 …' to contain '成员尚未全部安装'
+
+Expected: "成员尚未全部安装"
+Received: "部分安装：contract-review-team已安装 5 名成员，1 名成员失败。本机团队 ID 可能与市场条目 ID 不同。知道了未安装的成员（1 名）contract-intake: locked commit unavailable这次安装没有回传待办清单请自行确认三件事。"
+
+ ❯ app/components/market/__tests__/MarketTeamPostInstall.test.tsx:260:33
+    258|       },
+    259|     }))
+    260|     expect(panel().textContent).toContain('成员尚未全部安装')
+       |                                 ^
+    261|     expect(panel().textContent).not.toContain(testDictionary.market.te…
+    262|     expect(panel().textContent).not.toContain(testDictionary.market.te…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 10 passed (12)
+   Start at  07:00:34
+   Duration  1.23s (environment 63%, transform 22%, import 10%, tests 3%)
+

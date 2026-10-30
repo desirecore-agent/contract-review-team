@@ -17,7 +17,7 @@
 meta:
   # 本体自身的版本号。任何字段增删或语义变化都必须递增，
   # 因为回执里记录的 ontology_version 用于历史任务回放（蓝本第十四节）。
-  ontology_version: onto-v1
+  ontology_version: onto-v2
   # 对齐蓝本第八节「版本矩阵」的 knowledge_base_version 维度。
   # 与法域知识包的 knowledge_base_version 不一致时输出「数据对齐建议」，不自动放行。
   knowledge_base_version: '2026-08-31'
@@ -26,7 +26,7 @@ meta:
   # 语言基准：字段名英文（稳定标识），取值与说明中文（人类审阅）。
   naming_convention: 字段名使用 snake_case 英文；枚举值使用 snake_case 英文；说明文本使用中文
   maintainer: 合同审查智能体团队
-  updated_at: '2026-08-31'
+  updated_at: '2026-09-29'
 
 # ============================================================================
 # 一、全局约定（所有 Agent 必须遵守，违反视为输出不合格）
@@ -55,8 +55,9 @@ conventions:
     # 「同一个对象」的判定规则。多 Agent 交接时必须传 object_ref 三元组，
     # 只传 object_id 不够——主合同没变而附件被换的场景（蓝本第九节）
     # 正是靠 content_digest 才能被发现。
-    rule: 判定两个 Agent 是否在处理同一对象，必须比对 object_id + version_label + content_digest 三者全等
-    partial_match_policy: 三者中任意一项不等即视为不同对象，禁止「按编号相同就当同一份」
+    rule: 判定两个 Agent 是否在处理同一对象，必须绑定 case_id + object_id + version_label + canonical_absolute_path；FileDigest 成功时还须比对完整 content_digest
+    partial_match_policy: 已知值任一不等即视为不同对象；content_digest 为 unknown 时不得把 unknown == unknown 当作校验通过，只能记 identity_unverified 并继续受限事实审查
+    digest_source: 仅接受本次真实 FileDigest 对成功读取文件返回的完整 SHA-256；禁止截断摘要或另造手工 manifest hash 算法
 
   scope_declaration:
     # 蓝本第十四节「多 Agent 交接规范」：不传递整段对话历史。
@@ -69,12 +70,16 @@ conventions:
 types:
 
   object_ref:
-    description: 跨 Agent 引用任何合同对象时的最小完整标识，三个字段缺一不可
+    description: 跨 Agent 引用合同对象的身份绑定；摘要失败时保留 case/object/version/规范化绝对路径并显式标记未验证
     fields:
       object_id:
         type: string
         required: true
         description: 对象稳定标识，形如 doc-main-001 / doc-att-003；在一个审查案件内唯一且永不复用
+      case_id:
+        type: string
+        required: true
+        description: 所属案件标识，防止跨案件复用相同 object_id
       version_label:
         type: string
         required: true
@@ -82,7 +87,16 @@ types:
       content_digest:
         type: string
         required: true
-        description: 该对象内容的 SHA-256（前 16 位十六进制即可）；判定「内容是否真的没变」的唯一依据
+        description: 本次 FileDigest 对该规范化绝对路径成功读取后返回的完整 64 位十六进制 SHA-256；失败时写 unknown 并附 digest_unknown_reason，不能截断
+      canonical_absolute_path:
+        type: string
+        required: true
+        description: 本次读取对象的规范化绝对路径；不得以成员相对工作目录替代
+      digest_state:
+        type: string
+        required: true
+        enum: [verified, frozen_without_digest]
+        description: frozen_without_digest 允许事实审查继续，但禁止强身份校验与一致性强声明
 
   page_range:
     description: 页码范围。页码是全部证据锚点的落点，页码不可靠则整份审查不可信
@@ -90,7 +104,7 @@ types:
       source_file:
         type: string
         required: true
-        description: 该范围所在的物理文件名（不含绝对路径，路径由运行时工作目录解析）
+        description: 该范围所在文件的规范化绝对路径；成员工作目录不同，禁止只传文件名
       start_page:
         type: integer
         required: true
@@ -124,9 +138,13 @@ types:
         required: true
         description: 条款编号，如 8.2；无编号的段落写 unnumbered-p<段序号> 并说明
       page:
-        type: integer
+        type: integer|string
         required: true
-        description: 归一化页码；缺失时不得输出结论，改为记入 failure_mark
+        description: 有分页文件使用归一化页码；未分页 Markdown/文本可写 unknown，但必须同时提供可复验 locator，不得编造页码
+      locator:
+        type: object
+        required: false
+        description: page=unknown 时必填，至少含规范化绝对路径、行号或段落标识与命中串；无法定位时不得形成阳性结论
       quote:
         type: string
         required: true
@@ -195,7 +213,7 @@ enums:
     values:
       main_contract: 主合同正文
       attachment: 附件（清单内、已取得文件）
-      exhibit_referenced_only: 正文引用但未取得文件的附件——这是阻断项，不是缺省态
+      exhibit_referenced_only: 附件实体未取得的占位对象；任何此类对象均阻断，不能与 R7 已列明附件正文未交的 scope 记录混用
       amendment: 补充协议 / 修订件
       side_letter: 附函 / 承诺函
       annex_of_annex: 附件的附件（层级 ≥ 2，必须显式建模，不得平铺）
@@ -225,13 +243,14 @@ enums:
       unknown: 未确认
 
   signature_state:
-    description: 签署状态。缺任一项均触发阻断（蓝本第四节）
+    description: 签署文字与外观状态；不等于签署真实性或授权结论。是否阻断还取决于明确的 review_scope
     values:
-      complete: 签章、日期、签署人三项齐备
+      complete: 文本/影像上签章、日期、签署人三项齐备；真实性与权限仍需单独核验
       missing_seal: 缺签章 / 缺骑缝章
       missing_date: 缺签署日期
       missing_signatory: 缺签署人或签署人无权限证明
       electronic_unverified: 电子签名存在但可靠性未核验
+      text_complete_authenticity_unverified: 签署栏文字齐备，但签章真实性或授权仍未核验
       unknown: 未确认
 
   party_role:
@@ -241,8 +260,19 @@ enums:
       party_b: 乙方
       party_c: 丙方及以后
       guarantor: 保证人
+      witness: 见证方
+      agent: 招标代理或其他代理角色
+      handler: 经办人
+      natural_person: 自然人（非当然需要法人统一社会信用代码）
       affiliate_beneficiary: 关联受益方
       unknown: 角色未确认
+
+  identifier_applicability:
+    description: 主体标识对该角色和本轮核验目标是否适用；不得由字段缺失反推角色
+    values:
+      required: 该主体属于本轮必须核验的合同当事人或签署主体
+      not_applicable: 有源事实证明该角色不属于本轮标识核验目标
+      unknown: 角色或核验目标尚不足以判断，须澄清但不额外创造硬阻断
 
   risk_direction:
     description: 蓝本第九节要求的「风险变化方向」。版本对比输出必须携带此字段
@@ -251,6 +281,12 @@ enums:
       down: 下调
       flat: 持平
       undetermined: 无法判定（未冻结版本时的唯一合法取值）
+
+  comparison_applicability:
+    description: 版本对比是否适用；与风险方向分开
+    values:
+      applicable: 存在可比基线
+      not_applicable: 单版本或不存在历史基线，不得伪造 flat
 
   failure_mark_type:
     description: 蓝本第四节列举的失败标记类型
@@ -271,6 +307,16 @@ enums:
       advisory: 建议——影响效率，可作为优化项
       pass: 通过——已核验且符合规则
       blank: 留白——未覆盖，显式欠账，禁止按通过计
+
+  coverage_status:
+    description: 覆盖矩阵统一状态；只有 covered 表示已有真实检查回执
+    values:
+      covered: 已由真实回执覆盖
+      blank: 预定检查尚无结果
+      blocked: 因硬阻或能力失败不能执行
+      deferred: 已明确推迟并记录原因
+      unknown: 已检索但事实仍无法确认
+      not_applicable: 有明确理由证明本检查对当前范围不适用；不得计作 pass
 
 # ============================================================================
 # 四、实体
@@ -300,9 +346,9 @@ entities:
         type: string
         required: true
         description: |
-          案件清单摘要 = 所有成员 object_ref 三元组按 object_id 排序后拼接的 SHA-256。
-          它是「几个 Agent 是否在处理同一堆对象」的一次性校验位：
-          交接载荷带上它，接收方比对不上就立即停止，不猜。
+          canonical FileDigest aggregate：只聚合本次真实成功读取文件的完整 SHA-256 与身份绑定。
+          它用于核对已读集合，不证明未送达附件的内容、附件清单完整性或真实签署。
+          任一预期文件摘要缺失时须同时记录 frozen_without_digest，禁止强一致性声明；不得另造不兼容手工 manifest hash。
       freeze:
         type: freeze_record
         required: true
@@ -370,7 +416,16 @@ entities:
       content_digest:
         type: string
         required: true
-        description: 文档内容 SHA-256 前 16 位；版本对比与身份判定的硬依据
+        description: 本次 FileDigest 返回的完整 64 位 SHA-256；失败写 unknown 并记录原因，不能用两个 unknown 通过身份校验
+      canonical_absolute_path:
+        type: string
+        required: true
+        description: 本次读取文件的规范化绝对路径，与 case/object/version 一并绑定
+      digest_state:
+        type: string
+        required: true
+        enum: [verified, frozen_without_digest]
+        description: 摘要失败不阻止事实审查，但禁止强身份或版本一致性结论
       status:
         type: string
         required: true
@@ -423,6 +478,21 @@ entities:
           authority_evidence:
             type: string
             description: 签署权限证据（授权书页码、法定代表人身份证明等）；unknown 触发生效要件 Human Gate
+          authenticity_state:
+            type: string
+            enum: [verified_by_authorized_human, unverified, unknown]
+            description: 签章真实性独立状态；不得从 /s/、电子外观或「已盖章」文字自动认定 verified
+      review_scope:
+        type: object
+        required: true
+        description: 用户明确声明的本轮范围；未声明不得默认谈判草稿
+        fields:
+          document_purpose:
+            type: string
+            enum: [negotiation_draft, signature_review, effectiveness_review, unknown]
+          execution_validation_requested:
+            type: boolean|string
+            description: true/false；未声明为 unknown。仅 negotiation_draft 且 false 时签署专用空白不单独阻断文本审查
       language:
         type: string
         required: true
@@ -431,20 +501,32 @@ entities:
         type: object
         required: true
         description: |
-          法域线索。它决定加载哪个 jurisdiction pack；
-          蓝本第八节：jurisdiction_pack_version 与法域线索不一致时**阻断**。
+          法域线索必须全部记录，但线索不自动决定准据法，也不要求为域外加载规则包。
+          本团队实体法律服务仅中国大陆；域外做通用治理并转介，未知依法留白。
         fields:
           governing_law_declared:
             type: string
+            required: true
             description: 合同明示的准据法原文，如「中华人民共和国法律」；未约定写 unknown
           dispute_forum_declared:
             type: string
+            required: true
             description: 明示的争议解决地/机构原文
           data_regimes_referenced:
             type: array<string>
+            required: true
             description: 文中提及的数据合规制度，如 GDPR、个人信息保护法、CCPA；多制度并存是冲突检测输入
+          legislation_referenced:
+            type: array<string>
+            required: true
+            description: 文中援引的全部立法原文，不限数据制度；任何明确域外立法均触发域外服务范围分类
+          signing_places:
+            type: array<string>
+            required: true
+            description: 文本声明或可靠材料显示的签署地；任何明确域外签署地均触发域外服务范围分类
           party_domiciles:
             type: array<string>
+            required: true
             description: 各方注册地/住所地，用于识别未明示准据法时的实际联系点
       parser:
         type: object
@@ -511,6 +593,11 @@ entities:
         type: string
         required: true
         description: 统一社会信用代码 / EIN / 注册号；未确认写 unknown
+      identifier_applicability:
+        type: string
+        required: true
+        enum_ref: identifier_applicability
+        description: 先按原文角色和核验目的判断 required/not_applicable/unknown，再决定缺失字段是否形成门禁
       domicile:
         type: string
         required: true
@@ -541,9 +628,13 @@ entities:
         required: true
         description: 条款标题；无标题写 unknown
       page:
-        type: integer
+        type: integer|string
         required: true
-        description: 起始页码；缺失时该条款只能进 failure_marks，不得产出结论
+        description: 起始页；未分页文本可为 unknown，但须有 locator 才能产出可定位事实
+      locator:
+        type: object
+        required: false
+        description: 未分页文本的绝对路径、行号/段落与命中串定位
       text:
         type: string
         required: true
@@ -619,7 +710,7 @@ entities:
       jurisdiction_pack_version:
         type: string
         required: true
-        description: 生效的法域包版本，如 cn-v1 / us-v1；与法域线索不一致时阻断
+        description: 中国大陆实体检查时记录 jurisdiction-cn 版本；域外服务范围写 out_of_service_scope，未知写 unknown，不要求不存在的 foreign pack
         on_mismatch: block
       parser_revision:
         type: string
@@ -634,6 +725,36 @@ entities:
     policy:
       # 蓝本第八节结句：不一致时输出「数据对齐建议」，而非自动放行。
       on_any_mismatch: 输出数据对齐建议并暂停推进，禁止自动放行
+
+  branch_invocation:
+    description: O3 单个隔离分支的真实调用身份；join 等待该调用的 terminal event，而不是等待所有业务动作成功
+    fields:
+      invocation_id: {type: string, required: true, description: 由真实分支调用生成且在启动、terminal event、settled receipt 三处完全相同}
+      branch_id: {type: string, required: true, enum: [jurisdiction-auditor, risk-scanner]}
+      started_at: {type: string, required: true}
+      terminal_outcome: {type: string, required: false, enum: [success, failed, cancelled]}
+      terminal_event_ref: {type: string, required: false, description: terminal 前不得填写；terminal 后必须指向同 invocation_id 的事件}
+    invariants:
+      - terminal event 的 invocation_id 必须等于本对象 invocation_id
+      - failed/cancelled 仍可 settle，原因与检索范围作为 coverage debt 保留
+      - 业务动作成功不是 terminal 的必要前提，但没有真实 terminal event 绝不能 settle
+
+  branch_terminal_record:
+    description: O3 terminal event、settled receipt 与 join ledger 共用的记录；三层字段同名同类型，settle/ledger 不丢字段
+    fields:
+      event_type: {type: string, required: true, const: branch_invocation_terminal}
+      branch_id: {type: string, required: true, enum: [jurisdiction-auditor, risk-scanner]}
+      invocation_id: {type: string, required: true, min_length: 1}
+      outcome: {type: string, required: true, enum: [success, failed, cancelled]}
+      receipt_ref: {type: string, required: true, min_length: 1}
+      searched_scope: {type: string, required: true, min_length: 1}
+      reason: {type: string, required: true, min_length: 1}
+    mapping:
+      terminal_event_to_settled_receipt: field_for_field
+      settled_receipt_to_ledger: field_for_field
+    invariants:
+      - invocation_id 必须与 branch_invocation 相同，禁止跨调用借用
+      - success、failed、cancelled 使用同一校验器；failed/cancelled 保留欠账，success 不代表所有业务动作均成功
 
   receipt:
     description: |
@@ -671,17 +792,32 @@ entities:
         fields:
           gate_id:
             type: string
+            required: true
             description: Human Gate 标识（见 actions.yaml）
           confirmed_by:
             type: string
-            description: 确认人标识
+            required: true
+            description: 真人确认人标识；decision=pending 时必须为 unknown，模拟身份不得填写
           confirmed_at:
             type: string
-            description: 确认时间
+            required: true
+            description: 真人确认时间；decision=pending 时必须为 unknown
           decision:
             type: string
-            enum: [approved, rejected, returned_for_rereview]
-            description: 决定
+            required: true
+            enum: [approved, rejected, returned_for_rereview, pending]
+            description: 决定；pending 不等于 rejected。模拟回答不得写成 approved
+          decision_source:
+            type: string
+            required: true
+            enum: [authorized_human, pending_no_decision]
+            description: approved/rejected/returned_for_rereview 只允许 authorized_human；pending 只允许 pending_no_decision
+        conditional_constraints:
+          - if: decision = pending
+            then: decision_source = pending_no_decision AND confirmed_by = unknown AND confirmed_at = unknown
+          - if: decision IN [approved, rejected, returned_for_rereview]
+            then: decision_source = authorized_human AND confirmed_by != unknown AND confirmed_at != unknown
+          - forbid: 模拟、测试或 Agent 自填身份作为 authorized_human
       created_at:
         type: string
         required: true
@@ -703,7 +839,11 @@ entities:
       source_location:
         type: evidence_ref
         required: false
-        description: 原文位置；status = blank 时允许缺省，其余状态必填
+        description: 阳性事实或 status=covered 时必填；blank/blocked/deferred/unknown/not_applicable 可缺省，不得为满足格式伪造引文
+      search_scope:
+        type: object
+        required: false
+        description: blocked/deferred/unknown 或阴性检索时记录实际文件、页/行范围、检索词与失败原因
       conclusion:
         type: string
         required: true
@@ -720,8 +860,26 @@ entities:
       status:
         type: string
         required: true
-        enum: [covered, blank, blocked, deferred]
-        description: 覆盖状态；blank 与 blocked 必须在报告中单列，禁止合并进「通过」
+        enum_ref: coverage_status
+        description: 只有 covered 可引用真实回执；其余状态必须给出原因，not_applicable 不得计作 pass，统计分母透明
+      status_reason:
+        type: string
+        required: false
+        description: 非 covered 必填；not_applicable 必须明确为何不适用
+      receipt_ref:
+        type: string
+        required: false
+        description: status=covered 时必填并指向真实回执，其他状态不得伪造
+    conditional_constraints:
+      - if: status = covered
+        require: [source_location, receipt_ref]
+      - if: status IN [blank, blocked, deferred, unknown, not_applicable]
+        require: [status_reason]
+        forbid: [receipt_ref]
+      - if: status IN [blocked, deferred, unknown]
+        require: [search_scope]
+      - if: status = not_applicable
+        rule: status_reason 必须说明为何不适用且不得计入 pass
 
 # ============================================================================
 # 五、不变量（违反即阻断，不是「注意风险后继续」）
@@ -738,27 +896,27 @@ invariants:
     blueprint_ref: 第十四节 核心质量指标
 
   - id: INV-002
-    statement: 任何 kind = exhibit_referenced_only 的对象存在，即视为缺失附件
-    rationale: 蓝本第四节把「正文引用但清单没有」列为阻断项，不是缺省态
+    statement: 任何 kind = exhibit_referenced_only 的对象存在即阻断；R7 已在权威清单列明但正文未交只用 delivered:false 的 scope 事实表达，不创建该 kind
+    rationale: exhibit_referenced_only 表示引用目标实体未成立；必须与 SCOPE-ATTACHMENT-BODY-ABSENT 的范围边界分开
     on_violation: block
     blueprint_ref: 第四节 阻断项
 
   - id: INV-003
-    statement: 每个 contract_document 的 version_label 与 content_digest 必须非 unknown
-    rationale: 附件缺自有版本号时，「主版本未变」会被错误推广为「案件未变」（版本对比陷阱）
-    on_violation: block
+    statement: 每个 contract_document 必须绑定 case_id/object_id/version_label/canonical_absolute_path；FileDigest 成功时 content_digest 必须为完整 SHA-256，失败时必须为 frozen_without_digest 且不得把 unknown==unknown 当验证通过
+    rationale: 摘要失败不应抹去可读事实，也不能让未知摘要制造虚假同一性；aggregate 仅覆盖本次已读文件
+    on_violation: block_identity_claim_continue_fact_review
     blueprint_ref: 第九节 版本对比陷阱
 
   - id: INV-004
-    statement: 任何字段值命中占位符模式即阻断
+    statement: 金额、主体、正文附件引用、页码等业务字段命中占位符即阻断；仅当明确 negotiation_draft 且 execution_validation_requested=false 时，签署专用空白不单独阻断文本审查，但保留签署 pending
     patterns: ['$X', 'TBD', '[金额]', '____', '【待定】', 'XXX', '__', '〖待补〗']
     rationale: 占位符表示条款尚未成立，对其做风险判断等于对空气评分
     on_violation: block
     blueprint_ref: 第四节 空字段占位符
 
   - id: INV-005
-    statement: signature.state 不得为 unknown / missing_seal / missing_date / missing_signatory
-    rationale: 签署状态未确认时合同是否成立本身存疑
+    statement: signature_review/effectiveness_review 或未声明草稿范围时，signature.state 不得为 unknown/missing_seal/missing_date/missing_signatory/electronic_unverified；明确 negotiation_draft 且 execution_validation_requested=false 时仅签署专用空白可不单独阻断，但 authenticity_state 与 authority_evidence 仍保持 pending/unknown
+    rationale: 签署栏文字完整与签章真实性、授权验证是不同事实；/s/ 或「已盖章」文字均不能证明真实
     on_violation: block
     blueprint_ref: 第四节 签署状态未确认
 
@@ -775,9 +933,9 @@ invariants:
     blueprint_ref: 第四节 角色身份不明
 
   - id: INV-008
-    statement: version_matrix.jurisdiction_pack_version 声明的法域必须覆盖 jurisdiction_clues 中出现的全部法域线索
-    rationale: 用中国法包审一份约定纽约法的合同，输出看上去完整但整份无效
-    on_violation: block
+    statement: 准据法、争议机构/地点、签署地、援引立法四类线索必须全部记录；任一明确指向域外即 out_of_service_scope 并转介。仅中国大陆实体法律检查匹配 jurisdiction-cn，域外不得要求 foreign pack，未知准据法依法留白且不得以注册地自动填充
+    rationale: 服务范围、线索记录和知识包适用是三个判断；多条声明只是调查输入，未读适用专业包不得断定法律冲突或效力
+    on_violation: reject_substantive_output_preserve_generic_governance
     blueprint_ref: 第八节 版本矩阵
     # ⚠️ 违反 INV-008 时有**两种**成因，结论完全不同，不得一律按「缺包」处理：
     #
@@ -811,20 +969,20 @@ invariants:
     blueprint_ref: 第九节 同源约束
 
   - id: INV-010
-    statement: 版本对比输出必须包含 risk_direction 字段，且当新增条款导致风险升级时动作升级为「先谈判」
+    statement: 版本对比必须含 comparison_applicability；单版本且未请求基线时为 not_applicable 并省略 risk_direction；只有已请求基线但冻结或范围不足时 applicable + undetermined；适用对比中新增条款导致风险升级时动作升级为「先谈判」
     rationale: 「差异为 0」是最阴险的结论形态，必须被风险方向字段强制暴露
     on_violation: reject_output
     blueprint_ref: 第九节
 
   - id: INV-011
-    statement: 任何 conclusion_level 非 blank 的结论必须携带完整 evidence_ref（clause_no + page + quote 均非 unknown）
+    statement: 任何阳性结论必须携带可定位 evidence_ref；有分页文件含真实 page，无分页文本允许 page=unknown 但必须含绝对路径、行号/段落及命中串 locator，quote 必须可在原文逐字检索
     rationale: 蓝本第七节结论四元组，缺任一项该结论不合格
     on_violation: reject_output
     blueprint_ref: 第七节
 
   - id: INV-012
-    statement: 覆盖矩阵中 status = blank 或 blocked 的行不得计入通过率，且必须在报告正文单列
-    rationale: 欠账表的意义在于显式留白，合并进通过即丧失全部价值
+    statement: 覆盖状态只允许 covered/blank/blocked/deferred/unknown/not_applicable；仅 covered 有真实 receipt_ref，其他状态不得计作 pass，均须列原因，统计分子与分母透明
+    rationale: 欠账与不适用都不是通过；显式展示才能避免检查越少通过率越高
     on_violation: reject_output
     blueprint_ref: 第十五节 响应矩阵
 

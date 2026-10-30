@@ -6,12 +6,12 @@ last-reviewed: 2026-09-29
 
 [English](README.md) · [验收方法](../../docs/testing.zh-CN.md)
 
-共 **14 份合同文件、13 个案例编号**，C06 是两版本案例。样本和预期结果属于测试设计，不代表验收已经完成。
+共 **14 份合同文件、14 个规范 source case 编号**；C06 是两版本案例，C09a/C09b 由 C01 派生。样本和预期结果属于测试设计，不代表验收已经完成。
 
 ## 来源
 
 - C01–C08：虚构身份与人工测试条件的合成合同，含 C06a/b 共九份。C07 是合成英文新加坡法 MSA，不是真实客户合同。
-- C09a/C09b：由 [make-c09.py](make-c09.py) 从 C01 派生，各与 C01 恰好差两行（合同编号与一处附件条款），脚本拒绝任何其他差异。与 C01 一起隔离 intake S4：C01 为 R7（已登记附件正文未送达）→ passed；C09a 为 R9（权威附件清单是另行签署且未送达的目录）→ conditional，且 R9 对应的待办恰好一条升级的 PEND-001；C09b 为 R1（正文引用了正式清单里没有的附件）→ blocked。改动 C01 后必须重跑 make-c09.py。
+- C09a/C09b：由 [make-c09.py](make-c09.py) 从 C01 派生，各与 C01 恰好差两行（合同编号与一处附件条款），脚本拒绝其他差异；C01 改动后必须重跑。
 - R01：公开政府采购空白模板，来源见 [ground-truth.yaml](ground-truth.yaml)，不是已签协议。
 - R02：由 R01 填充生成。[make-r02.py](make-r02.py) 写入姓名、日期、签章文字，并明确人工植入仲裁机构缺陷。历史文件名 executed 是场景标签，不代表验证了签署真实性。
 - R03：由 [make-r03.py](make-r03.py) 修改 R02 日期和引用年份，用于历史法律适用测试。
@@ -20,7 +20,8 @@ last-reviewed: 2026-09-29
 
 ## 清单
 
-以下列出当前 oracle 文本，不是无条件的现行运行验收承诺。
+以下列出 `normative.cases` 的当前门禁。旧值完整保留在 `history.normative: false` 下，
+不得作为当前答案。
 
 | ID | 文件 | 当前 oracle 门禁文本 |
 |---|---|---|
@@ -28,28 +29,34 @@ last-reviewed: 2026-09-29
 | C02 | [C02-software-outsourcing.md](C02-software-outsourcing.md) | blocked |
 | C03 | [C03-procurement-framework.md](C03-procurement-framework.md) | conditional |
 | C04 | [C04-labor-contract.md](C04-labor-contract.md) | passed |
-| C05 | [C05-data-processing-agreement.md](C05-data-processing-agreement.md) | conditional |
+| C05 | [C05-data-processing-agreement.md](C05-data-processing-agreement.md) | passed（服务范围外） |
 | C06a | [C06a-saas-v1.md](C06a-saas-v1.md) | passed |
 | C06b | [C06b-saas-v2.md](C06b-saas-v2.md) | passed |
-| C07 | [C07-master-services-agreement.md](C07-master-services-agreement.md) | conditional |
+| C07 | [C07-master-services-agreement.md](C07-master-services-agreement.md) | passed（服务范围外） |
 | C08 | [C08-mutual-nda.md](C08-mutual-nda.md) | blocked |
 | C09a | [C09a-saas-manifest-deferred.md](C09a-saas-manifest-deferred.md) | conditional |
 | C09b | [C09b-saas-attachment-unlisted.md](C09b-saas-attachment-unlisted.md) | blocked |
 | R01 | [R01-govt-purchase-real.md](R01-govt-purchase-real.md) | blocked |
-| R02 | [R02-govt-purchase-executed.md](R02-govt-purchase-executed.md) | 旧值 pass / conditional |
-| R03 | [R03-govt-purchase-2019.md](R03-govt-purchase-2019.md) | 旧值 pass / conditional |
+| R02 | [R02-govt-purchase-executed.md](R02-govt-purchase-executed.md) | conditional |
+| R03 | [R03-govt-purchase-2019.md](R03-govt-purchase-2019.md) | conditional |
 
-C01 检查误报；C02 硬性输入缺陷；C03 条款缺失及条件通过续行；C04 劳动问题；C05 法域及数据条款冲突；C06 附件版本比较；C07 英文及服务范围外处理；C08 签署状态；C01/C09a/C09b 测附件清单分界。C09a 的 R9 回执契约约束的是「R9 那一条」而非待办总数：R7 范围事实另起一条不升级的待办是允许的。R01 测模板输入，R02 测下游分析，R03 测法律时点。商业标尺属于样本/知识包假设，不是普遍法律或市场标准。
+C01 检查误报；C02 硬性输入缺陷；C03 条款缺失及条件通过续行；C04 劳动问题；C05 法域及数据条款冲突；C06 附件版本比较；C07 英文及服务范围外处理；C08 签署状态。C01/C09a/C09b 构成 R7/R9/R1 对照：清单已知但正文未交 → passed 且禁报 R9；权威清单未交 → conditional，其中 R9 对应条目（不是 pending 总数）是唯一升级的 `PEND-001`；正文引用无清单项 → blocked 且禁止降成 R9。R01 测模板输入，R02 测下游分析，R03 测法律时点。商业标尺属于样本/知识包假设，不是普遍法律或市场标准。
 
-## 已知判据限制
+## 判据边界
 
-- 运行门禁规范为 passed、conditional、blocked。R02/R03 仍写旧值 pass，其规范通过值应为 passed；本次不修改 oracle。
-- C05/C07 在 oracle 中为 conditional，旧 README 的 passed 已纠正。
-- oracle 中 cn-v1、缺少新加坡包等历史注释不能覆盖当前仅支持中国大陆的边界。域外通用治理与域内加载错误包是不同情况。
-- 签署判据依请求范围而定：已明确的未签谈判草稿不等于签署真实性验证。先记录场景，再判断门禁。
-- 旧 scratchpad/make-r02.py 引用已过期，实际生成脚本就在本目录。
-- check:gates 跳过 testdata；静态通过不代表这些预期已经协调一致。[check-evidence.mjs](check-evidence.mjs)（零依赖）核对每条 evidence、additional_evidence 与 clause_presence_evidence 都能在对应语料中逐字找到；它查出并修正了 R01–R03 三条从未匹配过的仲裁条款证据。
-- 2026-09-29 C01/C09a/C09b 的真机结果及由此引出的修复，见 ground-truth 的「C01 / C09a / C09b 真机实测基线」注释块；均为单次、非盲测运行。
+- 当前门禁仅允许 `passed`、`conditional`、`blocked`，每个案例只能有一个标量值。
+- 单独的域外指向不使 intake 对象失效。C05/C07 通过 intake，但必须转介且禁止外国法实体结论；C08 因原场景明确要求签署完成审查且签署栏为空，仍由独立真实阻断项判为 blocked。
+- `C08_negotiation_draft` 是另一个有明确用户请求文本的场景，记录 `object_designation: negotiation_draft` 与 `execution_validation_requested: false`。没有其他实际 FLG/BLK 时，签署空白只进入 pending，不把 `passed` intake 门禁降级；目的未知或未声明仍按原 execution-readiness 场景阻断。
+- 锁定的 `contract-intake@1.0.6` S7.1 已规定统一社会信用代码缺失为 `FLG-PARTY-ID-ABSENT`。R02/R03 三方均无统一社会信用代码或等价注册号，故单值 `conditional`，具体缺项进入 pending、下游继续。签署字段只是文本完整，真实性与授权未验证；日期、旧法名称、仲裁机构不明确等原文事实必须检出，法条号和效力断言待专业法律复核。
+- C06 方向统一为 `up/down/flat/undetermined`；单版本为 `comparison.applicability: not_applicable`。显式 C06a→C06b 比较记录请求基线及客户视角。交付物仅含内嵌附件二，声明的附件一、附件三正文未交，因此 `global_coverage: partial`、全局 `direction: undetermined`、局部 `attachment_direction: up`；正文相同不等于全合同一致。
+- 每个 normative 案例均预先声明稳定的必检、禁止误报、覆盖、阴性检索及适用域目标；不得以空目标按输出反推通过。严重度必须注明适用来源，未经核验的法律效力与必须检出的原文事实分离。
+
+锁定规则证据与本次来源更正见 [oracle-source-correction-2026-09-29.md](oracle-source-correction-2026-09-29.md)。上一份独立审查保留不改，关于 R02/R03 的旧结论由本说明取代，不回写历史报告。
+- R7（清单已知、正文未交）、R9（权威清单未交）及正文引用无清单项分别建成可执行定向场景。
+- C01/C09a/C09b 构成 R7/R9/R1 对照：依次为 passed 且禁报 R9、conditional 且唯一升级项为 PEND-001、blocked 且禁止降级映射成 R9。
+- 运行 `node shared/resources/check-oracle-contract.mjs`、`node testdata/contracts/check-evidence.mjs` 与 `node --test shared/resources/tests/oracle-contract.test.mjs`。它们只是静态前检，不是真机或法律验证。
+- 证据 checker 使用仅从 `normative.cases` 派生并经审阅的 JSON 索引；运行时零 NPM 依赖，核对 oracle/source 原始字节摘要与全部 current literal。旧 `evidence`、`additional_evidence`、`clause_presence_evidence` 检查仅保留为历史覆盖说明，不宣称全部历史当前通过。重新派生须先 `npm ci`，再显式运行 `node testdata/contracts/generate-evidence-index.mjs` 并审阅 diff。
+- 2026-09-29 真机基线是单次、非盲的历史运行，不继承为当前通过。
 
 有争议的预期须通过独立审查的行为/判据变更处理后再用于发布门禁，不能静默把不一致计作通过。
 

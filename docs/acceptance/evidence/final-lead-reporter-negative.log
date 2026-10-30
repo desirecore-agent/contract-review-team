@@ -1,0 +1,98 @@
+✔ O1 remains sync isolated, blocked cannot pass, conditional continues (3.301042ms)
+✔ execution graph has true O3 parallel and two isolated reporter calls (0.5335ms)
+✔ coverage goals are seven fixed rows and not nonexistent S1-S8 rows (0.973208ms)
+✔ digest failure continues and direction vocabulary is canonical (0.875709ms)
+✔ agent model block and permissions retain expected safety boundaries (0.606208ms)
+✖ Lead can expose the real structured validator to its intake child without enabling shell or changing routing (3.709083ms)
+✔ malformed YAML/JSON and valid:false retain the failure artifact and dispatch nothing (2.059666ms)
+✔ agent declares the independent verification entry without changing wait policy (3.393375ms)
+✔ O4 uses candidate three-state results plus an independent additional collection (1.052958ms)
+✔ all reporter instruction layers keep additional separate from candidate states (3.076583ms)
+✔ O5 consumes O4 and refuses a fake complete score when compliance is uncovered (0.495625ms)
+✔ versioned scoring resource computes deductions, caps, floor and tier without reweighting (1.024916ms)
+✔ O4 and O5 require file allowlists and disclose the platform isolation debt (0.400042ms)
+✔ pending gates do not block artifact delivery and redline audit is append-only (0.290916ms)
+✔ risk direction uses four values and R7/R9 stay distinct (0.757209ms)
+✖ DOCX evidence uses only the exact allowed output path, never directory enumeration or binary text readback (0.847667ms)
+✔ nonexistent redline capability is not statically advertised (0.709166ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 15
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 57.9685
+
+✖ failing tests:
+
+test at workspace/sources/contract-review-lead/tests/o1-boundary.contract.test.mjs:83:1
+✖ Lead can expose the real structured validator to its intake child without enabling shell or changing routing (3.709083ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(agent.tool_permissions.allowed.includes('StructuredFileValidate'))
+  
+      at TestContext.<anonymous> (file://<takeover-workspace>/workspace/sources/contract-review-lead/tests/o1-boundary.contract.test.mjs:85:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at workspace/sources/review-reporter/tests/o4-o5.contract.test.mjs:102:1
+✖ DOCX evidence uses only the exact allowed output path, never directory enumeration or binary text readback (0.847667ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /随后列目录/. Input:
+  
+  '---\n' +
+    'name: report-composition\n' +
+    'description: 在 O5 将合格 scorecard 渲染为范围明确的报告、待决回执，并在锚点可验证时自主导出修订 DOCX。\n' +
+    'version: 1.1.0\n' +
+    'type: procedural\n' +
+    'risk_level: low\n' +
+    'status: enabled\n' +
+    'requires:\n' +
+    '  tools: [Read, Grep, Write, Edit]\n' +
+    'metadata:\n' +
+    '  author: DesireCore\n' +
+    '  version: 1.1.0\n' +
+    "  updated_at: '2026-09-29'\n" +
+    '---\n' +
+    '\n' +
+    '# O5 报告与交付\n' +
+    '\n' +
+    '完整回读 scorecard 后，只渲染其中已有的证据、评分状态和建议；不新增事实、不重做 O4。报告至少包含对象/范围、已证发现、refuted/unlocatable、七项覆盖状态、评分公式及完整性声明、风险方向、R7/R9 分列欠账、行动清单、Human Gate pending、适用边界和产物状态。\n' +
+    '\n' +
+    '## 路径\n' +
+    '\n' +
+    '任务正文必须逐条给出具体文件绝对路径的 `read_allowlist` 与 `write_allowlist`。只读列出的 O4 回执、评分规则资源、适用法域规则文件和原件；只写列出的 `scorecard.json`、`report.md`、`pending-receipt.json`、导出尝试回执。未列路径一律禁止，禁止 `Ls`、`Glob`、无路径 `Grep` 和目录枚举。所有产物使用 Lead 本次明确列出的 canonical 路径，写后逐一完整回读并使用工具实际返回路径互相引用。不得自行另建根，也不得让 Lead 猜测成员目录。`memoryScope:none` 不提供文件级强制隔离；当前平台缺少 per-call 文件能力沙箱，须在回执列为未验平台欠账。\n' +
+    '\n' +
+    '## Human Gate\n' +
+    '\n' +
+    '先交付可读取的报告、待决清单和真实回执；业务 pending 不等于文件交付 pending。不得签署、接受条款或替真人批准。默认不逐个调用 `AskUserQuestion`；如评分技能已基于明确需要提问，仍将未回答项保持 pending。\n' +
+    '\n' +
+    '## 修订版 DOCX\n' +
+    '\n' +
+    '仅当存在原始可导出文件和证据支持的具体替换时，先做导出能力预检。当前平台受版本控制源码的全仓 `git grep` 未发现 `ExportRedlineDocument`，因此不得假定 agent 声明等于运行可用；实际入口待协调者核验：\n' +
+    '\n' +
+    '1. `source_path` 必须是原始文件，不是报告或外部生成副本。\n' +
+    '2. 每个 anchor 是原文连续文本，并用 `Grep`/读取确认在对应原件中恰好出现一次；数量为 0、超过 1、跨段或来源不明即 blocked。\n' +
+    '3. 若运行工具清单没有真实导出入口，追加本次 attempt 为 `blocked`，保存真实 `tool-not-found` 回执；不调用虚构名称，不用外部脚本或手工文件替代。\n' +
+    '4. 若协调者核验出真实入口，以其真实参数和返回路径记录 `redline_docx_path`，随后列目录/读取能力允许的元数据确认产物存在，再回读报告与回执。\n' +
+    '5. 失败时保留报告，追加本次 attempt 的真实 `failed/blocked` 原因；成功时追加当前 attempt 为 success；均不删除以前失败 attempt。\n' +
+    '\n' +
+    '最终回执区分：报告交付状态、完整五维评分是否存在、Human Gate pending、DOCX 当前尝试与历史尝试。报告范围受限仍可交付，但不能写成完整合规、完整评分或批准。\n'
+  
+      at TestContext.<anonymous> (file://<takeover-workspace>/workspace/sources/review-reporter/tests/o4-o5.contract.test.mjs:104:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "---\nname: report-composition\ndescription: 在 O5 将合格 scorecard 渲染为范围明确的报告、待决回执，并在锚点可验证时自主导出修订 DOCX。\nversion: 1.1.0\ntype: procedural\nrisk_level: low\nstatus: enabled\nrequires:\n  tools: [Read, Grep, Write, Edit]\nmetadata:\n  author: DesireCore\n  version: 1.1.0\n  updated_at: '2026-09-29'\n---\n\n# O5 报告与交付\n\n完整回读 scorecard 后，只渲染其中已有的证据、评分状态和建议；不新增事实、不重做 O4。报告至少包含对象/范围、已证发现、refuted/unlocatable、七项覆盖状态、评分公式及完整性声明、风险方向、R7/R9 分列欠账、行动清单、Human Gate pending、适用边界和产物状态。\n\n## 路径\n\n任务正文必须逐条给出具体文件绝对路径的 `read_allowlist` 与 `write_allowlist`。只读列出的 O4 回执、评分规则资源、适用法域规则文件和原件；只写列出的 `scorecard.json`、`report.md`、`pending-receipt.json`、导出尝试回执。未列路径一律禁止，禁止 `Ls`、`Glob`、无路径 `Grep` 和目录枚举。所有产物使用 Lead 本次明确列出的 canonical 路径，写后逐一完整回读并使用工具实际返回路径互相引用。不得自行另建根，也不得让 Lead 猜测成员目录。`memoryScope:none` 不提供文件级强制隔离；当前平台缺少 per-call 文件能力沙箱，须在回执列为未验平台欠账。\n\n## Human Gate\n\n先交付可读取的报告、待决清单和真实回执；业务 pending 不等于文件交付 pending。不得签署、接受条款或替真人批准。默认不逐个调用 `AskUserQuestion`；如评分技能已基于明确需要提问，仍将未回答项保持 pending。\n\n## 修订版 DOCX\n\n仅当存在原始可导出文件和证据支持的具体替换时，先做导出能力预检。当前平台受版本控制源码的全仓 `git grep` 未发现 `ExportRedlineDocument`，因此不得假定 agent 声明等于运行可用；实际入口待协调者核验：\n\n1. `source_path` 必须是原始文件，不是报告或外部生成副本。\n2. 每个 anchor 是原文连续文本，并用 `Grep`/读取确认在对应原件中恰好出现一次；数量为 0、超过 1、跨段或来源不明即 blocked。\n3. 若运行工具清单没有真实导出入口，追加本次 attempt 为 `blocked`，保存真实 `tool-not-found` 回执；不调用虚构名称，不用外部脚本或手工文件替代。\n4. 若协调者核验出真实入口，以其真实参数和返回路径记录 `redline_docx_path`，随后列目录/读取能力允许的元数据确认产物存在，再回读报告与回执。\n5. 失败时保留报告，追加本次 attempt 的真实 `failed/blocked` 原因；成功时追加当前 attempt 为 success；均不删除以前失败 attempt。\n\n最终回执区分：报告交付状态、完整五维评分是否存在、Human Gate pending、DOCX 当前尝试与历史尝试。报告范围受限仍可交付，但不能写成完整合规、完整评分或批准。\n",
+    expected: /随后列目录/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }

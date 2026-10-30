@@ -1,0 +1,102 @@
+{
+  "observedAt": "2026-09-29T09:53:19.737Z",
+  "evidenceKind": "source-preflight-not-runtime-acceptance",
+  "platformCommit": "244a84b1bb562a23936d8d5de50bde694ebb666f",
+  "canonicalImplementation": "packages/agent-service/src/team/lock.ts#computeMemberContentHash",
+  "implementationSha256": "dd9927de849086c073bba93a0209ee356bb84b4371b935151e23b939cdb1b999",
+  "teamCommit": "e1837f2931ec077b7bf522f5c223c0af5df840cf",
+  "lockSha256": "b819568d41d716833ad588dfd6c7e003d85bb1569c4a9bf299dea1f867c0f357",
+  "hashCoverage": [
+    "agent.json",
+    "persona.md",
+    "principles.md"
+  ],
+  "scopeNote": "v3 is the platform identity digest, not a digest of every skill. Exact Git commits remain the full release source identity.",
+  "allMatch": false,
+  "members": [
+    {
+      "id": "contract-review-lead",
+      "commit": "e5bbe87f53aa0e788dfb7ac30a828219a660d3d4",
+      "expectedVersion": "1.0.21",
+      "version": "1.0.21",
+      "expectedContentHash": "v3:6cece958ec5838314e49015a734845e0aad0bfe7b2c8c7eeb7a072cfb9d824f9",
+      "byteHashes": {
+        "agent.json": "385224788f1614e1dea55bd6c15ac969c9a67009657ef0240892705d8e33e259",
+        "persona.md": "3de217bbaa29b56ffa963ff379751c41bdc7e800c099ae6666263e174d3c2ad1",
+        "principles.md": "4022064bd5674ab7c2742faf923488cf7a6c2150cbda7ce1bf1b1d3470f32a46"
+      },
+      "actualContentHash": "v3:6cece958ec5838314e49015a734845e0aad0bfe7b2c8c7eeb7a072cfb9d824f9",
+      "matches": true
+    },
+    {
+      "id": "contract-intake",
+      "commit": "7c3f436852aa258259a166f3b376243587bfe915",
+      "expectedVersion": "1.0.6",
+      "version": "1.0.6",
+      "expectedContentHash": "v3:d28e346daac3e769e048ab815a1d5971e1b6896a9b678df10c8d8156adc1e811",
+      "byteHashes": {
+        "agent.json": "9b400d4f38bf2eb0c20466316a5e7787f3effe75edd41381b18a38b86dee9f8e",
+        "persona.md": "6f01318378500614110621134718846db67116f73167629c9ede311680b1cab9",
+        "principles.md": "ac2514c0ec16b40f29d6b378a24f0f62b343b23e390f39164ef765740045b560"
+      },
+      "actualContentHash": "v3:21a1e57f58e919697e8005ecd65fef9cb3752037460d21c9da482188de9d08ee",
+      "matches": false
+    },
+    {
+      "id": "clause-extractor",
+      "commit": "6129add5f40109f895d4125065a761b58f73819d",
+      "expectedVersion": "1.1.0",
+      "version": "1.1.0",
+      "expectedContentHash": "v3:fccbf087f78a00e704e1bdefc8a10dad5372f61413cec65900e2544dd73de476",
+      "byteHashes": {
+        "agent.json": "04d21dd2ae7f6d98d121ad2161f9d240c84f04112ddcfd232c9a52e9e15f07a6",
+        "persona.md": "87e8d9fb8c6680ff6e5f847fd74412c6073f0000c62a30ac3910be027328d65c",
+        "principles.md": "43e5667916c0915ed5c344cf43f99470cb7ebde1d0bf62bc35194330a59327ac"
+      },
+      "actualContentHash": "v3:b5bea1457ec936409c954c68f31245e855f059a35e6428417c6befa33f636a02",
+      "matches": false
+    },
+    {
+      "id": "risk-scanner",
+      "commit": "ea396f95e0a3c1917bd0b8fa02e956c4cc7bf578",
+      "expectedVersion": "1.1.0",
+      "version": "1.1.0",
+      "expectedContentHash": "v3:263ddfb20fdf5692e9dfa5b40f54254292d425f72168b11a8e4c7f0af1fe76b7",
+      "byteHashes": {
+        "agent.json": "09e7091ea1b2b3e86bc62be7eb853ddd12623e6d4bc1197148ed7398765c05bb",
+        "persona.md": "153d55e2763752f0aa01be2dadb7ba955fdd3ada05cad259140fd20dcaa1219c",
+        "principles.md": "53bc6c03b6ed8718fffd043273bfea2b510cf84f710539b38ef4d9d8fb6ac629"
+      },
+      "actualContentHash": "v3:263ddfb20fdf5692e9dfa5b40f54254292d425f72168b11a8e4c7f0af1fe76b7",
+      "matches": true
+    },
+    {
+      "id": "jurisdiction-auditor",
+      "commit": "7ae69f15a6f56dc71cbfef9f07d6e65642563601",
+      "expectedVersion": "1.3.0",
+      "version": "1.3.0",
+      "expectedContentHash": "v3:70feab2e65c999007bf3b3f46a27d8eb3e297577cbdd62f3b783cbfe8d58176a",
+      "byteHashes": {
+        "agent.json": "d619cbc5640881bfda031de24722999fac997bbfbc0f195a8cbf4d57882808fc",
+        "persona.md": "cd99a1a42dec09cbba26f31e3343fd9f8be4ff88b3c6ab267469ff77e128c437",
+        "principles.md": "febb0785e3e1fd7efa3c81f0906c7d74d135fc8493dd16b5ad3e8b7cd49770b2"
+      },
+      "actualContentHash": "v3:70feab2e65c999007bf3b3f46a27d8eb3e297577cbdd62f3b783cbfe8d58176a",
+      "matches": true
+    },
+    {
+      "id": "review-reporter",
+      "commit": "9198728db040106525341de260f7dc8b5f50742a",
+      "expectedVersion": "1.0.6",
+      "version": "1.0.6",
+      "expectedContentHash": "v3:bc7a2c28243c9b132433ce7c5eb0ba5beed829269143d5610642f14a1adc6c41",
+      "byteHashes": {
+        "agent.json": "da82cfcc4483cd9f2716201006e4579fabd6e6b2eea150e9d68e3fadc925f445",
+        "persona.md": "d01d3cdd851c91b99e2c028fe552a554ff83bf2ac695f1ab436d1f5db4efea04",
+        "principles.md": "9ed3984981793c7279e946c7a06ce206ddde47f038fc9814a14ced6dea6ef133"
+      },
+      "actualContentHash": "v3:f4cd3852d359c633bd61773841160cb469b17f633aefa13c5fe7948d0ebe097b",
+      "matches": false
+    }
+  ]
+}

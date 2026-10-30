@@ -38,4 +38,4 @@ For each ID keep category, severity, resolution, recommended_action, human_gate,
 
 Start changes from a failing case: choose the resolution, add positive and negative examples, update both languages and metadata, then run scoped guards and affected agent regressions. Never invent benchmark thresholds or take over jurisdiction, comparison or scoring responsibilities. See [maintenance](../../../docs/maintenance.md).
 
-This is explanatory documentation. It does not resolve the shared seven-step/O0–O5 runtime conflict or prove false-positive rates.
+This is explanatory documentation. It does not change runtime rules or prove false-positive rates.

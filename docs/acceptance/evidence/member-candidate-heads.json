@@ -1,0 +1,47 @@
+{
+  "observedAt": "2026-09-29T11:33:09.927078+00:00",
+  "members": [
+    {
+      "member": "contract-review-lead",
+      "head": "f11a7cea1309465bac23ea3cda12e852cb2bad8c",
+      "base": "e5bbe87f53aa0e788dfb7ac30a828219a660d3d4",
+      "remote": "https://github.com/desirecore-agent/contract-review-lead.git",
+      "tree": "72b3d9d86bb115dadb624ed1864f6edcd4e0f2ad"
+    },
+    {
+      "member": "contract-intake",
+      "head": "586f1b5d9ab04950934ac7b9d4231a2b8bf75551",
+      "base": "150ea7c94b3d518b14e5163595881b9906675284",
+      "remote": "https://github.com/desirecore-agent/contract-intake.git",
+      "tree": "41a584ed01e8a0b952860b967744d684e9c9ba75"
+    },
+    {
+      "member": "clause-extractor",
+      "head": "3daecf141194ca0b5d0b64c7464c8036799cba59",
+      "base": "6129add5f40109f895d4125065a761b58f73819d",
+      "remote": "https://github.com/desirecore-agent/clause-extractor.git",
+      "tree": "3ee13c56da614feebabab54c72fa54addd305465"
+    },
+    {
+      "member": "risk-scanner",
+      "head": "63fdfe8c7bc637a9611e925b1fc11c7049b68f2f",
+      "base": "ea396f95e0a3c1917bd0b8fa02e956c4cc7bf578",
+      "remote": "https://github.com/desirecore-agent/risk-scanner.git",
+      "tree": "8aab2b2d5bfe73eae55744f07ba99a6be5122344"
+    },
+    {
+      "member": "jurisdiction-auditor",
+      "head": "70eeeb7255cb3949e3fa6eb37499752d50c7738c",
+      "base": "7ae69f15a6f56dc71cbfef9f07d6e65642563601",
+      "remote": "https://github.com/desirecore-agent/jurisdiction-auditor.git",
+      "tree": "5c49da8952b7751539ec0d5b8d1098279853e0e5"
+    },
+    {
+      "member": "review-reporter",
+      "head": "27ca925f3c556744d4e57766dc214ac977b8c447",
+      "base": "9198728db040106525341de260f7dc8b5f50742a",
+      "remote": "https://github.com/desirecore-agent/review-reporter.git",
+      "tree": "2bc2044badb13bc36ebc7b0a9526a72bb6eb126e"
+    }
+  ]
+}

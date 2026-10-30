@@ -1,0 +1,110 @@
+{
+  "kind": "source-contract-not-runtime-enforcement",
+  "consumers": 6,
+  "scenarios": 5,
+  "artifactsChecked": 75,
+  "legacyRootsRejected": 2,
+  "invalidIdentitiesRejected": 4,
+  "evidence": [
+    {
+      "root": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1",
+      "artifacts": {
+        "intakeReceipt": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/intake/INTAKE-1.receipt.yaml",
+        "intakeDetail": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/intake/INTAKE-1.detail.yaml",
+        "intakeValidation": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/intake/INTAKE-1.validation.json",
+        "clauseCheckpoint": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/clause-extraction/EXTRACT-1.checkpoint.yaml",
+        "clauseEnriched": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/clause-extraction/EXTRACT-1.enriched.yaml",
+        "clauseReceipt": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/clause-extraction/EXTRACT-1.receipt.yaml",
+        "riskArtifact": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/risk-scan/RISK-1.yaml",
+        "riskReceipt": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/risk-scan/RISK-1.receipt.yaml",
+        "jurisdictionArtifact": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/jurisdiction-audit/JUR-1.yaml",
+        "jurisdictionReceipt": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/jurisdiction-audit/JUR-1.receipt.yaml",
+        "o4Receipt": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/independent-verification/VERIFY-1.receipt.json",
+        "scorecard": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/report-delivery/scorecard.json",
+        "report": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/report-delivery/report.md",
+        "pendingReceipt": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/report-delivery/pending-receipt.json",
+        "exportAttemptReceipt": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-1/report-delivery/export-attempts.json"
+      }
+    },
+    {
+      "root": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1",
+      "artifacts": {
+        "intakeReceipt": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/intake/INTAKE-1.receipt.yaml",
+        "intakeDetail": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/intake/INTAKE-1.detail.yaml",
+        "intakeValidation": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/intake/INTAKE-1.validation.json",
+        "clauseCheckpoint": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/clause-extraction/EXTRACT-1.checkpoint.yaml",
+        "clauseEnriched": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/clause-extraction/EXTRACT-1.enriched.yaml",
+        "clauseReceipt": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/clause-extraction/EXTRACT-1.receipt.yaml",
+        "riskArtifact": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/risk-scan/RISK-1.yaml",
+        "riskReceipt": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/risk-scan/RISK-1.receipt.yaml",
+        "jurisdictionArtifact": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/jurisdiction-audit/JUR-1.yaml",
+        "jurisdictionReceipt": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/jurisdiction-audit/JUR-1.receipt.yaml",
+        "o4Receipt": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/independent-verification/VERIFY-1.receipt.json",
+        "scorecard": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/report-delivery/scorecard.json",
+        "report": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/report-delivery/report.md",
+        "pendingReceipt": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/report-delivery/pending-receipt.json",
+        "exportAttemptReceipt": "/authorized/review/CASE-B/OBJECT-1/V1/RUN-1/report-delivery/export-attempts.json"
+      }
+    },
+    {
+      "root": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1",
+      "artifacts": {
+        "intakeReceipt": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/intake/INTAKE-1.receipt.yaml",
+        "intakeDetail": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/intake/INTAKE-1.detail.yaml",
+        "intakeValidation": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/intake/INTAKE-1.validation.json",
+        "clauseCheckpoint": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/clause-extraction/EXTRACT-1.checkpoint.yaml",
+        "clauseEnriched": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/clause-extraction/EXTRACT-1.enriched.yaml",
+        "clauseReceipt": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/clause-extraction/EXTRACT-1.receipt.yaml",
+        "riskArtifact": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/risk-scan/RISK-1.yaml",
+        "riskReceipt": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/risk-scan/RISK-1.receipt.yaml",
+        "jurisdictionArtifact": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/jurisdiction-audit/JUR-1.yaml",
+        "jurisdictionReceipt": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/jurisdiction-audit/JUR-1.receipt.yaml",
+        "o4Receipt": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/independent-verification/VERIFY-1.receipt.json",
+        "scorecard": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/report-delivery/scorecard.json",
+        "report": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/report-delivery/report.md",
+        "pendingReceipt": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/report-delivery/pending-receipt.json",
+        "exportAttemptReceipt": "/authorized/review/CASE-A/OBJECT-2/V1/RUN-1/report-delivery/export-attempts.json"
+      }
+    },
+    {
+      "root": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2",
+      "artifacts": {
+        "intakeReceipt": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/intake/INTAKE-1.receipt.yaml",
+        "intakeDetail": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/intake/INTAKE-1.detail.yaml",
+        "intakeValidation": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/intake/INTAKE-1.validation.json",
+        "clauseCheckpoint": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/clause-extraction/EXTRACT-1.checkpoint.yaml",
+        "clauseEnriched": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/clause-extraction/EXTRACT-1.enriched.yaml",
+        "clauseReceipt": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/clause-extraction/EXTRACT-1.receipt.yaml",
+        "riskArtifact": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/risk-scan/RISK-1.yaml",
+        "riskReceipt": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/risk-scan/RISK-1.receipt.yaml",
+        "jurisdictionArtifact": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/jurisdiction-audit/JUR-1.yaml",
+        "jurisdictionReceipt": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/jurisdiction-audit/JUR-1.receipt.yaml",
+        "o4Receipt": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/independent-verification/VERIFY-1.receipt.json",
+        "scorecard": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/report-delivery/scorecard.json",
+        "report": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/report-delivery/report.md",
+        "pendingReceipt": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/report-delivery/pending-receipt.json",
+        "exportAttemptReceipt": "/authorized/review/CASE-A/OBJECT-1/V1/RUN-2/report-delivery/export-attempts.json"
+      }
+    },
+    {
+      "root": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W",
+      "artifacts": {
+        "intakeReceipt": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\intake\\INTAKE-1.receipt.yaml",
+        "intakeDetail": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\intake\\INTAKE-1.detail.yaml",
+        "intakeValidation": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\intake\\INTAKE-1.validation.json",
+        "clauseCheckpoint": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\clause-extraction\\EXTRACT-1.checkpoint.yaml",
+        "clauseEnriched": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\clause-extraction\\EXTRACT-1.enriched.yaml",
+        "clauseReceipt": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\clause-extraction\\EXTRACT-1.receipt.yaml",
+        "riskArtifact": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\risk-scan\\RISK-1.yaml",
+        "riskReceipt": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\risk-scan\\RISK-1.receipt.yaml",
+        "jurisdictionArtifact": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\jurisdiction-audit\\JUR-1.yaml",
+        "jurisdictionReceipt": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\jurisdiction-audit\\JUR-1.receipt.yaml",
+        "o4Receipt": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\independent-verification\\VERIFY-1.receipt.json",
+        "scorecard": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\report-delivery\\scorecard.json",
+        "report": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\report-delivery\\report.md",
+        "pendingReceipt": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\report-delivery\\pending-receipt.json",
+        "exportAttemptReceipt": "C:\\authorized\\review\\CASE-W\\OBJECT-W\\V2\\RUN-W\\report-delivery\\export-attempts.json"
+      }
+    }
+  ]
+}

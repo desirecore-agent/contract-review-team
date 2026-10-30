@@ -1,0 +1,10 @@
+{
+  "scope": "new upstream member-source reconciliation after concurrent team 0.1.37",
+  "requestedOperation": "fetch origin main and read diffs for contract-review-lead and contract-intake",
+  "tool": "code.run_process",
+  "result": "blocked_by_host_safety_check",
+  "message": "This tool call was blocked by OpenAI because we couldn't determine the safety status of the request.",
+  "didRetryThroughAlternateRoute": false,
+  "didAssumeFetchSucceeded": false,
+  "effectOnClaims": "New 0.1.37 member-source compatibility is not verified. Earlier exact-candidate evidence remains scoped to its recorded commits."
+}

@@ -1,0 +1,82 @@
+{
+  "observedAt": "2026-10-04T04:01:54.119216+00:00",
+  "teamUpstream": "440c28a494d1f06f2785552e57cca3f03cd4111e",
+  "version": "0.1.39",
+  "source": "freshly fetched official Git repositories at published exact lock commits",
+  "membersRoot": "<team-workspace>/workspace/merge-verification-20261004T035909Z/published-members",
+  "lockSha256": "bc899b83f86748d737cfee7342d2a716dfbb621a8869e68d3e052c7a4c6594b7",
+  "members": [
+    {
+      "member": "contract-review-lead",
+      "commit": "cf2b68387bba4c3b66f95be2f91913fd4a19eea3",
+      "tree": "0d9505315118c81cc541b06cea40d74fc9d8e7d6",
+      "version": "1.0.23",
+      "lockVersionMatches": true,
+      "clean": true,
+      "relativePath": "workspace/merge-verification-20261004T035909Z/published-members/contract-review-lead",
+      "agentJsonSha256": "86e4acee7d4ccc00016401c3652a425319ea6ef5fbd8145d14da174394674e24",
+      "candidateHead": "c28919295c2ad611bf2ebee2ba4a4532b18ea1b9",
+      "remoteMain": "24152ff38d6a82f310ca8659942869a5190c5707"
+    },
+    {
+      "member": "contract-intake",
+      "commit": "a1fe4921ab6815c45db089123fd9a4068fda1514",
+      "tree": "c4de2817b12df8f08b571a0c9aaeab40b576f788",
+      "version": "1.0.8",
+      "lockVersionMatches": true,
+      "clean": true,
+      "relativePath": "workspace/merge-verification-20261004T035909Z/published-members/contract-intake",
+      "agentJsonSha256": "0fa20591703123288bb6e162ace6641b3de00087a4ea7f6844ffce1e48502762",
+      "candidateHead": "6a43c714e599def32f0514d2071113dce4bb3d5c",
+      "remoteMain": "539fae49c26a366ddd23003fc43353cf5569e654"
+    },
+    {
+      "member": "clause-extractor",
+      "commit": "af75df2e0dad7908d1b4f840a61e7fd4c5937596",
+      "tree": "a0bbfdc69966721cf3e49107efb89a64874a8dbd",
+      "version": "1.1.1",
+      "lockVersionMatches": true,
+      "clean": true,
+      "relativePath": "workspace/merge-verification-20261004T035909Z/published-members/clause-extractor",
+      "agentJsonSha256": "a8841a7c427e7b83f121c3258d58177d392c7c4471cf2c0e13e9d7dbb28e6b10",
+      "candidateHead": "01aba64dee10871fa3d697f42b8d1aa12e35ec94",
+      "remoteMain": "67375b1997458ef29b146dabaa6ba8650b05829b"
+    },
+    {
+      "member": "risk-scanner",
+      "commit": "009d0c9256603d70a6b0748f66e7d43eea4c2462",
+      "tree": "6b9c6c33a1b157095a11f966d544ab44999be881",
+      "version": "1.1.1",
+      "lockVersionMatches": true,
+      "clean": true,
+      "relativePath": "workspace/merge-verification-20261004T035909Z/published-members/risk-scanner",
+      "agentJsonSha256": "e8393c32e65734a10f2b155c5899aadd3927948fa33213229d97928cce021e93",
+      "candidateHead": "5d02c3177c3ee93706d726d40cceeafbb7e25de6",
+      "remoteMain": "022bfd3ae880ec88c3a0407c1ae352d385bfff01"
+    },
+    {
+      "member": "jurisdiction-auditor",
+      "commit": "0aaef5fd77be3041169178e2e92b3e4bb21ddd32",
+      "tree": "8165b48f5a98352dbb819adf1e75009f733f3021",
+      "version": "1.3.1",
+      "lockVersionMatches": true,
+      "clean": true,
+      "relativePath": "workspace/merge-verification-20261004T035909Z/published-members/jurisdiction-auditor",
+      "agentJsonSha256": "4dcb0442a2741e8d25991db582e9c8de1f88f9fc6448ed70ba3806f9a34102c5",
+      "candidateHead": "2e37e0ae096f7b067bbab2d0b025ebe25eaecc86",
+      "remoteMain": "2d016831427f3b85c044fef0781682ce0929acec"
+    },
+    {
+      "member": "review-reporter",
+      "commit": "e06dcf3e7fb838bc57bede712ea634e187ed77e1",
+      "tree": "adf69170c6ea8f47607c1e3c6dc0ef145d441dfa",
+      "version": "1.0.7",
+      "lockVersionMatches": true,
+      "clean": true,
+      "relativePath": "workspace/merge-verification-20261004T035909Z/published-members/review-reporter",
+      "agentJsonSha256": "770e93afc34122edbf14871f186741c53f3b2fa0a72933fd849babdc9b8ce2a2",
+      "candidateHead": "678cbfaa49ac8d6c404160b65c415e07fabe4508",
+      "remoteMain": "40aff0fca5ce9c6765a613f79e474ed42d9625af"
+    }
+  ]
+}

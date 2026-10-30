@@ -1,0 +1,101 @@
+
+> contract-review-team@0.1.30 check
+> npm run check:gates && npm run check:oracle && npm run check:workflow && npm run test:contracts
+
+
+> contract-review-team@0.1.30 check:gates
+> node shared/resources/check-gate-verdict.mjs && node shared/resources/check-intake-verdict-contract.mjs
+
+✓ 门禁裁决字面量一致：canonical = passed | conditional | blocked，扫描 87 个文件无违规
+✓ parsed YAML: shared/resources/business-ontology/actions.yaml
+✓ parsed YAML: shared/resources/business-ontology/contract.yaml
+✓ parsed YAML: shared/resources/business-ontology/relations.yaml
+✓ intake verdict contract agrees across shared rules, actions, and ontology
+
+> contract-review-team@0.1.30 check:oracle
+> node shared/resources/check-oracle-contract.mjs
+
+✓ oracle contract valid: <takeover-workspace>/testdata/contracts/ground-truth.yaml
+
+> contract-review-team@0.1.30 check:workflow
+> node shared/resources/check-workflow-contract.mjs
+
+✓ parsed YAML: actions.yaml, contract.yaml, relations.yaml
+✓ workflow contract: O0→O5 dependencies, Human Gates, evidence, scope and digest semantics agree
+
+> contract-review-team@0.1.30 test:contracts
+> node --test shared/resources/tests/*.test.mjs
+
+✔ the real normative oracle passes (80.706ms)
+✔ the parsed historical oracle remains value-for-value frozen (49.797791ms)
+✔ rejects a missing R case with coverage diagnosis (41.593875ms)
+✔ rejects legacy pass and multi-value gates (41.685208ms)
+✔ rejects an incorrect input digest (37.791416ms)
+✔ rejects a fabricated literal quote (33.99025ms)
+✔ rejects historical observations in normative cases (33.118125ms)
+✔ rejects a foreign pack remedy (35.672166ms)
+✔ rejects mixing the explicit C08 draft scenario into the original case (38.038542ms)
+✔ rejects turning the R7 scope fact into a gate (48.621125ms)
+✔ rejects dropping PEND-001 from R9 (62.189ms)
+✔ rejects deleting a mandatory C03 detection target (45.562041ms)
+✔ rejects deleting a C01 false-positive prohibition (46.696875ms)
+✔ rejects a case with no predeclared targets (65.462ms)
+✔ rejects foreign substantive effect masquerading as approved (40.952292ms)
+✔ rejects incomplete C06 coverage presented as global up (38.6135ms)
+✔ rejects R02 incorrectly restored to passed (37.706084ms)
+✔ rejects making signature pending alone conditional for an explicit C08 draft (36.812ms)
+✔ rejects forcing the witness into the required-ID gate (34.0905ms)
+✔ rejects gating a witness explicitly outside the identity target (33.568792ms)
+✔ rejects inferring a role from a missing identifier instead of retaining unknown (55.445917ms)
+✔ rejects deleting C06 whole-attachment replacement detection (35.808709ms)
+✔ rejects deleting R03 temporal library-range debt (32.292333ms)
+✔ rejects an unmapped newly mandatory historical target (37.000833ms)
+✔ rejects reframed prose without concrete current targets (33.202417ms)
+✔ rejects a mapping to a target id that does not exist in the current case (36.0115ms)
+✔ rejects wrong mapping polarity or category despite an existing target id (33.523917ms)
+✔ rejects mapping unrelated historical meanings to one existing id (34.595125ms)
+✔ rejects deleting either restored R01 false-positive prohibition (32.225458ms)
+✔ rejects circular implementation-review attribution as the only review source (33.802709ms)
+✔ rejects empty self-asserted retirement without source fact and independent basis (32.939375ms)
+✔ the normative parsed YAML workflow contract passes (64.897042ms)
+✔ rejects a Human Gate that blocks report delivery (46.435708ms)
+✔ rejects O3 without both parallel isolated branches (31.793125ms)
+✔ rejects O3 whose declared owners diverge from its branches (33.878458ms)
+✔ rejects merged O4 and O5 reporter calls (32.367542ms)
+✔ rejects O5 without a qualified O4 receipt (31.731833ms)
+✔ rejects O4 hard-depending on every successful O3 subaction (29.34525ms)
+✔ rejects an O3 join ledger without auditable branch fields (28.447708ms)
+✔ rejects an O3 join missing either settled receipt dependency (30.434333ms)
+✔ rejects a branch receipt that settles on success only (28.041667ms)
+✔ rejects a branch-receipt dependency cycle (33.114167ms)
+✔ rejects an early join that depends only on extraction (30.16975ms)
+✔ event-level join cannot run before both matching branch invocation terminal events (41.261792ms)
+✔ success, failed and cancelled use one typed terminal-record validator (0.188667ms)
+✔ terminal-record validator rejects wrong field types and cross-invocation reuse (0.299584ms)
+✔ rejects settle nodes wired directly to extraction instead of invocation (50.394875ms)
+✔ rejects terminal event binding to a different invocation id (46.451209ms)
+✔ rejects an illegal risk direction (54.81825ms)
+✔ rejects restoring a mandatory direction for single-version not_applicable (50.489375ms)
+✔ rejects party identity without role applicability (32.843083ms)
+✔ rejects truncated digest semantics (33.716875ms)
+✔ rejects digest identity without canonical path binding (32.439625ms)
+✔ rejects foreign-pack requirements outside CN service scope (32.177958ms)
+✔ rejects jurisdiction scope without signing-place clues (30.285833ms)
+✔ rejects legal conflict conclusions based only on multiple declarations (30.714375ms)
+✔ rejects optional R7 delivered state (27.103292ms)
+✔ rejects optional or provenance-free Human Gate decisions (43.628083ms)
+✔ rejects Human Gate provenance without decision-source coupling (33.065208ms)
+✔ rejects coverage states without conditional evidence requirements (27.015833ms)
+✔ rejects actions with missing or backward phases (27.368959ms)
+✔ rejects an action with no phase (29.647125ms)
+✔ rejects numeric-stage ordering replacing the phase contract (27.494875ms)
+✔ rejects reordered workflow phases (28.596416ms)
+✔ rejects register_case reassigned from lead (31.137416ms)
+ℹ tests 65
+ℹ suites 0
+ℹ pass 65
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1344.871625

@@ -1,0 +1,29 @@
+{
+  "observedAt": "2026-09-29T15:15:39.502353+00:00",
+  "head": "7eb41e3f7e35d927ce1ead6974ddc25cd7482961",
+  "parents": [
+    "983a9b8f508614f2e94888397e64d8151d540d2b",
+    "346343b63347f70603fe47c14887b6f1fb799275"
+  ],
+  "comparedReviewedSnapshot": "983a9b8f508614f2e94888397e64d8151d540d2b",
+  "changedFromReviewedSnapshot": [
+    "docs/handoff.md",
+    "docs/handoff.zh-CN.md"
+  ],
+  "coreSourceTreeUnchanged": true,
+  "upstreamTeamAndLockBytesUnchanged": true,
+  "testResult": {
+    "tests": 115,
+    "passed": 115,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "todo": 0
+  },
+  "testScope": "team-source-fixtures-not-live-runtime",
+  "log": {
+    "path": "docs/acceptance/followup-evidence/continuation-postmerge-check-20260929.log",
+    "rawSha256": "5b5266f081e7564d01793df658beb52a39fbe3b391114a2887f2163380875604",
+    "publishedSha256": "388dd41c15d1b209cf29150b55799f0201ed57cb3725d0da162ebd907bec7fb4"
+  }
+}

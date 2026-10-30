@@ -1,0 +1,5 @@
+✗ 成员工具上限/源码身份自检未通过（编排官 contract-review-lead，成员目录 <team-workspace>/workspace/sources）：
+  - contract-intake: 需要 understandimage，编排官白名单里没有
+  - risk-scanner: 需要 understandimage，编排官白名单里没有
+  - jurisdiction-auditor: 需要 understandimage，编排官白名单里没有
+  - review-reporter: 需要 understandimage，编排官白名单里没有

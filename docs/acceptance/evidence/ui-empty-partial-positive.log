@@ -1,0 +1,10 @@
+
+ RUN  v5.0.1 <platform-workspace>
+
+ ✓  unit  app/components/market/__tests__/MarketTeamPostInstall.test.tsx (12 tests) 38ms
+
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  07:01:19
+   Duration  944ms (environment 55%, transform 29%, import 11%, tests 4%, setup 1%)
+

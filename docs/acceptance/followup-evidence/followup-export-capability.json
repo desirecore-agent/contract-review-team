@@ -1,0 +1,18 @@
+{
+  "observedAt": "2026-09-29T12:53:04.218147+00:00",
+  "platformHead": "1536138e8c71db71b906d436212812086268e3c9",
+  "sourceHashes": {
+    "packages/agent-service/src/builtin-tools/export-document.ts": "4e1fa8a1c55ab2bc590935bebc6177dc7b1882c1755c9c31d518356990586f44",
+    "packages/agent-service/src/docs/exporter.ts": "78c2d16b7ad7a7e97086c62c6a03c4691e808a6a4ad0a3664b0b6828bb39a4f5",
+    "packages/agent-service/src/builtin-tools/catalog.generated.ts": "c8daa94b7e256390a4ee25de02e2982893dc27ecbf56afbb4a54f4382b37391e"
+  },
+  "declaredRedlineToolInCatalog": false,
+  "exportDocumentParams": [
+    "ExportDocument",
+    "path",
+    "format",
+    "output"
+  ],
+  "markdownToHtmlToDocxImplementation": true,
+  "scope": "source capability inventory only; no model dispatch, DOCX generation or live instance access"
+}

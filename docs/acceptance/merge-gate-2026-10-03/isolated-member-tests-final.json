@@ -1,0 +1,343 @@
+{
+  "observedAt": "2026-10-04T04:20:11.915239+00:00",
+  "kind": "isolated-source-tests-not-runtime-acceptance",
+  "members": [
+    {
+      "member": "contract-review-lead",
+      "baselineCommit": "d5818345004e0920f9594ad55177b86738d1c123",
+      "passed": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "modelBytesUnchanged": true,
+      "modelBlockSha256": "80e78ad51bc83c3d7c18a37b929cb3c153e438caa3ff3fb0e64b87d93d67982c",
+      "filesSha256": {
+        "agent.json": "f8445897c91effe415c09eae8dcd9df9cbfad885715845630a4a56067ea6e844",
+        "persona.md": "135b4deb12b2ca9345e722b8e36a11bd9d4eb6471811479467c99c81e2af6213",
+        "principles.md": "3505906638d08c8d0ac0d3c6b7ca9afe9625f5181412c04cf63abc068d4fb064",
+        "skills/coverage-matrix/SKILL.md": "8943245896ef1b7a8ab657769f75563ca8bd0be2f4aa64d996df30a05b762c6c",
+        "skills/review-orchestration/SKILL.md": "b8fa3e76d27123e61344da9d04a70ea91ec0c1e55479be9e8da1e4dacd965a04",
+        "tests/delegate-api.contract.test.mjs": "48d93d1447c7fa61285e98f3f90cf091790deee41c3ad083d13f6d65c865eb96",
+        "tests/intake-integration.contract.test.mjs": "62d5a9e1ae09f036e56553f445920dc99b75856d2437ddd7f065bca96d7b5fc5",
+        "tests/o1-boundary.contract.test.mjs": "c796ec5187a2ee1522d8c97813174b9a3d716eee951b65c49447fad1b23b5866",
+        "tests/ts-extension-loader.mjs": "3ab669c2dbfa6ba8b87a7bc61f172027c3a64b0844a7c348e1135311f44ded3f",
+        "package.json": "1ce626b8b344e0b0ce69b40cfdf7ffa714bbc8e00ccac1c838b97f70914b1421",
+        "package-lock.json": "65778da91898370a438ec3c94b676997849841b51e223a09b143a73706ec3160"
+      },
+      "install": {
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "exitCode": 0,
+        "output": "\nadded 6 packages in 273ms\n"
+      },
+      "test": {
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "output": "\n> contract-review-lead-contract-tests@1.0.23 test\n> node --test tests/o1-boundary.contract.test.mjs\n\n✔ O1 remains sync isolated, blocked cannot pass, conditional continues (2.51775ms)\n✔ execution graph has true O3 parallel and two isolated reporter calls (0.51125ms)\n✔ coverage goals are seven fixed rows and not nonexistent S1-S8 rows (0.732708ms)\n✔ digest failure continues and direction vocabulary is canonical (0.5965ms)\n✔ agent model block and permissions retain expected safety boundaries (0.287958ms)\n✔ Lead can expose the real structured validator to its intake child without enabling shell or changing routing (0.387542ms)\nℹ tests 6\nℹ suites 0\nℹ pass 6\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 44.421375\n"
+      },
+      "scheduledTests": 6,
+      "executedTests": 6,
+      "testsPassed": 6,
+      "testsFailed": 0,
+      "testsSkipped": 0,
+      "testsCancelled": 0,
+      "testsTodo": 0,
+      "summaryComplete": true
+    },
+    {
+      "member": "contract-intake",
+      "baselineCommit": "02b654dc4e5b1bc24f0e9c55abb5ba95528031b1",
+      "passed": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "modelBytesUnchanged": true,
+      "modelBlockSha256": "99255a904e87ff49e37d6b952f5a96e3f9dac01883abdc388b8ce187ce595ae5",
+      "filesSha256": {
+        "agent.json": "faa2350af459b7677655da59cf97e871f604c8a2941b6a22aacfa4732ac70460",
+        "persona.md": "2186941a36dce908599a2f2d7b611b40756bcbbb34aeab2aa5df1af4237edd68",
+        "principles.md": "b7928dbd27b7ccdc5e8617aea8388fcada4a1f127dd9aca2012fddb413a6a4fb",
+        "skills/contract-intake-gate/LOCKED-KNOWLEDGE-MAP.md": "a1d4c67bbbe8052da32ea414d649201d29712fb7e3e619857716fcfd62b58a3c",
+        "skills/contract-intake-gate/SKILL.md": "ca5039bcf9111cb28659f43f14a7da850d8c701698ad0fe66888a3e4cfa41da2",
+        "skills/contract-intake-gate/lib/intake-artifacts.mjs": "6a6c377c0173a7fdd25007d00263d429a71eb58c40bca48b05b24048fcbd4a6b",
+        "skills/contract-intake-gate/lib/intake-decision.mjs": "231548fd4d529eb6b747cb2371c98ee0265863188dfc5472f598cb0516b3ff21",
+        "skills/contract-intake-gate/schemas/intake-receipt.schema.json": "b76ef3b270ecdcfc1c95a6bfa38fcf29d20f6b8d9e10f773119bc042071ac97b",
+        "skills/contract-intake-gate/tests/consistency.contract.test.mjs": "7fa1c3decb13e289ad3755ea6a03312998d381042ca841257d0b19892566f16d",
+        "skills/contract-intake-gate/tests/fixtures/complete-manifest.receipt.yaml": "066ee2771cff1ddd06bf224a589b187bfebbff847e3182d3f4c8d987155a3760",
+        "skills/contract-intake-gate/tests/fixtures/draft-scenarios.yaml": "b6032829b07d19d7fcb9a5c3fa0adfc060363d646ae500ab76ac15c1e3f47c12",
+        "skills/contract-intake-gate/tests/fixtures/incomplete-signature.receipt.yaml": "1cebc1a8e1a976d40eaa60d885d70e29275930b41aaa23fcd4e042518e00f2bc",
+        "skills/contract-intake-gate/tests/fixtures/r02-manifest-incomplete.receipt.yaml": "4a335444068800043d63b6ddf4ede4734ea77b497019ea8665c42704d6d73154",
+        "skills/contract-intake-gate/tests/fixtures/r8-version-change.receipt.yaml": "20d402208a9ae03650ae78226be7124c44ca6bdb2182fadf1767d20bdb9253dc",
+        "skills/contract-intake-gate/tests/fixtures/schema-invalid.receipt.yaml": "d166d0ca82e467edd01261f3091f375000dafb8bf2a3f6cb2acab3b7a523c5ae",
+        "skills/contract-intake-gate/tests/fixtures/schema-valid.receipt.yaml": "a9d806a42b1336b145e07df94db7710b7df2787d0a6aeffca61d728a37948d89",
+        "skills/contract-intake-gate/tests/fixtures/text-declared-signature.receipt.yaml": "6a9433fa4f6e479cf0e5604da397dfcd161a8666ac6b8d3dd8f0cc2c25f85d3f",
+        "skills/contract-intake-gate/tests/fixtures/undeclared-referenced-attachment.receipt.yaml": "fb7fb438346094f210fefaa9d8e5766bd24c3ba4c5dd4d4c80fc4d3cdaa288e0",
+        "skills/contract-intake-gate/tests/fixtures/undelivered-attachment-body.receipt.yaml": "642c859f64552f50e70236a9f2df1ffe28123ce2d756be25ab4da2f13e149d40",
+        "skills/contract-intake-gate/tests/fixtures/visual-signature-mark.receipt.yaml": "5d0e64800b7570d8c077217550dc0fda01d8a4e0b0c2f31d2be8016f61a255af",
+        "skills/contract-intake-gate/tests/locked-knowledge-mapping.test.mjs": "97dd11a3de9b62c88fc76d671aeb3a7ef8a2cfcdc7c96b7ac09b40b674d44e6a",
+        "skills/contract-intake-gate/tests/member-consistency.contract.test.mjs": "97425eb66f629451bccdaaa9fbec646ac747f02ad6ea55fdeaf81015c3cbb163",
+        "skills/contract-intake-gate/tests/receipt-contract.test.mjs": "f32150fddf31e5601070b75e2af52ff3adfcaf6f065114de3aee604bde328fba",
+        "skills/contract-intake-gate/tests/receipt-schema.test.mjs": "cc40497e8e581579a36a18d05d66144b68a710edc35e70a0d8cf2173f854c219",
+        "package.json": "267023e160cdfb73fb58a9f5000eea287b58cb85fabba3e80240f69512839371",
+        "package-lock.json": "6a2fd7ddf84bcb96439fb98a9d1db39864600fb807ccdf00744ebeb582d360c3"
+      },
+      "install": {
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "exitCode": 0,
+        "output": "\nadded 6 packages in 163ms\n"
+      },
+      "test": {
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "output": "\n> contract-intake-contract-tests@0.0.0 test\n> node --test skills/contract-intake-gate/tests/receipt-contract.test.mjs skills/contract-intake-gate/tests/receipt-schema.test.mjs skills/contract-intake-gate/tests/consistency.contract.test.mjs skills/contract-intake-gate/tests/locked-knowledge-mapping.test.mjs\n\n✔ frontmatter is byte-zero YAML and skill versions are internally consistent (7.567167ms)\n✔ real Draft-07 schema accepts the valid document and rejects the combined review counterexample (35.050542ms)\n✔ each receipt contradiction is independently rejected (21.483875ms)\n✔ real Draft-07 schema accepts required, not_applicable and unknown role receipts without conflating them (14.664041ms)\n✔ a blocking finding elsewhere takes precedence over an S7 flag (13.133792ms)\n✔ admission separates tool failure, schema invalidity and business gates (2.602834ms)\n✔ admission fails closed unless both validator hashes bind the read receipt and schema (1.725209ms)\n✔ admission rejects malformed input with a bounded result (0.138917ms)\n✔ skill records role applicability and write-once sidecar validation semantics (0.526833ms)\n✔ intake artifact layout keeps machine, detail and validation files run-local and distinct (0.638625ms)\n✔ validation sidecar binds actual validator report hashes and fails closed on mismatch (0.173667ms)\n✔ supplemental material requires a new run root and intake id without mutating the prior receipt (0.11625ms)\n✔ locked intake R2-R8 knowledge, exceptions and rerun actions remain in live resources (4.110958ms)\n✔ platform-equivalent frontmatter and live instructions encode O1 Lead-only handoff once (7.973458ms)\n✔ R02-like incomplete manifest is conditional, escalated, and handed off (6.621292ms)\n✔ complete manifest remains passed (0.744459ms)\n✔ ordinary declared attachment body absence remains a scope fact (1.333167ms)\n✔ R8 keeps its version-change escalation without becoming PEND-001 (2.251416ms)\n✔ referenced attachment omitted from formal manifest remains blocked (1.105833ms)\n✔ text-declared signature fields can pass S5 without claiming authenticity verification (1.127333ms)\n✔ visual signature observation can pass S5 without becoming authenticity verification (2.385833ms)\n✔ incomplete S5 fixture remains source-anchored without an ungrounded seal field (1.176458ms)\n✔ S5 contract rejects a text claim of a present seal or unsupported authenticity verification (4.362375ms)\n✔ schema compiles with the platform Draft-07 Ajv profile and validates the live flat receipt (10.429208ms)\n✔ passed accepts exactly the four S8 unavailable flags and rejects a real business flag (10.235542ms)\n✔ conditional still requires a verdict-affecting flag and BLK remains dominant (1.906417ms)\n✔ conditional requires the canonical Lead route instead of null, blank or another member (1.320208ms)\n✔ S8 unavailable flags cannot become business flags by flipping their boolean (5.84075ms)\n✔ strict platform YAML parser rejects malformed scalars and duplicate keys (1.289209ms)\n✔ skill keeps validator failure separate from the business verdict (0.986ms)\nℹ tests 30\nℹ suites 0\nℹ pass 30\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 164.620583\n"
+      },
+      "scheduledTests": 30,
+      "executedTests": 30,
+      "testsPassed": 30,
+      "testsFailed": 0,
+      "testsSkipped": 0,
+      "testsCancelled": 0,
+      "testsTodo": 0,
+      "summaryComplete": true
+    },
+    {
+      "member": "clause-extractor",
+      "baselineCommit": "6129add5f40109f895d4125065a761b58f73819d",
+      "passed": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "modelBytesUnchanged": true,
+      "modelBlockSha256": "0b9a4c40d7b1210a7808dad5dfec437b41033f2adbfff01af7a8625719f9d338",
+      "filesSha256": {
+        "agent.json": "a8841a7c427e7b83f121c3258d58177d392c7c4471cf2c0e13e9d7dbb28e6b10",
+        "persona.md": "03adf53ec4cdcb84cc604cf81b6b780e85d77cea4c33a4481c1cbe6d718a70dd",
+        "principles.md": "3b8bf71880ad9fac0c8a5f5b5b37d185bb723e814e99a2532ff4932fc84353b3",
+        "skills/clause-extraction/LOCKED-KNOWLEDGE-MAP.md": "e6969d272beb1f710886830bf083008907474fc5f20270b52810d5d5a0377260",
+        "skills/clause-extraction/SKILL.md": "8050f241ffa529b9257c0389ba820d5c57a771698625a65943a2fae36f055fa7",
+        "tests/locked-knowledge-mapping.test.mjs": "f51c77e7ff1182a875d567db5ea49d73ef556ef5e8db7ca08515d8e6f2d1d691",
+        "package.json": "e3d29525beaccee715d28c386b09fed324aa75e67ec4ddb2f43f75fcc9a71cf4",
+        "package-lock.json": "441667f94116600632b59e47c85afda1bcb854fd4860f1288148a604a5fcfd78"
+      },
+      "install": {
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "exitCode": 0,
+        "output": "\nadded 1 package in 121ms\n"
+      },
+      "test": {
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "output": "\n> clause-extractor-contract-tests@0.0.0 test\n> node --test tests/*.test.mjs\n\n✔ locked extractor tables and corrective actions remain live and mapped (2.067917ms)\n✔ platform-equivalent frontmatter and live instructions encode O2 Lead handoff once (4.491542ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 52.400583\n"
+      },
+      "scheduledTests": 2,
+      "executedTests": 2,
+      "testsPassed": 2,
+      "testsFailed": 0,
+      "testsSkipped": 0,
+      "testsCancelled": 0,
+      "testsTodo": 0,
+      "summaryComplete": true
+    },
+    {
+      "member": "risk-scanner",
+      "baselineCommit": "ea396f95e0a3c1917bd0b8fa02e956c4cc7bf578",
+      "passed": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "modelBytesUnchanged": true,
+      "modelBlockSha256": "b783e01167113db94cf2cb8910fb3f2ed8e517d6f8c0335b9220246d67e99c1e",
+      "filesSha256": {
+        "agent.json": "f06a964e36d99dfa6bc9be33c5b1388763318081473594a695d63d66c28137e6",
+        "persona.md": "53a6e1f5562522e917bea1f133170fb5c278e4a416f119809487ac88ececd8d8",
+        "principles.md": "be94888afd8fb765d3d91848b742180a4d4019f8a859a1e701b180eff7b57ff0",
+        "skills/risk-scanning/LOCKED-KNOWLEDGE-MAP.md": "019fa541f5b92fa3d0d58d3750e967cb6e1374cb67bd197baf1f78d74e089191",
+        "skills/risk-scanning/SKILL.md": "32cac73d0d9685b40ebfc3d4dcc1520f79d84a27a56451fef4db26c95e0a4553",
+        "tests/locked-knowledge-mapping.test.mjs": "0d112819c544b13262f065771880113ff01e42b61355a4cb410c6aaa83f5de83",
+        "package.json": "9d33b3660972ea5d348b58f0be88bac85c34fcbddeea66350eb11f0a304bf7a4",
+        "package-lock.json": "51d8866d71df8da8c655b9f08ca35f3bc844ae4ae6cecf2ddb2db7684d7fdaad"
+      },
+      "install": {
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "exitCode": 0,
+        "output": "\nadded 1 package in 119ms\n"
+      },
+      "test": {
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "output": "\n> risk-scanner-contract-tests@0.0.0 test\n> node --test tests/*.test.mjs\n\n✔ locked risk rules, counterexamples and corrections remain live and mapped (1.74775ms)\n✔ platform-equivalent frontmatter and live instructions encode O3 Lead isolation and nine classes (4.675458ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 53.87325\n"
+      },
+      "scheduledTests": 2,
+      "executedTests": 2,
+      "testsPassed": 2,
+      "testsFailed": 0,
+      "testsSkipped": 0,
+      "testsCancelled": 0,
+      "testsTodo": 0,
+      "summaryComplete": true
+    },
+    {
+      "member": "jurisdiction-auditor",
+      "baselineCommit": "7ae69f15a6f56dc71cbfef9f07d6e65642563601",
+      "passed": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "modelBytesUnchanged": true,
+      "modelBlockSha256": "1eaac54c72780d36fb240ef7155de138edc0b46b5e72e04911cdd0ec15f6e273",
+      "filesSha256": {
+        "agent.json": "690760aa64accb0e4dbbeca5375130ee7c9d2f7d80ce27e59be77c29d39c287a",
+        "persona.md": "438228bfa1445fc9f7a443cc2ccd4339870eb6e2e6606ce3c30e77b69a064b3f",
+        "principles.md": "c0b20898cec3c03d37c255c8a528dd5ad415f6b9fa4ff5888cbeaf6e9877c11f",
+        "skills/jurisdiction-audit/LOCKED-KNOWLEDGE-MAP.md": "25f020a4c1f46098b2e5cc79480565af77a22942a80723467963c943cf2fd3a1",
+        "skills/jurisdiction-audit/SKILL.md": "c7071f6f254a8d83f02f99b9a0775f2038ba86fc815e6ac77cfb2df370dd72fe",
+        "tests/locked-knowledge-mapping.test.mjs": "7fe94073dc71dd0b6b956a44a2981f83e01fec344c1b9fbc114bccdd4283acc3",
+        "package.json": "458ab78daa82ac84fc49dd818f5893db03d3a6a173ce9546f253b0ef2e4fded1",
+        "package-lock.json": "3be02e5f9c636abbcce5d0483c55db5df99b53d72dfe1dcc344775467e8ca1c2"
+      },
+      "install": {
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "exitCode": 0,
+        "output": "\nadded 1 package in 123ms\n"
+      },
+      "test": {
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "output": "\n> jurisdiction-auditor-contract-tests@0.0.0 test\n> node --test tests/*.test.mjs\n\n✔ locked jurisdiction rules, boundaries and corrections remain live and mapped (1.770125ms)\n✔ platform-equivalent frontmatter and live instructions encode O3 Lead isolation once (4.684792ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 53.19675\n"
+      },
+      "scheduledTests": 2,
+      "executedTests": 2,
+      "testsPassed": 2,
+      "testsFailed": 0,
+      "testsSkipped": 0,
+      "testsCancelled": 0,
+      "testsTodo": 0,
+      "summaryComplete": true
+    },
+    {
+      "member": "review-reporter",
+      "baselineCommit": "9198728db040106525341de260f7dc8b5f50742a",
+      "passed": true,
+      "protectedValuesUnchanged": {
+        "llm": true,
+        "network_security": true,
+        "file_security": true,
+        "compute_credentials": true,
+        "tools": true,
+        "env": true
+      },
+      "modelBytesUnchanged": true,
+      "modelBlockSha256": "6747646caf9ad2b73339c59fd518d3760b4c1d0c7eb93595f029c7c67b6e2e65",
+      "filesSha256": {
+        "agent.json": "36d65f71b3d2904915ec8c6f7c0af83eac0c7a8dbf8f4e6fdaad35e814709abb",
+        "persona.md": "45f2bf2698609a7068b73650077e31fa4d28582ed6d2878011e9d5ba505906d5",
+        "principles.md": "dd2b24de675846b0dcada7c9fe51b898c5de494a2305ebf5b456aa744069dcf9",
+        "skills/independent-verification/SKILL.md": "89a5d5b02d42e422868d953302913f285890f30a7cfbb6623366c24a5ca64aac",
+        "skills/report-composition/SKILL.md": "332dc499bde53e79cb6ae351aa3013f0ef9ea73be6d767d0f1bac3f1badb27a3",
+        "skills/review-scoring/SKILL.md": "f445a6f66a3e94b3a5db22ea5130fdefe6bdcddb219fb5cd081d8cce2982cdf4",
+        "resources/scoring-rules-cn-v1.0.3.json": "c38408deefef58778d4a23b213e9af71ab1738e4c1d664318029f2cd7456b128",
+        "tests/o4-o5.contract.test.mjs": "62a0461bae18bc2a6de1d40df3508ee46cafdaafc8cc7cabd9f800bc75c88979",
+        "tests/support/reporter-evidence-record.mjs": "ad1ac5e3858aff38aa8f783cdfdfe03d840ec4218f6493531c3a1bc9503cdc57",
+        "package.json": "1072144176dd76bc25a4325990354d5cd953d23f009a3e184185479a892936ad",
+        "package-lock.json": "9458638850add1b50b1b3bfc13fc37acdc4e78ab36b6b25aec72115cdc0da504"
+      },
+      "install": {
+        "command": [
+          "npm",
+          "ci",
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "exitCode": 0,
+        "output": "\nup to date in 89ms\n"
+      },
+      "test": {
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "output": "\n> review-reporter-contract-tests@0.0.0 test\n> node --test tests/*.test.mjs\n\n✔ evidence helper is test support only and does not claim runtime enforcement (2.554542ms)\n✔ agent declares the independent verification entry without changing wait policy (0.399542ms)\n✔ O4 uses candidate three-state results plus an independent additional collection (0.4745ms)\n✔ all reporter instruction layers keep additional separate from candidate states (0.916625ms)\n✔ O5 consumes O4 and refuses a fake complete score when compliance is uncovered (0.279541ms)\n✔ versioned scoring resource computes deductions, caps, floor and tier without reweighting (0.655666ms)\n✔ O4 and O5 require file allowlists and disclose the platform isolation debt (0.317084ms)\n✔ pending gates do not block artifact delivery and redline audit is append-only (0.207292ms)\n✔ risk direction uses four values and R7/R9 stay distinct (0.479917ms)\n✔ DOCX evidence uses only the exact allowed output path, never directory enumeration or binary text readback (0.247916ms)\n✔ nonexistent redline capability is not statically advertised (0.186125ms)\n✔ test-only O4 evidence normalizer fails closed and enforces substantive evidence (0.233583ms)\n✔ same reporter identity still requires two isolated invocations and explicit file allowlists (0.155958ms)\n✔ pending business decisions do not suppress O5 report delivery (0.048083ms)\nℹ tests 14\nℹ suites 0\nℹ pass 14\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 44.18375\n"
+      },
+      "scheduledTests": 14,
+      "executedTests": 14,
+      "testsPassed": 14,
+      "testsFailed": 0,
+      "testsSkipped": 0,
+      "testsCancelled": 0,
+      "testsTodo": 0,
+      "summaryComplete": true
+    }
+  ],
+  "passed": true
+}

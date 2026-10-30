@@ -1,9 +1,14 @@
 # 由 initTeamRepo 自动生成
 # 团队工作目录:不入版本,跨设备各自维护
 workspace/
+node_modules/
 
 # 日志与缓存
 *.log
+# Only reviewed, redacted acceptance logs are published; runtime logs remain ignored.
+!docs/acceptance/evidence/*.log
+!docs/acceptance/followup-evidence/*.log
 .cache/
+__pycache__/
 .DS_Store
 Thumbs.db

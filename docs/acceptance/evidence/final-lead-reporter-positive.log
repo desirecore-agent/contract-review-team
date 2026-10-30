@@ -1,0 +1,25 @@
+✔ O1 remains sync isolated, blocked cannot pass, conditional continues (4.652792ms)
+✔ execution graph has true O3 parallel and two isolated reporter calls (0.968792ms)
+✔ coverage goals are seven fixed rows and not nonexistent S1-S8 rows (1.693625ms)
+✔ digest failure continues and direction vocabulary is canonical (0.656333ms)
+✔ agent model block and permissions retain expected safety boundaries (0.801791ms)
+✔ Lead can expose the real structured validator to its intake child without enabling shell or changing routing (0.689667ms)
+✔ malformed YAML/JSON and valid:false retain the failure artifact and dispatch nothing (2.296583ms)
+✔ agent declares the independent verification entry without changing wait policy (4.20175ms)
+✔ O4 uses candidate three-state results plus an independent additional collection (1.547ms)
+✔ all reporter instruction layers keep additional separate from candidate states (2.687459ms)
+✔ O5 consumes O4 and refuses a fake complete score when compliance is uncovered (0.572208ms)
+✔ versioned scoring resource computes deductions, caps, floor and tier without reweighting (1.053416ms)
+✔ O4 and O5 require file allowlists and disclose the platform isolation debt (0.826417ms)
+✔ pending gates do not block artifact delivery and redline audit is append-only (0.301167ms)
+✔ risk direction uses four values and R7/R9 stay distinct (0.632917ms)
+✔ DOCX evidence uses only the exact allowed output path, never directory enumeration or binary text readback (0.581625ms)
+✔ nonexistent redline capability is not statically advertised (0.705375ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 55.011583

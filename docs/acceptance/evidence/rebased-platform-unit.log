@@ -1,0 +1,12 @@
+
+ RUN  v5.0.1 <platform-workspace>
+
+ ✓  unit  packages/agent-service/src/__tests__/team-installer.test.ts (14 tests) 117ms
+ ✓  unit  app/data/market-i18n-foundation.test.ts (4 tests) 6ms
+ ✓  unit  app/components/market/__tests__/MarketTeamPostInstall.test.tsx (12 tests) 41ms
+
+ Test Files  3 passed (3)
+      Tests  30 passed (30)
+   Start at  07:14:26
+   Duration  1.19s (transform 45%, environment 32%, import 14%, tests 8%, setup 1%, worker 1%)
+

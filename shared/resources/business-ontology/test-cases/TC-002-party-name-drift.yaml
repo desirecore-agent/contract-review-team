@@ -39,7 +39,7 @@ guarded_by:
   - ref: relations.yaml#DC-007
     how: 附件签署方与主合同不一致时命中，触发 HG-04
   - ref: rules.md#R-020
-    how: 角色身份不明是五类输入缺陷之一，裁决为 reject
+    how: 角色身份不明是五类输入缺陷之一，裁决为 blocked
   - ref: rules.md#R-012
     how: 责任归属结论必须挂载 evidence_ref，其中 object_ref 会暴露该结论来自哪一份文档
 

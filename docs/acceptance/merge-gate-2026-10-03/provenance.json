@@ -1,0 +1,138 @@
+{
+  "observedAt": "2026-10-04T04:28:38.574013+00:00",
+  "scope": "selected redacted new source/test/review evidence only; no runtime homes or secrets",
+  "records": [
+    {
+      "file": "member-compatibility-report.md",
+      "rawSha256": "7cf767b64926e3a0b925a9d18d630820a72d39009be6dc6f3db22ba018a53047",
+      "publishedSha256": "7cf767b64926e3a0b925a9d18d630820a72d39009be6dc6f3db22ba018a53047",
+      "redacted": false
+    },
+    {
+      "file": "independent-member-compatibility-review.md",
+      "rawSha256": "aa8e2a013567503d730b69ff4bead910f7630960e8b280bc072364c0725e4ba2",
+      "publishedSha256": "a381a97d76cfcb91271540689b92d3162d1b63abb5bd4c5bb85b676be55fed52",
+      "redacted": true
+    },
+    {
+      "file": "independent-member-closure-review.md",
+      "rawSha256": "42d678344c44e8580e308cf5c68cd7a1d7a302515d77abfeb4edfa4024a74aab",
+      "publishedSha256": "d17013ba127f6420f514b1bbb077a62760e9f0fc5a9c149c414174ebc776a930",
+      "redacted": true
+    },
+    {
+      "file": "member-protected-authoritative.json",
+      "rawSha256": "c63a6703214dca38154d64aa4d36b78ee2e6aaf5e7409e5fa3f7e30c888fa692",
+      "publishedSha256": "c63a6703214dca38154d64aa4d36b78ee2e6aaf5e7409e5fa3f7e30c888fa692",
+      "redacted": false
+    },
+    {
+      "file": "member-avatar-hashes.txt",
+      "rawSha256": "074b1f3ebb85217cf38b199603c38b5476c1926a207f409e6d6755cb8733be27",
+      "publishedSha256": "074b1f3ebb85217cf38b199603c38b5476c1926a207f409e6d6755cb8733be27",
+      "redacted": false
+    },
+    {
+      "file": "member-final-change-manifest.json",
+      "rawSha256": "2fbb87109edd55933cbac55eed104f06e15682098a22dc4d31a226caf6de7edd",
+      "publishedSha256": "2fbb87109edd55933cbac55eed104f06e15682098a22dc4d31a226caf6de7edd",
+      "redacted": false
+    },
+    {
+      "file": "published-source-verification.json",
+      "rawSha256": "bf32c6f7166fd7271b9447a75ba7fea8556fb9031750e22f02eac7e38bce316c",
+      "publishedSha256": "6a1fa3eeb182eccb6b0a609098f67fd36cfbca2cc17c641d08664c7fd99baa79",
+      "redacted": true
+    },
+    {
+      "file": "upstream-0.1.39-members.lock.json",
+      "rawSha256": "bc899b83f86748d737cfee7342d2a716dfbb621a8869e68d3e052c7a4c6594b7",
+      "publishedSha256": "bc899b83f86748d737cfee7342d2a716dfbb621a8869e68d3e052c7a4c6594b7",
+      "redacted": false
+    },
+    {
+      "file": "published-member-ceiling.txt",
+      "rawSha256": "6fbf68bf130fb6a94a5e24c880656f0ec6a20a21fcb59efc3e02e9bd5cd5f4a3",
+      "publishedSha256": "9ea38010522767cb8deb6cdfd7401bc08f0936e15e2eb443516f03fbd110771c",
+      "redacted": true
+    },
+    {
+      "file": "candidate-member-ceiling-before.txt",
+      "rawSha256": "e7ffa52bcf6eef50c9e5241729e786071c1adbc26ceb286a8c743ab126f80c1e",
+      "publishedSha256": "2b1b4fef738fd7ff0f8bd240d4b97e6eca3fcca43112d8925a0fb4044a24b599",
+      "redacted": true
+    },
+    {
+      "file": "candidate-member-ceiling-final.txt",
+      "rawSha256": "5c829117e3eefb9e838d043229aecbe258ba72770f16be91aa939fc1bc36b614",
+      "publishedSha256": "14c6419edc337f7dd57b1622a600509b5e3bc46cd20b97c26b0ab0adb1b79083",
+      "redacted": true
+    },
+    {
+      "file": "isolated-member-tests-first.json",
+      "rawSha256": "a06684bdacb138a2cdb12a6b9bc723a3daa417874a9d1288414eaff213f2182e",
+      "publishedSha256": "a06684bdacb138a2cdb12a6b9bc723a3daa417874a9d1288414eaff213f2182e",
+      "redacted": false
+    },
+    {
+      "file": "isolated-member-tests-final.json",
+      "rawSha256": "0586b2608fe1ac5e8865a3b8adac9b11bb1790a8580af00639ecb3ab939f53b0",
+      "publishedSha256": "0586b2608fe1ac5e8865a3b8adac9b11bb1790a8580af00639ecb3ab939f53b0",
+      "redacted": false
+    },
+    {
+      "file": "intake-review-negative.txt",
+      "rawSha256": "ac9d16c94f13a3dc0a57f038b43c0985d99804339855a1dac69777816e6fc44d",
+      "publishedSha256": "eebb47566bf538e6c00512bcb854f40e13c04242c2bd98d6f5d80e6c2cab557f",
+      "redacted": true
+    },
+    {
+      "file": "intake-review-positive.txt",
+      "rawSha256": "e16a71af5b46d20ff5f94220594454e12c816d93bdb16f199f55db5260033850",
+      "publishedSha256": "e16a71af5b46d20ff5f94220594454e12c816d93bdb16f199f55db5260033850",
+      "redacted": false
+    },
+    {
+      "file": "team-current-branch-check.txt",
+      "rawSha256": "489af13f527e1b567272430e978caaeab1512c9124718efeea9b1d2d5d87e22f",
+      "publishedSha256": "6723cc8b6fe966236cf4baea5a493dfbfd93c2a71175222d0b7d4f1fb3ae7b3e",
+      "redacted": true
+    },
+    {
+      "file": "lead-intake-integration-final.txt",
+      "rawSha256": "a2d14adac0511ccc8aee9bebd7f8e5089c725894214855765cd2ba928c7d21ec",
+      "publishedSha256": "a2d14adac0511ccc8aee9bebd7f8e5089c725894214855765cd2ba928c7d21ec",
+      "redacted": false
+    },
+    {
+      "file": "lead-current-platform-final.txt",
+      "rawSha256": "3a761818fdb9e78f1b370d8861c2a3935ed2469b7ec5e31944ba5c41897ee3a5",
+      "publishedSha256": "ca112e67f142aa19d7d915f6a7ae0e33f1d1ceb2d4e18084fc6ed52463799679",
+      "redacted": true
+    },
+    {
+      "file": "candidate-lock-verification.json",
+      "rawSha256": "4e43304c6a3d60da6dd53965d5f11e697524bbee1ede00870ca5a744d249e812",
+      "publishedSha256": "4e43304c6a3d60da6dd53965d5f11e697524bbee1ede00870ca5a744d249e812",
+      "redacted": false
+    },
+    {
+      "file": "members.candidate.lock.json",
+      "rawSha256": "16d9b507e98582c7d9d2d385a20b7eff994f4d27dcc71e5581502b74422a8b43",
+      "publishedSha256": "16d9b507e98582c7d9d2d385a20b7eff994f4d27dcc71e5581502b74422a8b43",
+      "redacted": false
+    },
+    {
+      "file": "current-external-blocks.json",
+      "rawSha256": "9f2f290ce89bf671c8f4f977944332faf5e47ca71a963310b60d3a1ad8faaf51",
+      "publishedSha256": "9f2f290ce89bf671c8f4f977944332faf5e47ca71a963310b60d3a1ad8faaf51",
+      "redacted": false
+    },
+    {
+      "file": "platform-distribution-preflight.json",
+      "rawSha256": "109d2d3fb36b5a98220ef74af28d47a05b658168c62ff520171327970436da24",
+      "publishedSha256": "109d2d3fb36b5a98220ef74af28d47a05b658168c62ff520171327970436da24",
+      "redacted": false
+    }
+  ]
+}

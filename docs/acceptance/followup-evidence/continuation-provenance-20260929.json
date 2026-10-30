@@ -1,0 +1,120 @@
+{
+  "observedAt": "2026-09-29T15:08:02.794Z",
+  "kind": "source-provenance-not-live-acceptance",
+  "head": "9fe002a96d366ce9f3825f7dd9a6b442d794275e",
+  "upstream": "346343b63347f70603fe47c14887b6f1fb799275",
+  "original": "e1837f2931ec077b7bf522f5c223c0af5df840cf",
+  "records": [
+    {
+      "id": "C01",
+      "path": "testdata/contracts/C01-saas-subscription.md",
+      "sha256": "fb0c1aad49f41d5d6eb892339494a7b4deaad6c11108d6888e56043810bdb035",
+      "upstreamBytesEqual": true,
+      "originalBytesEqual": true
+    },
+    {
+      "id": "C02",
+      "path": "testdata/contracts/C02-software-outsourcing.md",
+      "sha256": "5f1c96d116e9df8f064eda569d3c9ff19a99c481a67a3f5f536bd94d8f49f394",
+      "upstreamBytesEqual": true,
+      "originalBytesEqual": true
+    },
+    {
+      "id": "C03",
+      "path": "testdata/contracts/C03-procurement-framework.md",
+      "sha256": "36d9d9437431fe0a4d571e84d9c435714d6bc497ba42401b435c5ac10c3e6420",
+      "upstreamBytesEqual": true,
+      "originalBytesEqual": true
+    },
+    {
+      "id": "C04",
+      "path": "testdata/contracts/C04-labor-contract.md",
+      "sha256": "709e5419e5d16140c50715a754ce79c6a8278071cc5c552144dccae0f5a55ea0",
+      "upstreamBytesEqual": true,
+      "originalBytesEqual": true
+    },
+    {
+      "id": "C05",
+      "path": "testdata/contracts/C05-data-processing-agreement.md",
+      "sha256": "75be9d27d2f24a4d384a439fe16262cfcf860aa1469aae404eefddd1c366a198",
+      "upstreamBytesEqual": true,
+      "originalBytesEqual": true
+    },
+    {
+      "id": "C06a",
+      "path": "testdata/contracts/C06a-saas-v1.md",
+      "sha256": "8fc2f1d7c0f4ebb97378ffaa88a70bf866d34faa2c182ad3f66c1ddc146633ac",
+      "upstreamBytesEqual": true,
+      "originalBytesEqual": true
+    },
+    {
+      "id": "C06b",
+      "path": "testdata/contracts/C06b-saas-v2.md",
+      "sha256": "059199f50bf77a12737b4836aa08efe33499a3ef9bc7d8ae64e64d50d7bda1d6",
+      "upstreamBytesEqual": true,
+      "originalBytesEqual": true
+    },
+    {
+      "id": "C07",
+      "path": "testdata/contracts/C07-master-services-agreement.md",
+      "sha256": "e6aac24270c0972fa0fc5d2f016a6f4b2b4258760af10dfe15f3f7b5f16a664a",
+      "upstreamBytesEqual": true,
+      "originalBytesEqual": true
+    },
+    {
+      "id": "C08",
+      "path": "testdata/contracts/C08-mutual-nda.md",
+      "sha256": "882ff9eae5b54aa8ae3974cdb21bffe7cdb00c171a9a1e936aeff7a973900c64",
+      "upstreamBytesEqual": true,
+      "originalBytesEqual": true
+    },
+    {
+      "id": "C09a",
+      "path": "testdata/contracts/C09a-saas-manifest-deferred.md",
+      "sha256": "98f546c3f6bf68ce8336cdef4d5e53d31f8cffd9bc0f3a6fd4f997283b7779f6",
+      "upstreamBytesEqual": true,
+      "originalBytesEqual": null
+    },
+    {
+      "id": "C09b",
+      "path": "testdata/contracts/C09b-saas-attachment-unlisted.md",
+      "sha256": "20a9462e3d02ff466f0c09a0a370237244e3203f73300c65bd5c53dd9a687aaf",
+      "upstreamBytesEqual": true,
+      "originalBytesEqual": null
+    },
+    {
+      "id": "R01",
+      "path": "testdata/contracts/R01-govt-purchase-real.md",
+      "sha256": "795d5d49f2c58d61a2349458dc5de78c909c8045091fa8539334017b4bcc57ff",
+      "upstreamBytesEqual": true,
+      "originalBytesEqual": true
+    },
+    {
+      "id": "R02",
+      "path": "testdata/contracts/R02-govt-purchase-executed.md",
+      "sha256": "2a5052027408597306beb39644dbce6fa76f109d220cfcf2effc44ea027e41fd",
+      "upstreamBytesEqual": true,
+      "originalBytesEqual": true
+    },
+    {
+      "id": "R03",
+      "path": "testdata/contracts/R03-govt-purchase-2019.md",
+      "sha256": "fd15853948848eaa3a1cf7485347d48a25c14c897833ef488c3b96d7affa799d",
+      "upstreamBytesEqual": true,
+      "originalBytesEqual": true
+    },
+    {
+      "path": "team.json",
+      "sha256": "e55c0197bba682bb5755755470d02198ce299deca12579174418f871f5da8224",
+      "upstreamBytesEqual": true
+    },
+    {
+      "path": "members.lock.json",
+      "sha256": "04b9d2edd1b631bc218a7c1ad1ea056e7600bc415f8f9374b85752c182f6e205",
+      "upstreamBytesEqual": true
+    }
+  ],
+  "sourceFiles": 14,
+  "reviewedIndexSha256": "b4dbbe6effca260f8bab99b3548865d69c0c309505038eaa729d46081b9900fb",
+  "rebuiltIndexByteIdentical": true
+}

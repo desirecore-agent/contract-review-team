@@ -1,0 +1,102 @@
+✖ a finite ceiling proof cannot silently accept a member with unrestricted empty allowed (510.549417ms)
+✖ member denied wins before checking its required tools against the parent (483.122709ms)
+✖ the runtime recursion ceiling excludes DelegateControl as well as Delegate (485.683458ms)
+✖ the derived evidence index binds every normative source, including negative-only cases (132.677792ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1691.451625
+
+✖ failing tests:
+
+test at workspace/continuation-regression-probes.mjs:34:1
+✖ a finite ceiling proof cannot silently accept a member with unrestricted empty allowed (510.549417ms)
+  AssertionError [ERR_ASSERTION]: empty means unrestricted in production, not no tools: ✓ 5 名成员的工具白名单与 agent.json 源身份通过检查（锁 <os-temp>/dc-continuation-ceiling-nmP1fy/lock.json；native Git；豁免 1 项）
+  
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file://<team-workspace>/workspace/continuation-regression-probes.mjs:36:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at workspace/continuation-regression-probes.mjs:39:1
+✖ member denied wins before checking its required tools against the parent (483.122709ms)
+  AssertionError [ERR_ASSERTION]: Bash is not effective for this member: ✗ 成员工具上限/源码身份自检未通过（编排官 contract-review-lead，成员目录 <os-temp>/dc-continuation-ceiling-u44VUW/agents）：
+    - contract-intake: 需要 Bash，编排官白名单里没有
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file://<team-workspace>/workspace/continuation-regression-probes.mjs:41:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at workspace/continuation-regression-probes.mjs:44:1
+✖ the runtime recursion ceiling excludes DelegateControl as well as Delegate (485.683458ms)
+  AssertionError [ERR_ASSERTION]: DelegateControl is excluded from child tools: ✗ 成员工具上限/源码身份自检未通过（编排官 contract-review-lead，成员目录 <os-temp>/dc-continuation-ceiling-mOELoQ/agents）：
+    - contract-intake: 需要 DelegateControl，编排官白名单里没有
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file://<team-workspace>/workspace/continuation-regression-probes.mjs:46:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at workspace/continuation-regression-probes.mjs:49:1
+✖ the derived evidence index binds every normative source, including negative-only cases (132.677792ms)
+  AssertionError [ERR_ASSERTION]: source B changed, so its original source identity must fail: ✓ 1 current normative literal evidence values match 1 source files (reviewed index bound to oracle bytes)
+  
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file://<team-workspace>/workspace/continuation-regression-probes.mjs:59:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,134 @@
+✖ the real normative oracle and frozen bindings pass (87.5895ms)
+✔ the parsed historical oracle remains value-for-value frozen (51.210625ms)
+✖ all 14 source digests remain byte-accurate while the original 12 stay present (51.8705ms)
+✔ 49 legacy scope changes are isolated in explicitly non-normative provenance (43.626583ms)
+✔ rejects a normative legacy-disposition backdoor (46.465042ms)
+✔ rejects a missing scope-change target (44.795083ms)
+✔ rejects a scope-change mapping without audit rationale (45.11225ms)
+✔ rejects a missing R case with coverage diagnosis (50.022167ms)
+✔ rejects an incorrect input digest (49.979167ms)
+✔ rejects a fabricated literal quote (57.162208ms)
+✔ rejects historical observations in normative cases (50.0155ms)
+✔ rejects a foreign pack remedy (58.4605ms)
+✔ rejects missing requiredness on a new current target (63.0155ms)
+✔ rejects optional current targets without a reason (54.061ms)
+✔ rejects duplicate IDs within a collection (48.496208ms)
+✔ rejects the same ID across positive and negative collections (52.439667ms)
+✔ rejects grace evidence swapped to audit evidence (54.70575ms)
+✔ rejects liability evidence swapped to amount evidence (71.68375ms)
+✔ rejects crossing R01 attachment and party-name evidence (49.870333ms)
+✔ rejects changing a frozen negative-search pattern (47.773584ms)
+✔ rejects deleting either R01 false-positive prohibition (46.858958ms)
+✔ evaluator fails closed for missing output without throwing (42.070084ms)
+✔ evaluator fails closed for null output without throwing (44.398292ms)
+✔ evaluator fails closed for missing detected_ids without throwing (46.856ms)
+✔ evaluator fails closed for null detected_ids without throwing (58.784708ms)
+✔ evaluator fails closed for numeric detected_ids without throwing (45.888667ms)
+✔ evaluator fails closed for object detected_ids without throwing (57.501583ms)
+✔ evaluator fails closed for single string detected_ids without throwing (56.976041ms)
+✔ evaluator fails closed for null array element without throwing (62.559417ms)
+✔ evaluator fails closed for numeric array element without throwing (65.226958ms)
+✔ evaluator fails closed for blank ID without throwing (66.508584ms)
+✔ evaluator fails closed for whitespace ID without throwing (66.52825ms)
+✔ evaluator fails closed for duplicate ID without throwing (56.976083ms)
+✔ evaluator fails closed for unknown detected ID without throwing (70.009167ms)
+✔ the exact independently reviewable source-binding values remain frozen (0.511ms)
+✔ rejects erased assertions even when the target keeps its evidence refs (76.872917ms)
+✔ rejects coordinated oracle and binding substitution with unrelated existing evidence (78.051334ms)
+✔ rejects duplicate or substituted assertions even with the expected array length (215.888709ms)
+✔ placeholder dollar-X negative searches match literal dollar-X, not an end anchor (63.953041ms)
+✔ unknown observations must be explicitly unassessed and still require manual classification (62.942875ms)
+✔ unknown observation cannot hide among detected IDs (53.184208ms)
+✔ optional C01 arithmetic observation is independent from forbidden wording mismatch (59.198333ms)
+✔ C04 passes on required source facts and old legal-effect labels cannot substitute (64.383792ms)
+✔ C05 and C07 require actual out-of-scope referral, not a missing-pack label (53.278916ms)
+✔ R01/R02/R03 executable requirements are source facts and professional-review boundaries (64.428167ms)
+✔ R01 keeps both source-grounded prohibitions (68.992ms)
+✖ C09 metadata binds the exact upstream raw bytes, without newline normalization (50.10175ms)
+✔ C01 is the R7 positive control and forbids an R9 report (54.310625ms)
+✔ C09a requires R9 and forbids an R1 mapping (56.658875ms)
+✔ C09b requires R1 and forbids an R9 downgrade (72.070458ms)
+✔ rejects an R9-to-R1 mapping substitution (62.883166ms)
+ℹ tests 51
+ℹ suites 0
+ℹ pass 48
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3130.807791
+
+✖ failing tests:
+
+test at shared/resources/tests/oracle-contract.test.mjs:19:1
+✖ the real normative oracle and frozen bindings pass (87.5895ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   'normative.cases.C09a.source.sha256: does not match C09a-saas-manifest-deferred.md; got 98f546c3f6bf68ce8336cdef4d5e53d31f8cffd9bc0f3a6fd4f997283b7779f6',
+  +   'normative.cases.C09b.source.sha256: does not match C09b-saas-attachment-unlisted.md; got 20a9462e3d02ff466f0c09a0a370237244e3203f73300c65bd5c53dd9a687aaf'
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file://<team-workspace>/shared/resources/tests/oracle-contract.test.mjs:19:73)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'normative.cases.C09a.source.sha256: does not match C09a-saas-manifest-deferred.md; got 98f546c3f6bf68ce8336cdef4d5e53d31f8cffd9bc0f3a6fd4f997283b7779f6', 'normative.cases.C09b.source.sha256: does not match C09b-saas-attachment-unlisted.md; got 20a9462e3d02ff466f0c09a0a370237244e3203f73300c65bd5c53dd9a687aaf' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at shared/resources/tests/oracle-contract.test.mjs:23:1
+✖ all 14 source digests remain byte-accurate while the original 12 stay present (51.8705ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   'normative.cases.C09a.source.sha256: does not match C09a-saas-manifest-deferred.md; got 98f546c3f6bf68ce8336cdef4d5e53d31f8cffd9bc0f3a6fd4f997283b7779f6',
+  +   'normative.cases.C09b.source.sha256: does not match C09b-saas-attachment-unlisted.md; got 20a9462e3d02ff466f0c09a0a370237244e3203f73300c65bd5c53dd9a687aaf'
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file://<team-workspace>/shared/resources/tests/oracle-contract.test.mjs:27:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'normative.cases.C09a.source.sha256: does not match C09a-saas-manifest-deferred.md; got 98f546c3f6bf68ce8336cdef4d5e53d31f8cffd9bc0f3a6fd4f997283b7779f6', 'normative.cases.C09b.source.sha256: does not match C09b-saas-attachment-unlisted.md; got 20a9462e3d02ff466f0c09a0a370237244e3203f73300c65bd5c53dd9a687aaf' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at shared/resources/tests/oracle-contract.test.mjs:165:1
+✖ C09 metadata binds the exact upstream raw bytes, without newline normalization (50.10175ms)
+  AssertionError [ERR_ASSERTION]: C09a: oracle digest drift
+  + actual - expected
+  
+  + 'a64cba371205982bbd127392eeb014bfee1067284d46719047b449fec7fb224c'
+  - '98f546c3f6bf68ce8336cdef4d5e53d31f8cffd9bc0f3a6fd4f997283b7779f6'
+  
+      at TestContext.<anonymous> (file://<team-workspace>/shared/resources/tests/oracle-contract.test.mjs:174:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'a64cba371205982bbd127392eeb014bfee1067284d46719047b449fec7fb224c',
+    expected: '98f546c3f6bf68ce8336cdef4d5e53d31f8cffd9bc0f3a6fd4f997283b7779f6',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

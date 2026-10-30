@@ -1,0 +1,29 @@
+
+> contract-review-lead-contract-tests@1.0.23 test:platform
+> node --experimental-strip-types --loader ./tests/ts-extension-loader.mjs --test tests/delegate-api.contract.test.mjs
+
+(node:22227) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tests/ts-extension-loader.mjs", pathToFileURL("./")); register("./tests/ts-extension-loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ all O1-O5 examples satisfy the complete production catalog schema and normalizer (30.825042ms)
+✔ schema preflight rejects known bad Delegate shapes without dispatching (0.475375ms)
+✔ O1 structured validator example uses the complete real tool schema, not guessed aliases (2.720375ms)
+(node:22227) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<platform-workspace>/packages/agent-service/src/builtin-tools/catalog.generated.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <platform-workspace>/packages/agent-service/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:22227) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<platform-workspace>/packages/shared/src/applications/user-capabilities.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <platform-workspace>/packages/shared/package.json.
+(node:22227) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<platform-workspace>/packages/schemas/src/agent-service/global-taskboard-capability.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <platform-workspace>/packages/schemas/package.json.
+✔ platform source keeps control separate and memoryScope none has the audited semantics (1.849667ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 558.24775

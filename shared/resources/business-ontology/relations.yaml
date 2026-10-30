@@ -14,9 +14,9 @@
 # ============================================================================
 
 meta:
-  ontology_version: onto-v1        # 必须与 contract.yaml 的 meta.ontology_version 相同
+  ontology_version: onto-v2        # 必须与 contract.yaml 的 meta.ontology_version 相同
   knowledge_base_version: '2026-08-31'
-  updated_at: '2026-08-31'
+  updated_at: '2026-09-29'
   maintainer: 合同审查智能体团队
 
 # ============================================================================
@@ -77,16 +77,31 @@ edge_schema:
 # ============================================================================
 relations:
 
+  terminal_event_of:
+    description: O3 terminal event 绑定其真实 branch invocation；from.invocation_id 与 to.invocation_id 必须相同，禁止借用另一调用或仅凭 extract 完成生成 settle
+    from: branch_terminal_event
+    to: branch_invocation
+    cardinality: 0..1
+    required_fields: [event_type, branch_id, invocation_id, outcome, receipt_ref, searched_scope, reason]
+    extra_fields:
+      event_type: {type: string, const: branch_invocation_terminal}
+      branch_id: {type: string, enum: [jurisdiction-auditor, risk-scanner]}
+      outcome: {type: string, enum: [success, failed, cancelled]}
+      invocation_id: {type: string, description: 必须与目标 branch_invocation.invocation_id 完全一致}
+      receipt_ref: {type: string, min_length: 1}
+      searched_scope: {type: string, min_length: 1}
+      reason: {type: string, min_length: 1}
+
   has_attachment:
     description: |
       归属关系：主合同（或某份修订）在其**附件清单**中列明了某份附件。
       注意语义：这条边表达「清单侧声明了它」，不表达「文件已取得」。
-      文件是否取得由终点对象的 kind 决定（attachment = 已取得，
-      exhibit_referenced_only = 未取得）。两者分离是 DC-002 能成立的前提。
+      文件是否取得由边的 delivered 字段与 scope 事实表达（attachment = 已登记实体；
+      delivered=false = R7 正文未随本次提交送达）。exhibit_referenced_only 是 INV-002 阻断对象，不能拿来表达 R7。
     from: contract_document(kind = main_contract | amendment)
-    to: contract_document(kind = attachment | exhibit_referenced_only | annex_of_annex)
+    to: contract_document(kind = attachment | annex_of_annex)
     cardinality: 0..N
-    required_fields: [evidence]
+    required_fields: [evidence, delivered]
     extra_fields:
       listed_as:
         type: string
@@ -94,6 +109,9 @@ relations:
       list_position:
         type: integer
         description: 在清单中的序号，用于检测清单跳号
+      delivered:
+        type: boolean
+        description: 已列明附件正文是否随本次提交送达；false 产生 SCOPE-ATTACHMENT-BODY-ABSENT，不改变 intake verdict
     notes: 附件的附件用本关系连接，from 为父附件；禁止把二级附件平铺挂到主合同上
 
   references:
@@ -179,6 +197,9 @@ relations:
       role:
         type: string
         description: 在该文档中的角色，取值见 contract.yaml enums.party_role
+      identifier_applicability:
+        type: string
+        description: 取值见 contract.yaml enums.identifier_applicability；按关系角色与本轮核验目的判断，不由标识字段缺失推定
 
   governed_by:
     description: |
@@ -255,7 +276,7 @@ derived_checks:
   - id: DC-002
     title: 已列明附件正文未取得（R7 范围事实）
     description: |
-      计算方式：清单集 L 中，终点对象 kind = exhibit_referenced_only 的成员。
+      计算方式：权威清单集 L 中，has_attachment.delivered = false 的成员。
       与 DC-001 是不同缺口：DC-001 是「清单漏列」，DC-002 是「文件没拿到」。
       DC-002 对应 R7：清单已知，附件身份已冻结，只记录 SCOPE-ATTACHMENT-BODY-ABSENT 与 delivered: false，
       供下游把相关检查项留为 not_covered；它不改变 intake verdict，也不得生成 PEND-001。权威附件清单本身
@@ -307,26 +328,26 @@ derived_checks:
   - id: DC-006
     title: 法域冲突
     description: |
-      同一份文档上存在两条及以上 governed_by 边，且它们属于互斥或需协调的制度组合。
+      同一份文档上存在两条及以上 governed_by 边时，先把它们视为需调查的法域线索；只有读取适用专业规则后，才能判断是否属于互斥或需协调的制度组合。
       典型场景（测试语料 C05）：合同同时声明「适用中华人民共和国法律」与
       「个人数据处理适用 GDPR」——两者并非天然互斥，但必须显式判定：
         · 是 carve_out（就特定事项适用）→ 记为需确认，检查范围表述是否闭合
-        · 是全局并列适用           → 冲突，因为准据法只能有一个
+        · 是全局并列声明           → 记录候选冲突；未读适用专业包前不得断定法律冲突或效力
       具体的互斥判定表在各 jurisdiction pack 的 rules.yaml#conflicts 中定义，
       本体只负责把「存在多条 governed_by 边」这一事实结构化出来。
     inputs: [relations.governed_by]
     severity: important
     on_violation: flag_conflict
-    escalation: 若 jurisdiction_pack_version 未覆盖其中任一法域，升级为 block（contract.yaml INV-008）
+    escalation: 中国大陆实体检查缺 jurisdiction-cn 时阻止该实体结论；域外线索转介且继续通用治理，不因缺 foreign pack 阻断全案（contract.yaml INV-008）
 
   - id: DC-007
     title: 签署方与当事方不一致
-    description: 某文档的 signed_by 边集合与 party_of 边集合（应签方）不匹配，或附件签署方与主合同不同
+    description: 在 signature_review/effectiveness_review 或未声明草稿范围时，signed_by 与应签 party_of 不匹配，或附件签署方与主合同不同；明确 negotiation_draft 且 execution_validation_requested=false 时仅签署专用空白不单独触发本检查
     inputs: [relations.signed_by, relations.party_of]
     severity: severe
     on_violation: block
     blueprint_ref: 第四节 签署状态未确认 / 第十二节 生效要件
-    notes: 命中时同时触发 Human Gate HG-04（生效要件），不做默认通过
+    notes: 命中时同时触发 HG-04；文字签署栏完整也不证明真实性或授权，/s/ 与「已盖章」文字不得自动建立可信 signed_by 边
 
   - id: DC-008
     title: 引用成环
@@ -348,7 +369,9 @@ derived_checks:
     title: 检查项未覆盖（欠账）
     description: |
       规则集中启用的 check_id 未出现在任何 covered_by_check 边上。
-      这些检查项在覆盖矩阵中 status = blank，必须在报告正文单列。
+      这些检查项在覆盖矩阵中 status = blank，必须在报告正文单列。统一状态为
+      covered/blank/blocked/deferred/unknown/not_applicable；只有 covered 能引用真实回执，
+      not_applicable 必须有明确理由且不得算 pass。
       蓝本第十五节：没有覆盖的检查项必须显式留白，不能因为没提就当通过。
     inputs: [relations.covered_by_check]
     severity: important

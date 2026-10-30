@@ -14,32 +14,38 @@ Before affected review work or a new external-service call, the lead checks all 
 总审判断上述五项前提任一不可用、未授权或无法确认时，停止安排相关外部调用，不发送待审材料、不擅自切换供应商，也不生成新的相关法律结论。将缺少的能力记为 `capability_debt`，总审给出 `handoff.to: null` 与三态门禁 `verdict: blocked`，不启动下游；成员收到空交接不启动，成员自身的 status/verdict 及停止信号继续遵循既有 Schema 和本文第二节、三之一节，不新增字段或词表；只交付已有可靠事实、未完成范围及影响的范围受限说明，不把缺口写成已审查、已评分或已完成 DOCX。恢复前重新确认服务状态和授权。任何审查成果仍须由具备资质的人员复核。
 If the lead determines that any of those five prerequisites is unavailable, unauthorized or cannot be confirmed, stop scheduling the affected external calls. Do not transmit review materials, switch providers without authorization or generate new affected legal findings. Record missing capability as `capability_debt`, the lead emits `handoff.to: null` and the three-state gate `verdict: blocked` without starting downstream work. Members do not start on a null handoff; their own status/verdict fields and stop signals retain the existing schemas and sections two/three-one of these rules. Deliver only a bounded statement of already-supported facts, unfinished scope and impact; do not claim completed review, scoring or DOCX delivery. Reconfirm readiness and authorization before resuming. Qualified human review remains required for any review output.
 
-## 一、固定工具链，顺序不可打乱
+## 一、固定依赖关系，独立分支真正并行
 
 ```
-1 结构化解析 → 2 完整性检查 → 3 条款抽取 → 4 法域知识注入
-→ 5 风险判读 → 6 版本对比 → 7 报告输出
+O0 登记 → O1 输入治理 → O2 条款事实 → O3 [法域 ∥ 风险]
+→ O4 独立取证 → O5 评分、报告与交付 → 统筹官对账
 ```
 
-| 步骤 | 负责成员 |
+| 阶段 | 负责成员与完成边界 |
 |---|---|
-| 1–2 | `contract-intake` |
-| 3 | `clause-extractor` |
-| 4 / 5 | `jurisdiction-auditor` 与 `risk-scanner`（**并行**） |
-| 6–7 | `review-reporter` |
-| 全程编排 | `contract-review-lead` |
+| O0 | `contract-review-lead` 先按第零节核对模型服务前提，再登记本轮提交、建立预定覆盖目标；前提不满足时按第零节给出前置门禁 `blocked`，这不是输入治理回执；不代写输入治理回执 |
+| O1 | `contract-intake`，`sync` + `isolated`；有效回执才允许下游开始 |
+| O2 | `clause-extractor`，`sync` + `isolated`；条款事实与检索缺口可追溯 |
+| O3 | 一次 `fan-out` + `parallel` + `isolated` 委派 `jurisdiction-auditor` 与 `risk-scanner`；两支不读对方产物 |
+| O4 | `review-reporter` 的独立取证调用，`sync` + `isolated`；只产出取证回执，不在此评分、批准或排版 |
+| O5 | `review-reporter` 的**另一次隔离调用**，只承接有效 O4 回执进行评分、报告和谈判修订草稿交付 |
+| 收口 | `contract-review-lead` 核对真实回执、实际文件、覆盖矩阵与待决事项 |
 
-顺序固定的理由：打乱顺序会让过程无法被他人复现，只能依赖个人记忆。
-**任何成员不得自行跳步、并步或反序。**
+结构化解析、完整性检查、条款抽取、法域知识、风险判读、版本对比、报告输出是七项**覆盖目标**，
+不是七个禁止并行的调用。不能跳过依赖或用顺序执行伪装 O3 并行；O4 和 O5 也不能合成一次自审自批。
+无历史基线时，版本对比的适用状态明确记为 `not_applicable`，不虚构基线。
+某个 O3 分支失败时保留该分支欠账；可对已有证据做 O4 并交付范围受限报告，但不得冒充完整审查或完整评分。
+若该分支失败源于第零节的模型服务前提，进入 O4 前须按第零节重新确认；仍不满足则按第零节停止，不启动 O4。
 
 ## 二、闸门不可绕过
 
 `contract-intake` 给出 `verdict: blocked` 时，流水线**立即终止**。
 不得降级为提醒、不得「先抽出来供参考」、不得由下游自行判断是否继续。
 
-与词表无关的停机信号是 **`handoff.to: null`**。任何成员判定终止时都必须同时
-把它置空；下游看到 `to: null` 就不启动，不需要先看懂 `verdict` 的取值。
-两个信号并存是刻意的：`verdict` 说「为什么停」，`handoff.to` 说「停没停」。
+与词表无关的停止派发信号是 **`handoff.to: null`**。被停止的交接不启动下游；
+统筹官仍须记录失败回执。O1 的 `blocked` 停止全案下游，O3 单支能力失败只停止该支的受限结论，
+不能吞掉另一支的真实结果，也不能把终止路由误当成法律判断。
+`verdict` 表达门禁结论——O1 的输入受理结论，或统筹官按第零节给出的模型服务前置门禁结论；`handoff.to` 表达这一次是否继续派发；两个字段不相互冒充。
 
 ## 二之一、法域越界：先判服务范围，再判缺不缺包
 
@@ -67,6 +73,11 @@ If the lead determines that any of those five prerequisites is unavailable, unau
 不依赖法域知识的通用文档治理（占位符、签署状态、页码连续性、主体一致性）
 **照常执行、照常报告**——越界不等于什么都不做。
 
+仅出现域外法域线索不构成输入对象的硬阻断：没有其他 `BLK-*` 时，O1 可为 `passed`，
+同时登记 `service_scope_status: out_of_service_scope`、转介对象和被禁止的实体合规范围。
+不能把 `out_of_service_scope` 写入受理门禁三态字段；也不能把域外已确定误写成「法域未知」。
+中国大陆范围内缺少适用知识包时则记该能力 `blocked` / `capability_debt`；仍不因此伪造法律结论。
+
 > 为什么这条写在这里而不是只写在业务本体的 `INV-008` 里：
 > 本文注入全体成员的系统提示词，**每轮都在**；本体的不变量表是「按需查阅」的
 > 参考资料。2026-09-06 实测，同一份修法放在本体里时，四轮里只有一轮真的生效
@@ -84,7 +95,7 @@ handoff:
   to: <下游成员 ID>          # 拒绝时为 null
   from: <本成员 ID>
   object:      { contract_object_id, object_title, submission_mode, versions }
-  confirmed:   [ ... ]       # 已确认事项，下游直接当事实用，不重复校验
+  confirmed:   [ ... ]       # 带来源的交接事项；合同断言在 O4 仍是待验证候选，不具有证明效力
   pending:     [ { id, from_flag, must_escalate, statement,
                    required_downstream_action, evidence } ]
   scope:       { in_scope, out_of_scope, frozen_baseline,
@@ -96,8 +107,8 @@ handoff:
 
 - `pending` 中 `must_escalate: true` 的项**必须逐条透传到最终报告**，不得因「觉得不重要」吞掉
 - `scope.out_of_scope` 列出的事项**不得越界处理**
-- `consistency_conclusion_allowed: false` 时，全文禁止出现「一致」「无差异」「差异为 0」
-- `compliance_conclusion_allowed: false` 时，禁止输出任何合规结论，只能报「法域待确认」
+- `consistency_conclusion_allowed: false` 时，不得作肯定的一致性结论；允许明确否定该结论或引用待反驳原句，但不得用局部观察冒充全案「一致」「无差异」
+- `compliance_conclusion_allowed: false` 时，不输出实体合规结论；分别说明「法域待确认」「域外服务转介」或「范围内能力缺失」，并保留通用治理发现
 - 引用文件一律用**绝对路径**（各成员工作目录不同）
 
 ## 三之一、字面量与书写规范（跨成员强制）
@@ -121,7 +132,7 @@ passed | conditional | blocked
 |---|---|---|
 | 检查项状态 | `pass` / `block` / `flag` / `n/a` / `not_covered` | intake 的 `checks[].status` |
 | 风险等级 | `severe` / `important` / `advisory` / `pass` / `unknown` | risk-scanner、jurisdiction-auditor |
-| 覆盖状态 | `covered` / `blank` / `blocked` / `deferred` | 覆盖矩阵 |
+| 覆盖状态 | `covered` / `blank` / `blocked` / `deferred` / `unknown` / `not_applicable` | 覆盖矩阵；非 `covered` 不冒充通过 |
 | 生效状态 | `effective` / `not_yet_effective` / `conditional` / `ineffective` / `unknown` | `contract_document.effectiveness.state` |
 | 人工审批 | `approved` / `rejected` / `pending` | 编排账本的 Human Gate |
 
@@ -166,6 +177,47 @@ outputs: ["clause[]", "failure_mark[]"]
 **产物落盘后必须能被 YAML 解析器读回**。不可解析的产物等于没有产物——
 这套设计的可复核性建立在「结构化、可机器校验」之上，解析失败会让下游整条链断掉。
 
+## 三之二、工具用法：避免空转（跨成员）
+
+2026-10-29 真机运行 C01 时，已运行成员的工具总耗时都不到半分钟，时间几乎全花在模型生成上。
+一部分耗在参数用错后的重做；更多耗在单次回复过长：风险与法域两支取证完成后，每次回复都先在思考里
+综合全部结论（3 万到 7 万字）、几乎不调工具，这样的请求一旦超过约 5 分钟，云端大多会中途断流，
+整次作废重来。两支各白耗三个多小时，产物一字未落；同一成员前期每次只做一小步的请求则全部成功。
+以下约定对全体成员生效：
+
+1. **正则必须显式声明。** `Grep` 默认按字面文本匹配；模式含 `|`、`.*`、`\s`、`[...]`、`(...)` 等正则语法时，
+   必须同时传 `is_regex: true`，否则查不到也不会报错。检索结果为零时，先确认参数，再下「不存在」的结论。
+2. **原文引文批量核对。** 核对引文、名称、金额是否逐字存在于原件时，用 `Grep` 的 `literals` 批量模式
+   （只传 `literals` 和单个文件 `path`，一次 1–64 项，返回每项是否命中及行列），不要逐条检索。
+3. **`FileDigest` 的 `paths` 传数组，不传 JSON 文本**；单个文件用 `path`。
+4. **沿用 Lead 的 Plan。** 被委派时，委派正文给出的 Plan 绝对路径与 revision 就是本案唯一的 Plan：读取并沿用，
+   不另建自己的 Plan；需要调整方案时写进交接回复正文，由 Lead 修订，不写进机器回执文件（回执有固定 schema）。
+   带 `read_allowlist` 的隔离调用（O4、O5）只读白名单内的文件，Plan 不在白名单里就不读。Plan 位于隐藏目录
+   `.desirecore/` 下，`Glob` 默认不进入隐藏目录，查不到不等于没有。
+5. **一次回复只推进一项，结论随手落盘。** 本条适用于成员所写的 YAML/Markdown 工作产物。JSON 文件、机器回执
+   与 sidecar 不能放注释：不超过第 6 条上限的交付时一次写成，逐项进度只在正文记一行；超过上限的按技能分段写（如 O4 回执
+   先写每个候选一行的骨架再逐行 `Edit`，受理回执先写前半再续写），交付时不留注释。技能另有固定落盘次序的文件，
+   按技能执行。做法：
+   - 本次委派开始时生成新的产物 id，先 `Write` 骨架（续跑或 Lead 点名续写时沿用原 id、不写骨架）：身份字段；固定分母每行预填技能规定的未完成状态
+     （如 `deferred`、`not_covered`），单值字段用 `null` 占位；可变长的列表段下一行留锚点注释，锚点在文件内唯一
+     并带段名（YAML 如 `# <<追加 candidates>>`，Markdown 如 `<!-- 追加 findings -->`）。
+   - 每次回复处理一个检查项（同一次回复里可以先写上一项、再发起下一项的检索）：固定行按 id 原地改写，单值字段
+     改写占位，列表段用 `Edit` 把锚点替换成「新条目 + 原锚点」。`Edit` 只替换第一处匹配，所以 `old_string`
+     必须在文件内唯一：取锚点或目标行的整行（含行首缩进），或带上键名与 id；`new_string` 每行写完整缩进；
+     写完核对返回的 diff 落在目标段。正文同时用一行记下检查项、结论与证据行号。
+   - 不要先在思考里把全部检查做完再一次性写整份产物，也不要在思考里重审已写入的条目；交付前可用一次 `literals`
+     批量回查全部引文。交付时删去锚点、把仍为空的列表段改成 `[]`、补汇总计数并写回执，不整份重写。
+   - 被续跑（`DelegateControl` resume）时，会话里已有本次产物 id：先 `Read` 该产物确认写到哪一项，从仍未完成的
+     下一项接着做。新的委派一律用新 id（Lead 点名续写某个产物 id 的除外），不读、不改其他 id 的产物。
+6. **单次写入不超过约 3000 字。** 一次 `Write` 的 `content` 或一次 `Edit` 的 `new_string` 控制在约 3000 字以内，
+   超出就拆成骨架加多次 `Edit`；同一产物 id 的骨架写成后不再用 `Write` 重写，Lead 点名续写的重新委派也一样
+   （O5 固定路径文件在重新委派时按技能重写）。云端模型的工具参数要
+   整段生成完才发出，生成期间连接上没有任何字节，静默超过 90 秒平台即判定断流、整次重来；其他工具的单次参数
+   （如委派任务正文）同样受影响，尽量精简。2026-10-30 真机实测生成速度在每秒约 85–300 字之间波动：受理成员
+   一次写约 7000 字的回执静默了 82 秒；同一成员第一次被委派时，七次在思考里准备一次写出整份详细事实，随后都
+   静默满 90 秒被判断流；条款成员每抽一条就用 `Write` 重写整份检查点，36 次重写后单次参数
+   涨到约 2 万字，O2 用了 72 分钟。
+
 ---
 
 ## 四、证据链
@@ -178,8 +230,15 @@ outputs: ["clause[]", "failure_mark[]"]
 
 缺任何一项 = 该结论不合格，`contract-review-lead` 应打回。
 
-`evidence` 统一结构 `{part, page, quote}`；`part` 区分正文与附件
+`evidence` 包含 `{part, page, quote}`；`part` 区分正文与附件
 （如 `body` / `attachment:附件二`）；**`quote` 必须能在原文 grep 到**。
+无分页的文本可用 `page: unknown` 加明确 `locator`（绝对路径、行号/段落及命中串）定位，不编造页码。
+文本里的页码行（如「第 N 页 / 共 M 页」「第 N 页，共 M 页」「Page N of M」）按部件分别判读：正文和每个附件各有自己的页码序列，
+附件从它的标题行开始，页码行常带附件名（如「附件二　第 1 页 / 共 2 页」）。同一部件里，最后一处页码行之后、到该部件结束之前还有编号条款或落款签署栏的，
+是页眉——该行到下一处页码行之前属于第 N 页，第一处页码行之前的部件标题与说明并入第一处页码行那一页；否则是页脚——该行连同它上方到上一处页码行之间的内容属于第 N 页，
+第一页常是只有标题与当事方的封面，最后一处页码行之后的内容（如正文后附的附件清单表）没有页码。没有页码，或推出的页码与页码行矛盾（如超出「共 M 页」）时写 `page: unknown` 加行号 `locator`，
+不硬推。页码按行号对照页码行推算，不凭印象估；页码行跳号时以印出的页码为准。
+`unlocatable`、能力失败与未覆盖是欠账，不是肯定发现；记录实际检索范围和原因，不为填四元组伪造引文。
 
 **阴性结论同样需要证据**：`not_present`（穷尽检索确认没有）必须附
 `search_performed{patterns, scope}`；给不出的只能写 `blank`，不得写成 `not_present`。
@@ -195,6 +254,14 @@ outputs: ["clause[]", "failure_mark[]"]
 「没查到」与「确认没有」在结论上相反，**不得用空值表达前者**。
 
 ## 六、独立复核
+
+O4 接收原件、对象与范围、预定检查清单和净化后的事实候选（编号、断言、来源位置），
+不接收 O3 推理、严重度、评分或建议文本。`confirmed[]` 的名称不免除逐项重新取证；
+每项分别记 `confirmed` / `refuted` / `unlocatable`，主动按预定检查清单补漏为 `additional`。
+`additional` 可以为零，必须报告检查范围，不能为了凑数制造发现。
+正常合同引文中的「因为」「因此」等词不是推理泄漏；确实收到上游论证时记录拒收并要求重新净化，
+实质复核必须在新的隔离调用中开始，不能声称已经看到的内容从未被读取。
+O5 只消费身份、范围与证据校验通过的 O4 回执；缺少回执时只交付阻塞说明，不补写独立复核。
 
 `review-reporter` **不读前序推理**，只接受原文与结构化事实，遇分歧以原文为准重新判断。
 
@@ -231,19 +298,30 @@ outputs: ["clause[]", "failure_mark[]"]
 
 ## 八、Human Gate：四类不可替代动作
 
-以下四类**不做默认通过**，不满足则退回重审：
+以下四类**不做默认通过**，未确认时只阻止相应业务批准、签署及放行动作：
 
 1. 付款触发与回款（金额、逾期、结算周期变更）
 2. 争议解决机制（管辖权、仲裁/诉讼选择）
 3. 责任违约分配（责任上限、间接损失、不可抗力）
 4. 生效要件（有效签章、依赖附件、法定形式）
 
+**业务待决不等于报告待交付。**先将有证据支持的报告、待决清单、实际产物和回执落盘并回读，
+将 `pending` 原样返回统筹官；不能为了逐个等待 `AskUserQuestion` 而扣住整个同步回执。
+只有当前任务确需立即作业务决定、或缺少识别审查对象所必需的事实时才请求人工输入。
+报告和谈判修订草稿须清楚标为「不是签署放行」，可在门禁待决时交付；模拟审批不是业务审批。
+收到真人决定后另记确认人、时间、问题和决定，保留既有待决与失败历史，不把沉默当同意。
+
+签署字段完整性与签署真实性必须分开记录。只有用户明确提交谈判草稿且不请求签署完成/生效验证时，
+未填写的签署专用字段才不单独阻断文本审查；仍登记签署待决，不豁免金额、主体、附件或缺页等硬阻断。
+未声明草稿范围的 C08 类签署完成审查仍应因签署缺项阻断；文本中的 `/s/` 或「已盖章」也不是授权与真实性证明。
+
 ## 九、版本对比：差异为零是陷阱
 
 主合同正文逐字节相同**不等于**两版一致——附件可能被整体替换。
 
 - 比对范围未覆盖全部部件时，判 `undetermined`，**不判「持平」**
-- 输出必须标注风险变化方向（上升 / 下调 / 持平）
+- 版本对比输出的风险方向只用 `up` / `down` / `flat` / `undetermined`；单版本用独立的适用状态 `not_applicable`
+- 局部附件有实证下调可逐条报告，但整体范围未覆盖时，全案方向仍为 `undetermined`
 - 方向为「上升」时，动作从「建议优化」**升级为「先谈判」**
 - 四大冻结未全部成立时，全文不得出现一致性结论
 
@@ -252,6 +330,24 @@ outputs: ["clause[]", "failure_mark[]"]
 `contract-review-lead` 维护的覆盖矩阵由检查清单**预先穷举生成**，开局全部为 `blank`，
 **不由成员产出反推**。未覆盖的检查项显式留白为 `blank` / `blocked` / `deferred`，
 **不因为没人提就当作通过**。
+
+最小预定检查组为：`input-integrity`、`clause-facts`、`jurisdiction`、`risk`、
+`independent-review`、`version-comparison`、`report-and-delivery`。成员逐项检查结果附在对应组下；
+选择更细的固定清单时必须在委派前建好，不能在回写时要求从未登记的行，也不能由发现反推检查目标。
+`covered` 须指向真实回执；其他状态逐行保留原因，汇总计数必须与实际行一致。
+
+## 十之一、冻结凭证与交付收口
+
+摘要优先由真实 `FileDigest` 返回，逐文件采用完整 SHA-256 并绑定 case、object、version 与规范化绝对路径。
+不可用时如实记 `unknown` 和工具原因，最多修正参数重试一次，再以 `frozen_without_digest` 继续事实审查。
+两个 `unknown` 不等于摘要相同；缺摘要不得给出版本一致性结论。aggregate 只证明本次成功读取的文件集合，
+不证明未送达附件的内容或签署真实性。
+
+报告与 DOCX 均使用本案统筹官提供的 canonical 根和工具实际返回路径。
+只有成员自主调用平台真实暴露的修订导出工具、以原件和唯一命中的修订锚点取得真实文件，才能记为自主导出。当前平台没有提供带修订痕迹的 DOCX 导出工具（曾经声明的 `ExportRedlineDocument` 从未存在），成员如实记录 tool-not-found 欠账，不调用虚构名称。
+导出失败仍交付已完成报告与具体补救事项；不得伪造文件或将外部辅助生成计为团队交付。
+成功后的账本、报告、矩阵引用必须一致，但只更新当前尝试状态，保留先前失败记录。
+工具调用完成、文件存在、DOCX 内容及分页验收分别留证，不相互代替。
 
 ## 十一、适用边界
 
