@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 const here = dirname(fileURLToPath(import.meta.url))
 // A reviewed derived-index pin, not a signature or a runtime authority grant.
 // Regenerate explicitly during development and independently review the pin update.
-const REVIEWED_INDEX_SHA256 = 'b4dbbe6effca260f8bab99b3548865d69c0c309505038eaa729d46081b9900fb'
+const REVIEWED_INDEX_SHA256 = 'dd61a0d6ad5569f70eda7a4f6fcba9f3ce1ea3ae9136939cb7ea37a5d2a40cf9'
 function args(argv) {
   const out = { oracle: join(here, 'ground-truth.yaml'), index: join(here, 'evidence-index.json') }
   for (let i = 0; i < argv.length; i++) {

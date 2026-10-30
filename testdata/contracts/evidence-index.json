@@ -1,7 +1,7 @@
 {
   "format": "contract-evidence-index/v1",
   "derivedFrom": "ground-truth.yaml normative.cases only",
-  "oracleSha256": "c4474f683f2b4dbb46e41787b9f8ef73d617c5edae7422bd8342e24c65f73e6a",
+  "oracleSha256": "b607301e884f9f9fbcb739577f04ebab5f8982abc57429465a940e3cccc3efac",
   "sources": {
     "C01-saas-subscription.md": "fb0c1aad49f41d5d6eb892339494a7b4deaad6c11108d6888e56043810bdb035",
     "C02-software-outsourcing.md": "5f1c96d116e9df8f064eda569d3c9ff19a99c481a67a3f5f536bd94d8f49f394",

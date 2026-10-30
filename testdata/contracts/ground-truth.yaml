@@ -1,8 +1,8 @@
 ---
 normative:
   normative: true
-  oracle_version: 3.0.0
-  last_reviewed: 2026-09-29
+  oracle_version: 3.0.1
+  last_reviewed: 2026-10-30
   judgment_commit: e1837f2931ec077b7bf522f5c223c0af5df840cf
   rules_version: rules-v2 + 2026-09-29 unified decisions
   service_boundary: mainland China only; out-of-scope matters receive general document governance and referral, never a foreign-law pack
@@ -144,7 +144,7 @@ normative:
         - id: c01-total
           kind: literal
           part: body
-          page: 3
+          page: 4
           clause_no: "4.1"
           quote: 年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）
         - id: c01-manifest
@@ -186,37 +186,37 @@ normative:
         - id: c01-remedy
           kind: literal
           part: body
-          page: 6
+          page: 7
           clause_no: "11"
           quote: "## 第十一条　违约责任与救济"
         - id: c01-grace
           kind: literal
           part: body
-          page: 6
+          page: 7
           clause_no: "11.1"
           quote: 该期间为违约治愈宽限期
         - id: c01-termination
           kind: literal
           part: body
-          page: 6
+          page: 7
           clause_no: "12.2"
           quote: 甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）
         - id: c01-subcontracting
           kind: literal
           part: body
-          page: 7
+          page: 8
           clause_no: "13"
           quote: "## 第十三条　分包与变更控制"
         - id: c01-audit
           kind: literal
           part: body
-          page: 7
+          page: 8
           clause_no: "14"
           quote: "## 第十四条　审计权"
         - id: c01-force-majeure
           kind: literal
           part: body
-          page: 8
+          page: 9
           clause_no: "15"
           quote: "## 第十五条　不可抗力"
         - id: c01-export
@@ -293,25 +293,25 @@ normative:
         - id: c02-placeholder
           kind: literal
           part: body
-          page: 2
+          page: 4
           clause_no: "4.1"
           quote: 4.1 本合同总价款为人民币 $X 元（大写：【待定】），含 6% 增值税。
         - id: c02-attachment
           kind: literal
           part: body
-          page: 1
+          page: 2
           clause_no: "2.3"
           quote: 2.3 各里程碑的验收标准依附件三《验收标准》执行
         - id: c02-version
           kind: literal
           part: body
-          page: 1
+          page: 2
           clause_no: "1.2"
           quote: 1.2 详细功能规格以附件二《技术规格书 V1.3》为准。
         - id: c02-party
           kind: literal
           part: body
-          page: 5
+          page: 7
           clause_no: "10.4"
           quote: 10.4 本合同解除后，乙方应在 10 个工作日内向云梯科技（示例）有限公司移交全部已完成的阶段性成果。
         - id: c02-page
@@ -455,19 +455,19 @@ normative:
         - id: c04-five-years
           kind: literal
           part: body
-          page: 3
+          page: 4
           clause_no: "8.1"
           quote: 8.1 乙方离职后，在 5 年内不得自营或为他人经营与甲方有竞争关系的业务
         - id: c04-no-compensation
           kind: literal
           part: body
-          page: 3
+          page: 4
           clause_no: "8.2"
           quote: 甲方在竞业限制期限内无需另行向乙方支付经济补偿
         - id: c04-probation
           kind: literal
           part: body
-          page: 1
+          page: 2
           clause_no: "1.2"
           quote: 1.2 试用期为 12 个月，自 2026 年 5 月 6 日起至 2027 年 5 月 5 日止。
         - id: c04-redaction
@@ -831,7 +831,7 @@ normative:
         - id: c07-law
           kind: literal
           part: body
-          page: 5
+          page: 6
           clause_no: "12.1"
           quote: 12.1 This Agreement shall be governed by and construed in accordance with the laws of the Republic of Singapore.
         - id: c07-signature
@@ -849,7 +849,7 @@ normative:
         - id: c07-liability
           kind: literal
           part: body
-          page: 4
+          page: 5
           clause_no: "9.2"
           quote: during the three (3) months immediately preceding the event giving rise to the claim
         - id: c07-renewal
@@ -861,7 +861,7 @@ normative:
         - id: c07-subcontracting
           kind: literal
           part: body
-          page: 2
+          page: 3
           clause_no: "4.2"
           quote: Supplier shall not subcontract any part of the services without Client's prior written consent
     C08:
@@ -935,7 +935,7 @@ normative:
         - id: c08-law
           kind: literal
           part: body
-          page: 3
+          page: 4
           clause_no: "8.1"
           quote: 8.1 This Agreement shall be governed by and construed in accordance with the laws of the Republic of Singapore.
         - id: c08-page
@@ -1072,7 +1072,7 @@ normative:
         - id: c01-total
           kind: literal
           part: body
-          page: 3
+          page: 4
           clause_no: "4.1"
           quote: 年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）
         - id: c01-manifest
@@ -1114,37 +1114,37 @@ normative:
         - id: c01-remedy
           kind: literal
           part: body
-          page: 6
+          page: 7
           clause_no: "11"
           quote: "## 第十一条　违约责任与救济"
         - id: c01-grace
           kind: literal
           part: body
-          page: 6
+          page: 7
           clause_no: "11.1"
           quote: 该期间为违约治愈宽限期
         - id: c01-termination
           kind: literal
           part: body
-          page: 6
+          page: 7
           clause_no: "12.2"
           quote: 甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）
         - id: c01-subcontracting
           kind: literal
           part: body
-          page: 7
+          page: 8
           clause_no: "13"
           quote: "## 第十三条　分包与变更控制"
         - id: c01-audit
           kind: literal
           part: body
-          page: 7
+          page: 8
           clause_no: "14"
           quote: "## 第十四条　审计权"
         - id: c01-force-majeure
           kind: literal
           part: body
-          page: 8
+          page: 9
           clause_no: "15"
           quote: "## 第十五条　不可抗力"
         - id: c01-export
@@ -1309,7 +1309,7 @@ normative:
         - id: c01-total
           kind: literal
           part: body
-          page: 3
+          page: 4
           clause_no: "4.1"
           quote: 年度订阅费合计人民币壹佰贰拾伍万元整（¥1,250,000.00）
         - id: c01-manifest
@@ -1351,37 +1351,37 @@ normative:
         - id: c01-remedy
           kind: literal
           part: body
-          page: 6
+          page: 7
           clause_no: "11"
           quote: "## 第十一条　违约责任与救济"
         - id: c01-grace
           kind: literal
           part: body
-          page: 6
+          page: 7
           clause_no: "11.1"
           quote: 该期间为违约治愈宽限期
         - id: c01-termination
           kind: literal
           part: body
-          page: 6
+          page: 7
           clause_no: "12.2"
           quote: 甲方有权提前 60 日书面通知乙方无理由终止本协议（便利终止）
         - id: c01-subcontracting
           kind: literal
           part: body
-          page: 7
+          page: 8
           clause_no: "13"
           quote: "## 第十三条　分包与变更控制"
         - id: c01-audit
           kind: literal
           part: body
-          page: 7
+          page: 8
           clause_no: "14"
           quote: "## 第十四条　审计权"
         - id: c01-force-majeure
           kind: literal
           part: body
-          page: 8
+          page: 9
           clause_no: "15"
           quote: "## 第十五条　不可抗力"
         - id: c01-export
@@ -1399,7 +1399,7 @@ normative:
         - id: c09b-body-reference
           kind: literal
           part: body
-          page: 7
+          page: 8
           clause_no: "14.1"
           quote: 审计所需的安全合规证明材料清单以附件四《安全合规证明材料清单 V1.0》为准。
         - id: c09b-manifest
